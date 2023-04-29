@@ -1,5 +1,6 @@
 use crate::vk_layer::VkLayerFunction;
 use ash::vk;
+use log::debug;
 use state::get_state;
 use std::{
     ffi::{c_void, CStr},
@@ -10,6 +11,7 @@ use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
 
 mod state;
 mod vk_layer;
+mod vk_layer_config;
 
 unsafe fn ptr_chain_get_next<SRC, DST>(
     start_struct: *const SRC,
@@ -39,7 +41,7 @@ pub extern "system" fn record_vk_create_instance(
     p_allocator: *const vk::AllocationCallbacks,
     p_instance: *mut vk::Instance,
 ) -> vk::Result {
-    eprintln!("record_vk_create_instance");
+    debug!("record_vk_create_instance");
     unsafe {
         let layer_info: Option<*mut vk_layer::VkLayerInstanceCreateInfo> =
             ptr_chain_get_next(p_create_info, |&b| -> bool {
@@ -86,11 +88,11 @@ pub extern "system" fn record_vk_get_instance_proc_addr(
     instance: *mut VkInstance_T,
     fn_name: *const i8,
 ) -> vk::PFN_vkVoidFunction {
-    eprintln!("record_vk_get_instance_proc_addr");
+    debug!("record_vk_get_instance_proc_addr");
     unsafe {
         let instance: vk::Instance = transmute(instance);
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
-        eprintln!("{instance:?} {str_fn_name:?}");
+        debug!("{instance:?} {str_fn_name:?}");
         match str_fn_name {
             "vkCreateDevice" => Some(transmute(record_vk_create_device as *mut c_void)),
             "vkCreateInstance" => Some(transmute(record_vk_create_instance as *mut c_void)),
@@ -112,11 +114,11 @@ pub extern "system" fn record_vk_get_device_proc_addr(
     device: *mut VkDevice_T,
     fn_name: *const i8,
 ) -> vk::PFN_vkVoidFunction {
-    eprintln!("record_vk_get_device_proc_addr");
+    debug!("record_vk_get_device_proc_addr");
     unsafe {
         let device: vk::Device = transmute(device);
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
-        eprintln!("{device:?} {str_fn_name:?}");
+        debug!("{device:?} {str_fn_name:?}");
         match str_fn_name {
             _ => {
                 let state = get_state();
@@ -138,7 +140,7 @@ pub extern "system" fn record_vk_create_device(
     p_allocator: *const vk::AllocationCallbacks,
     p_device: *mut vk::Device,
 ) -> vk::Result {
-    eprintln!("record_vk_create_device");
+    debug!("record_vk_create_device");
 
     unsafe {
         let layer_info: Option<*mut vk_layer::VkLayerDeviceCreateInfo> =
@@ -184,7 +186,8 @@ pub extern "system" fn record_vk_create_device(
 pub extern "system" fn record_vk_negotiate_loader_layer_interface_version(
     interface: *mut VkNegotiateLayerInterface,
 ) -> vk::Result {
-    eprintln!("record_vk_negotiate_loader_layer_interface_version");
+    pretty_env_logger::init();
+    debug!("record_vk_negotiate_loader_layer_interface_version");
     unsafe {
         if let Some(interface) = interface.as_mut() {
             if interface.loaderLayerInterfaceVersion >= 2 {
