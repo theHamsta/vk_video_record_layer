@@ -8,7 +8,7 @@ pub struct State {
     pub instance: RwLock<Option<vk::Instance>>,
     pub device: RwLock<Option<vk::Device>>,
     pub instance_get_fn: RwLock<Option<vk::PFN_vkGetInstanceProcAddr>>,
-    pub device_get_fn: RwLock<Option<vk::PFN_vkGetInstanceProcAddr>>,
+    pub device_get_fn: RwLock<Option<vk::PFN_vkGetDeviceProcAddr>>,
 }
 
 pub fn get_state() -> &'static State {

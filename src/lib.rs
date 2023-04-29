@@ -1,7 +1,11 @@
 use crate::vk_layer::VkLayerFunction;
 use ash::vk;
 use state::get_state;
-use std::{mem::transmute, ptr::null_mut};
+use std::{
+    ffi::{c_void, CStr},
+    mem::transmute,
+    ptr::null_mut,
+};
 use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
 
 mod state;
@@ -9,7 +13,7 @@ mod vk_layer;
 
 unsafe fn ptr_chain_get_next<SRC, DST>(
     start_struct: *const SRC,
-    s_type: vk::StructureType,
+    predicate: fn(&*const vk::BaseOutStructure) -> bool,
 ) -> Option<*mut DST> {
     unsafe {
         let iter = {
@@ -25,9 +29,7 @@ unsafe fn ptr_chain_get_next<SRC, DST>(
                 Some(old)
             })
         };
-        iter.filter(|s| (*(*s)).s_type == s_type)
-            .map(|s| transmute(s))
-            .next()
+        iter.filter(predicate).map(|s| transmute(s)).next()
     }
 }
 
@@ -37,12 +39,19 @@ pub extern "system" fn record_vk_create_instance(
     p_allocator: *const vk::AllocationCallbacks,
     p_instance: *mut vk::Instance,
 ) -> vk::Result {
+    eprintln!("record_vk_create_instance");
     unsafe {
-        let layer_info: Option<*mut vk_layer::VkLayerInstanceCreateInfo> = ptr_chain_get_next(
-            p_create_info,
-            vk::StructureType::LOADER_INSTANCE_CREATE_INFO,
-        );
+        let layer_info: Option<*mut vk_layer::VkLayerInstanceCreateInfo> =
+            ptr_chain_get_next(p_create_info, |&b| -> bool {
+                (*b).s_type == vk::StructureType::LOADER_INSTANCE_CREATE_INFO
+                    && (*b.cast::<vk_layer::VkLayerInstanceCreateInfo>()).function
+                        == VkLayerFunction::VK_LAYER_LINK_INFO
+            });
         if let Some(layer_info) = layer_info {
+            debug_assert!(
+                (*layer_info).sType == transmute(vk::StructureType::LOADER_INSTANCE_CREATE_INFO)
+            );
+
             let layer_info = layer_info.as_mut().unwrap();
             if layer_info.function == VkLayerFunction::VK_LAYER_LINK_INFO {
                 let state = get_state();
@@ -51,7 +60,7 @@ pub extern "system" fn record_vk_create_instance(
                 let Some(real_create_instance)  = (*layer_info.u.pLayerInfo)
                     .pfnNextGetInstanceProcAddr
                     .map(|f| f(null_mut(), transmute(b"vkCreateInstance\0"))).flatten()
-                else {return vk::Result::ERROR_INITIALIZATION_FAILED};
+                else { return vk::Result::ERROR_INITIALIZATION_FAILED };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
 
@@ -75,37 +84,69 @@ pub extern "system" fn record_vk_create_instance(
 #[no_mangle]
 pub extern "system" fn record_vk_get_instance_proc_addr(
     instance: *mut VkInstance_T,
-    _fn_name: *const i8,
+    fn_name: *const i8,
 ) -> vk::PFN_vkVoidFunction {
+    eprintln!("record_vk_get_instance_proc_addr");
     unsafe {
-        let _instance: vk::Instance = transmute(instance);
+        let instance: vk::Instance = transmute(instance);
+        let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
+        eprintln!("{instance:?} {str_fn_name:?}");
+        match str_fn_name {
+            "vkCreateDevice" => Some(transmute(record_vk_create_device as *mut c_void)),
+            "vkCreateInstance" => Some(transmute(record_vk_create_instance as *mut c_void)),
+            _ => {
+                let state = get_state();
+                let get_fn = state.instance_get_fn.read().unwrap();
+                if let Some(get_fn) = get_fn.as_ref() {
+                    (get_fn)(instance, fn_name)
+                } else {
+                    None
+                }
+            }
+        }
     }
-    None
 }
+
 #[no_mangle]
 pub extern "system" fn record_vk_get_device_proc_addr(
     device: *mut VkDevice_T,
-    _fn_name: *const i8,
+    fn_name: *const i8,
 ) -> vk::PFN_vkVoidFunction {
+    eprintln!("record_vk_get_device_proc_addr");
     unsafe {
-        let _device: vk::Device = transmute(device);
+        let device: vk::Device = transmute(device);
+        let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
+        eprintln!("{device:?} {str_fn_name:?}");
+        match str_fn_name {
+            _ => {
+                let state = get_state();
+                let get_fn = state.device_get_fn.read().unwrap();
+                if let Some(get_fn) = get_fn.as_ref() {
+                    (get_fn)(device, fn_name)
+                } else {
+                    None
+                }
+            }
+        }
     }
-    None
 }
+
 #[no_mangle]
 pub extern "system" fn record_vk_create_device() {
-    print!("record_vk_create_device");
+    eprintln!("record_vk_create_device");
 }
+
 #[no_mangle]
 pub extern "system" fn record_vk_negotiate_loader_layer_interface_version(
     interface: *mut VkNegotiateLayerInterface,
 ) -> vk::Result {
+    eprintln!("record_vk_negotiate_loader_layer_interface_version");
     unsafe {
         if let Some(interface) = interface.as_mut() {
             if interface.loaderLayerInterfaceVersion >= 2 {
                 interface.pfnGetDeviceProcAddr = Some(record_vk_get_device_proc_addr);
                 interface.pfnGetInstanceProcAddr = Some(record_vk_get_instance_proc_addr);
-                interface.pfnGetPhysicalDeviceProcAddr = None;
+                //interface.pfnGetPhysicalDeviceProcAddr = None;
             }
         }
     }
