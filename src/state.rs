@@ -3,6 +3,8 @@ use std::sync::RwLock;
 use ash::vk;
 use once_cell::sync::Lazy;
 
+// TODO: either do object wrapping or hash map dispatch. Until then there can only be a single
+// instance/device
 #[derive(Default)]
 pub struct State {
     pub instance: RwLock<Option<vk::Instance>>,

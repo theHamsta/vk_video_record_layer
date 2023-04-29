@@ -11,7 +11,6 @@ use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
 
 mod state;
 mod vk_layer;
-mod vk_layer_config;
 
 unsafe fn ptr_chain_get_next<SRC, DST>(
     start_struct: *const SRC,
