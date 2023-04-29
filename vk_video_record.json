@@ -31,6 +31,44 @@
 		},
 		"disable_environment": {
 			"ENABLE_VK_VIDEO_RECORD_LAYER": "1"
+		},
+		"features": {
+			"settings": [
+				{
+					"key": "video_filename",
+					"env": "VK_VIDEO_RECORD_OUTPUT_FILE",
+					"label": "Output video file",
+					"description": "Specifies the file to record screen content to",
+					"type": "SAVE_FILE",
+					"filter": "*.h264",
+					"default": ""
+				},
+				{
+					"key": "codec",
+					"env": "VK_VIDEO_RECORD_FORMAT",
+					"label": "Output Codec",
+					"description": "",
+					"type": "ENUM",
+					"flags": [
+						{
+							"key": "h264",
+							"label": "H264",
+							"description": "H264"
+						},
+						{
+							"key": "h265",
+							"label": "H265",
+							"description": "H265"
+						},
+						{
+							"key": "av1",
+							"label": "AV1",
+							"description": "AV1"
+						}
+					],
+					"default": "h264"
+				}
+			]
 		}
 	}
 }
