@@ -45,23 +45,23 @@
 				},
 				{
 					"key": "codec",
-					"env": "VK_VIDEO_RECORD_FORMAT",
+					"env": "VK_VIDEO_RECORD_CODEC",
 					"label": "Output Codec",
 					"description": "",
 					"type": "ENUM",
 					"flags": [
 						{
-							"key": "h264",
+							"key": "H264",
 							"label": "H264",
 							"description": "H264"
 						},
 						{
-							"key": "h265",
+							"key": "H265",
 							"label": "H265",
 							"description": "H265"
 						},
 						{
-							"key": "av1",
+							"key": "AV1",
 							"label": "AV1",
 							"description": "AV1"
 						}
