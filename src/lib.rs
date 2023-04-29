@@ -132,8 +132,52 @@ pub extern "system" fn record_vk_get_device_proc_addr(
 }
 
 #[no_mangle]
-pub extern "system" fn record_vk_create_device() {
+pub extern "system" fn record_vk_create_device(
+    physical_device: vk::PhysicalDevice,
+    p_create_info: *const vk::DeviceCreateInfo,
+    p_allocator: *const vk::AllocationCallbacks,
+    p_device: *mut vk::Device,
+) -> vk::Result {
     eprintln!("record_vk_create_device");
+
+    unsafe {
+        let layer_info: Option<*mut vk_layer::VkLayerDeviceCreateInfo> =
+            ptr_chain_get_next(p_create_info, |&b| -> bool {
+                (*b).s_type == vk::StructureType::LOADER_DEVICE_CREATE_INFO
+                    && (*b.cast::<vk_layer::VkLayerDeviceCreateInfo>()).function
+                        == VkLayerFunction::VK_LAYER_LINK_INFO
+            });
+        if let Some(layer_info) = layer_info {
+            debug_assert!(
+                (*layer_info).sType == transmute(vk::StructureType::LOADER_DEVICE_CREATE_INFO)
+            );
+
+            let layer_info = layer_info.as_mut().unwrap();
+            if layer_info.function == VkLayerFunction::VK_LAYER_LINK_INFO {
+                let state = get_state();
+                *state.device_get_fn.write().unwrap() =
+                    transmute((*layer_info.u.pLayerInfo).pfnNextGetDeviceProcAddr);
+                let Some(real_create_device)  = (*layer_info.u.pLayerInfo)
+                    .pfnNextGetInstanceProcAddr
+                    .map(|f| f(transmute(get_state().instance.read().unwrap().unwrap()), transmute(b"vkCreateDevice\0"))).flatten()
+                else { return vk::Result::ERROR_INITIALIZATION_FAILED };
+
+                layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
+
+                let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
+                // TODO: patch application info to support vk video
+                let res = real_create_device(physical_device, p_create_info, p_allocator, p_device);
+                if res == vk::Result::SUCCESS {
+                    *state.device.write().unwrap() = p_device.as_ref().copied();
+                    // TODO: time to fetch instance function pointers if needed
+                }
+
+                return res;
+            }
+        }
+    }
+
+    vk::Result::ERROR_INITIALIZATION_FAILED
 }
 
 #[no_mangle]
