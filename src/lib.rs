@@ -58,8 +58,8 @@ pub extern "system" fn record_vk_create_instance(
                 let state = get_state();
                 *state.instance_get_fn.write().unwrap() =
                     transmute((*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr);
-                let Some(real_create_instance)  = (*layer_info.u.pLayerInfo)
-                    .pfnNextGetInstanceProcAddr
+                let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
+                let Some(real_create_instance)  = get_instance_proc_addr
                     .map(|f| f(null_mut(), transmute(b"vkCreateInstance\0"))).flatten()
                 else { return vk::Result::ERROR_INITIALIZATION_FAILED };
 
@@ -70,8 +70,12 @@ pub extern "system" fn record_vk_create_instance(
                 // TODO: patch application info to support vk video
                 let res = real_create_instance(p_create_info, p_allocator, p_instance);
                 if res == vk::Result::SUCCESS {
-                    *state.instance.write().unwrap() = p_instance.as_ref().copied();
-                    // TODO: time to fetch instance function pointers if needed
+                    *state.instance.write().unwrap() = Some(ash::Instance::load(
+                        &vk::StaticFn {
+                            get_instance_proc_addr: transmute(get_instance_proc_addr),
+                        },
+                        p_instance.as_ref().copied().unwrap(),
+                    ));
                 }
 
                 return res;
@@ -89,7 +93,7 @@ pub extern "system" fn record_vk_get_instance_proc_addr(
 ) -> vk::PFN_vkVoidFunction {
     debug!("record_vk_get_instance_proc_addr");
     unsafe {
-        let instance: vk::Instance = transmute(instance);
+        let instance: vk::Instance = vk::Handle::from_raw(instance as u64);
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
         debug!("{instance:?} {str_fn_name:?}");
         match str_fn_name {
@@ -115,7 +119,7 @@ pub extern "system" fn record_vk_get_device_proc_addr(
 ) -> vk::PFN_vkVoidFunction {
     debug!("record_vk_get_device_proc_addr");
     unsafe {
-        let device: vk::Device = transmute(device);
+        let device: vk::Device = vk::Handle::from_raw(device as u64);
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
         debug!("{device:?} {str_fn_name:?}");
         match str_fn_name {
@@ -156,21 +160,45 @@ pub extern "system" fn record_vk_create_device(
             let layer_info = layer_info.as_mut().unwrap();
             if layer_info.function == VkLayerFunction::VK_LAYER_LINK_INFO {
                 let state = get_state();
-                *state.device_get_fn.write().unwrap() =
+                let get_device_proc_addr =
                     transmute((*layer_info.u.pLayerInfo).pfnNextGetDeviceProcAddr);
-                let Some(real_create_device)  = (*layer_info.u.pLayerInfo)
-                    .pfnNextGetInstanceProcAddr
-                    .map(|f| f(transmute(get_state().instance.read().unwrap().unwrap()), transmute(b"vkCreateDevice\0"))).flatten()
+                *state.device_get_fn.write().unwrap() = get_device_proc_addr;
+                let lock = state.instance.read().unwrap();
+                let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
+
+                let Some(real_create_device)  = get_instance_proc_addr
+                    .map(|f| f(transmute(lock.as_ref().unwrap().handle()), b"vkCreateDevice\0".as_ptr()as *const i8)).flatten()
                 else { return vk::Result::ERROR_INITIALIZATION_FAILED };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
 
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
+
                 // TODO: patch application info to support vk video
                 let res = real_create_device(physical_device, p_create_info, p_allocator, p_device);
                 if res == vk::Result::SUCCESS {
-                    *state.device.write().unwrap() = p_device.as_ref().copied();
-                    // TODO: time to fetch instance function pointers if needed
+                    let device = transmute(*p_device);
+                    *state.vk_device.write().unwrap() = Some(device);
+
+                    *state.device.write().unwrap() = Some(ash::Device::load(
+                        &vk::InstanceFnV1_0 {
+                            get_device_proc_addr: transmute(get_device_proc_addr),
+                            destroy_instance: transmute(1u64), // Rust function pointer must be
+                            // non-null :shrug:
+                            enumerate_physical_devices: transmute(1u64),
+                            get_physical_device_features: transmute(1u64),
+                            get_physical_device_format_properties: transmute(1u64),
+                            get_physical_device_image_format_properties: transmute(1u64),
+                            get_physical_device_properties: transmute(1u64),
+                            get_physical_device_queue_family_properties: transmute(1u64),
+                            get_physical_device_memory_properties: transmute(1u64),
+                            create_device: transmute(1u64),
+                            enumerate_device_extension_properties: transmute(1u64),
+                            enumerate_device_layer_properties: transmute(1u64),
+                            get_physical_device_sparse_image_format_properties: transmute(1u64),
+                        },
+                        device,
+                    ));
                 }
 
                 return res;

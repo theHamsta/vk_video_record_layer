@@ -7,10 +7,12 @@ use regex::Regex;
 
 // TODO: either do object wrapping or hash map dispatch. Until then there can only be a single
 // instance/device
+// or better: https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_EXT_private_data.html (in core vk1.3)
 #[derive(Default)]
 pub struct State {
-    pub instance: RwLock<Option<vk::Instance>>,
-    pub device: RwLock<Option<vk::Device>>,
+    pub instance: RwLock<Option<ash::Instance>>,
+    pub device: RwLock<Option<ash::Device>>,
+    pub vk_device: RwLock<Option<vk::Device>>,
     pub instance_get_fn: RwLock<Option<vk::PFN_vkGetInstanceProcAddr>>,
     pub device_get_fn: RwLock<Option<vk::PFN_vkGetDeviceProcAddr>>,
     pub settings: Settings,
