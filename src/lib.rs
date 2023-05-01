@@ -182,7 +182,7 @@ pub extern "system" fn record_vk_create_device(
 
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
 
-                let mut create_info = *p_create_info;
+                let  create_info = *p_create_info;
                 const REQUIRED_EXTENSIONS: [&'static CStr; 5] = unsafe {
                     [
                         CStr::from_bytes_with_nul_unchecked(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME),
@@ -216,8 +216,7 @@ pub extern "system" fn record_vk_create_device(
 
                 info!("Enabled extensions after layer: {:?}", extensions);
 
-                create_info.enabled_extension_count = extensions.len() as u32;
-                create_info.pp_enabled_extension_names = extensions.as_ptr();
+                create_info.enabled_extension_names(&extensions);
 
                 // will we get arrested when using this without vk1.1,vk1.2 instance fns, because
                 // we were too lazy to patch instance create info?
@@ -308,9 +307,8 @@ pub extern "system" fn record_vk_create_device(
                 let res = real_create_device(physical_device, &create_info, p_allocator, p_device);
                 if res == vk::Result::SUCCESS {
                     let device = transmute(*p_device);
-                    *state.vk_device.write().unwrap() = Some(device);
 
-                    *state.device.write().unwrap() = Some(ash::Device::load(
+                    let device = ash::Device::load(
                         &vk::InstanceFnV1_0 {
                             get_device_proc_addr: transmute(get_device_proc_addr),
                             destroy_instance: transmute(1u64), // Rust function pointer must be
@@ -328,10 +326,15 @@ pub extern "system" fn record_vk_create_device(
                             get_physical_device_sparse_image_format_properties: transmute(1u64),
                         },
                         device,
-                    ));
+                    );
+                    *state.compute_queue.write().unwrap() =
+                        Some(device.get_device_queue(compute_idx as u32, 0));
+                    *state.encode_queue.write().unwrap() =
+                        Some(device.get_device_queue(encode_idx as u32, 0));
+                    *state.decode_queue.write().unwrap() =
+                        Some(device.get_device_queue(decode_idx as u32, 0));
+                    *state.device.write().unwrap() = Some(device);
                 }
-
-                return res;
             }
         }
     }

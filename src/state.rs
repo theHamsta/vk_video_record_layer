@@ -12,10 +12,12 @@ use regex::Regex;
 pub struct State {
     pub instance: RwLock<Option<ash::Instance>>,
     pub device: RwLock<Option<ash::Device>>,
-    pub vk_device: RwLock<Option<vk::Device>>,
     pub instance_get_fn: RwLock<Option<vk::PFN_vkGetInstanceProcAddr>>,
     pub device_get_fn: RwLock<Option<vk::PFN_vkGetDeviceProcAddr>>,
     pub settings: Settings,
+    pub compute_queue: RwLock<Option<vk::Queue>>,
+    pub encode_queue: RwLock<Option<vk::Queue>>,
+    pub decode_queue: RwLock<Option<vk::Queue>>,
 }
 
 #[derive(Debug, Eq, PartialEq, Default)]
