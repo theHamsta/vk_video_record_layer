@@ -100,6 +100,9 @@ pub extern "system" fn record_vk_get_instance_proc_addr(
 ) -> vk::PFN_vkVoidFunction {
     debug!("record_vk_get_instance_proc_addr");
     unsafe {
+        if instance.is_null() {
+            return None;
+        }
         let instance: vk::Instance = vk::Handle::from_raw(instance as u64);
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
         debug!("{instance:?} {str_fn_name:?}");
@@ -126,6 +129,9 @@ pub extern "system" fn record_vk_get_device_proc_addr(
 ) -> vk::PFN_vkVoidFunction {
     debug!("record_vk_get_device_proc_addr");
     unsafe {
+        if device.is_null() {
+            return None;
+        }
         let device: vk::Device = vk::Handle::from_raw(device as u64);
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
         debug!("{device:?} {str_fn_name:?}");
@@ -182,7 +188,7 @@ pub extern "system" fn record_vk_create_device(
 
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
 
-                let  create_info = *p_create_info;
+                let create_info = *p_create_info;
                 const REQUIRED_EXTENSIONS: [&'static CStr; 5] = unsafe {
                     [
                         CStr::from_bytes_with_nul_unchecked(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME),
@@ -213,8 +219,6 @@ pub extern "system" fn record_vk_create_device(
                 info!("Enabled extensions after layer: {:?}", extensions);
                 let extensions: Vec<_> =
                     extensions.iter().map(|s| s.as_ptr() as *const i8).collect();
-
-                info!("Enabled extensions after layer: {:?}", extensions);
 
                 create_info.enabled_extension_names(&extensions);
 
@@ -334,6 +338,7 @@ pub extern "system" fn record_vk_create_device(
                     *state.decode_queue.write().unwrap() =
                         Some(device.get_device_queue(decode_idx as u32, 0));
                     *state.device.write().unwrap() = Some(device);
+                    return vk::Result::SUCCESS;
                 }
             }
         }
