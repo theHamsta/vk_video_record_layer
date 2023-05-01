@@ -16,6 +16,7 @@ use std::{
 use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
 
 mod state;
+mod settings;
 mod vk_beta;
 mod vk_layer;
 
