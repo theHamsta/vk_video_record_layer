@@ -1,8 +1,14 @@
+use crate::vk_beta::{
+    VK_EXT_VIDEO_ENCODE_H264_EXTENSION_NAME, VK_KHR_VIDEO_DECODE_H264_EXTENSION_NAME,
+    VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME, VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
+    VK_KHR_VIDEO_QUEUE_EXTENSION_NAME,
+};
 use crate::vk_layer::VkLayerFunction;
 use ash::vk;
-use log::debug;
+use log::{debug, error, info};
 use state::get_state;
 use std::{
+    collections::HashSet,
     ffi::{c_void, CStr},
     mem::transmute,
     ptr::null_mut,
@@ -10,6 +16,7 @@ use std::{
 use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
 
 mod state;
+mod vk_beta;
 mod vk_layer;
 
 unsafe fn ptr_chain_get_next<SRC, DST>(
@@ -18,7 +25,7 @@ unsafe fn ptr_chain_get_next<SRC, DST>(
 ) -> Option<*mut DST> {
     unsafe {
         let iter = {
-            // inlined (by rust-analyzer) private ptr_chain_iter from ash
+            // inlined (by rust-analyzer): private ptr_chain_iter from ash
             let ptr = <*const SRC>::cast::<vk::BaseOutStructure>(start_struct);
             (0..).scan(ptr, |p_ptr, _| {
                 if p_ptr.is_null() {
@@ -164,6 +171,7 @@ pub extern "system" fn record_vk_create_device(
                     transmute((*layer_info.u.pLayerInfo).pfnNextGetDeviceProcAddr);
                 *state.device_get_fn.write().unwrap() = get_device_proc_addr;
                 let lock = state.instance.read().unwrap();
+                let instance = lock.as_ref().unwrap();
                 let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
 
                 let Some(real_create_device)  = get_instance_proc_addr
@@ -174,8 +182,130 @@ pub extern "system" fn record_vk_create_device(
 
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
 
+                let mut create_info = *p_create_info;
+                const REQUIRED_EXTENSIONS: [&'static CStr; 5] = unsafe {
+                    [
+                        CStr::from_bytes_with_nul_unchecked(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME),
+                        CStr::from_bytes_with_nul_unchecked(
+                            VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME,
+                        ),
+                        CStr::from_bytes_with_nul_unchecked(
+                            VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
+                        ),
+                        CStr::from_bytes_with_nul_unchecked(
+                            VK_KHR_VIDEO_DECODE_H264_EXTENSION_NAME,
+                        ),
+                        CStr::from_bytes_with_nul_unchecked(
+                            VK_EXT_VIDEO_ENCODE_H264_EXTENSION_NAME,
+                        ),
+                    ]
+                };
+
+                let mut extensions: HashSet<&CStr> = (0isize
+                    ..create_info.enabled_extension_count as isize)
+                    .map(|i| CStr::from_ptr((*create_info.pp_enabled_extension_names).offset(i)))
+                    .collect();
+                info!("Enabled extensions: {:?}", extensions);
+                // TODO check whether they are supported
+                for e in REQUIRED_EXTENSIONS.iter() {
+                    extensions.insert(e);
+                }
+                info!("Enabled extensions after layer: {:?}", extensions);
+                let extensions: Vec<_> =
+                    extensions.iter().map(|s| s.as_ptr() as *const i8).collect();
+
+                info!("Enabled extensions after layer: {:?}", extensions);
+
+                create_info.enabled_extension_count = extensions.len() as u32;
+                create_info.pp_enabled_extension_names = extensions.as_ptr();
+
+                // will we get arrested when using this without vk1.1,vk1.2 instance fns, because
+                // we were too lazy to patch instance create info?
+                let mut queue_props = Vec::new();
+                queue_props.resize(
+                    instance.get_physical_device_queue_family_properties2_len(physical_device),
+                    vk::QueueFamilyProperties2::default(),
+                );
+                instance.get_physical_device_queue_family_properties2(
+                    physical_device,
+                    &mut queue_props,
+                );
+
+                let mut device_queues: Vec<vk::DeviceQueueCreateInfo> = (0isize
+                    ..create_info.queue_create_info_count as isize)
+                    .map(|i| *create_info.p_queue_create_infos.offset(i))
+                    .collect();
+
+                let Some(compute_idx) = queue_props.iter().position(|prop| {
+                    prop.queue_family_properties
+                        .queue_flags
+                        .contains(vk::QueueFlags::COMPUTE)
+                }) else {
+                    error!("Device doesn't support compute");
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                };
+                let Some(encode_idx) = queue_props.iter().position(|prop| {
+                    prop.queue_family_properties
+                        .queue_flags
+                        .contains(vk::QueueFlags::VIDEO_ENCODE_KHR)
+                }) else {
+                    error!("Device doesn't support encode");
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                };
+                let Some(decode_idx) = queue_props.iter().position(|prop| {
+                    error!("Device doesn't support decode");
+                    prop.queue_family_properties
+                        .queue_flags
+                        .contains(vk::QueueFlags::VIDEO_DECODE_KHR)
+                }) else {
+                    error!("Device doesn't support decode");
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                };
+
+                let compute_queue = device_queues
+                    .iter()
+                    .find(|q| q.queue_family_index as usize == compute_idx);
+                if !compute_queue.is_some() {
+                    info!(
+                        "App didn't request a queue with compute bit! So we're doing it right now"
+                    );
+                    device_queues.push(
+                        vk::DeviceQueueCreateInfo::default()
+                            .queue_family_index(compute_idx as u32)
+                            .queue_priorities(&[1.0]),
+                    );
+                }
+                let encode_queue = device_queues
+                    .iter()
+                    .find(|q| q.queue_family_index as usize == compute_idx);
+                if !encode_queue.is_some() {
+                    error!("App already requested a queue with encode bit!");
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                }
+
+                let decode_queue = device_queues
+                    .iter()
+                    .find(|q| q.queue_family_index as usize == compute_idx);
+                if !decode_queue.is_some() {
+                    error!("App already requested a queue with decode bit!");
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                }
+
+                device_queues.push(
+                    vk::DeviceQueueCreateInfo::default()
+                        .queue_family_index(encode_idx as u32)
+                        .queue_priorities(&[1.0]),
+                );
+                device_queues.push(
+                    vk::DeviceQueueCreateInfo::default()
+                        .queue_family_index(decode_idx as u32)
+                        .queue_priorities(&[1.0]),
+                );
+                create_info.queue_create_infos(&device_queues);
+                info!("{create_info:?}");
+
                 // TODO: patch application info to support vk video
-                let res = real_create_device(physical_device, p_create_info, p_allocator, p_device);
+                let res = real_create_device(physical_device, &create_info, p_allocator, p_device);
                 if res == vk::Result::SUCCESS {
                     let device = transmute(*p_device);
                     *state.vk_device.write().unwrap() = Some(device);
@@ -213,7 +343,7 @@ pub extern "system" fn record_vk_create_device(
 pub extern "system" fn record_vk_negotiate_loader_layer_interface_version(
     interface: *mut VkNegotiateLayerInterface,
 ) -> vk::Result {
-    pretty_env_logger::init();
+    let _ = pretty_env_logger::try_init();
     debug!("record_vk_negotiate_loader_layer_interface_version");
     unsafe {
         if let Some(interface) = interface.as_mut() {
