@@ -69,12 +69,18 @@ impl State {
             .max_active_reference_pictures(0)
             .std_header_version(&header_version);
 
-        profile.push_next(
-            &mut vk::VideoEncodeUsageInfoKHR::default()
-                .video_usage_hints(vk::VideoEncodeUsageFlagsKHR::RECORDING)
-                .video_content_hints(vk::VideoEncodeContentFlagsKHR::RENDERED)
-                .tuning_mode(vk::VideoEncodeTuningModeKHR::HIGH_QUALITY),
-        );
+        let mut encode_usage = vk::VideoEncodeUsageInfoKHR::default()
+            .video_usage_hints(vk::VideoEncodeUsageFlagsKHR::RECORDING)
+            .video_content_hints(vk::VideoEncodeContentFlagsKHR::RENDERED)
+            .tuning_mode(vk::VideoEncodeTuningModeKHR::HIGH_QUALITY);
+        profile.push_next(&mut encode_usage);
+        let mut h264_encode_profile = vk::VideoDecodeH264ProfileInfoKHR::default();
+        let mut h265_encode_profile = vk::VideoDecodeH264ProfileInfoKHR::default();
+        profile.push_next(match self.settings.codec {
+            crate::settings::Codec::H264 => &mut h264_encode_profile,
+            crate::settings::Codec::H265 => &mut h265_encode_profile,
+            crate::settings::Codec::AV1 => todo!(),
+        });
         info.video_profile(&profile);
     }
 
@@ -110,10 +116,9 @@ impl State {
             .max_active_reference_pictures(0)
             .std_header_version(&header_version);
 
-        profile.push_next(
-            &mut vk::VideoDecodeUsageInfoKHR::default()
-                .video_usage_hints(vk::VideoDecodeUsageFlagsKHR::STREAMING),
-        );
+        let mut decode_usage = vk::VideoDecodeUsageInfoKHR::default()
+            .video_usage_hints(vk::VideoDecodeUsageFlagsKHR::STREAMING);
+        profile.push_next(&mut decode_usage);
         info.video_profile(&profile);
     }
 }
