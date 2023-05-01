@@ -1,7 +1,11 @@
 use crate::vk_beta::{
-    VK_EXT_VIDEO_ENCODE_H264_EXTENSION_NAME, VK_KHR_VIDEO_DECODE_H264_EXTENSION_NAME,
-    VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME, VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
+    VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME,
+    VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
+    //VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
     VK_KHR_VIDEO_QUEUE_EXTENSION_NAME,
+    VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
+    VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
+    //VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
 };
 use crate::vk_layer::VkLayerFunction;
 use ash::vk;
@@ -15,8 +19,8 @@ use std::{
 };
 use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
 
-mod state;
 mod settings;
+mod state;
 mod vk_beta;
 mod vk_layer;
 
@@ -200,10 +204,10 @@ pub extern "system" fn record_vk_create_device(
                             VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
                         ),
                         CStr::from_bytes_with_nul_unchecked(
-                            VK_KHR_VIDEO_DECODE_H264_EXTENSION_NAME,
+                            VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
                         ),
                         CStr::from_bytes_with_nul_unchecked(
-                            VK_EXT_VIDEO_ENCODE_H264_EXTENSION_NAME,
+                            VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
                         ),
                     ]
                 };
@@ -339,6 +343,9 @@ pub extern "system" fn record_vk_create_device(
                     *state.decode_queue.write().unwrap() =
                         Some(device.get_device_queue(decode_idx as u32, 0));
                     *state.device.write().unwrap() = Some(device);
+
+                    //state.create_encode_session();
+                    //state.create_decode_session();
                     return vk::Result::SUCCESS;
                 }
             }
