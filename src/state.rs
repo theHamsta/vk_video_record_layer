@@ -120,5 +120,13 @@ impl State {
             .video_usage_hints(vk::VideoDecodeUsageFlagsKHR::STREAMING);
         profile.push_next(&mut decode_usage);
         info.video_profile(&profile);
+        let mut h264_decode_profile = vk::VideoDecodeH264ProfileInfoKHR::default();
+        let mut h265_decode_profile = vk::VideoDecodeH264ProfileInfoKHR::default();
+        profile.push_next(match self.settings.codec {
+            crate::settings::Codec::H264 => &mut h264_decode_profile,
+            crate::settings::Codec::H265 => &mut h265_decode_profile,
+            crate::settings::Codec::AV1 => todo!(),
+        });
+        info.video_profile(&profile);
     }
 }
