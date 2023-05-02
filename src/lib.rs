@@ -1,3 +1,6 @@
+use crate::video_session::{
+    record_vk_create_swapchain, record_vk_destroy_swapchain, record_vk_queue_present,
+};
 use crate::vk_beta::{
     VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME,
     VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
@@ -56,7 +59,7 @@ pub extern "system" fn record_vk_create_instance(
     debug!("record_vk_create_instance");
     unsafe {
         let layer_info: Option<*mut vk_layer::VkLayerInstanceCreateInfo> =
-            ptr_chain_get_next(p_create_info.as_ref().unwrap(), |&b| -> bool {
+            ptr_chain_get_next(&p_create_info, |&b| -> bool {
                 (*b).s_type == vk::StructureType::LOADER_INSTANCE_CREATE_INFO
                     && (*b.cast::<vk_layer::VkLayerInstanceCreateInfo>()).function
                         == VkLayerFunction::VK_LAYER_LINK_INFO
@@ -142,6 +145,9 @@ pub extern "system" fn record_vk_get_device_proc_addr(
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
         debug!("{device:?} {str_fn_name:?}");
         match str_fn_name {
+            "vkCreateSwapchainKHR" => Some(transmute(record_vk_create_swapchain as *mut c_void)),
+            "vkDestroySwapchainKHR" => Some(transmute(record_vk_destroy_swapchain as *mut c_void)),
+            "vkQueuePresentKHR" => Some(transmute(record_vk_queue_present as *mut c_void)),
             _ => {
                 let state = get_state();
                 let get_fn = state.device_get_fn.read().unwrap();
@@ -166,7 +172,7 @@ pub extern "system" fn record_vk_create_device(
 
     unsafe {
         let layer_info: Option<*mut vk_layer::VkLayerDeviceCreateInfo> =
-            ptr_chain_get_next(p_create_info.as_ref().unwrap(), |&b| -> bool {
+            ptr_chain_get_next(&p_create_info, |&b| -> bool {
                 (*b).s_type == vk::StructureType::LOADER_DEVICE_CREATE_INFO
                     && (*b.cast::<vk_layer::VkLayerDeviceCreateInfo>()).function
                         == VkLayerFunction::VK_LAYER_LINK_INFO

@@ -3,7 +3,7 @@ use std::sync::RwLock;
 use ash::vk;
 use once_cell::sync::Lazy;
 
-use {Codec, Settings};
+use crate::settings::{Codec, Settings};
 
 use crate::vk_beta::{
     VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
@@ -19,6 +19,7 @@ use crate::vk_beta::{
 pub struct State {
     pub instance: RwLock<Option<ash::Instance>>,
     pub device: RwLock<Option<ash::Device>>,
+    pub swapchain_fn: RwLock<Option<ash::extensions::khr::Swapchain>>,
     pub instance_get_fn: RwLock<Option<vk::PFN_vkGetInstanceProcAddr>>,
     pub device_get_fn: RwLock<Option<vk::PFN_vkGetDeviceProcAddr>>,
     pub settings: Settings,

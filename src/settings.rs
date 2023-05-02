@@ -3,14 +3,14 @@ use std::{fmt::Display, path::PathBuf};
 use log::{debug, error, info};
 use regex::Regex;
 
-#[derive(Debug, Eq, PartialEq, Default)]
+#[derive(Debug, Eq, PartialEq, Default, Copy, Clone)]
 pub enum Codec {
     #[default]
     H264,
     H265,
     AV1,
 }
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Settings {
     pub codec: Codec,
     pub output_file: PathBuf,
