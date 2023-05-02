@@ -318,6 +318,35 @@ pub extern "system" fn record_vk_create_device(
                 create_info.queue_create_infos(&device_queues);
                 info!("{create_info:?}");
 
+                let mut features11 = vk::PhysicalDeviceVulkan11Features::default();
+                let mut features12 = vk::PhysicalDeviceVulkan12Features::default();
+                //.buffer_device_address(true)
+                //.vulkan_memory_model(true);
+                let mut features13 =
+                    vk::PhysicalDeviceVulkan13Features::default().private_data(true);
+
+                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                    (*(*c)).s_type == features11.s_type
+                })
+                .is_some()
+                {
+                    create_info.push_next(&mut features11);
+                }
+                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                    (*(*c)).s_type == features12.s_type
+                })
+                .is_some()
+                {
+                    create_info.push_next(&mut features12);
+                }
+                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                    (*(*c)).s_type == features13.s_type
+                })
+                .is_some()
+                {
+                    create_info.push_next(&mut features13);
+                }
+
                 // TODO: patch application info to support vk video
                 let res = real_create_device(physical_device, &create_info, p_allocator, p_device);
                 if res == vk::Result::SUCCESS {
@@ -356,6 +385,15 @@ pub extern "system" fn record_vk_create_device(
                         ))
                     });
                     *state.swapchain_fn.write().unwrap() = Some(swapchain_fn);
+                    let Ok(slot) = device.create_private_data_slot(
+                        &vk::PrivateDataSlotCreateInfo::default(),
+                        p_allocator.as_ref(),
+                    ) else {
+                        error!("Failed to allocate private data");
+                        return vk::Result::ERROR_INITIALIZATION_FAILED;
+                    };
+                    *state.private_slot.write().unwrap() = slot;
+
                     *state.device.write().unwrap() = Some(device);
 
                     return vk::Result::SUCCESS;

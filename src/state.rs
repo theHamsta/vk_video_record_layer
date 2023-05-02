@@ -26,6 +26,7 @@ pub struct State {
     pub compute_queue: RwLock<Option<vk::Queue>>,
     pub encode_queue: RwLock<Option<vk::Queue>>,
     pub decode_queue: RwLock<Option<vk::Queue>>,
+    pub private_slot: RwLock<vk::PrivateDataSlot>,
 }
 
 pub fn get_state() -> &'static State {

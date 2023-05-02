@@ -5,7 +5,6 @@ use crate::state::get_state;
 struct SwapChainData {
     resolution: vk::Extent2D,
     swapchain_format: vk::Format,
-    swapchain_images: u32,
     video_format: vk::Format,
     encode_session: vk::VideoSessionKHR,
     decode_session: vk::VideoSessionKHR,
@@ -19,13 +18,34 @@ pub unsafe fn record_vk_create_swapchain(
     p_allocator: *const vk::AllocationCallbacks,
     p_swapchain: *mut vk::SwapchainKHR,
 ) -> vk::Result {
-    (get_state()
+    let result = (get_state()
         .swapchain_fn
         .read()
         .unwrap()
         .as_ref()
         .unwrap()
-        .create_swapchain_khr)(device, p_create_info, p_allocator, p_swapchain)
+        .create_swapchain_khr)(device, p_create_info, p_allocator, p_swapchain);
+    if result == vk::Result::SUCCESS {
+        let slot = get_state().private_slot.read().unwrap();
+        let lock = get_state().device.read().unwrap();
+        let device = lock.as_ref().unwrap();
+        let create_info = p_create_info.as_ref().unwrap();
+        /*let result = */
+        device
+            .set_private_data(
+                *p_swapchain,
+                *slot,
+                Box::leak(Box::new(|| SwapChainData {
+                    resolution: create_info.image_extent,
+                    swapchain_format: create_info.image_format,
+                    video_format: vk::Format::G8_B8R8_2PLANE_420_UNORM,
+                    encode_session: vk::VideoSessionKHR::null(),
+                    decode_session: vk::VideoSessionKHR::null(),
+                })) as *const _ as u64,
+            )
+            .unwrap(); // TODO
+    }
+    result
 }
 
 pub unsafe extern "system" fn record_vk_destroy_swapchain(
