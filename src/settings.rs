@@ -13,7 +13,7 @@ pub enum Codec {
 #[derive(Debug, Default, Clone)]
 pub struct Settings {
     pub codec: Codec,
-    pub output_file: PathBuf,
+    pub output_folder: PathBuf,
 }
 impl Settings {
     pub(crate) fn new_from_env() -> Self {
@@ -32,7 +32,7 @@ impl Settings {
                             &cap[1], &cap[2]
                         );
                         match &cap[1] {
-                            "video_filename" => settings.output_file = cap[2].into(),
+                            "video_output_folder" => settings.output_folder = cap[2].into(),
                             "codec" => settings.codec = cap[2].into(),
                             _ => error!("Could not parse unknown key {}", &cap[1]),
                         }
@@ -42,8 +42,8 @@ impl Settings {
             Err(err) => error!("Failed to read settings file {settings_file:?}: {err}"),
         }
 
-        if let Ok(output_file) = std::env::var("VK_VIDEO_RECORD_OUTPUT_FILE") {
-            settings.output_file = output_file.into();
+        if let Ok(output_file) = std::env::var("VK_VIDEO_RECORD_OUTPUT_FOLDER") {
+            settings.output_folder = output_file.into();
         }
         if let Ok(codec) = std::env::var("VK_VIDEO_RECORD_CODEC") {
             settings.codec = codec.into();

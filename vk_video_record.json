@@ -35,12 +35,11 @@
 		"features": {
 			"settings": [
 				{
-					"key": "video_filename",
-					"env": "VK_VIDEO_RECORD_OUTPUT_FILE",
-					"label": "Output video file",
+					"key": "video_output_folder",
+					"env": "VK_VIDEO_RECORD_OUTPUT_FOLDER",
+					"label": "Output folder for video files",
 					"description": "Specifies the file to record screen content to",
-					"type": "SAVE_FILE",
-					"filter": "*.h264",
+					"type": "SAVE_FOLDER",
 					"default": ""
 				},
 				{
