@@ -21,12 +21,13 @@ use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
 
 mod settings;
 mod state;
+mod video_session;
 mod vk_beta;
 mod vk_layer;
 
 unsafe fn ptr_chain_get_next<SRC, DST>(
-    start_struct: *const SRC,
-    predicate: fn(&*const vk::BaseOutStructure) -> bool,
+    start_struct: &SRC,
+    predicate: impl Fn(&*const vk::BaseOutStructure) -> bool,
 ) -> Option<*mut DST> {
     unsafe {
         let iter = {
@@ -55,7 +56,7 @@ pub extern "system" fn record_vk_create_instance(
     debug!("record_vk_create_instance");
     unsafe {
         let layer_info: Option<*mut vk_layer::VkLayerInstanceCreateInfo> =
-            ptr_chain_get_next(p_create_info, |&b| -> bool {
+            ptr_chain_get_next(p_create_info.as_ref().unwrap(), |&b| -> bool {
                 (*b).s_type == vk::StructureType::LOADER_INSTANCE_CREATE_INFO
                     && (*b.cast::<vk_layer::VkLayerInstanceCreateInfo>()).function
                         == VkLayerFunction::VK_LAYER_LINK_INFO
@@ -165,7 +166,7 @@ pub extern "system" fn record_vk_create_device(
 
     unsafe {
         let layer_info: Option<*mut vk_layer::VkLayerDeviceCreateInfo> =
-            ptr_chain_get_next(p_create_info, |&b| -> bool {
+            ptr_chain_get_next(p_create_info.as_ref().unwrap(), |&b| -> bool {
                 (*b).s_type == vk::StructureType::LOADER_DEVICE_CREATE_INFO
                     && (*b.cast::<vk_layer::VkLayerDeviceCreateInfo>()).function
                         == VkLayerFunction::VK_LAYER_LINK_INFO
@@ -261,7 +262,6 @@ pub extern "system" fn record_vk_create_device(
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 };
                 let Some(decode_idx) = queue_props.iter().position(|prop| {
-                    error!("Device doesn't support decode");
                     prop.queue_family_properties
                         .queue_flags
                         .contains(vk::QueueFlags::VIDEO_DECODE_KHR)
@@ -312,37 +312,6 @@ pub extern "system" fn record_vk_create_device(
                 create_info.queue_create_infos(&device_queues);
                 info!("{create_info:?}");
 
-                //let mut features11 = vk::PhysicalDeviceVulkan11Features::default();
-                //let mut features12 = vk::PhysicalDeviceVulkan12Features::default();
-                ////.buffer_device_address(true)
-                ////.vulkan_memory_model(true);
-                //let mut features13 = vk::PhysicalDeviceVulkan13Features::default();
-
-                ////if !ptr_chain_get_next::<_, vk::BaseOutStructure>(
-                    ////&create_info,
-                    ////|c| (*(*c)).s_type == features11.s_type,
-                ////)
-                ////.is_some()
-                ////{
-                    ////create_info.push_next(&mut features11);
-                ////}
-                ////if !ptr_chain_get_next::<_, vk::BaseOutStructure>(
-                    ////&create_info,
-                    ////|c| (*(*c)).s_type == features12.s_type,
-                ////)
-                ////.is_some()
-                ////{
-                    ////create_info.push_next(&mut features12);
-                ////}
-                ////if !ptr_chain_get_next::<_, vk::BaseOutStructure>(
-                    ////&create_info,
-                    ////|c| (*(*c)).s_type == features13.s_type,
-                ////)
-                ////.is_some()
-                ////{
-                    ////create_info.push_next(&mut features13);
-                ////}
-
                 // TODO: patch application info to support vk video
                 let res = real_create_device(physical_device, &create_info, p_allocator, p_device);
                 if res == vk::Result::SUCCESS {
@@ -375,8 +344,6 @@ pub extern "system" fn record_vk_create_device(
                         Some(device.get_device_queue(decode_idx as u32, 0));
                     *state.device.write().unwrap() = Some(device);
 
-                    //state.create_encode_session();
-                    //state.create_decode_session();
                     return vk::Result::SUCCESS;
                 }
             }
