@@ -394,6 +394,8 @@ pub extern "system" fn record_vk_create_device(
                     };
                     *state.private_slot.write().unwrap() = slot;
 
+                    *state.encode_queue_family_idx.write().unwrap() = encode_idx as u32;
+                    *state.decode_queue_family_idx.write().unwrap() = decode_idx as u32;
                     *state.device.write().unwrap() = Some(device);
 
                     return vk::Result::SUCCESS;
