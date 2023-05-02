@@ -25,7 +25,6 @@ pub unsafe fn record_vk_create_swapchain(
         .unwrap()
         .as_ref()
         .unwrap()
-        .fp()
         .create_swapchain_khr)(device, p_create_info, p_allocator, p_swapchain)
 }
 
@@ -40,7 +39,6 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
         .unwrap()
         .as_ref()
         .unwrap()
-        .fp()
         .destroy_swapchain_khr)(device, swapchain, p_allocator)
 }
 
@@ -54,6 +52,5 @@ pub unsafe extern "system" fn record_vk_queue_present(
         .unwrap()
         .as_ref()
         .unwrap()
-        .fp()
         .queue_present_khr)(queue, p_present_info)
 }

@@ -29,7 +29,7 @@ mod vk_beta;
 mod vk_layer;
 
 unsafe fn ptr_chain_get_next<SRC, DST>(
-    start_struct: &SRC,
+    start_struct: *const SRC,
     predicate: impl Fn(&*const vk::BaseOutStructure) -> bool,
 ) -> Option<*mut DST> {
     unsafe {
@@ -59,7 +59,7 @@ pub extern "system" fn record_vk_create_instance(
     debug!("record_vk_create_instance");
     unsafe {
         let layer_info: Option<*mut vk_layer::VkLayerInstanceCreateInfo> =
-            ptr_chain_get_next(&p_create_info, |&b| -> bool {
+            ptr_chain_get_next(p_create_info, |&b| -> bool {
                 (*b).s_type == vk::StructureType::LOADER_INSTANCE_CREATE_INFO
                     && (*b.cast::<vk_layer::VkLayerInstanceCreateInfo>()).function
                         == VkLayerFunction::VK_LAYER_LINK_INFO
@@ -172,7 +172,7 @@ pub extern "system" fn record_vk_create_device(
 
     unsafe {
         let layer_info: Option<*mut vk_layer::VkLayerDeviceCreateInfo> =
-            ptr_chain_get_next(&p_create_info, |&b| -> bool {
+            ptr_chain_get_next(p_create_info, |&b| -> bool {
                 (*b).s_type == vk::StructureType::LOADER_DEVICE_CREATE_INFO
                     && (*b.cast::<vk_layer::VkLayerDeviceCreateInfo>()).function
                         == VkLayerFunction::VK_LAYER_LINK_INFO
@@ -348,6 +348,14 @@ pub extern "system" fn record_vk_create_device(
                         Some(device.get_device_queue(encode_idx as u32, 0));
                     *state.decode_queue.write().unwrap() =
                         Some(device.get_device_queue(decode_idx as u32, 0));
+
+                    let swapchain_fn = vk::KhrSwapchainFn::load(|name| {
+                        transmute((get_device_proc_addr.unwrap())(
+                            device.handle(),
+                            name.as_ptr() as *const _,
+                        ))
+                    });
+                    *state.swapchain_fn.write().unwrap() = Some(swapchain_fn);
                     *state.device.write().unwrap() = Some(device);
 
                     return vk::Result::SUCCESS;
