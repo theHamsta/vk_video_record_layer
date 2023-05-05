@@ -2,9 +2,8 @@ use std::mem::transmute;
 
 use ash::prelude::VkResult;
 use ash::vk;
-use log::{debug, info, trace, warn};
+use log::{info, trace, warn};
 
-use crate::record_vk_get_device_proc_addr;
 use crate::settings::Codec;
 
 use crate::state::get_state;
@@ -145,7 +144,7 @@ pub fn create_video_session(
             .extension_name(unsafe {
                 *(VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
             })
-            .spec_version(vk::make_api_version(0, 0, 9, 8)),
+            .spec_version(vk::make_api_version(0, 0, 9, 9)),
         (true, Codec::H265) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
                 *(VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
