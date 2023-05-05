@@ -82,6 +82,22 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
     swapchain: vk::SwapchainKHR,
     p_allocator: *const vk::AllocationCallbacks,
 ) {
+    let slot = get_state().private_slot.read().unwrap();
+    {
+        let lock = get_state().device.read().unwrap();
+        let device = lock.as_ref().unwrap();
+        let lock = get_state().video_queue_fn.read().unwrap();
+        let video_queue_fn = lock.as_ref().unwrap();
+        let swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
+            device.get_private_data(swapchain, *slot),
+        ));
+        if let Ok(session) = swapchain_data.decode_session {
+            (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
+        }
+        if let Ok(session) = swapchain_data.encode_session {
+            (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
+        }
+    }
     (get_state()
         .swapchain_fn
         .read()
