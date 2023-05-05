@@ -14,13 +14,18 @@ use crate::vk_beta::{
     VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
 };
 
+struct VideoSession {
+    session: vk::VideoSessionKHR,
+    memories: Vec<vk::DeviceMemory>,
+}
+
 struct SwapChainData {
     resolution: vk::Extent2D,
     video_max_extent: vk::Extent2D,
     swapchain_format: vk::Format,
     video_format: vk::Format,
-    encode_session: VkResult<vk::VideoSessionKHR>,
-    decode_session: VkResult<vk::VideoSessionKHR>,
+    encode_session: VkResult<VideoSession>,
+    decode_session: VkResult<VideoSession>,
 }
 
 impl SwapChainData {}
@@ -90,11 +95,17 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
         let swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
             device.get_private_data(swapchain, *slot),
         ));
-        if let Ok(session) = swapchain_data.decode_session {
+        if let Ok(VideoSession { session, memories }) = swapchain_data.decode_session {
             (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
+            for memory in memories {
+                device.free_memory(memory, p_allocator.as_ref());
+            }
         }
-        if let Ok(session) = swapchain_data.encode_session {
+        if let Ok(VideoSession { session, memories }) = swapchain_data.encode_session {
             (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
+            for memory in memories {
+                device.free_memory(memory, p_allocator.as_ref());
+            }
         }
     }
     (get_state()
@@ -119,12 +130,12 @@ pub unsafe extern "system" fn record_vk_queue_present(
         .queue_present_khr)(queue, p_present_info)
 }
 
-pub fn create_video_session(
+fn create_video_session(
     queue_family_idx: u32,
     max_coded_extent: vk::Extent2D,
     is_encode: bool,
     p_allocator: *const vk::AllocationCallbacks,
-) -> VkResult<vk::VideoSessionKHR> {
+) -> VkResult<VideoSession> {
     trace!("create_video_session");
     let state = get_state();
     let profile = vk::VideoProfileInfoKHR::default()
@@ -224,5 +235,34 @@ pub fn create_video_session(
         info!("Create decode video session {res:?}");
     }
 
-    res
+    res.and_then(|session| {
+        Ok(VideoSession {
+            session,
+            memories: {
+                unsafe {
+                    let mut requirements =
+                        vec![vk::VideoSessionMemoryRequirementsKHR::default(); 8];
+                    let mut len = requirements.len() as u32;
+                    let res = (video_queue_fn.get_video_session_memory_requirements_khr)(
+                        device.handle(),
+                        session,
+                        &mut len,
+                        requirements.as_mut_ptr(),
+                    );
+                    requirements.resize(len as usize, Default::default());
+                    if res != vk::Result::SUCCESS {
+                        (video_queue_fn.destroy_video_session_khr)(
+                            device.handle(),
+                            session,
+                            p_allocator,
+                        );
+                        return Err(res);
+                    }
+                    info!("{requirements:?}");
+                    //let membits = requirements.map(|r| r.memory_requirements.memory_requ).iter().reduce(|a,b| a.)
+                }
+                vec![]
+            },
+        })
+    })
 }
