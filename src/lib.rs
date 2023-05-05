@@ -8,6 +8,7 @@ use crate::vk_beta::{
     VK_KHR_VIDEO_QUEUE_EXTENSION_NAME,
     VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
     VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
+    VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
     //VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
 };
 use crate::vk_layer::VkLayerFunction;
@@ -80,6 +81,8 @@ pub extern "system" fn record_vk_create_instance(
                 else { return vk::Result::ERROR_INITIALIZATION_FAILED };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
+                (*(*p_create_info).p_application_info)
+                    .api_version(vk::make_api_version(0, 1, 3, 249));
 
                 let real_create_instance: vk::PFN_vkCreateInstance =
                     transmute(real_create_instance);
@@ -109,9 +112,9 @@ pub extern "system" fn record_vk_get_instance_proc_addr(
 ) -> vk::PFN_vkVoidFunction {
     debug!("record_vk_get_instance_proc_addr");
     unsafe {
-        if instance.is_null() {
-            return None;
-        }
+        //if instance.is_null() {
+        //return None;
+        //}
         let instance: vk::Instance = vk::Handle::from_raw(instance as u64);
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
         debug!("{instance:?} {str_fn_name:?}");
@@ -200,8 +203,7 @@ pub extern "system" fn record_vk_create_device(
 
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
 
-                let create_info = *p_create_info;
-                const REQUIRED_EXTENSIONS: [&'static CStr; 5] = unsafe {
+                const REQUIRED_EXTENSIONS: [&'static CStr; 6] = unsafe {
                     [
                         CStr::from_bytes_with_nul_unchecked(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME),
                         CStr::from_bytes_with_nul_unchecked(
@@ -216,12 +218,18 @@ pub extern "system" fn record_vk_create_device(
                         CStr::from_bytes_with_nul_unchecked(
                             VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
                         ),
+                        CStr::from_bytes_with_nul_unchecked(
+                            VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
+                        ),
                     ]
                 };
 
+                let create_info = p_create_info.cast_mut().as_mut().unwrap();
                 let mut extensions: HashSet<&CStr> = (0isize
-                    ..create_info.enabled_extension_count as isize)
-                    .map(|i| CStr::from_ptr((*create_info.pp_enabled_extension_names).offset(i)))
+                    ..(*p_create_info).enabled_extension_count as isize)
+                    .map(|i| {
+                        CStr::from_ptr((*(*p_create_info).pp_enabled_extension_names).offset(i))
+                    })
                     .collect();
                 info!("Enabled extensions: {:?}", extensions);
                 // TODO check whether they are supported
@@ -232,7 +240,9 @@ pub extern "system" fn record_vk_create_device(
                 let extensions: Vec<_> =
                     extensions.iter().map(|s| s.as_ptr() as *const i8).collect();
 
-                create_info.enabled_extension_names(&extensions);
+                //*p_create_info = (*p_create_info).enabled_extension_names(&extensions);
+                create_info.enabled_extension_count = extensions.len() as u32;
+                create_info.pp_enabled_extension_names = extensions.as_ptr();
 
                 // will we get arrested when using this without vk1.1,vk1.2 instance fns, because
                 // we were too lazy to patch instance create info?
@@ -315,40 +325,47 @@ pub extern "system" fn record_vk_create_device(
                         .queue_family_index(decode_idx as u32)
                         .queue_priorities(&[1.0]),
                 );
-                create_info.queue_create_infos(&device_queues);
+                //create_info.queue_create_infos(&device_queues);
+                create_info.queue_create_info_count = device_queues.len() as u32;
+                create_info.p_queue_create_infos = device_queues.as_ptr();
+                //create_info.queue_create_infos(&device_queues);
                 info!("{create_info:?}");
 
-                let mut features11 = vk::PhysicalDeviceVulkan11Features::default();
+                let mut features11 =
+                    vk::PhysicalDeviceVulkan11Features::default().sampler_ycbcr_conversion(true);
                 let mut features12 = vk::PhysicalDeviceVulkan12Features::default();
                 //.buffer_device_address(true)
                 //.vulkan_memory_model(true);
-                let mut features13 =
-                    vk::PhysicalDeviceVulkan13Features::default().private_data(true);
+                let mut features13 = vk::PhysicalDeviceVulkan13Features::default()
+                    .private_data(true)
+                    .synchronization2(true);
 
-                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(create_info, |c| {
                     (*(*c)).s_type == features11.s_type
                 })
                 .is_some()
                 {
                     create_info.push_next(&mut features11);
                 }
-                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(create_info, |c| {
                     (*(*c)).s_type == features12.s_type
                 })
                 .is_some()
                 {
                     create_info.push_next(&mut features12);
                 }
-                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(create_info, |c| {
                     (*(*c)).s_type == features13.s_type
                 })
                 .is_some()
                 {
                     create_info.push_next(&mut features13);
                 }
+                debug_assert!(!create_info.p_next.is_null());
+                debug_assert!(!(*p_create_info).p_next.is_null());
 
                 // TODO: patch application info to support vk video
-                let res = real_create_device(physical_device, &create_info, p_allocator, p_device);
+                let res = real_create_device(physical_device, create_info, p_allocator, p_device);
                 if res == vk::Result::SUCCESS {
                     let device = transmute(*p_device);
 
@@ -378,6 +395,7 @@ pub extern "system" fn record_vk_create_device(
                     *state.decode_queue.write().unwrap() =
                         Some(device.get_device_queue(decode_idx as u32, 0));
 
+                    // Load extensions
                     let swapchain_fn = vk::KhrSwapchainFn::load(|name| {
                         transmute((get_device_proc_addr.unwrap())(
                             device.handle(),
@@ -385,6 +403,15 @@ pub extern "system" fn record_vk_create_device(
                         ))
                     });
                     *state.swapchain_fn.write().unwrap() = Some(swapchain_fn);
+
+                    let video_queue_fn = vk::KhrVideoQueueFn::load(|name| {
+                        transmute((get_device_proc_addr.unwrap())(
+                            device.handle(),
+                            name.as_ptr() as *const _,
+                        ))
+                    });
+                    *state.video_queue_fn.write().unwrap() = Some(video_queue_fn);
+
                     let Ok(slot) = device.create_private_data_slot(
                         &vk::PrivateDataSlotCreateInfo::default(),
                         p_allocator.as_ref(),

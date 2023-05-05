@@ -13,6 +13,7 @@ pub struct State {
     pub instance: RwLock<Option<ash::Instance>>,
     pub device: RwLock<Option<ash::Device>>,
     pub swapchain_fn: RwLock<Option<vk::KhrSwapchainFn>>,
+    pub video_queue_fn: RwLock<Option<vk::KhrVideoQueueFn>>,
     pub instance_get_fn: RwLock<Option<vk::PFN_vkGetInstanceProcAddr>>,
     pub device_get_fn: RwLock<Option<vk::PFN_vkGetDeviceProcAddr>>,
     pub settings: Settings,
