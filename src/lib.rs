@@ -112,9 +112,6 @@ pub extern "system" fn record_vk_get_instance_proc_addr(
 ) -> vk::PFN_vkVoidFunction {
     debug!("record_vk_get_instance_proc_addr");
     unsafe {
-        //if instance.is_null() {
-        //return None;
-        //}
         let instance: vk::Instance = vk::Handle::from_raw(instance as u64);
         let str_fn_name = CStr::from_ptr(fn_name).to_str().unwrap();
         debug!("{instance:?} {str_fn_name:?}");
