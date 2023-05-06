@@ -5,6 +5,7 @@ use ash::prelude::VkResult;
 use ash::vk;
 use log::{debug, info, trace, warn};
 
+use crate::dpb::Dpb;
 use crate::settings::Codec;
 
 use crate::state::get_state;
@@ -25,11 +26,10 @@ struct VideoSession {
 }
 
 struct SwapChainData {
-    resolution: vk::Extent2D,
+    dpb: VkResult<Dpb>,
     video_max_extent: vk::Extent2D,
     swapchain_format: vk::Format,
     //swapchain_color_space: vk::ColorSpaceKHR,
-    video_format: vk::Format,
     encode_session: VkResult<VideoSession>,
     decode_session: VkResult<VideoSession>,
     images: VkResult<Vec<vk::Image>>,
@@ -132,11 +132,17 @@ pub unsafe fn record_vk_create_swapchain(
                             Err(vk::Result::ERROR_INITIALIZATION_FAILED)
                         }
                     };
+                    let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
                     SwapChainData {
-                        resolution: create_info.image_extent,
                         video_max_extent: create_info.image_extent,
                         swapchain_format: create_info.image_format,
-                        video_format: vk::Format::G8_B8R8_2PLANE_420_UNORM,
+                        dpb: Dpb::new(
+                            device,
+                            video_format,
+                            create_info.image_extent,
+                            16,
+                            p_allocator.as_ref(),
+                        ),
                         encode_session: create_video_session(
                             *get_state().encode_queue_family_idx.read().unwrap(),
                             create_info.image_extent,
@@ -181,6 +187,10 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
                 device.destroy_image_view(view, p_allocator.as_ref());
             }
         }
+        if let Ok(mut dpb) = swapchain_data.dpb {
+            dpb.destroy(device, p_allocator.as_ref());
+        }
+
         if let Ok(VideoSession {
             session,
             memories,
