@@ -383,9 +383,10 @@ fn create_video_session(
                         null_mut(),
                     );
 
-                    let mut requirements = Vec::with_capacity(len as usize);
+                    let mut requirements = Vec::new();
 
                     if res == vk::Result::SUCCESS {
+                        requirements.resize(len as usize, Default::default());
                         res = (video_queue_fn.get_video_session_memory_requirements_khr)(
                             device.handle(),
                             session,
