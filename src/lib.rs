@@ -1,3 +1,5 @@
+#![feature(iterator_try_collect)]
+
 use crate::video_session::{
     record_vk_create_swapchain, record_vk_destroy_swapchain, record_vk_queue_present,
 };

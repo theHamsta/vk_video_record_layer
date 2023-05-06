@@ -28,10 +28,12 @@ struct SwapChainData {
     resolution: vk::Extent2D,
     video_max_extent: vk::Extent2D,
     swapchain_format: vk::Format,
+    //swapchain_color_space: vk::ColorSpaceKHR,
     video_format: vk::Format,
     encode_session: VkResult<VideoSession>,
     decode_session: VkResult<VideoSession>,
     images: VkResult<Vec<vk::Image>>,
+    image_views: VkResult<Vec<vk::ImageView>>,
 }
 
 impl SwapChainData {}
@@ -55,29 +57,14 @@ pub unsafe fn record_vk_create_swapchain(
         let lock = get_state().device.read().unwrap();
         let device = lock.as_ref().unwrap();
         let create_info = p_create_info.as_ref().unwrap();
+        //let swapchain_color_space =
         /*let result = */
         device
             .set_private_data(
                 *p_swapchain,
                 *slot,
-                Box::leak(Box::new(SwapChainData {
-                    resolution: create_info.image_extent,
-                    video_max_extent: create_info.image_extent,
-                    swapchain_format: create_info.image_format,
-                    video_format: vk::Format::G8_B8R8_2PLANE_420_UNORM,
-                    encode_session: create_video_session(
-                        *get_state().encode_queue_family_idx.read().unwrap(),
-                        create_info.image_extent,
-                        true,
-                        p_allocator,
-                    ),
-                    decode_session: create_video_session(
-                        *get_state().decode_queue_family_idx.read().unwrap(),
-                        create_info.image_extent,
-                        false,
-                        p_allocator,
-                    ),
-                    images: {
+                Box::leak(Box::new({
+                    let images = {
                         let mut images = Vec::new();
                         let mut len = 0;
 
@@ -113,7 +100,58 @@ pub unsafe fn record_vk_create_swapchain(
                             images.as_mut_ptr(),
                         )
                         .result_with_success(images)
-                    },
+                    };
+                    let image_views = {
+                        if let Ok(images) = &images {
+                            images
+                                .iter()
+                                .map(|&i| {
+                                    device.create_image_view(
+                                        &vk::ImageViewCreateInfo::default()
+                                            .image(i)
+                                            .view_type(vk::ImageViewType::TYPE_2D)
+                                            .format(create_info.image_format)
+                                            .components(vk::ComponentMapping {
+                                                r: vk::ComponentSwizzle::R,
+                                                g: vk::ComponentSwizzle::G,
+                                                b: vk::ComponentSwizzle::B,
+                                                a: vk::ComponentSwizzle::A,
+                                            })
+                                            .subresource_range(vk::ImageSubresourceRange {
+                                                aspect_mask: vk::ImageAspectFlags::COLOR,
+                                                base_mip_level: 0,
+                                                level_count: 1,
+                                                base_array_layer: 0,
+                                                layer_count: 1,
+                                            }),
+                                        p_allocator.as_ref(),
+                                    )
+                                })
+                                .try_collect()
+                        } else {
+                            Err(vk::Result::ERROR_INITIALIZATION_FAILED)
+                        }
+                    };
+                    SwapChainData {
+                        resolution: create_info.image_extent,
+                        video_max_extent: create_info.image_extent,
+                        swapchain_format: create_info.image_format,
+                        video_format: vk::Format::G8_B8R8_2PLANE_420_UNORM,
+                        encode_session: create_video_session(
+                            *get_state().encode_queue_family_idx.read().unwrap(),
+                            create_info.image_extent,
+                            true,
+                            p_allocator,
+                        ),
+                        decode_session: create_video_session(
+                            *get_state().decode_queue_family_idx.read().unwrap(),
+                            create_info.image_extent,
+                            false,
+                            p_allocator,
+                        ),
+                        images,
+                        image_views,
+                    }
                 })) as *const _ as u64,
             )
             .unwrap(); // TODO
@@ -138,6 +176,11 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
         let swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
             device.get_private_data(swapchain, *slot),
         ));
+        if let Ok(views) = swapchain_data.image_views {
+            for view in views {
+                device.destroy_image_view(view, p_allocator.as_ref());
+            }
+        }
         if let Ok(VideoSession {
             session,
             memories,
