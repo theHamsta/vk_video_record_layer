@@ -283,17 +283,20 @@ fn create_video_session(
                                 req.memory_requirements.memory_type_bits.trailing_zeros(),
                             );
                         let memory = device.allocate_memory(&info, p_allocator.as_ref());
-                        if let Ok(memory) = memory {
-                            memories.push(memory);
-                            bind_infos.push(
-                                vk::BindVideoSessionMemoryInfoKHR::default()
-                                    .memory_bind_index(req.memory_bind_index)
-                                    .memory(memory)
-                                    .memory_size(req.memory_requirements.size),
-                            );
-                        } else {
-                            res = memory.unwrap_err();
-                            break;
+                        match memory {
+                            Ok(memory) => {
+                                memories.push(memory);
+                                bind_infos.push(
+                                    vk::BindVideoSessionMemoryInfoKHR::default()
+                                        .memory_bind_index(req.memory_bind_index)
+                                        .memory(memory)
+                                        .memory_size(req.memory_requirements.size),
+                                );
+                            }
+                            Err(err) => {
+                                res = err;
+                                break;
+                            }
                         }
                     }
 
