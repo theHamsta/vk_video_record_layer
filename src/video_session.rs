@@ -9,6 +9,9 @@ use crate::settings::Codec;
 
 use crate::state::get_state;
 use crate::vk_beta::{
+    /*StdVideoH264PictureParameterSet, StdVideoH264SequenceParameterSet, VkStructureType,
+    VkVideoEncodeH264SessionParametersAddInfoEXT, VkVideoEncodeH264SessionParametersCreateInfoEXT,
+    VkVideoSessionParametersCreateInfoKHR,*/
     VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
     VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
     VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
@@ -18,6 +21,7 @@ use crate::vk_beta::{
 struct VideoSession {
     session: vk::VideoSessionKHR,
     memories: Vec<vk::DeviceMemory>,
+    parameters: Option<vk::VideoSessionParametersKHR>,
 }
 
 struct SwapChainData {
@@ -96,14 +100,38 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
         let swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
             device.get_private_data(swapchain, *slot),
         ));
-        if let Ok(VideoSession { session, memories }) = swapchain_data.decode_session {
+        if let Ok(VideoSession {
+            session,
+            memories,
+            parameters,
+        }) = swapchain_data.decode_session
+        {
             (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
+            if let Some(parameters) = parameters {
+                (video_queue_fn.destroy_video_session_parameters_khr)(
+                    device.handle(),
+                    parameters,
+                    p_allocator,
+                );
+            }
             for memory in memories {
                 device.free_memory(memory, p_allocator.as_ref());
             }
         }
-        if let Ok(VideoSession { session, memories }) = swapchain_data.encode_session {
+        if let Ok(VideoSession {
+            session,
+            memories,
+            parameters,
+        }) = swapchain_data.encode_session
+        {
             (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
+            if let Some(parameters) = parameters {
+                (video_queue_fn.destroy_video_session_parameters_khr)(
+                    device.handle(),
+                    parameters,
+                    p_allocator,
+                );
+            }
             for memory in memories {
                 device.free_memory(memory, p_allocator.as_ref());
             }
@@ -322,6 +350,80 @@ fn create_video_session(
                     }
                 }
                 memories
+            },
+            parameters: {
+                match (is_encode, state.settings.codec) {
+                    (true, Codec::H264) => {
+                        //let sps = vec![StdVideoH264SequenceParameterSet{
+                        //flags: crate::vk_beta::StdVideoH264SpsFlags::default(),
+                        //profile_idc: todo!(),
+                        //level_idc: todo!(),
+                        //chroma_format_idc: todo!(),
+                        //seq_parameter_set_id: todo!(),
+                        //bit_depth_luma_minus8: todo!(),
+                        //bit_depth_chroma_minus8: todo!(),
+                        //log2_max_frame_num_minus4: todo!(),
+                        //pic_order_cnt_type: todo!(),
+                        //offset_for_non_ref_pic: todo!(),
+                        //offset_for_top_to_bottom_field: todo!(),
+                        //log2_max_pic_order_cnt_lsb_minus4: todo!(),
+                        //num_ref_frames_in_pic_order_cnt_cycle: todo!(),
+                        //max_num_ref_frames: todo!(),
+                        //reserved1: 0,
+                        //pic_width_in_mbs_minus1: todo!(),
+                        //pic_height_in_map_units_minus1: todo!(),
+                        //frame_crop_left_offset: 0,
+                        //frame_crop_right_offset: 0,
+                        //frame_crop_top_offset: 0,
+                        //frame_crop_bottom_offset: 0,
+                        //reserved2: 0,
+                        //pOffsetForRefFrame: todo!(),
+                        //pScalingLists: todo!(),
+                        //pSequenceParameterSetVui: todo!()
+                        //}];
+                        //let pps = vec![StdVideoH264PictureParameterSet{
+                        //flags: todo!(),
+                        //seq_parameter_set_id: 0,
+                        //pic_parameter_set_id: 0,
+                        //num_ref_idx_l0_default_active_minus1: todo!(),
+                        //num_ref_idx_l1_default_active_minus1: todo!(),
+                        //weighted_bipred_idc: todo!(),
+                        //pic_init_qp_minus26: todo!(),
+                        //pic_init_qs_minus26: todo!(),
+                        //chroma_qp_index_offset: todo!(),
+                        //second_chroma_qp_index_offset: todo!(),
+                        //pScalingLists: todo!()
+                        //}];
+                        //let add_info = VkVideoEncodeH264SessionParametersAddInfoEXT {
+                        //sType: VkStructureType::VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_SESSION_PARAMETERS_ADD_INFO_EXT,
+                        //pNext: null(),
+                        //stdSPSCount: sps.len() as u32,
+                        //pStdSPSs: sps.as_ptr(),
+                        //stdPPSCount: pps.len()as u32,
+                        //pStdPPSs: pps.as_ptr(),
+                        //};
+                        //let codec_info = VkVideoEncodeH264SessionParametersCreateInfoEXT {
+                        //sType: VkStructureType::VK_STRUCTURE_TYPE_VIDEO_DECODE_H264_SESSION_PARAMETERS_CREATE_INFO_KHR,
+                        //pNext: unsafe {transmute(&add_info)},
+                        //maxStdSPSCount: todo!(),
+                        //maxStdPPSCount: todo!(),
+                        //pParametersAddInfo: todo!()
+                        //};
+                        //let info = VkVideoSessionParametersCreateInfoKHR {
+                        //sType: todo!(),
+                        //pNext: todo!(),
+                        //flags: todo!(),
+                        //videoSessionParametersTemplate: todo!(),
+                        //videoSession: todo!()
+                        //};
+                        None
+                    }
+                    (true, Codec::H265) => None,
+                    (true, Codec::AV1) => None,
+                    (false, Codec::H264) => None,
+                    (false, Codec::H265) => None,
+                    (false, Codec::AV1) => None,
+                }
             },
         })
     })

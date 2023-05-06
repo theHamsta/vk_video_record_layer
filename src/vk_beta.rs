@@ -16825,7 +16825,10 @@ pub type PFN_vkEnumerateDeviceExtensionProperties = ::std::option::Option<
     ) -> VkResult,
 >;
 pub type PFN_vkEnumerateInstanceLayerProperties = ::std::option::Option<
-    unsafe extern "system" fn(pPropertyCount: *mut u32, pProperties: *mut VkLayerProperties) -> VkResult,
+    unsafe extern "system" fn(
+        pPropertyCount: *mut u32,
+        pProperties: *mut VkLayerProperties,
+    ) -> VkResult,
 >;
 pub type PFN_vkEnumerateDeviceLayerProperties = ::std::option::Option<
     unsafe extern "system" fn(
@@ -16976,7 +16979,11 @@ pub type PFN_vkDestroyFence = ::std::option::Option<
     ),
 >;
 pub type PFN_vkResetFences = ::std::option::Option<
-    unsafe extern "system" fn(device: VkDevice, fenceCount: u32, pFences: *const VkFence) -> VkResult,
+    unsafe extern "system" fn(
+        device: VkDevice,
+        fenceCount: u32,
+        pFences: *const VkFence,
+    ) -> VkResult,
 >;
 pub type PFN_vkGetFenceStatus =
     ::std::option::Option<unsafe extern "system" fn(device: VkDevice, fence: VkFence) -> VkResult>;
@@ -17315,7 +17322,11 @@ pub type PFN_vkDestroyRenderPass = ::std::option::Option<
     ),
 >;
 pub type PFN_vkGetRenderAreaGranularity = ::std::option::Option<
-    unsafe extern "system" fn(device: VkDevice, renderPass: VkRenderPass, pGranularity: *mut VkExtent2D),
+    unsafe extern "system" fn(
+        device: VkDevice,
+        renderPass: VkRenderPass,
+        pGranularity: *mut VkExtent2D,
+    ),
 >;
 pub type PFN_vkCreateCommandPool = ::std::option::Option<
     unsafe extern "system" fn(
@@ -17391,8 +17402,9 @@ pub type PFN_vkCmdSetScissor = ::std::option::Option<
         pScissors: *const VkRect2D,
     ),
 >;
-pub type PFN_vkCmdSetLineWidth =
-    ::std::option::Option<unsafe extern "system" fn(commandBuffer: VkCommandBuffer, lineWidth: f32)>;
+pub type PFN_vkCmdSetLineWidth = ::std::option::Option<
+    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, lineWidth: f32),
+>;
 pub type PFN_vkCmdSetDepthBias = ::std::option::Option<
     unsafe extern "system" fn(
         commandBuffer: VkCommandBuffer,
@@ -17405,7 +17417,11 @@ pub type PFN_vkCmdSetBlendConstants = ::std::option::Option<
     unsafe extern "system" fn(commandBuffer: VkCommandBuffer, blendConstants: *const f32),
 >;
 pub type PFN_vkCmdSetDepthBounds = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, minDepthBounds: f32, maxDepthBounds: f32),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        minDepthBounds: f32,
+        maxDepthBounds: f32,
+    ),
 >;
 pub type PFN_vkCmdSetStencilCompareMask = ::std::option::Option<
     unsafe extern "system" fn(
@@ -17503,7 +17519,11 @@ pub type PFN_vkCmdDispatch = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdDispatchIndirect = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, buffer: VkBuffer, offset: VkDeviceSize),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        buffer: VkBuffer,
+        offset: VkDeviceSize,
+    ),
 >;
 pub type PFN_vkCmdCopyBuffer = ::std::option::Option<
     unsafe extern "system" fn(
@@ -24344,8 +24364,9 @@ pub type PFN_vkGetDeviceGroupPeerMemoryFeatures = ::std::option::Option<
         pPeerMemoryFeatures: *mut VkPeerMemoryFeatureFlags,
     ),
 >;
-pub type PFN_vkCmdSetDeviceMask =
-    ::std::option::Option<unsafe extern "system" fn(commandBuffer: VkCommandBuffer, deviceMask: u32)>;
+pub type PFN_vkCmdSetDeviceMask = ::std::option::Option<
+    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, deviceMask: u32),
+>;
 pub type PFN_vkCmdDispatchBase = ::std::option::Option<
     unsafe extern "system" fn(
         commandBuffer: VkCommandBuffer,
@@ -31393,7 +31414,10 @@ pub type PFN_vkCmdNextSubpass2 = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdEndRenderPass2 = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pSubpassEndInfo: *const VkSubpassEndInfo),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pSubpassEndInfo: *const VkSubpassEndInfo,
+    ),
 >;
 pub type PFN_vkResetQueryPool = ::std::option::Option<
     unsafe extern "system" fn(
@@ -31404,7 +31428,11 @@ pub type PFN_vkResetQueryPool = ::std::option::Option<
     ),
 >;
 pub type PFN_vkGetSemaphoreCounterValue = ::std::option::Option<
-    unsafe extern "system" fn(device: VkDevice, semaphore: VkSemaphore, pValue: *mut u64) -> VkResult,
+    unsafe extern "system" fn(
+        device: VkDevice,
+        semaphore: VkSemaphore,
+        pValue: *mut u64,
+    ) -> VkResult,
 >;
 pub type PFN_vkWaitSemaphores = ::std::option::Option<
     unsafe extern "system" fn(
@@ -31414,7 +31442,10 @@ pub type PFN_vkWaitSemaphores = ::std::option::Option<
     ) -> VkResult,
 >;
 pub type PFN_vkSignalSemaphore = ::std::option::Option<
-    unsafe extern "system" fn(device: VkDevice, pSignalInfo: *const VkSemaphoreSignalInfo) -> VkResult,
+    unsafe extern "system" fn(
+        device: VkDevice,
+        pSignalInfo: *const VkSemaphoreSignalInfo,
+    ) -> VkResult,
 >;
 pub type PFN_vkGetBufferDeviceAddress = ::std::option::Option<
     unsafe extern "system" fn(
@@ -37994,7 +38025,10 @@ pub type PFN_vkCmdWaitEvents2 = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdPipelineBarrier2 = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pDependencyInfo: *const VkDependencyInfo),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pDependencyInfo: *const VkDependencyInfo,
+    ),
 >;
 pub type PFN_vkCmdWriteTimestamp2 = ::std::option::Option<
     unsafe extern "system" fn(
@@ -38013,10 +38047,16 @@ pub type PFN_vkQueueSubmit2 = ::std::option::Option<
     ) -> VkResult,
 >;
 pub type PFN_vkCmdCopyBuffer2 = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pCopyBufferInfo: *const VkCopyBufferInfo2),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pCopyBufferInfo: *const VkCopyBufferInfo2,
+    ),
 >;
 pub type PFN_vkCmdCopyImage2 = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pCopyImageInfo: *const VkCopyImageInfo2),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pCopyImageInfo: *const VkCopyImageInfo2,
+    ),
 >;
 pub type PFN_vkCmdCopyBufferToImage2 = ::std::option::Option<
     unsafe extern "system" fn(
@@ -38031,7 +38071,10 @@ pub type PFN_vkCmdCopyImageToBuffer2 = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdBlitImage2 = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pBlitImageInfo: *const VkBlitImageInfo2),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pBlitImageInfo: *const VkBlitImageInfo2,
+    ),
 >;
 pub type PFN_vkCmdResolveImage2 = ::std::option::Option<
     unsafe extern "system" fn(
@@ -38040,7 +38083,10 @@ pub type PFN_vkCmdResolveImage2 = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdBeginRendering = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pRenderingInfo: *const VkRenderingInfo),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pRenderingInfo: *const VkRenderingInfo,
+    ),
 >;
 pub type PFN_vkCmdEndRendering =
     ::std::option::Option<unsafe extern "system" fn(commandBuffer: VkCommandBuffer)>;
@@ -38051,7 +38097,10 @@ pub type PFN_vkCmdSetFrontFace = ::std::option::Option<
     unsafe extern "system" fn(commandBuffer: VkCommandBuffer, frontFace: VkFrontFace),
 >;
 pub type PFN_vkCmdSetPrimitiveTopology = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, primitiveTopology: VkPrimitiveTopology),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        primitiveTopology: VkPrimitiveTopology,
+    ),
 >;
 pub type PFN_vkCmdSetViewportWithCount = ::std::option::Option<
     unsafe extern "system" fn(
@@ -42524,7 +42573,10 @@ impl Default for VkVideoDecodeInfoKHR {
     }
 }
 pub type PFN_vkCmdDecodeVideoKHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pDecodeInfo: *const VkVideoDecodeInfoKHR),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pDecodeInfo: *const VkVideoDecodeInfoKHR,
+    ),
 >;
 extern "system" {
     pub fn vkCmdDecodeVideoKHR(
@@ -45581,7 +45633,10 @@ impl Default for VkMultiviewPerViewAttributesInfoNVX {
     }
 }
 pub type PFN_vkCmdBeginRenderingKHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pRenderingInfo: *const VkRenderingInfo),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pRenderingInfo: *const VkRenderingInfo,
+    ),
 >;
 pub type PFN_vkCmdEndRenderingKHR =
     ::std::option::Option<unsafe extern "system" fn(commandBuffer: VkCommandBuffer)>;
@@ -45720,8 +45775,9 @@ pub type PFN_vkGetDeviceGroupPeerMemoryFeaturesKHR = ::std::option::Option<
         pPeerMemoryFeatures: *mut VkPeerMemoryFeatureFlags,
     ),
 >;
-pub type PFN_vkCmdSetDeviceMaskKHR =
-    ::std::option::Option<unsafe extern "system" fn(commandBuffer: VkCommandBuffer, deviceMask: u32)>;
+pub type PFN_vkCmdSetDeviceMaskKHR = ::std::option::Option<
+    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, deviceMask: u32),
+>;
 pub type PFN_vkCmdDispatchBaseKHR = ::std::option::Option<
     unsafe extern "system" fn(
         commandBuffer: VkCommandBuffer,
@@ -46637,7 +46693,10 @@ pub type PFN_vkCmdNextSubpass2KHR = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdEndRenderPass2KHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pSubpassEndInfo: *const VkSubpassEndInfo),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pSubpassEndInfo: *const VkSubpassEndInfo,
+    ),
 >;
 extern "system" {
     pub fn vkCreateRenderPass2KHR(
@@ -47708,7 +47767,10 @@ pub type PFN_vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR = ::std::op
     ),
 >;
 pub type PFN_vkAcquireProfilingLockKHR = ::std::option::Option<
-    unsafe extern "system" fn(device: VkDevice, pInfo: *const VkAcquireProfilingLockInfoKHR) -> VkResult,
+    unsafe extern "system" fn(
+        device: VkDevice,
+        pInfo: *const VkAcquireProfilingLockInfoKHR,
+    ) -> VkResult,
 >;
 pub type PFN_vkReleaseProfilingLockKHR =
     ::std::option::Option<unsafe extern "system" fn(device: VkDevice)>;
@@ -53857,7 +53919,11 @@ pub type VkTimelineSemaphoreSubmitInfoKHR = VkTimelineSemaphoreSubmitInfo;
 pub type VkSemaphoreWaitInfoKHR = VkSemaphoreWaitInfo;
 pub type VkSemaphoreSignalInfoKHR = VkSemaphoreSignalInfo;
 pub type PFN_vkGetSemaphoreCounterValueKHR = ::std::option::Option<
-    unsafe extern "system" fn(device: VkDevice, semaphore: VkSemaphore, pValue: *mut u64) -> VkResult,
+    unsafe extern "system" fn(
+        device: VkDevice,
+        semaphore: VkSemaphore,
+        pValue: *mut u64,
+    ) -> VkResult,
 >;
 pub type PFN_vkWaitSemaphoresKHR = ::std::option::Option<
     unsafe extern "system" fn(
@@ -53867,7 +53933,10 @@ pub type PFN_vkWaitSemaphoresKHR = ::std::option::Option<
     ) -> VkResult,
 >;
 pub type PFN_vkSignalSemaphoreKHR = ::std::option::Option<
-    unsafe extern "system" fn(device: VkDevice, pSignalInfo: *const VkSemaphoreSignalInfo) -> VkResult,
+    unsafe extern "system" fn(
+        device: VkDevice,
+        pSignalInfo: *const VkSemaphoreSignalInfo,
+    ) -> VkResult,
 >;
 extern "system" {
     pub fn vkGetSemaphoreCounterValueKHR(
@@ -56043,7 +56112,10 @@ pub type PFN_vkCmdWaitEvents2KHR = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdPipelineBarrier2KHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pDependencyInfo: *const VkDependencyInfo),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pDependencyInfo: *const VkDependencyInfo,
+    ),
 >;
 pub type PFN_vkCmdWriteTimestamp2KHR = ::std::option::Option<
     unsafe extern "system" fn(
@@ -56474,10 +56546,16 @@ pub type VkImageBlit2KHR = VkImageBlit2;
 pub type VkBufferImageCopy2KHR = VkBufferImageCopy2;
 pub type VkImageResolve2KHR = VkImageResolve2;
 pub type PFN_vkCmdCopyBuffer2KHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pCopyBufferInfo: *const VkCopyBufferInfo2),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pCopyBufferInfo: *const VkCopyBufferInfo2,
+    ),
 >;
 pub type PFN_vkCmdCopyImage2KHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pCopyImageInfo: *const VkCopyImageInfo2),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pCopyImageInfo: *const VkCopyImageInfo2,
+    ),
 >;
 pub type PFN_vkCmdCopyBufferToImage2KHR = ::std::option::Option<
     unsafe extern "system" fn(
@@ -56492,7 +56570,10 @@ pub type PFN_vkCmdCopyImageToBuffer2KHR = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdBlitImage2KHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pBlitImageInfo: *const VkBlitImageInfo2),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pBlitImageInfo: *const VkBlitImageInfo2,
+    ),
 >;
 pub type PFN_vkCmdResolveImage2KHR = ::std::option::Option<
     unsafe extern "system" fn(
@@ -56808,7 +56889,10 @@ fn bindgen_test_layout_VkTraceRaysIndirectCommand2KHR() {
     );
 }
 pub type PFN_vkCmdTraceRaysIndirect2KHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, indirectDeviceAddress: VkDeviceAddress),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        indirectDeviceAddress: VkDeviceAddress,
+    ),
 >;
 extern "system" {
     pub fn vkCmdTraceRaysIndirect2KHR(
@@ -58526,7 +58610,10 @@ pub type PFN_vkDestroyCuFunctionNVX = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdCuLaunchKernelNVX = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pLaunchInfo: *const VkCuLaunchInfoNVX),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pLaunchInfo: *const VkCuLaunchInfoNVX,
+    ),
 >;
 extern "system" {
     pub fn vkCreateCuModuleNVX(
@@ -62732,12 +62819,18 @@ pub type PFN_vkQueueInsertDebugUtilsLabelEXT = ::std::option::Option<
     unsafe extern "system" fn(queue: VkQueue, pLabelInfo: *const VkDebugUtilsLabelEXT),
 >;
 pub type PFN_vkCmdBeginDebugUtilsLabelEXT = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pLabelInfo: *const VkDebugUtilsLabelEXT),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pLabelInfo: *const VkDebugUtilsLabelEXT,
+    ),
 >;
 pub type PFN_vkCmdEndDebugUtilsLabelEXT =
     ::std::option::Option<unsafe extern "system" fn(commandBuffer: VkCommandBuffer)>;
 pub type PFN_vkCmdInsertDebugUtilsLabelEXT = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pLabelInfo: *const VkDebugUtilsLabelEXT),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pLabelInfo: *const VkDebugUtilsLabelEXT,
+    ),
 >;
 pub type PFN_vkCreateDebugUtilsMessengerEXT = ::std::option::Option<
     unsafe extern "system" fn(
@@ -70663,7 +70756,11 @@ impl Default for VkSwapchainDisplayNativeHdrCreateInfoAMD {
     }
 }
 pub type PFN_vkSetLocalDimmingAMD = ::std::option::Option<
-    unsafe extern "system" fn(device: VkDevice, swapChain: VkSwapchainKHR, localDimmingEnable: VkBool32),
+    unsafe extern "system" fn(
+        device: VkDevice,
+        swapChain: VkSwapchainKHR,
+        localDimmingEnable: VkBool32,
+    ),
 >;
 extern "system" {
     pub fn vkSetLocalDimmingAMD(
@@ -73515,7 +73612,10 @@ pub type PFN_vkCmdSetFrontFaceEXT = ::std::option::Option<
     unsafe extern "system" fn(commandBuffer: VkCommandBuffer, frontFace: VkFrontFace),
 >;
 pub type PFN_vkCmdSetPrimitiveTopologyEXT = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, primitiveTopology: VkPrimitiveTopology),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        primitiveTopology: VkPrimitiveTopology,
+    ),
 >;
 pub type PFN_vkCmdSetViewportWithCountEXT = ::std::option::Option<
     unsafe extern "system" fn(
@@ -84346,8 +84446,9 @@ pub type PFN_vkCmdSetRasterizerDiscardEnableEXT = ::std::option::Option<
 pub type PFN_vkCmdSetDepthBiasEnableEXT = ::std::option::Option<
     unsafe extern "system" fn(commandBuffer: VkCommandBuffer, depthBiasEnable: VkBool32),
 >;
-pub type PFN_vkCmdSetLogicOpEXT =
-    ::std::option::Option<unsafe extern "system" fn(commandBuffer: VkCommandBuffer, logicOp: VkLogicOp)>;
+pub type PFN_vkCmdSetLogicOpEXT = ::std::option::Option<
+    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, logicOp: VkLogicOp),
+>;
 pub type PFN_vkCmdSetPrimitiveRestartEnableEXT = ::std::option::Option<
     unsafe extern "system" fn(commandBuffer: VkCommandBuffer, primitiveRestartEnable: VkBool32),
 >;
@@ -86941,7 +87042,11 @@ pub type PFN_vkCmdDrawClusterHUAWEI = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdDrawClusterIndirectHUAWEI = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, buffer: VkBuffer, offset: VkDeviceSize),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        buffer: VkBuffer,
+        offset: VkDeviceSize,
+    ),
 >;
 extern "system" {
     pub fn vkCmdDrawClusterHUAWEI(
@@ -89765,7 +89870,10 @@ impl Default for VkColorBlendAdvancedEXT {
     }
 }
 pub type PFN_vkCmdSetTessellationDomainOriginEXT = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, domainOrigin: VkTessellationDomainOrigin),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        domainOrigin: VkTessellationDomainOrigin,
+    ),
 >;
 pub type PFN_vkCmdSetDepthClampEnableEXT = ::std::option::Option<
     unsafe extern "system" fn(commandBuffer: VkCommandBuffer, depthClampEnable: VkBool32),
@@ -89829,7 +89937,10 @@ pub type PFN_vkCmdSetConservativeRasterizationModeEXT = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdSetExtraPrimitiveOverestimationSizeEXT = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, extraPrimitiveOverestimationSize: f32),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        extraPrimitiveOverestimationSize: f32,
+    ),
 >;
 pub type PFN_vkCmdSetDepthClipEnableEXT = ::std::option::Option<
     unsafe extern "system" fn(commandBuffer: VkCommandBuffer, depthClipEnable: VkBool32),
@@ -89887,7 +89998,10 @@ pub type PFN_vkCmdSetCoverageModulationModeNV = ::std::option::Option<
     ),
 >;
 pub type PFN_vkCmdSetCoverageModulationTableEnableNV = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, coverageModulationTableEnable: VkBool32),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        coverageModulationTableEnable: VkBool32,
+    ),
 >;
 pub type PFN_vkCmdSetCoverageModulationTableNV = ::std::option::Option<
     unsafe extern "system" fn(
@@ -97784,7 +97898,10 @@ impl Default for VkVideoEncodeRateControlInfoKHR {
     }
 }
 pub type PFN_vkCmdEncodeVideoKHR = ::std::option::Option<
-    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, pEncodeInfo: *const VkVideoEncodeInfoKHR),
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pEncodeInfo: *const VkVideoEncodeInfoKHR,
+    ),
 >;
 extern "system" {
     pub fn vkCmdEncodeVideoKHR(
