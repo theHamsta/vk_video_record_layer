@@ -3,7 +3,7 @@ use std::ptr::null_mut;
 
 use ash::prelude::VkResult;
 use ash::vk;
-use log::{debug, info, trace, warn};
+use log::{debug, error, info, trace, warn};
 
 use crate::dpb::Dpb;
 use crate::settings::Codec;
@@ -57,13 +57,11 @@ pub unsafe fn record_vk_create_swapchain(
     p_allocator: *const vk::AllocationCallbacks,
     p_swapchain: *mut vk::SwapchainKHR,
 ) -> vk::Result {
-    let result = (get_state()
-        .swapchain_fn
-        .read()
-        .unwrap()
-        .as_ref()
-        .unwrap()
-        .create_swapchain_khr)(device, p_create_info, p_allocator, p_swapchain);
+    let allocator = p_allocator.as_ref();
+    let lock = get_state().swapchain_fn.read().unwrap();
+    let swapchain_fn = lock.as_ref().unwrap();
+    let result =
+        (swapchain_fn.create_swapchain_khr)(device, p_create_info, p_allocator, p_swapchain);
     if result == vk::Result::SUCCESS {
         info!("Created swapchain");
         let slot = get_state().private_slot.read().unwrap();
@@ -71,114 +69,112 @@ pub unsafe fn record_vk_create_swapchain(
         let device = lock.as_ref().unwrap();
         let create_info = p_create_info.as_ref().unwrap();
         //let swapchain_color_space =
-        /*let result = */
-        device
-            .set_private_data(
-                *p_swapchain,
-                *slot,
-                Box::leak(Box::new({
-                    let images = {
-                        let mut images = Vec::new();
-                        let mut len = 0;
+        let swapchain_data = Box::new({
+            let images = get_swapchain_images(device, swapchain_fn, *p_swapchain);
 
-                        let res = (get_state()
-                            .swapchain_fn
-                            .read()
-                            .unwrap()
-                            .as_ref()
-                            .unwrap()
-                            .get_swapchain_images_khr)(
-                            device.handle(),
-                            *p_swapchain,
-                            &mut len,
-                            null_mut(),
-                        );
+            let mut view_info = vk::ImageViewCreateInfo::default()
+                .view_type(vk::ImageViewType::TYPE_2D)
+                .format(create_info.image_format)
+                .components(vk::ComponentMapping {
+                    r: vk::ComponentSwizzle::R,
+                    g: vk::ComponentSwizzle::G,
+                    b: vk::ComponentSwizzle::B,
+                    a: vk::ComponentSwizzle::A,
+                })
+                .subresource_range(vk::ImageSubresourceRange {
+                    aspect_mask: vk::ImageAspectFlags::COLOR,
+                    base_mip_level: 0,
+                    level_count: 1,
+                    base_array_layer: 0,
+                    layer_count: 1,
+                });
 
-                        if res != vk::Result::SUCCESS {
-                            return res;
-                        }
+            let image_views = {
+                if let Ok(images) = &images {
+                    images
+                        .iter()
+                        .map(|&image| {
+                            view_info.image = image;
+                            device.create_image_view(&view_info, allocator)
+                        })
+                        .collect()
+                } else {
+                    Err(vk::Result::ERROR_INITIALIZATION_FAILED)
+                }
+            };
 
-                        images.resize(len as usize, vk::Image::null());
-
-                        (get_state()
-                            .swapchain_fn
-                            .read()
-                            .unwrap()
-                            .as_ref()
-                            .unwrap()
-                            .get_swapchain_images_khr)(
-                            device.handle(),
-                            *p_swapchain,
-                            &mut len,
-                            images.as_mut_ptr(),
-                        )
-                        .result_with_success(images)
-                    };
-                    let image_views = {
-                        if let Ok(images) = &images {
-                            images
-                                .iter()
-                                .map(|&i| {
-                                    device.create_image_view(
-                                        &vk::ImageViewCreateInfo::default()
-                                            .image(i)
-                                            .view_type(vk::ImageViewType::TYPE_2D)
-                                            .format(create_info.image_format)
-                                            .components(vk::ComponentMapping {
-                                                r: vk::ComponentSwizzle::R,
-                                                g: vk::ComponentSwizzle::G,
-                                                b: vk::ComponentSwizzle::B,
-                                                a: vk::ComponentSwizzle::A,
-                                            })
-                                            .subresource_range(vk::ImageSubresourceRange {
-                                                aspect_mask: vk::ImageAspectFlags::COLOR,
-                                                base_mip_level: 0,
-                                                level_count: 1,
-                                                base_array_layer: 0,
-                                                layer_count: 1,
-                                            }),
-                                        p_allocator.as_ref(),
-                                    )
-                                })
-                                .collect()
-                        } else {
-                            Err(vk::Result::ERROR_INITIALIZATION_FAILED)
-                        }
-                    };
-                    let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
-                    SwapChainData {
-                        _video_max_extent: create_info.image_extent,
-                        _swapchain_format: create_info.image_format,
-                        dpb: Dpb::new(
-                            device,
-                            video_format,
-                            create_info.image_extent,
-                            16,
-                            p_allocator.as_ref(),
-                        ),
-                        encode_session: create_video_session(
-                            *get_state().encode_queue_family_idx.read().unwrap(),
-                            create_info.image_extent,
-                            true,
-                            p_allocator,
-                        ),
-                        decode_session: create_video_session(
-                            *get_state().decode_queue_family_idx.read().unwrap(),
-                            create_info.image_extent,
-                            false,
-                            p_allocator,
-                        ),
-                        images,
-                        image_views,
-                    }
-                })) as *const _ as u64,
-            )
-            .unwrap(); // TODO
+            let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
+            SwapChainData {
+                _video_max_extent: create_info.image_extent,
+                _swapchain_format: create_info.image_format,
+                dpb: Dpb::new(
+                    device,
+                    video_format,
+                    create_info.image_extent,
+                    16,
+                    p_allocator.as_ref(),
+                ),
+                encode_session: create_video_session(
+                    *get_state().encode_queue_family_idx.read().unwrap(),
+                    create_info.image_extent,
+                    true,
+                    p_allocator,
+                ),
+                decode_session: create_video_session(
+                    *get_state().decode_queue_family_idx.read().unwrap(),
+                    create_info.image_extent,
+                    false,
+                    p_allocator,
+                ),
+                images,
+                image_views,
+            }
+        });
+        let leaked = Box::leak(swapchain_data);
+        if device
+            .set_private_data(*p_swapchain, *slot, leaked as *const _ as u64)
+            .is_err()
+        {
+            error!("Could not set private data!");
+            Box::from_raw(leaked).destroy(device, allocator);
+        }
     } else {
         warn!("Failed to create swapchain");
     }
 
     result
+}
+
+fn get_swapchain_images(
+    device: &ash::Device,
+    swapchain_fn: &vk::KhrSwapchainFn,
+    swapchain: vk::SwapchainKHR,
+) -> VkResult<Vec<vk::Image>> {
+    unsafe {
+        let mut images = Vec::new();
+        let mut len = 0;
+
+        let res = (swapchain_fn.get_swapchain_images_khr)(
+            device.handle(),
+            swapchain,
+            &mut len,
+            null_mut(),
+        );
+
+        if res != vk::Result::SUCCESS {
+            return Err(res);
+        }
+
+        images.resize(len as usize, vk::Image::null());
+
+        (swapchain_fn.get_swapchain_images_khr)(
+            device.handle(),
+            swapchain,
+            &mut len,
+            images.as_mut_ptr(),
+        )
+        .result_with_success(images)
+    }
 }
 
 pub unsafe extern "system" fn record_vk_destroy_swapchain(
