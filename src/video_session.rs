@@ -27,8 +27,8 @@ struct VideoSession {
 
 struct SwapChainData {
     dpb: VkResult<Dpb>,
-    video_max_extent: vk::Extent2D,
-    swapchain_format: vk::Format,
+    _video_max_extent: vk::Extent2D,
+    _swapchain_format: vk::Format,
     //swapchain_color_space: vk::ColorSpaceKHR,
     encode_session: VkResult<VideoSession>,
     decode_session: VkResult<VideoSession>,
@@ -36,7 +36,20 @@ struct SwapChainData {
     image_views: VkResult<Vec<vk::ImageView>>,
 }
 
-impl SwapChainData {}
+impl SwapChainData {
+    pub fn destroy(&mut self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
+        if let Ok(views) = self.image_views.as_mut() {
+            for view in views.drain(..) {
+                unsafe {
+                    device.destroy_image_view(view, allocator);
+                }
+            }
+        }
+        if let Ok(dpb) = self.dpb.as_mut() {
+            dpb.destroy(device, allocator);
+        }
+    }
+}
 
 pub unsafe fn record_vk_create_swapchain(
     device: vk::Device,
@@ -134,8 +147,8 @@ pub unsafe fn record_vk_create_swapchain(
                     };
                     let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
                     SwapChainData {
-                        video_max_extent: create_info.image_extent,
-                        swapchain_format: create_info.image_format,
+                        _video_max_extent: create_info.image_extent,
+                        _swapchain_format: create_info.image_format,
                         dpb: Dpb::new(
                             device,
                             video_format,
@@ -174,22 +187,16 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
     p_allocator: *const vk::AllocationCallbacks,
 ) {
     let slot = get_state().private_slot.read().unwrap();
+    let allocator = p_allocator.as_ref();
     {
         let lock = get_state().device.read().unwrap();
         let device = lock.as_ref().unwrap();
         let lock = get_state().video_queue_fn.read().unwrap();
         let video_queue_fn = lock.as_ref().unwrap();
-        let swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
+        let mut swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
             device.get_private_data(swapchain, *slot),
         ));
-        if let Ok(views) = swapchain_data.image_views {
-            for view in views {
-                device.destroy_image_view(view, p_allocator.as_ref());
-            }
-        }
-        if let Ok(mut dpb) = swapchain_data.dpb {
-            dpb.destroy(device, p_allocator.as_ref());
-        }
+        swapchain_data.destroy(device, allocator);
 
         if let Ok(VideoSession {
             session,
@@ -206,7 +213,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
                 );
             }
             for memory in memories {
-                device.free_memory(memory, p_allocator.as_ref());
+                device.free_memory(memory, allocator);
             }
         }
         if let Ok(VideoSession {
@@ -224,7 +231,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
                 );
             }
             for memory in memories {
-                device.free_memory(memory, p_allocator.as_ref());
+                device.free_memory(memory, allocator);
             }
         }
     }

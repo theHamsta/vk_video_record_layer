@@ -1,4 +1,5 @@
 use ash::{prelude::VkResult, vk};
+use log::{debug, error};
 
 pub struct Dpb {
     extent: vk::Extent2D,
@@ -89,8 +90,10 @@ impl Dpb {
             };
 
             if res == vk::Result::SUCCESS {
+                debug!("DPB resource successfully created!");
                 Ok(rtn)
             } else {
+                error!("Failed to create DPB resources created!");
                 rtn.destroy(device, allocator);
                 Err(res)
             }
