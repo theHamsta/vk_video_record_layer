@@ -32,3 +32,5 @@ bindgen \
   >> src/vk_beta.rs
 
   sed -i 's/extern "C"/extern "system"/g' src/vk_beta.rs
+
+cargo fmt
