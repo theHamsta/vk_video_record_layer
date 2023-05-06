@@ -1,8 +1,9 @@
 use std::mem::transmute;
+use std::ptr::null_mut;
 
 use ash::prelude::VkResult;
 use ash::vk;
-use log::{info, trace, warn};
+use log::{debug, info, trace, warn};
 
 use crate::settings::Codec;
 
@@ -239,17 +240,26 @@ fn create_video_session(
         Ok(VideoSession {
             session,
             memories: {
+                let mut memories = Vec::new();
                 unsafe {
-                    let mut requirements =
-                        vec![vk::VideoSessionMemoryRequirementsKHR::default(); 8];
+                    let mut requirements = Vec::new();
                     let mut len = requirements.len() as u32;
-                    let res = (video_queue_fn.get_video_session_memory_requirements_khr)(
+                    let mut res = (video_queue_fn.get_video_session_memory_requirements_khr)(
                         device.handle(),
                         session,
                         &mut len,
-                        requirements.as_mut_ptr(),
+                        null_mut(),
                     );
-                    requirements.resize(len as usize, Default::default());
+                    if res == vk::Result::SUCCESS {
+                        requirements.resize(len as usize, Default::default());
+                        res = (video_queue_fn.get_video_session_memory_requirements_khr)(
+                            device.handle(),
+                            session,
+                            &mut len,
+                            requirements.as_mut_ptr(),
+                        );
+                        requirements.resize(len as usize, Default::default());
+                    }
                     if res != vk::Result::SUCCESS {
                         (video_queue_fn.destroy_video_session_khr)(
                             device.handle(),
@@ -258,10 +268,57 @@ fn create_video_session(
                         );
                         return Err(res);
                     }
-                    info!("{requirements:?}");
-                    //let membits = requirements.map(|r| r.memory_requirements.memory_requ).iter().reduce(|a,b| a.)
+
+                    let mut bind_infos = Vec::new();
+                    // TODO try to "or" all memoryTypeBits to have them in as few allocations as
+                    // possible? Not possible to have the in one. Or just use VMA?
+                    for req in requirements.iter() {
+                        debug!(
+                            "memory_bind_index {}: requirements {:?}",
+                            req.memory_bind_index, req.memory_requirements
+                        );
+                        let info = vk::MemoryAllocateInfo::default()
+                            .allocation_size(req.memory_requirements.size)
+                            .memory_type_index(
+                                req.memory_requirements.memory_type_bits.trailing_zeros(),
+                            );
+                        let memory = device.allocate_memory(&info, p_allocator.as_ref());
+                        if let Ok(memory) = memory {
+                            memories.push(memory);
+                            bind_infos.push(
+                                vk::BindVideoSessionMemoryInfoKHR::default()
+                                    .memory_bind_index(req.memory_bind_index)
+                                    .memory(memory)
+                                    .memory_size(req.memory_requirements.size),
+                            );
+                        } else {
+                            res = memory.unwrap_err();
+                            break;
+                        }
+                    }
+
+                    if res == vk::Result::SUCCESS {
+                        res = (video_queue_fn.bind_video_session_memory_khr)(
+                            device.handle(),
+                            session,
+                            bind_infos.len() as u32,
+                            bind_infos.as_ptr(),
+                        );
+                    }
+
+                    if res != vk::Result::SUCCESS {
+                        (video_queue_fn.destroy_video_session_khr)(
+                            device.handle(),
+                            session,
+                            p_allocator,
+                        );
+                        for mem in memories.drain(..) {
+                            device.free_memory(mem, p_allocator.as_ref());
+                        }
+                        return Err(res);
+                    }
                 }
-                vec![]
+                memories
             },
         })
     })
