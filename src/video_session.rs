@@ -151,7 +151,6 @@ fn get_swapchain_images(
     swapchain: vk::SwapchainKHR,
 ) -> VkResult<Vec<vk::Image>> {
     unsafe {
-        let mut images = Vec::new();
         let mut len = 0;
 
         let res = (swapchain_fn.get_swapchain_images_khr)(
@@ -165,7 +164,8 @@ fn get_swapchain_images(
             return Err(res);
         }
 
-        images.resize(len as usize, vk::Image::null());
+        let mut images = Vec::with_capacity(len as usize);
+        images.set_len(len as usize);
 
         (swapchain_fn.get_swapchain_images_khr)(
             device.handle(),
@@ -375,16 +375,17 @@ fn create_video_session(
             memories: {
                 let mut memories = Vec::new();
                 unsafe {
-                    let mut requirements = Vec::new();
-                    let mut len = requirements.len() as u32;
+                    let mut len = 0;
                     let mut res = (video_queue_fn.get_video_session_memory_requirements_khr)(
                         device.handle(),
                         session,
                         &mut len,
                         null_mut(),
                     );
+
+                    let mut requirements = Vec::with_capacity(len as usize);
+
                     if res == vk::Result::SUCCESS {
-                        requirements.resize(len as usize, Default::default());
                         res = (video_queue_fn.get_video_session_memory_requirements_khr)(
                             device.handle(),
                             session,
