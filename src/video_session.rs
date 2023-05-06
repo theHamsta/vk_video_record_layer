@@ -127,7 +127,7 @@ pub unsafe fn record_vk_create_swapchain(
                                         p_allocator.as_ref(),
                                     )
                                 })
-                                .try_collect()
+                                .collect()
                         } else {
                             Err(vk::Result::ERROR_INITIALIZATION_FAILED)
                         }

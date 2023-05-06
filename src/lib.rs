@@ -1,4 +1,11 @@
-#![feature(iterator_try_collect)]
+//#![feature(iterator_try_collect)]
+
+mod dpb;
+mod settings;
+mod state;
+mod video_session;
+mod vk_beta;
+mod vk_layer;
 
 use crate::video_session::{
     record_vk_create_swapchain, record_vk_destroy_swapchain, record_vk_queue_present,
@@ -24,12 +31,6 @@ use std::{
     ptr::null_mut,
 };
 use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
-
-mod settings;
-mod state;
-mod video_session;
-mod vk_beta;
-mod vk_layer;
 
 unsafe fn ptr_chain_get_next<SRC, DST>(
     start_struct: *const SRC,
