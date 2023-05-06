@@ -31,6 +31,7 @@ struct SwapChainData {
     video_format: vk::Format,
     encode_session: VkResult<VideoSession>,
     decode_session: VkResult<VideoSession>,
+    images: VkResult<Vec<vk::Image>>,
 }
 
 impl SwapChainData {}
@@ -76,6 +77,43 @@ pub unsafe fn record_vk_create_swapchain(
                         false,
                         p_allocator,
                     ),
+                    images: {
+                        let mut images = Vec::new();
+                        let mut len = 0;
+
+                        let res = (get_state()
+                            .swapchain_fn
+                            .read()
+                            .unwrap()
+                            .as_ref()
+                            .unwrap()
+                            .get_swapchain_images_khr)(
+                            device.handle(),
+                            *p_swapchain,
+                            &mut len,
+                            null_mut(),
+                        );
+
+                        if res != vk::Result::SUCCESS {
+                            return res;
+                        }
+
+                        images.resize(len as usize, vk::Image::null());
+
+                        (get_state()
+                            .swapchain_fn
+                            .read()
+                            .unwrap()
+                            .as_ref()
+                            .unwrap()
+                            .get_swapchain_images_khr)(
+                            device.handle(),
+                            *p_swapchain,
+                            &mut len,
+                            images.as_mut_ptr(),
+                        )
+                        .result_with_success(images)
+                    },
                 })) as *const _ as u64,
             )
             .unwrap(); // TODO
@@ -150,6 +188,17 @@ pub unsafe extern "system" fn record_vk_queue_present(
     queue: vk::Queue,
     p_present_info: *const vk::PresentInfoKHR,
 ) -> vk::Result {
+    let lock = get_state().device.read().unwrap();
+    let device = lock.as_ref().unwrap();
+    let slot = get_state().private_slot.read().unwrap();
+    let present_info = p_present_info.as_ref().unwrap();
+
+    let swapchain_data = transmute::<u64, &mut SwapChainData>(
+        device.get_private_data(*present_info.p_swapchains, *slot),
+    );
+    if let Ok(images) = &swapchain_data.images {
+        let _present_image = images[*present_info.p_image_indices as usize];
+    }
     (get_state()
         .swapchain_fn
         .read()
