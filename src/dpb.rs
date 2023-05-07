@@ -9,6 +9,7 @@ pub struct Dpb {
     y_views: Vec<vk::ImageView>,
     uv_views: Vec<vk::ImageView>,
     memory: Vec<vk::DeviceMemory>, // TODO: only one memory?
+    sampler: vk::Sampler,
     next_image: u32,
 }
 
@@ -45,8 +46,11 @@ impl Dpb {
                     vk::ImageUsageFlags::SAMPLED
                         | vk::ImageUsageFlags::VIDEO_ENCODE_DPB_KHR
                         | vk::ImageUsageFlags::VIDEO_ENCODE_SRC_KHR
-                        | vk::ImageUsageFlags::VIDEO_DECODE_DST_KHR,
-                );
+                        | vk::ImageUsageFlags::VIDEO_DECODE_DST_KHR
+                        | vk::ImageUsageFlags::STORAGE,
+                )
+                .tiling(vk::ImageTiling::OPTIMAL)
+                .initial_layout(vk::ImageLayout::GENERAL);
 
             let mut view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
@@ -112,6 +116,11 @@ impl Dpb {
                 }
             }
 
+            let sampler = device.create_sampler(
+                &vk::SamplerCreateInfo::default().unnormalized_coordinates(true),
+                allocator,
+            )?;
+
             let mut rtn = Self {
                 next_image: 0,
                 extent,
@@ -121,6 +130,7 @@ impl Dpb {
                 y_views,
                 uv_views,
                 memory,
+                sampler,
             };
 
             if res == vk::Result::SUCCESS {
