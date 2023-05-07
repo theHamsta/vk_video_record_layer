@@ -4,6 +4,7 @@
 
 [numthreads(8, 8, 1)]
 void main(uint3 id: SV_DispatchThreadID) {
+  // TODO: combine with Y shader to cooperatively fetch the data
   float3 mean = 0.25 * (rgba.SampleLevel(s, id.xy * 2, 0).rgb +
                         rgba.SampleLevel(s, id.xy * 2 + int2(1, 0), 0).rgb +
                         rgba.SampleLevel(s, id.xy * 2 + int2(0, 1), 0).rgb +
