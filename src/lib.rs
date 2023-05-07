@@ -2,11 +2,11 @@
 
 mod dpb;
 mod settings;
+mod shader;
 mod state;
 mod video_session;
 mod vk_beta;
 mod vk_layer;
-mod shader;
 
 use crate::video_session::{
     record_vk_create_swapchain, record_vk_destroy_swapchain, record_vk_queue_present,
@@ -422,6 +422,7 @@ pub extern "system" fn record_vk_create_device(
                     };
                     *state.private_slot.write().unwrap() = slot;
 
+                    *state.compute_queue_family_idx.write().unwrap() = compute_idx as u32;
                     *state.encode_queue_family_idx.write().unwrap() = encode_idx as u32;
                     *state.decode_queue_family_idx.write().unwrap() = decode_idx as u32;
                     *state.device.write().unwrap() = Some(device);
