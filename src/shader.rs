@@ -217,7 +217,11 @@ impl ShaderPipeline {
         entry_point: &str,
         push_constant_ranges: &[vk::PushConstantRange], // TODO: do this via reflection
         allocator: Option<&vk::AllocationCallbacks>,
-    ) -> anyhow::Result<(vk::Pipeline, Vec<vk::DescriptorSetLayout>)> {
+    ) -> anyhow::Result<(
+        vk::Pipeline,
+        vk::PipelineLayout,
+        Vec<vk::DescriptorSetLayout>,
+    )> {
         let mut bindings: HashMap<u32, Vec<vk::DescriptorSetLayoutBinding>> = Default::default();
         for &ReflectDescriptorBinding {
             set,
@@ -296,6 +300,6 @@ impl ShaderPipeline {
             r
         })?[0];
 
-        Ok((pipeline, layouts))
+        Ok((pipeline, pipeline_layout, layouts))
     }
 }

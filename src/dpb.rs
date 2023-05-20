@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use log::{debug, error};
 
@@ -25,8 +26,12 @@ pub struct Dpb {
     compute_cmd_buffers: HashMap<(vk::ImageView, u32), vk::CommandBuffer>,
     sets: Vec<vk::DescriptorSet>,
     compute_pipeline: vk::Pipeline,
+    compute_pipeline_layout: vk::PipelineLayout,
     compute_descriptor_layouts: Vec<vk::DescriptorSetLayout>,
     compute_shader: anyhow::Result<ShaderPipeline>,
+    compute_semaphore: vk::Semaphore,
+    encode_semaphore: vk::Semaphore,
+    frame_index: u64,
 }
 
 impl Dpb {
@@ -189,14 +194,34 @@ impl Dpb {
                 &[include_bytes!("../shaders/bgr_to_yuv_rec709.hlsl.spirv")],
             );
 
-            let (compute_pipeline, compute_descriptor_layouts) =
+            let (compute_pipeline, compute_pipeline_layout, compute_descriptor_layouts) =
                 if let Ok(shader) = compute_shader.as_ref() {
                     shader
                         .make_compute_pipeline(device, "main", &[], allocator)
-                        .unwrap_or_else(|_| (vk::Pipeline::null(), Vec::new()))
+                        .unwrap_or_else(|_| {
+                            (vk::Pipeline::null(), vk::PipelineLayout::null(), Vec::new())
+                        })
                 } else {
-                    (vk::Pipeline::null(), Vec::new())
+                    (vk::Pipeline::null(), vk::PipelineLayout::null(), Vec::new())
                 };
+            let timeline_info =
+                vk::SemaphoreTypeCreateInfo::default().semaphore_type(vk::SemaphoreType::TIMELINE);
+            let info = vk::SemaphoreCreateInfo::default();
+            info.push_next(&mut timeline_info);
+            let compute_semaphore = device
+                .create_semaphore(&info, allocator)
+                .map_err(|err| {
+                    error!("Failed to create compute semaphore: {err}");
+                    res = err;
+                })
+                .unwrap_or(vk::Semaphore::null());
+            let encode_semaphore = device
+                .create_semaphore(&info, allocator)
+                .map_err(|err| {
+                    error!("Failed to create encode semaphore: {err}");
+                    res = err;
+                })
+                .unwrap_or(vk::Semaphore::null());
 
             let mut rtn = Self {
                 next_image: 0,
@@ -217,8 +242,11 @@ impl Dpb {
                 descriptor_pool,
                 compute_cmd_buffers: Default::default(),
                 compute_pipeline,
+                compute_pipeline_layout,
                 compute_descriptor_layouts,
                 compute_shader,
+                compute_semaphore,
+                encode_semaphore,
                 sets: Default::default(),
             };
 
@@ -242,6 +270,9 @@ impl Dpb {
         src_queue_family_index: u32,
         dst_queue_family_index: u32,
     ) -> anyhow::Result<()> {
+        if input_format != vk::Format::B8G8R8_UINT {
+            unimplemented!();
+        }
         unsafe {
             let info = vk::CommandBufferAllocateInfo::default()
                 .command_pool(self.compute_cmd_pool)
@@ -291,6 +322,10 @@ impl Dpb {
                         .image(image)];
                     let dep_info_compute_to_present =
                         vk::DependencyInfo::default().image_memory_barriers(&barriers);
+                    let info = vk::CommandBufferBeginInfo::default();
+                    device
+                        .begin_command_buffer(cmd, &info)
+                        .map_err(|err| anyhow!("Failed to begin command buffer: {err}"))?;
                     device.cmd_pipeline_barrier2(cmd, &dep_info_present_to_compute);
                     let info = vk::DescriptorSetAllocateInfo::default()
                         .descriptor_pool(self.descriptor_pool)
@@ -298,9 +333,56 @@ impl Dpb {
 
                     let set = device.allocate_descriptor_sets(&info)?;
                     self.sets.push(set[0]);
+                    device.update_descriptor_sets(
+                        &[
+                            vk::WriteDescriptorSet::default()
+                                .dst_set(set[0])
+                                .dst_binding(0)
+                                .descriptor_type(vk::DescriptorType::SAMPLED_IMAGE)
+                                .image_info(&[vk::DescriptorImageInfo::default()
+                                    .image_view(view)
+                                    .image_layout(vk::ImageLayout::SHADER_READ_ONLY_OPTIMAL)]),
+                            vk::WriteDescriptorSet::default()
+                                .dst_set(set[0])
+                                .dst_binding(1)
+                                .descriptor_type(vk::DescriptorType::SAMPLER)
+                                .image_info(&[
+                                    vk::DescriptorImageInfo::default().sampler(self.sampler)
+                                ]),
+                            vk::WriteDescriptorSet::default()
+                                .dst_set(set[0])
+                                .dst_binding(2)
+                                .descriptor_type(vk::DescriptorType::STORAGE_IMAGE)
+                                .image_info(&[
+                                    vk::DescriptorImageInfo::default()
+                                        .image_view(self.y_views[i])
+                                        .image_layout(vk::ImageLayout::GENERAL),
+                                    vk::DescriptorImageInfo::default()
+                                        .image_view(self.uv_views[i])
+                                        .image_layout(vk::ImageLayout::GENERAL),
+                                ]),
+                        ],
+                        &[],
+                    );
 
-                    //device.cmd_dispatch();
+                    device.cmd_bind_descriptor_sets(
+                        cmd,
+                        vk::PipelineBindPoint::COMPUTE,
+                        self.compute_pipeline_layout,
+                        0,
+                        &[set[0]],
+                        &[0],
+                    );
+                    device.cmd_bind_pipeline(
+                        cmd,
+                        vk::PipelineBindPoint::COMPUTE,
+                        self.compute_pipeline,
+                    );
+                    device.cmd_dispatch(cmd, self.extent.width / 8, self.extent.height / 8, 1);
                     device.cmd_pipeline_barrier2(cmd, &dep_info_compute_to_present);
+                    device
+                        .end_command_buffer(cmd)
+                        .map_err(|err| anyhow!("Failed to end command buffer: {err}"))?;
 
                     self.compute_cmd_buffers.insert((view, i as u32), cmd);
                 }
@@ -309,16 +391,59 @@ impl Dpb {
         Ok(())
     }
 
+    fn get_encode_cmd_buffer(
+        &mut self,
+        device: &ash::Device,
+        image: vk::ImageView,
+    ) -> anyhow::Result<vk::CommandBuffer> {
+        todo!();
+    }
+
     pub fn encode_frame(
         &mut self,
         device: &ash::Device,
-        image: vk::Image,
-        format: vk::Format,
-        src_queue_family_index: u32,
-        dst_queue_family_index: u32,
+        image: vk::ImageView,
+        compute_queue: vk::Queue,
+        encode_queue: vk::Queue,
+        wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
+        signal_semaphore_infos: &[vk::SemaphoreSubmitInfo],
     ) -> anyhow::Result<()> {
-        let descriptor_set: vk::DescriptorSet;
-        let descriptor_pool: vk::DescriptorPool;
+        let cmd = self.compute_cmd_buffers[&(image, self.next_image)];
+        let encode_cmd = self.get_encode_cmd_buffer(device, image);
+
+        // TODO: mutex around compute queue
+        unsafe {
+            let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
+            let signal_infos = [vk::SemaphoreSubmitInfo::default()
+                .semaphore(self.compute_semaphore)
+                .value(self.frame_index)
+                .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
+            let info = vk::SubmitInfo2::default()
+                .command_buffer_infos(&cmd_infos)
+                .wait_semaphore_infos(wait_semaphore_infos)
+                .signal_semaphore_infos(&signal_infos);
+            device
+                .queue_submit2(compute_queue, &[info], vk::Fence::default())
+                .map_err(|err| anyhow!("Failed to submit to compute queue: {err}"))?;
+
+            let wait_infos = [vk::SemaphoreSubmitInfo::default()
+                .semaphore(self.compute_semaphore)
+                .value(self.frame_index)
+                .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
+            let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
+            let info = vk::SubmitInfo2::default()
+                .command_buffer_infos(&cmd_infos)
+                .wait_semaphore_infos(&wait_infos)
+                .signal_semaphore_infos(signal_semaphore_infos);
+            device
+                .queue_submit2(encode_queue, &[info], vk::Fence::default())
+                .map_err(|err| anyhow!("Failed to submit to encode queue: {err}"))?;
+        }
+        self.next_image += 1;
+        if self.next_image as usize >= self.views.len() {
+            self.next_image = 0;
+        }
+        self.frame_index += 1;
         Ok(())
     }
 
@@ -351,6 +476,8 @@ impl Dpb {
             device.destroy_command_pool(self.compute_cmd_pool, allocator);
             device.destroy_command_pool(self.encode_cmd_pool, allocator);
             device.destroy_command_pool(self.decode_cmd_pool, allocator);
+            device.destroy_semaphore(self.compute_semaphore, allocator);
+            device.destroy_semaphore(self.encode_semaphore, allocator);
         }
     }
     // TODO: DropBomb?
