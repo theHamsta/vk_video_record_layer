@@ -19,6 +19,7 @@ pub struct State {
     pub settings: Settings,
     pub compute_queue: RwLock<Option<vk::Queue>>,
     pub compute_queue_family_idx: RwLock<u32>,
+    pub graphics_queue_family_idx: RwLock<u32>,
     pub encode_queue: RwLock<Option<vk::Queue>>,
     pub encode_queue_family_idx: RwLock<u32>,
     pub decode_queue: RwLock<Option<vk::Queue>>,

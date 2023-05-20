@@ -1,5 +1,3 @@
-//#![feature(iterator_try_collect)]
-
 mod dpb;
 mod settings;
 mod shader;
@@ -270,6 +268,14 @@ pub extern "system" fn record_vk_create_device(
                     error!("Device doesn't support compute");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 };
+                let Some(graphics_idx) = queue_props.iter().position(|prop| {
+                    prop.queue_family_properties
+                        .queue_flags
+                        .contains(vk::QueueFlags::GRAPHICS)
+                }) else {
+                    error!("Device doesn't support graphics");
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                };
                 let Some(encode_idx) = queue_props.iter().position(|prop| {
                     prop.queue_family_properties
                         .queue_flags
@@ -422,6 +428,7 @@ pub extern "system" fn record_vk_create_device(
                     };
                     *state.private_slot.write().unwrap() = slot;
 
+                    *state.graphics_queue_family_idx.write().unwrap() = graphics_idx as u32;
                     *state.compute_queue_family_idx.write().unwrap() = compute_idx as u32;
                     *state.encode_queue_family_idx.write().unwrap() = encode_idx as u32;
                     *state.decode_queue_family_idx.write().unwrap() = decode_idx as u32;

@@ -106,12 +106,11 @@ pub unsafe fn record_vk_create_swapchain(
                     video_format,
                     create_info.image_extent,
                     16,
+                    create_info.min_image_count,
                     p_allocator.as_ref(),
-                    &[
-                        *get_state().compute_queue_family_idx.read().unwrap(),
-                        *get_state().encode_queue_family_idx.read().unwrap(),
-                        *get_state().decode_queue_family_idx.read().unwrap(),
-                    ],
+                    *get_state().encode_queue_family_idx.read().unwrap(),
+                    *get_state().decode_queue_family_idx.read().unwrap(),
+                    *get_state().compute_queue_family_idx.read().unwrap(),
                 ),
                 encode_session: create_video_session(
                     *get_state().encode_queue_family_idx.read().unwrap(),
