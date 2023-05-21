@@ -462,7 +462,6 @@ pub extern "system" fn record_vk_destroy_device(
         unsafe {
             let allocator = p_allocator.as_ref();
             device.destroy_private_data_slot(slot, allocator);
-            // TODO: destroy more layer objects
             device.destroy_device(allocator);
         }
     }
