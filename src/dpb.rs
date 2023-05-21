@@ -2,9 +2,18 @@ use std::collections::HashMap;
 
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
+use itertools::Itertools;
 use log::{debug, error};
 
-use crate::shader::ShaderPipeline;
+use crate::{
+    cmd_buffer_queue::{CommandBuffer, CommandBufferQueue},
+    shader::ShaderPipeline,
+};
+
+struct CommandBufferWithMaybeFence {
+    cmd: vk::CommandBuffer,
+    fence: Option<vk::Fence>,
+}
 
 pub struct Dpb {
     extent: vk::Extent2D,
@@ -16,8 +25,8 @@ pub struct Dpb {
     memory: Vec<vk::DeviceMemory>, // TODO: only one memory?
     sampler: vk::Sampler,
     compute_cmd_pool: vk::CommandPool,
-    encode_cmd_pool: vk::CommandPool,
-    decode_cmd_pool: vk::CommandPool,
+    encode_cmd_pool: VkResult<CommandBufferQueue>,
+    decode_cmd_pool: VkResult<CommandBufferQueue>,
     descriptor_pool: vk::DescriptorPool,
     next_image: u32,
     compute_family_index: u32,
@@ -146,10 +155,13 @@ impl Dpb {
                 }
             }
 
-            let sampler = device.create_sampler(
-                &vk::SamplerCreateInfo::default().unnormalized_coordinates(true),
-                allocator,
-            )?;
+            let sampler = device
+                .create_sampler(
+                    &vk::SamplerCreateInfo::default().unnormalized_coordinates(true),
+                    allocator,
+                )
+                .map_err(|err| res = err)
+                .unwrap_or(vk::Sampler::null());
 
             let info =
                 vk::CommandPoolCreateInfo::default().queue_family_index(compute_family_index);
@@ -157,18 +169,11 @@ impl Dpb {
                 .create_command_pool(&info, allocator)
                 .map_err(|err| res = err)
                 .unwrap_or(vk::CommandPool::null());
-            let info = vk::CommandPoolCreateInfo::default()
-                .queue_family_index(encode_family_index)
-                .flags(vk::CommandPoolCreateFlags::TRANSIENT);
 
-            let encode_cmd_pool = device
-                .create_command_pool(&info, allocator)
-                .map_err(|err| res = err)
-                .unwrap_or(vk::CommandPool::null());
-            let decode_cmd_pool = device
-                .create_command_pool(&info, allocator)
-                .map_err(|err| res = err)
-                .unwrap_or(vk::CommandPool::null());
+            let encode_cmd_pool =
+                CommandBufferQueue::new(device, encode_family_index, 10, 100, allocator);
+            let decode_cmd_pool =
+                CommandBufferQueue::new(device, encode_family_index, 10, 100, allocator);
 
             let num_pools = max_input_image_views * num_images;
             let pool_sizes = vec![
@@ -204,7 +209,7 @@ impl Dpb {
                 } else {
                     (vk::Pipeline::null(), vk::PipelineLayout::null(), Vec::new())
                 };
-            let timeline_info =
+            let mut timeline_info =
                 vk::SemaphoreTypeCreateInfo::default().semaphore_type(vk::SemaphoreType::TIMELINE);
             let info = vk::SemaphoreCreateInfo::default();
             info.push_next(&mut timeline_info);
@@ -225,6 +230,7 @@ impl Dpb {
 
             let mut rtn = Self {
                 next_image: 0,
+                frame_index: 0,
                 extent,
                 format,
                 images,
@@ -261,7 +267,7 @@ impl Dpb {
         }
     }
 
-    pub fn prerecord_input_image_conversions(
+     pub fn prerecord_input_image_conversions(
         &mut self,
         device: &ash::Device,
         input_images: &[vk::Image],
@@ -270,7 +276,7 @@ impl Dpb {
         src_queue_family_index: u32,
         dst_queue_family_index: u32,
     ) -> anyhow::Result<()> {
-        if input_format != vk::Format::B8G8R8_UINT {
+        if input_format != vk::Format::B8G8R8A8_UINT {
             unimplemented!();
         }
         unsafe {
@@ -391,12 +397,22 @@ impl Dpb {
         Ok(())
     }
 
-    fn get_encode_cmd_buffer(
+    fn record_encode_cmd_buffer(
         &mut self,
         device: &ash::Device,
         image: vk::ImageView,
-    ) -> anyhow::Result<vk::CommandBuffer> {
-        todo!();
+        allocator: Option<&vk::AllocationCallbacks>,
+    ) -> VkResult<CommandBuffer> {
+        let cmd = self
+            .encode_cmd_pool
+            .as_mut()
+            .map_err(|e| *e)?
+            .next(device, allocator)?;
+        {
+            let cmd = cmd.cmd;
+        }
+
+        Ok(cmd)
     }
 
     pub fn encode_frame(
@@ -407,43 +423,48 @@ impl Dpb {
         encode_queue: vk::Queue,
         wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
         signal_semaphore_infos: &[vk::SemaphoreSubmitInfo],
+        allocator: Option<&vk::AllocationCallbacks>,
     ) -> anyhow::Result<()> {
-        let cmd = self.compute_cmd_buffers[&(image, self.next_image)];
-        let encode_cmd = self.get_encode_cmd_buffer(device, image);
-
-        // TODO: mutex around compute queue
         unsafe {
+            let cmd = self.compute_cmd_buffers[&(image, self.next_image)];
+
+            let encode_cmd = self.record_encode_cmd_buffer(device, image, allocator)?;
+
+            // TODO: mutex around compute queue
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
             let signal_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(self.compute_semaphore)
                 .value(self.frame_index)
-                .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
+                .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)]
+            .iter()
+            .copied()
+            .chain(signal_semaphore_infos.iter().copied())
+            .collect_vec();
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
                 .wait_semaphore_infos(wait_semaphore_infos)
                 .signal_semaphore_infos(&signal_infos);
             device
-                .queue_submit2(compute_queue, &[info], vk::Fence::default())
+                .queue_submit2(compute_queue, &[info], vk::Fence::null())
                 .map_err(|err| anyhow!("Failed to submit to compute queue: {err}"))?;
 
             let wait_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(self.compute_semaphore)
                 .value(self.frame_index)
                 .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
-            let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
+            let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
-                .wait_semaphore_infos(&wait_infos)
-                .signal_semaphore_infos(signal_semaphore_infos);
+                .wait_semaphore_infos(&wait_infos);
             device
-                .queue_submit2(encode_queue, &[info], vk::Fence::default())
+                .queue_submit2(encode_queue, &[info], encode_cmd.fence)
                 .map_err(|err| anyhow!("Failed to submit to encode queue: {err}"))?;
         }
         self.next_image += 1;
         if self.next_image as usize >= self.views.len() {
             self.next_image = 0;
         }
-        self.frame_index += 1;
+        self.frame_index = self.frame_index.wrapping_add(1);
         Ok(())
     }
 
@@ -474,8 +495,12 @@ impl Dpb {
             device.destroy_pipeline(self.compute_pipeline, allocator);
             device.destroy_descriptor_pool(self.descriptor_pool, allocator);
             device.destroy_command_pool(self.compute_cmd_pool, allocator);
-            device.destroy_command_pool(self.encode_cmd_pool, allocator);
-            device.destroy_command_pool(self.decode_cmd_pool, allocator);
+            if let Ok(pool) = &mut self.encode_cmd_pool {
+                pool.destroy(device, allocator);
+            }
+            if let Ok(pool) = &mut self.decode_cmd_pool {
+                pool.destroy(device, allocator);
+            }
             device.destroy_semaphore(self.compute_semaphore, allocator);
             device.destroy_semaphore(self.encode_semaphore, allocator);
         }

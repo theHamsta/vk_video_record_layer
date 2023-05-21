@@ -1,3 +1,4 @@
+mod cmd_buffer_queue;
 mod dpb;
 mod settings;
 mod shader;

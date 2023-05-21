@@ -3,6 +3,7 @@ use std::ptr::null_mut;
 
 use ash::prelude::VkResult;
 use ash::vk;
+use itertools::Itertools;
 use log::{debug, error, info, trace, warn};
 
 use crate::dpb::Dpb;
@@ -58,6 +59,7 @@ pub unsafe fn record_vk_create_swapchain(
     p_swapchain: *mut vk::SwapchainKHR,
 ) -> vk::Result {
     let allocator = p_allocator.as_ref();
+    let create_info = p_create_info.as_ref().unwrap();
     let lock = get_state().swapchain_fn.read().unwrap();
     let swapchain_fn = lock.as_ref().unwrap();
     let result =
@@ -83,7 +85,7 @@ pub unsafe fn record_vk_create_swapchain(
                     layer_count: 1,
                 });
 
-            let image_views = {
+            let image_views: VkResult<Vec<vk::ImageView>> = {
                 if let Ok(images) = &images {
                     images
                         .iter()
@@ -98,20 +100,36 @@ pub unsafe fn record_vk_create_swapchain(
             };
 
             let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
+            let swapchain_format = create_info.image_format;
+            let mut dpb = Dpb::new(
+                device,
+                video_format,
+                create_info.image_extent,
+                16,
+                create_info.min_image_count,
+                p_allocator.as_ref(),
+                *get_state().encode_queue_family_idx.read().unwrap(),
+                *get_state().decode_queue_family_idx.read().unwrap(),
+                *get_state().compute_queue_family_idx.read().unwrap(),
+            );
+            let present_family_idx = *get_state().graphics_queue_family_idx.read().unwrap();
+            if let (Ok(dpb), Ok(images), Ok(image_views)) = (dpb.as_mut(), images.as_ref(), image_views.as_ref()) {
+                if let Err(err) = dpb.prerecord_input_image_conversions(
+                    device,
+                    images,
+                    image_views,
+                    swapchain_format,
+                    present_family_idx,
+                    present_family_idx,
+                ) {
+                    error!("Failed to prerecord image conversions: {err}");
+                }
+            }
+
             SwapChainData {
                 _video_max_extent: create_info.image_extent,
                 _swapchain_format: create_info.image_format,
-                dpb: Dpb::new(
-                    device,
-                    video_format,
-                    create_info.image_extent,
-                    16,
-                    create_info.min_image_count,
-                    p_allocator.as_ref(),
-                    *get_state().encode_queue_family_idx.read().unwrap(),
-                    *get_state().decode_queue_family_idx.read().unwrap(),
-                    *get_state().compute_queue_family_idx.read().unwrap(),
-                ),
+                dpb,
                 encode_session: create_video_session(
                     *get_state().encode_queue_family_idx.read().unwrap(),
                     create_info.image_extent,
