@@ -7,7 +7,9 @@ use log::{debug, error};
 
 use crate::{
     cmd_buffer_queue::{CommandBuffer, CommandBufferQueue},
+    settings::Codec,
     shader::ShaderPipeline,
+    video_session::VideoSession,
 };
 
 struct CommandBufferWithMaybeFence {
@@ -55,6 +57,7 @@ impl Dpb {
         encode_family_index: u32,
         decode_family_index: u32,
         compute_family_index: u32,
+        video_session: &VideoSession,
     ) -> VkResult<Self> {
         unsafe {
             let mut images = Vec::new();
@@ -69,6 +72,20 @@ impl Dpb {
                 decode_family_index,
                 compute_family_index,
             ];
+
+            let profile = vk::VideoProfileInfoKHR::default()
+                .video_codec_operation(match (video_session.is_encode(), video_session.codec()) {
+                    (true, Codec::H264) => vk::VideoCodecOperationFlagsKHR::ENCODE_H264_EXT,
+                    (true, Codec::H265) => vk::VideoCodecOperationFlagsKHR::ENCODE_H265_EXT,
+                    (true, Codec::AV1) => todo!(),
+                    (false, Codec::H264) => vk::VideoCodecOperationFlagsKHR::DECODE_H264,
+                    (false, Codec::H265) => vk::VideoCodecOperationFlagsKHR::DECODE_H265,
+                    (false, Codec::AV1) => todo!(),
+                })
+                .luma_bit_depth(vk::VideoComponentBitDepthFlagsKHR::TYPE_8)
+                .chroma_bit_depth(vk::VideoComponentBitDepthFlagsKHR::TYPE_8)
+                .chroma_subsampling(vk::VideoChromaSubsamplingFlagsKHR::TYPE_420);
+
             let info = vk::ImageCreateInfo::default()
                 .extent(vk::Extent3D {
                     width,
@@ -78,18 +95,22 @@ impl Dpb {
                 .format(format)
                 .mip_levels(1)
                 .array_layers(1)
+                .image_type(vk::ImageType::TYPE_2D)
                 .samples(vk::SampleCountFlags::TYPE_1)
                 .sharing_mode(vk::SharingMode::EXCLUSIVE)
                 .queue_family_indices(&indices)
                 .usage(
-                    vk::ImageUsageFlags::SAMPLED
-                        | vk::ImageUsageFlags::VIDEO_ENCODE_DPB_KHR
+                    vk::ImageUsageFlags::VIDEO_ENCODE_DPB_KHR
                         | vk::ImageUsageFlags::VIDEO_ENCODE_SRC_KHR
                         | vk::ImageUsageFlags::VIDEO_DECODE_DST_KHR
+                        // |vk::ImageUsageFlags::SAMPLED // requires samplerconversion pNext
                         | vk::ImageUsageFlags::STORAGE,
                 )
-                .tiling(vk::ImageTiling::OPTIMAL)
-                .initial_layout(vk::ImageLayout::GENERAL);
+                .tiling(vk::ImageTiling::LINEAR)
+                .initial_layout(vk::ImageLayout::UNDEFINED);
+            let profiles = &[profile];
+            let mut profile_list = vk::VideoProfileListInfoKHR::default().profiles(profiles);
+            info.push_next(&mut profile_list);
 
             let mut view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
@@ -157,7 +178,11 @@ impl Dpb {
 
             let sampler = device
                 .create_sampler(
-                    &vk::SamplerCreateInfo::default().unnormalized_coordinates(true),
+                    &vk::SamplerCreateInfo::default()
+                        .unnormalized_coordinates(true)
+                        .address_mode_u(vk::SamplerAddressMode::CLAMP_TO_BORDER)
+                        .address_mode_v(vk::SamplerAddressMode::CLAMP_TO_BORDER)
+                        .address_mode_w(vk::SamplerAddressMode::CLAMP_TO_BORDER),
                     allocator,
                 )
                 .map_err(|err| res = err)
@@ -267,7 +292,7 @@ impl Dpb {
         }
     }
 
-     pub fn prerecord_input_image_conversions(
+    pub fn prerecord_input_image_conversions(
         &mut self,
         device: &ash::Device,
         input_images: &[vk::Image],
@@ -276,8 +301,8 @@ impl Dpb {
         src_queue_family_index: u32,
         dst_queue_family_index: u32,
     ) -> anyhow::Result<()> {
-        if input_format != vk::Format::B8G8R8A8_UINT {
-            unimplemented!();
+        if input_format != vk::Format::B8G8R8A8_UNORM {
+            panic!("Conversion for input format {input_format:?} not implemented yet");
         }
         unsafe {
             let info = vk::CommandBufferAllocateInfo::default()

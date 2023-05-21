@@ -3,7 +3,6 @@ use std::ptr::null_mut;
 
 use ash::prelude::VkResult;
 use ash::vk;
-use itertools::Itertools;
 use log::{debug, error, info, trace, warn};
 
 use crate::dpb::Dpb;
@@ -20,17 +19,29 @@ use crate::vk_beta::{
     VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
 };
 
-struct VideoSession {
+pub struct VideoSession {
     session: vk::VideoSessionKHR,
     memories: Vec<vk::DeviceMemory>,
     parameters: Option<vk::VideoSessionParametersKHR>,
+    is_encode: bool,
+    codec: Codec,
+}
+
+impl VideoSession {
+    pub fn is_encode(&self) -> &bool {
+        &self.is_encode
+    }
+
+    pub fn codec(&self) -> Codec {
+        self.codec
+    }
 }
 
 struct SwapChainData {
     dpb: VkResult<Dpb>,
     _video_max_extent: vk::Extent2D,
     _swapchain_format: vk::Format,
-    //swapchain_color_space: vk::ColorSpaceKHR,
+    //swapchain_color_space: vk::ColorSpacekHz,
     encode_session: VkResult<VideoSession>,
     decode_session: VkResult<VideoSession>,
     images: VkResult<Vec<vk::Image>>,
@@ -100,20 +111,37 @@ pub unsafe fn record_vk_create_swapchain(
             };
 
             let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
-            let swapchain_format = create_info.image_format;
-            let mut dpb = Dpb::new(
-                device,
-                video_format,
-                create_info.image_extent,
-                16,
-                create_info.min_image_count,
-                p_allocator.as_ref(),
+            let encode_session = create_video_session(
                 *get_state().encode_queue_family_idx.read().unwrap(),
-                *get_state().decode_queue_family_idx.read().unwrap(),
-                *get_state().compute_queue_family_idx.read().unwrap(),
+                create_info.image_extent,
+                true,
+                p_allocator,
             );
+            let decode_session = create_video_session(
+                *get_state().decode_queue_family_idx.read().unwrap(),
+                create_info.image_extent,
+                false,
+                p_allocator,
+            );
+            let swapchain_format = create_info.image_format;
+            let mut dpb = encode_session.as_ref().map_err(|e| *e).and_then(|s| {
+                Dpb::new(
+                    device,
+                    video_format,
+                    create_info.image_extent,
+                    16,
+                    create_info.min_image_count,
+                    p_allocator.as_ref(),
+                    *get_state().encode_queue_family_idx.read().unwrap(),
+                    *get_state().decode_queue_family_idx.read().unwrap(),
+                    *get_state().compute_queue_family_idx.read().unwrap(),
+                    s,
+                )
+            });
             let present_family_idx = *get_state().graphics_queue_family_idx.read().unwrap();
-            if let (Ok(dpb), Ok(images), Ok(image_views)) = (dpb.as_mut(), images.as_ref(), image_views.as_ref()) {
+            if let (Ok(dpb), Ok(images), Ok(image_views)) =
+                (dpb.as_mut(), images.as_ref(), image_views.as_ref())
+            {
                 if let Err(err) = dpb.prerecord_input_image_conversions(
                     device,
                     images,
@@ -130,18 +158,8 @@ pub unsafe fn record_vk_create_swapchain(
                 _video_max_extent: create_info.image_extent,
                 _swapchain_format: create_info.image_format,
                 dpb,
-                encode_session: create_video_session(
-                    *get_state().encode_queue_family_idx.read().unwrap(),
-                    create_info.image_extent,
-                    true,
-                    p_allocator,
-                ),
-                decode_session: create_video_session(
-                    *get_state().decode_queue_family_idx.read().unwrap(),
-                    create_info.image_extent,
-                    false,
-                    p_allocator,
-                ),
+                encode_session,
+                decode_session,
                 images,
                 image_views,
             }
@@ -214,6 +232,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
             session,
             memories,
             parameters,
+            ..
         }) = swapchain_data.decode_session
         {
             (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
@@ -232,6 +251,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
             session,
             memories,
             parameters,
+            ..
         }) = swapchain_data.encode_session
         {
             (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
@@ -387,6 +407,8 @@ fn create_video_session(
 
     res.and_then(|session| {
         Ok(VideoSession {
+            is_encode,
+            codec: state.settings.codec,
             session,
             memories: {
                 let mut memories = Vec::new();

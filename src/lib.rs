@@ -56,7 +56,7 @@ unsafe fn ptr_chain_get_next<SRC, DST>(
 
 #[no_mangle]
 pub extern "system" fn record_vk_create_instance(
-    p_create_info: *const vk::InstanceCreateInfo,
+    p_create_info: *mut vk::InstanceCreateInfo,
     p_allocator: *const vk::AllocationCallbacks,
     p_instance: *mut vk::Instance,
 ) -> vk::Result {
@@ -84,13 +84,15 @@ pub extern "system" fn record_vk_create_instance(
                 else { return vk::Result::ERROR_INITIALIZATION_FAILED };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
-                (*(*p_create_info).p_application_info)
+                let create_info = p_create_info.as_mut().unwrap();
+                let app_info = (*(*p_create_info).p_application_info)
                     .api_version(vk::make_api_version(0, 1, 3, 249));
+                let create_info = create_info.application_info(&app_info);
 
                 let real_create_instance: vk::PFN_vkCreateInstance =
                     transmute(real_create_instance);
                 // TODO: patch application info to support vk video
-                let res = real_create_instance(p_create_info, p_allocator, p_instance);
+                let res = real_create_instance(&create_info, p_allocator, p_instance);
                 if res == vk::Result::SUCCESS {
                     *state.instance.write().unwrap() = Some(ash::Instance::load(
                         &vk::StaticFn {
@@ -150,6 +152,7 @@ pub extern "system" fn record_vk_get_device_proc_addr(
         match str_fn_name {
             "vkCreateSwapchainKHR" => Some(transmute(record_vk_create_swapchain as *mut c_void)),
             "vkDestroySwapchainKHR" => Some(transmute(record_vk_destroy_swapchain as *mut c_void)),
+            "vkDestroyDevice" => Some(transmute(record_vk_destroy_device as *mut c_void)),
             "vkQueuePresentKHR" => Some(transmute(record_vk_queue_present as *mut c_void)),
             _ => {
                 let state = get_state();
@@ -443,6 +446,25 @@ pub extern "system" fn record_vk_create_device(
     }
 
     vk::Result::ERROR_INITIALIZATION_FAILED
+}
+
+#[no_mangle]
+pub extern "system" fn record_vk_destroy_device(
+    device: vk::Device,
+    p_allocator: *const vk::AllocationCallbacks,
+) {
+    debug!("record_vk_destroy_device");
+    if device != vk::Device::null() {
+        let state = get_state();
+        let lock = state.device.write().unwrap();
+        let device = lock.as_ref().unwrap();
+        let slot = *state.private_slot.write().unwrap();
+        unsafe {
+            let allocator = p_allocator.as_ref();
+            device.destroy_private_data_slot(slot, allocator);
+            device.destroy_device(allocator);
+        }
+    }
 }
 
 #[no_mangle]
