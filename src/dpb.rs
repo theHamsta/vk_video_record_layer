@@ -86,7 +86,7 @@ impl Dpb {
                 .chroma_bit_depth(vk::VideoComponentBitDepthFlagsKHR::TYPE_8)
                 .chroma_subsampling(vk::VideoChromaSubsamplingFlagsKHR::TYPE_420);
 
-            let info = vk::ImageCreateInfo::default()
+            let mut info = vk::ImageCreateInfo::default()
                 .extent(vk::Extent3D {
                     width,
                     height,
@@ -100,17 +100,17 @@ impl Dpb {
                 .sharing_mode(vk::SharingMode::EXCLUSIVE)
                 .queue_family_indices(&indices)
                 .usage(
-                    vk::ImageUsageFlags::VIDEO_ENCODE_DPB_KHR
-                        | vk::ImageUsageFlags::VIDEO_ENCODE_SRC_KHR
-                        | vk::ImageUsageFlags::VIDEO_DECODE_DST_KHR
-                        // |vk::ImageUsageFlags::SAMPLED // requires samplerconversion pNext
-                        | vk::ImageUsageFlags::STORAGE,
+                    //vk::ImageUsageFlags::VIDEO_ENCODE_DPB_KHR
+                    //vk::ImageUsageFlags::VIDEO_ENCODE_SRC_KHR
+                    //vk::ImageUsageFlags::VIDEO_DECODE_DST_KHR
+                    // |vk::ImageUsageFlags::SAMPLED // requires samplerconversion pNext
+                    vk::ImageUsageFlags::STORAGE,
                 )
-                .tiling(vk::ImageTiling::LINEAR)
+                .tiling(vk::ImageTiling::OPTIMAL)
                 .initial_layout(vk::ImageLayout::UNDEFINED);
             let profiles = &[profile];
             let mut profile_list = vk::VideoProfileListInfoKHR::default().profiles(profiles);
-            info.push_next(&mut profile_list);
+            info = info.push_next(&mut profile_list);
 
             let mut view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
@@ -145,22 +145,22 @@ impl Dpb {
 
             for _ in 0..num_images {
                 let image = device.create_image(&info, allocator);
-                let Ok(image) = image.map_err(|e| res = e) else { break; };
+                let Ok(image) = image.map_err(|e| { error!("Failed to create image for DPB: {e}"); res = e}) else { break; };
                 images.push(image);
 
                 view_info.image = image;
                 let view = device.create_image_view(&view_info, allocator);
-                let Ok(view) = view.map_err(|e| res = e) else { break; };
+                let Ok(view) = view.map_err(|e| { error!("Failed to create color image view for DPB: {e}"); res = e}) else { break; };
                 views.push(view);
 
                 y_view_info.image = image;
                 let view = device.create_image_view(&y_view_info, allocator);
-                let Ok(view) = view.map_err(|e| res = e) else { break; };
+                let Ok(view) = view.map_err(|e| { error!("Failed to create luma image view for DPB: {e}"); res = e}) else { break; };
                 y_views.push(view);
 
                 uv_view_info.image = image;
                 let view = device.create_image_view(&uv_view_info, allocator);
-                let Ok(view) = view.map_err(|e| res = e) else { break; };
+                let Ok(view) = view.map_err(|e| { error!("Failed to create chroma image view for DPB: {e}"); res = e}) else { break; };
                 uv_views.push(view);
 
                 let req = device.get_image_memory_requirements(image);
@@ -192,7 +192,10 @@ impl Dpb {
                 vk::CommandPoolCreateInfo::default().queue_family_index(compute_family_index);
             let compute_cmd_pool = device
                 .create_command_pool(&info, allocator)
-                .map_err(|err| res = err)
+                .map_err(|err| {
+                    error!("Failed to allocate compute command pool: {res}");
+                    res = err
+                })
                 .unwrap_or(vk::CommandPool::null());
 
             let encode_cmd_pool =
@@ -236,8 +239,8 @@ impl Dpb {
                 };
             let mut timeline_info =
                 vk::SemaphoreTypeCreateInfo::default().semaphore_type(vk::SemaphoreType::TIMELINE);
-            let info = vk::SemaphoreCreateInfo::default();
-            info.push_next(&mut timeline_info);
+            let mut info = vk::SemaphoreCreateInfo::default();
+            info = info.push_next(&mut timeline_info);
             let compute_semaphore = device
                 .create_semaphore(&info, allocator)
                 .map_err(|err| {
@@ -285,7 +288,7 @@ impl Dpb {
                 debug!("DPB resource successfully created!");
                 Ok(rtn)
             } else {
-                error!("Failed to create DPB resources created!");
+                error!("Failed to create DPB resources: {res}!");
                 rtn.destroy(device, allocator);
                 Err(res)
             }
@@ -353,7 +356,7 @@ impl Dpb {
                         .image(image)];
                     let dep_info_compute_to_present =
                         vk::DependencyInfo::default().image_memory_barriers(&barriers);
-                    let info = vk::CommandBufferBeginInfo::default();
+                    let info = vk::CommandBufferBeginInfo::default().flags(vk::CommandBufferUsageFlags::SIMULTANEOUS_USE);
                     device
                         .begin_command_buffer(cmd, &info)
                         .map_err(|err| anyhow!("Failed to begin command buffer: {err}"))?;
@@ -443,7 +446,7 @@ impl Dpb {
     pub fn encode_frame(
         &mut self,
         device: &ash::Device,
-        image: vk::ImageView,
+        image_view: vk::ImageView,
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
         wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
@@ -451,9 +454,10 @@ impl Dpb {
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> anyhow::Result<()> {
         unsafe {
-            let cmd = self.compute_cmd_buffers[&(image, self.next_image)];
+            let cmd = self.compute_cmd_buffers[&(image_view, self.next_image)];
+            debug!("encode_frame");
 
-            let encode_cmd = self.record_encode_cmd_buffer(device, image, allocator)?;
+            //let encode_cmd = self.record_encode_cmd_buffer(device, image_view, allocator)?;
 
             // TODO: mutex around compute queue
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
@@ -467,23 +471,23 @@ impl Dpb {
             .collect_vec();
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
-                .wait_semaphore_infos(wait_semaphore_infos)
+                //.wait_semaphore_infos(wait_semaphore_infos)
                 .signal_semaphore_infos(&signal_infos);
             device
                 .queue_submit2(compute_queue, &[info], vk::Fence::null())
                 .map_err(|err| anyhow!("Failed to submit to compute queue: {err}"))?;
 
-            let wait_infos = [vk::SemaphoreSubmitInfo::default()
-                .semaphore(self.compute_semaphore)
-                .value(self.frame_index)
-                .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
-            let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
-            let info = vk::SubmitInfo2::default()
-                .command_buffer_infos(&cmd_infos)
-                .wait_semaphore_infos(&wait_infos);
-            device
-                .queue_submit2(encode_queue, &[info], encode_cmd.fence)
-                .map_err(|err| anyhow!("Failed to submit to encode queue: {err}"))?;
+            //let wait_infos = [vk::SemaphoreSubmitInfo::default()
+            //.semaphore(self.compute_semaphore)
+            //.value(self.frame_index)
+            //.stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
+            //let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
+            //let info = vk::SubmitInfo2::default()
+            //.command_buffer_infos(&cmd_infos)
+            //.wait_semaphore_infos(&wait_infos);
+            //device
+            //.queue_submit2(encode_queue, &[info], encode_cmd.fence)
+            //.map_err(|err| anyhow!("Failed to submit to encode queue: {err}"))?;
         }
         self.next_image += 1;
         if self.next_image as usize >= self.views.len() {
