@@ -26,6 +26,7 @@ pub fn main() -> anyhow::Result<()> {
                         "cs_6_5",
                         "-spirv",
                         "-fspv-target-env=vulkan1.3",
+                        "-Zi",
                         "-Fo",
                         &format!("{}.spirv", entry.to_string_lossy()),
                         entry.to_str().unwrap(),
