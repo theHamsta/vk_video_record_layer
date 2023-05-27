@@ -358,6 +358,14 @@ pub extern "system" fn record_vk_create_device(
                     });
                     *state.video_queue_fn.write().unwrap() = Some(video_queue_fn);
 
+                    let video_encode_queue_fn = vk::KhrVideoEncodeQueueFn::load(|name| {
+                        transmute((get_device_proc_addr.unwrap())(
+                            device.handle(),
+                            name.as_ptr() as *const _,
+                        ))
+                    });
+                    *state.video_encode_queue_fn.write().unwrap() = Some(video_encode_queue_fn);
+
                     let Ok(slot) = device.create_private_data_slot(
                         &vk::PrivateDataSlotCreateInfo::default(),
                         p_allocator.as_ref(),

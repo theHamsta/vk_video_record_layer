@@ -43,6 +43,18 @@
 					"default": ""
 				},
 				{
+					"key": "quality_level",
+					"env": "VK_VIDEO_RECORD_QUALITY_LEVEL",
+					"label": "Quality level for video encoding",
+					"description": "",
+					"type": "INT",
+					"default": 42,
+					"range": {
+						"min": 0,
+						"max": 52
+					}
+				},
+				{
 					"key": "codec",
 					"env": "VK_VIDEO_RECORD_CODEC",
 					"label": "Output Codec",

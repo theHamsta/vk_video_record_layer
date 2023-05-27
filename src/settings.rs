@@ -13,6 +13,7 @@ pub enum Codec {
 #[derive(Debug, Default, Clone)]
 pub struct Settings {
     pub codec: Codec,
+    pub quality_level: u32,
     pub output_folder: PathBuf,
 }
 impl Settings {
@@ -34,6 +35,11 @@ impl Settings {
                         match &cap[1] {
                             "video_output_folder" => settings.output_folder = cap[2].into(),
                             "codec" => settings.codec = cap[2].into(),
+                            "quality_level" => {
+                                if let Ok(res) = cap[2].parse() {
+                                    settings.quality_level = res;
+                                }
+                            }
                             _ => error!("Could not parse unknown key {}", &cap[1]),
                         }
                     }
@@ -44,6 +50,9 @@ impl Settings {
 
         if let Ok(output_file) = std::env::var("VK_VIDEO_RECORD_OUTPUT_FOLDER") {
             settings.output_folder = output_file.into();
+        }
+        if let Ok(quality_level) = std::env::var("VK_VIDEO_RECORD_QUALITY_LEVEL") {
+            let _ = quality_level.parse().map(|q| settings.quality_level = q);
         }
         if let Ok(codec) = std::env::var("VK_VIDEO_RECORD_CODEC") {
             settings.codec = codec.into();

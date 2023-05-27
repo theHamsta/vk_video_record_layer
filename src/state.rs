@@ -15,6 +15,8 @@ pub struct State {
     pub physical_device: RwLock<Option<vk::PhysicalDevice>>,
     pub swapchain_fn: RwLock<Option<vk::KhrSwapchainFn>>,
     pub video_queue_fn: RwLock<Option<vk::KhrVideoQueueFn>>,
+    pub video_encode_queue_fn: RwLock<Option<vk::KhrVideoEncodeQueueFn>>,
+    pub video_decode_queue_fn: RwLock<Option<vk::KhrVideoDecodeQueueFn>>,
     pub instance_get_fn: RwLock<Option<vk::PFN_vkGetInstanceProcAddr>>,
     pub device_get_fn: RwLock<Option<vk::PFN_vkGetDeviceProcAddr>>,
     pub settings: Settings,

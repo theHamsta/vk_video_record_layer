@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, mem::MaybeUninit, ptr::null};
 
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
@@ -302,6 +302,8 @@ impl Dpb {
         if input_format != vk::Format::B8G8R8A8_UNORM {
             panic!("Conversion for input format {input_format:?} not implemented yet");
         }
+
+        // TODO: transition encode images to shader write
         unsafe {
             let info = vk::CommandBufferAllocateInfo::default()
                 .command_pool(self.compute_cmd_pool)
@@ -425,8 +427,9 @@ impl Dpb {
         &mut self,
         device: &ash::Device,
         video_queue_fn: &vk::KhrVideoQueueFn,
+        video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
         video_session: &VideoSession,
-        image: vk::ImageView,
+        quality_level: u32,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> anyhow::Result<CommandBuffer> {
         let cmd = self
@@ -444,6 +447,88 @@ impl Dpb {
                         .ok_or_else(|| anyhow!("Can't encode: missing VideoSessionParameters"))?,
                 );
             (video_queue_fn.cmd_begin_video_coding_khr)(cmd, &info);
+
+            let image = self.images[self.next_image as usize];
+            let image_view = self.views[self.next_image as usize];
+
+            // TODO: rate control at least once
+            //(video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
+
+            let barriers = vec![vk::ImageMemoryBarrier2::default()
+                .src_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
+                .dst_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
+                .src_access_mask(vk::AccessFlags2::SHADER_WRITE)
+                .dst_access_mask(vk::AccessFlags2::VIDEO_ENCODE_READ_KHR)
+                .old_layout(vk::ImageLayout::GENERAL)
+                .new_layout(vk::ImageLayout::VIDEO_ENCODE_SRC_KHR)
+                .src_queue_family_index(self.compute_family_index)
+                .dst_queue_family_index(self.encode_family_index)
+                .subresource_range(
+                    vk::ImageSubresourceRange::default()
+                        .aspect_mask(vk::ImageAspectFlags::COLOR)
+                        .base_mip_level(0)
+                        .level_count(1)
+                        .base_array_layer(0)
+                        .layer_count(1),
+                )
+                .image(image)];
+            let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
+            device.cmd_pipeline_barrier2(cmd, &info);
+
+            // TODO: encode pps and sps. Don't I have to do this myself?
+
+            let buffer = vk::Buffer::null();
+            let pic = vk::VideoPictureResourceInfoKHR::default()
+                .coded_extent(self.extent)
+                .image_view_binding(image_view);
+            let flags = MaybeUninit::zeroed();
+            let flags = flags.assume_init();
+            let h264_pic = vk::native::StdVideoEncodeH264PictureInfo {
+                flags,
+                seq_parameter_set_id: 0,
+                pic_parameter_set_id: 0,
+                reserved1: 0,
+                frame_num: 0,
+                PicOrderCnt: 0,
+                pictureType: vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
+            };
+            let flags = MaybeUninit::zeroed();
+            let flags = flags.assume_init();
+            let h264_header = vk::native::StdVideoEncodeH264SliceHeader {
+                flags,
+                first_mb_in_slice: 0,
+                slice_type: 0,
+                idr_pic_id: 0,
+                num_ref_idx_l0_active_minus1: 0,
+                num_ref_idx_l1_active_minus1: 0,
+                cabac_init_idc: 0,
+                disable_deblocking_filter_idc: 0,
+                slice_alpha_c0_offset_div2: 0,
+                slice_beta_offset_div2: 0,
+                reserved1: 0,
+                reserved2: 0,
+                pWeightTable: null(),
+            };
+            let mb_width = (self.extent.width + 15) / 16;
+            let mb_height = (self.extent.height + 15) / 16;
+            let h264_nalus = &[vk::VideoEncodeH264NaluSliceInfoEXT::default()
+                .std_slice_header(&h264_header)
+                .mb_count(mb_width * mb_height)];
+            let mut h264_info = vk::VideoEncodeH264VclFrameInfoEXT::default()
+                .nalu_slice_entries(h264_nalus)
+                .std_picture_info(&h264_pic);
+            let mut info = vk::VideoEncodeInfoKHR::default()
+                .quality_level(quality_level)
+                .dst_buffer(buffer)
+                .dst_buffer_range(0)
+                .src_picture_resource(pic);
+            match video_session.codec() {
+                Codec::H264 => info = info.push_next(&mut h264_info),
+                Codec::H265 => todo!(),
+                Codec::AV1 => todo!(),
+            };
+            (video_encode_queue_fn.cmd_encode_video_khr)(cmd, &info);
+
             let info = vk::VideoEndCodingInfoKHR::default();
             (video_queue_fn.cmd_end_video_coding_khr)(cmd, &info);
         }
@@ -455,7 +540,9 @@ impl Dpb {
         &mut self,
         device: &ash::Device,
         video_queue_fn: &vk::KhrVideoQueueFn,
+        video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
         video_session: &VideoSession,
+        quality_level: u32,
         image_view: vk::ImageView,
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
@@ -470,8 +557,9 @@ impl Dpb {
             let encode_cmd = self.record_encode_cmd_buffer(
                 device,
                 video_queue_fn,
+                video_encode_queue_fn,
                 video_session,
-                image_view,
+                quality_level,
                 allocator,
             )?;
 

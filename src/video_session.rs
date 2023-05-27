@@ -6,7 +6,9 @@ use ash::vk;
 use log::{debug, error, info, trace, warn};
 
 use crate::dpb::Dpb;
-use crate::session_parameters::make_h264_video_session_parameters;
+use crate::session_parameters::{
+    make_h264_video_session_parameters, CodecParameters, VideoSessionParameters,
+};
 use crate::settings::Codec;
 
 use crate::state::get_state;
@@ -23,7 +25,7 @@ use crate::vk_beta::{
 pub struct VideoSession {
     session: vk::VideoSessionKHR,
     memories: Vec<vk::DeviceMemory>,
-    parameters: Option<vk::VideoSessionParametersKHR>,
+    parameters: Option<VideoSessionParameters>,
     is_encode: bool,
     codec: Codec,
 }
@@ -38,7 +40,11 @@ impl VideoSession {
     }
 
     pub fn parameters(&self) -> Option<vk::VideoSessionParametersKHR> {
-        self.parameters
+        self.parameters.as_ref().map(|p| p.parameters())
+    }
+
+    pub fn codec_parameters(&self) -> Option<&CodecParameters> {
+        self.parameters.as_ref().map(|p| p.codec_parameters())
     }
 
     pub fn session(&self) -> vk::VideoSessionKHR {
@@ -83,6 +89,8 @@ impl SwapChainData {
         &mut self,
         device: &ash::Device,
         video_queue_fn: &vk::KhrVideoQueueFn,
+        video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
+        quality_level: u32,
         swapchain_index: usize,
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
@@ -109,7 +117,9 @@ impl SwapChainData {
                 let err = dpb.encode_frame(
                     device,
                     video_queue_fn,
+                    video_encode_queue_fn,
                     encode_session,
+                    quality_level,
                     present_view,
                     compute_queue,
                     encode_queue,
@@ -121,7 +131,7 @@ impl SwapChainData {
                     error!("Failed to encode frame: {err}");
                 }
             } else {
-                error!("Something is terribly wrong a semaphore is missing!");
+                error!("Something is terribly wrong: a semaphore is missing!");
             }
         }
     }
@@ -318,7 +328,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
             if let Some(parameters) = parameters {
                 (video_queue_fn.destroy_video_session_parameters_khr)(
                     device.handle(),
-                    parameters,
+                    parameters.parameters(),
                     p_allocator,
                 );
             }
@@ -337,7 +347,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
             if let Some(parameters) = parameters {
                 (video_queue_fn.destroy_video_session_parameters_khr)(
                     device.handle(),
-                    parameters,
+                    parameters.parameters(),
                     p_allocator,
                 );
             }
@@ -366,6 +376,9 @@ pub unsafe extern "system" fn record_vk_queue_present(
     let present_info = p_present_info.as_ref().unwrap();
     let lock = get_state().video_queue_fn.read().unwrap();
     let video_queue_fn = lock.as_ref().unwrap();
+    let lock = get_state().video_encode_queue_fn.read().unwrap();
+    let video_encode_queue_fn = lock.as_ref().unwrap();
+    let quality_level = get_state().settings.quality_level;
 
     let swapchain_data = transmute::<u64, &mut SwapChainData>(
         device.get_private_data(*present_info.p_swapchains, *slot),
@@ -377,6 +390,8 @@ pub unsafe extern "system" fn record_vk_queue_present(
         swapchain_data.encode_image(
             device,
             video_queue_fn,
+            video_encode_queue_fn,
+            quality_level,
             *present_info.p_image_indices as usize,
             compute_queue,
             encode_queue,
