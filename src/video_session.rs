@@ -6,6 +6,7 @@ use ash::vk;
 use log::{debug, error, info, trace, warn};
 
 use crate::dpb::Dpb;
+use crate::session_parameters::make_h264_video_session_parameters;
 use crate::settings::Codec;
 
 use crate::state::get_state;
@@ -34,6 +35,14 @@ impl VideoSession {
 
     pub fn codec(&self) -> Codec {
         self.codec
+    }
+
+    pub fn parameters(&self) -> Option<vk::VideoSessionParametersKHR> {
+        self.parameters
+    }
+
+    pub fn session(&self) -> vk::VideoSessionKHR {
+        self.session
     }
 }
 
@@ -73,19 +82,24 @@ impl SwapChainData {
     pub fn encode_image(
         &mut self,
         device: &ash::Device,
+        video_queue_fn: &vk::KhrVideoQueueFn,
         swapchain_index: usize,
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
         present_info: &vk::PresentInfoKHR,
         allocator: Option<&vk::AllocationCallbacks>,
     ) {
-        if let (Ok(views), Ok(dpb)) = (&self.image_views, &mut self.dpb) {
-            let wait_semaphore_infos = [vk::SemaphoreSubmitInfo::default().semaphore(unsafe {
-                *present_info
-                    .p_wait_semaphores
-                    .as_ref()
-                    .unwrap_or(&vk::Semaphore::null())
-            }).stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
+        if let (Ok(views), Ok(dpb), Ok(encode_session)) =
+            (&self.image_views, &mut self.dpb, &self.encode_session)
+        {
+            let wait_semaphore_infos = [vk::SemaphoreSubmitInfo::default()
+                .semaphore(unsafe {
+                    *present_info
+                        .p_wait_semaphores
+                        .as_ref()
+                        .unwrap_or(&vk::Semaphore::null())
+                })
+                .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
             let semaphore = self.semaphores[swapchain_index];
             if let Ok(semaphore) = semaphore {
                 let signal_semaphore_infos =
@@ -94,6 +108,8 @@ impl SwapChainData {
                 let present_view = views[swapchain_index];
                 let err = dpb.encode_frame(
                     device,
+                    video_queue_fn,
+                    encode_session,
                     present_view,
                     compute_queue,
                     encode_queue,
@@ -161,12 +177,16 @@ pub unsafe fn record_vk_create_swapchain(
             let encode_session = create_video_session(
                 *get_state().encode_queue_family_idx.read().unwrap(),
                 create_info.image_extent,
+                create_info.image_extent,
+                video_format,
                 true,
                 p_allocator,
             );
             let decode_session = create_video_session(
                 *get_state().decode_queue_family_idx.read().unwrap(),
                 create_info.image_extent,
+                create_info.image_extent,
+                video_format,
                 false,
                 p_allocator,
             );
@@ -344,6 +364,8 @@ pub unsafe extern "system" fn record_vk_queue_present(
     let device = lock.as_ref().unwrap();
     let slot = get_state().private_slot.read().unwrap();
     let present_info = p_present_info.as_ref().unwrap();
+    let lock = get_state().video_queue_fn.read().unwrap();
+    let video_queue_fn = lock.as_ref().unwrap();
 
     let swapchain_data = transmute::<u64, &mut SwapChainData>(
         device.get_private_data(*present_info.p_swapchains, *slot),
@@ -354,6 +376,7 @@ pub unsafe extern "system" fn record_vk_queue_present(
     if let (Some(compute_queue), Some(encode_queue)) = (compute_queue, encode_queue) {
         swapchain_data.encode_image(
             device,
+            video_queue_fn,
             *present_info.p_image_indices as usize,
             compute_queue,
             encode_queue,
@@ -373,6 +396,8 @@ pub unsafe extern "system" fn record_vk_queue_present(
 fn create_video_session(
     queue_family_idx: u32,
     max_coded_extent: vk::Extent2D,
+    coded_extent: vk::Extent2D,
+    video_format: vk::Format,
     is_encode: bool,
     p_allocator: *const vk::AllocationCallbacks,
 ) -> VkResult<VideoSession> {
@@ -426,7 +451,8 @@ fn create_video_session(
     } else {
         profile = profile.push_next(&mut decode_usage);
     }
-    let mut h264_encode_profile = vk::VideoEncodeH264ProfileInfoEXT::default();
+    let mut h264_encode_profile = vk::VideoEncodeH264ProfileInfoEXT::default()
+        .std_profile_idc(vk::native::StdVideoH264ProfileIdc_STD_VIDEO_H264_PROFILE_IDC_MAIN);
     let mut h265_encode_profile = vk::VideoEncodeH265ProfileInfoEXT::default();
     let mut h264_decode_profile = vk::VideoDecodeH264ProfileInfoKHR::default();
     let mut h265_decode_profile = vk::VideoDecodeH265ProfileInfoKHR::default();
@@ -576,71 +602,14 @@ fn create_video_session(
             },
             parameters: {
                 match (is_encode, state.settings.codec) {
-                    (true, Codec::H264) => {
-                        //let sps = vec![StdVideoH264SequenceParameterSet{
-                        //flags: crate::vk_beta::StdVideoH264SpsFlags::default(),
-                        //profile_idc: todo!(),
-                        //level_idc: todo!(),
-                        //chroma_format_idc: todo!(),
-                        //seq_parameter_set_id: todo!(),
-                        //bit_depth_luma_minus8: todo!(),
-                        //bit_depth_chroma_minus8: todo!(),
-                        //log2_max_frame_num_minus4: todo!(),
-                        //pic_order_cnt_type: todo!(),
-                        //offset_for_non_ref_pic: todo!(),
-                        //offset_for_top_to_bottom_field: todo!(),
-                        //log2_max_pic_order_cnt_lsb_minus4: todo!(),
-                        //num_ref_frames_in_pic_order_cnt_cycle: todo!(),
-                        //max_num_ref_frames: todo!(),
-                        //reserved1: 0,
-                        //pic_width_in_mbs_minus1: todo!(),
-                        //pic_height_in_map_units_minus1: todo!(),
-                        //frame_crop_left_offset: 0,
-                        //frame_crop_right_offset: 0,
-                        //frame_crop_top_offset: 0,
-                        //frame_crop_bottom_offset: 0,
-                        //reserved2: 0,
-                        //pOffsetForRefFrame: todo!(),
-                        //pScalingLists: todo!(),
-                        //pSequenceParameterSetVui: todo!()
-                        //}];
-                        //let pps = vec![StdVideoH264PictureParameterSet{
-                        //flags: todo!(),
-                        //seq_parameter_set_id: 0,
-                        //pic_parameter_set_id: 0,
-                        //num_ref_idx_l0_default_active_minus1: todo!(),
-                        //num_ref_idx_l1_default_active_minus1: todo!(),
-                        //weighted_bipred_idc: todo!(),
-                        //pic_init_qp_minus26: todo!(),
-                        //pic_init_qs_minus26: todo!(),
-                        //chroma_qp_index_offset: todo!(),
-                        //second_chroma_qp_index_offset: todo!(),
-                        //pScalingLists: todo!()
-                        //}];
-                        //let add_info = VkVideoEncodeH264SessionParametersAddInfoEXT {
-                        //sType: VkStructureType::VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_SESSION_PARAMETERS_ADD_INFO_EXT,
-                        //pNext: null(),
-                        //stdSPSCount: sps.len() as u32,
-                        //pStdSPSs: sps.as_ptr(),
-                        //stdPPSCount: pps.len()as u32,
-                        //pStdPPSs: pps.as_ptr(),
-                        //};
-                        //let codec_info = VkVideoEncodeH264SessionParametersCreateInfoEXT {
-                        //sType: VkStructureType::VK_STRUCTURE_TYPE_VIDEO_DECODE_H264_SESSION_PARAMETERS_CREATE_INFO_KHR,
-                        //pNext: unsafe {transmute(&add_info)},
-                        //maxStdSPSCount: todo!(),
-                        //maxStdPPSCount: todo!(),
-                        //pParametersAddInfo: todo!()
-                        //};
-                        //let info = VkVideoSessionParametersCreateInfoKHR {
-                        //sType: todo!(),
-                        //pNext: todo!(),
-                        //flags: todo!(),
-                        //videoSessionParametersTemplate: todo!(),
-                        //videoSession: todo!()
-                        //};
-                        None
-                    }
+                    (true, Codec::H264) => make_h264_video_session_parameters(
+                        device,
+                        video_queue_fn,
+                        video_format,
+                        coded_extent,
+                        unsafe { p_allocator.as_ref() },
+                    )
+                    .ok(),
                     (true, Codec::H265) => None,
                     (true, Codec::AV1) => None,
                     (false, Codec::H264) => None,

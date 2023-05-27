@@ -12,14 +12,9 @@ use crate::{
     video_session::VideoSession,
 };
 
-struct CommandBufferWithMaybeFence {
-    cmd: vk::CommandBuffer,
-    fence: Option<vk::Fence>,
-}
-
 pub struct Dpb {
     extent: vk::Extent2D,
-    format: vk::Format,
+    video_format: vk::Format,
     images: Vec<vk::Image>,
     views: Vec<vk::ImageView>,
     y_views: Vec<vk::ImageView>,
@@ -49,7 +44,7 @@ impl Dpb {
     pub fn new(
         // src_queue_family_index
         device: &ash::Device,
-        format: vk::Format,
+        video_format: vk::Format,
         extent: vk::Extent2D,
         num_images: u32,
         max_input_image_views: u32,
@@ -92,7 +87,7 @@ impl Dpb {
                     height,
                     depth: 1,
                 })
-                .format(format)
+                .format(video_format)
                 .mip_levels(1)
                 .array_layers(1)
                 .image_type(vk::ImageType::TYPE_2D)
@@ -100,11 +95,11 @@ impl Dpb {
                 .sharing_mode(vk::SharingMode::EXCLUSIVE)
                 .queue_family_indices(&indices)
                 .usage(
-                    //vk::ImageUsageFlags::VIDEO_ENCODE_DPB_KHR
-                    //vk::ImageUsageFlags::VIDEO_ENCODE_SRC_KHR
+                    vk::ImageUsageFlags::VIDEO_ENCODE_DPB_KHR
+                    | vk::ImageUsageFlags::VIDEO_ENCODE_SRC_KHR
                     //vk::ImageUsageFlags::VIDEO_DECODE_DST_KHR
                     // |vk::ImageUsageFlags::SAMPLED // requires samplerconversion pNext
-                    vk::ImageUsageFlags::STORAGE,
+                    | vk::ImageUsageFlags::STORAGE,
                 )
                 .tiling(vk::ImageTiling::OPTIMAL)
                 .initial_layout(vk::ImageLayout::UNDEFINED);
@@ -114,7 +109,7 @@ impl Dpb {
 
             let mut view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
-                .format(format)
+                .format(video_format)
                 .subresource_range(vk::ImageSubresourceRange {
                     aspect_mask: vk::ImageAspectFlags::COLOR,
                     base_mip_level: 0,
@@ -124,7 +119,7 @@ impl Dpb {
                 });
             let mut y_view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
-                .format(format)
+                .format(video_format)
                 .subresource_range(vk::ImageSubresourceRange {
                     aspect_mask: vk::ImageAspectFlags::PLANE_0,
                     base_mip_level: 0,
@@ -134,7 +129,7 @@ impl Dpb {
                 });
             let mut uv_view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
-                .format(format)
+                .format(video_format)
                 .subresource_range(vk::ImageSubresourceRange {
                     aspect_mask: vk::ImageAspectFlags::PLANE_1,
                     base_mip_level: 0,
@@ -260,7 +255,7 @@ impl Dpb {
                 next_image: 0,
                 frame_index: 0,
                 extent,
-                format,
+                video_format,
                 images,
                 views,
                 y_views,
@@ -356,7 +351,8 @@ impl Dpb {
                         .image(image)];
                     let dep_info_compute_to_present =
                         vk::DependencyInfo::default().image_memory_barriers(&barriers);
-                    let info = vk::CommandBufferBeginInfo::default().flags(vk::CommandBufferUsageFlags::SIMULTANEOUS_USE);
+                    let info = vk::CommandBufferBeginInfo::default()
+                        .flags(vk::CommandBufferUsageFlags::SIMULTANEOUS_USE);
                     device
                         .begin_command_buffer(cmd, &info)
                         .map_err(|err| anyhow!("Failed to begin command buffer: {err}"))?;
@@ -428,16 +424,28 @@ impl Dpb {
     fn record_encode_cmd_buffer(
         &mut self,
         device: &ash::Device,
+        video_queue_fn: &vk::KhrVideoQueueFn,
+        video_session: &VideoSession,
         image: vk::ImageView,
         allocator: Option<&vk::AllocationCallbacks>,
-    ) -> VkResult<CommandBuffer> {
+    ) -> anyhow::Result<CommandBuffer> {
         let cmd = self
             .encode_cmd_pool
             .as_mut()
             .map_err(|e| *e)?
             .next(device, allocator)?;
-        {
+        unsafe {
             let cmd = cmd.cmd;
+            let info = vk::VideoBeginCodingInfoKHR::default()
+                .video_session(video_session.session())
+                .video_session_parameters(
+                    video_session
+                        .parameters()
+                        .ok_or_else(|| anyhow!("Can't encode: missing VideoSessionParameters"))?,
+                );
+            (video_queue_fn.cmd_begin_video_coding_khr)(cmd, &info);
+            let info = vk::VideoEndCodingInfoKHR::default();
+            (video_queue_fn.cmd_end_video_coding_khr)(cmd, &info);
         }
 
         Ok(cmd)
@@ -446,6 +454,8 @@ impl Dpb {
     pub fn encode_frame(
         &mut self,
         device: &ash::Device,
+        video_queue_fn: &vk::KhrVideoQueueFn,
+        video_session: &VideoSession,
         image_view: vk::ImageView,
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
@@ -457,7 +467,13 @@ impl Dpb {
             let cmd = self.compute_cmd_buffers[&(image_view, self.next_image)];
             debug!("encode_frame");
 
-            //let encode_cmd = self.record_encode_cmd_buffer(device, image_view, allocator)?;
+            let encode_cmd = self.record_encode_cmd_buffer(
+                device,
+                video_queue_fn,
+                video_session,
+                image_view,
+                allocator,
+            )?;
 
             // TODO: mutex around compute queue
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
@@ -477,17 +493,17 @@ impl Dpb {
                 .queue_submit2(compute_queue, &[info], vk::Fence::null())
                 .map_err(|err| anyhow!("Failed to submit to compute queue: {err}"))?;
 
-            //let wait_infos = [vk::SemaphoreSubmitInfo::default()
-            //.semaphore(self.compute_semaphore)
-            //.value(self.frame_index)
-            //.stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
-            //let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
-            //let info = vk::SubmitInfo2::default()
-            //.command_buffer_infos(&cmd_infos)
-            //.wait_semaphore_infos(&wait_infos);
-            //device
-            //.queue_submit2(encode_queue, &[info], encode_cmd.fence)
-            //.map_err(|err| anyhow!("Failed to submit to encode queue: {err}"))?;
+            let wait_infos = [vk::SemaphoreSubmitInfo::default()
+                .semaphore(self.compute_semaphore)
+                .value(self.frame_index)
+                .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
+            let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
+            let info = vk::SubmitInfo2::default()
+                .command_buffer_infos(&cmd_infos)
+                .wait_semaphore_infos(&wait_infos);
+            device
+                .queue_submit2(encode_queue, &[info], encode_cmd.fence)
+                .map_err(|err| anyhow!("Failed to submit to encode queue: {err}"))?;
         }
         self.next_image += 1;
         if self.next_image as usize >= self.views.len() {

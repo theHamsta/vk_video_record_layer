@@ -5,6 +5,7 @@ mod settings;
 mod shader;
 mod state;
 mod video_session;
+mod session_parameters;
 mod vk_beta;
 mod vk_layer;
 
