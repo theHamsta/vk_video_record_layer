@@ -5,33 +5,33 @@ use ash::prelude::VkResult;
 use ash::vk;
 use log::error;
 
-// TODO: handle vui with valid pointers
-pub enum CodecParameters {
-    H264Parameters {
-        sps: vk::native::StdVideoH264SequenceParameterSet,
-        pps: vk::native::StdVideoH264PictureParameterSet,
-    },
-    H265Parameters {
-        sps: vk::native::StdVideoH265SequenceParameterSet,
-        pps: vk::native::StdVideoH265PictureParameterSet,
-        vps: vk::native::StdVideoH265VideoParameterSet,
-    },
-}
+//// TODO: handle vui with valid pointers
+//pub enum CodecParameters {
+    //H264Parameters {
+        //sps: vk::native::StdVideoH264SequenceParameterSet,
+        //pps: vk::native::StdVideoH264PictureParameterSet,
+    //},
+    //H265Parameters {
+        //sps: vk::native::StdVideoH265SequenceParameterSet,
+        //pps: vk::native::StdVideoH265PictureParameterSet,
+        //vps: vk::native::StdVideoH265VideoParameterSet,
+    //},
+//}
 
-pub struct VideoSessionParameters {
-    parameters: vk::VideoSessionParametersKHR,
-    codec_parameters: CodecParameters,
-}
+//pub struct VideoSessionParameters {
+    //parameters: vk::VideoSessionParametersKHR,
+    //codec_parameters: CodecParameters,
+//}
 
-impl VideoSessionParameters {
-    pub fn parameters(&self) -> vk::VideoSessionParametersKHR {
-        self.parameters
-    }
+//impl VideoSessionParameters {
+    //pub fn parameters(&self) -> vk::VideoSessionParametersKHR {
+        //self.parameters
+    //}
 
-    pub fn codec_parameters(&self) -> &CodecParameters {
-        &self.codec_parameters
-    }
-}
+    //pub fn codec_parameters(&self) -> &CodecParameters {
+        //&self.codec_parameters
+    //}
+//}
 
 pub fn make_h264_video_session_parameters(
     device: &ash::Device,
@@ -39,7 +39,7 @@ pub fn make_h264_video_session_parameters(
     format: vk::Format,
     extent: vk::Extent2D,
     allocator: Option<&vk::AllocationCallbacks>,
-) -> VkResult<VideoSessionParameters> {
+) -> VkResult<vk::VideoSessionParametersKHR> {
     let bitdepth = 8;
     //let flags = MaybeUninit::zeroed();
     //let vui = vk::native::StdVideoH264SequenceParameterSetVui {
@@ -133,12 +133,13 @@ pub fn make_h264_video_session_parameters(
         if res != vk::Result::SUCCESS {
             error!("Failed to create H264 session parameters: {res}");
         }
-        res.result_with_success(VideoSessionParameters {
-            parameters: parameters.assume_init(),
-            codec_parameters: CodecParameters::H264Parameters {
-                sps: sps[0],
-                pps: pps[0],
-            },
-        })
+        res.result_with_success(parameters.assume_init())
+        //res.result_with_success(VideoSessionParameters {
+            //parameters: parameters.assume_init(),
+            //codec_parameters: CodecParameters::H264Parameters {
+                //sps: sps[0],
+                //pps: pps[0],
+            //},
+        //})
     }
 }

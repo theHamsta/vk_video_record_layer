@@ -6,9 +6,7 @@ use ash::vk;
 use log::{debug, error, info, trace, warn};
 
 use crate::dpb::Dpb;
-use crate::session_parameters::{
-    make_h264_video_session_parameters, CodecParameters, VideoSessionParameters,
-};
+use crate::session_parameters::make_h264_video_session_parameters;
 use crate::settings::Codec;
 
 use crate::state::get_state;
@@ -25,7 +23,7 @@ use crate::vk_beta::{
 pub struct VideoSession {
     session: vk::VideoSessionKHR,
     memories: Vec<vk::DeviceMemory>,
-    parameters: Option<VideoSessionParameters>,
+    parameters: Option<vk::VideoSessionParametersKHR>,
     is_encode: bool,
     codec: Codec,
 }
@@ -40,11 +38,7 @@ impl VideoSession {
     }
 
     pub fn parameters(&self) -> Option<vk::VideoSessionParametersKHR> {
-        self.parameters.as_ref().map(|p| p.parameters())
-    }
-
-    pub fn codec_parameters(&self) -> Option<&CodecParameters> {
-        self.parameters.as_ref().map(|p| p.codec_parameters())
+        self.parameters
     }
 
     pub fn session(&self) -> vk::VideoSessionKHR {
@@ -59,10 +53,10 @@ struct SwapChainData {
     //swapchain_color_space: vk::ColorSpacekHz,
     encode_session: VkResult<VideoSession>,
     decode_session: VkResult<VideoSession>,
-    images: VkResult<Vec<vk::Image>>,
+    _images: VkResult<Vec<vk::Image>>,
     image_views: VkResult<Vec<vk::ImageView>>,
     semaphores: Vec<VkResult<vk::Semaphore>>,
-    frame_index: u64,
+    _frame_index: u64,
 }
 
 impl SwapChainData {
@@ -248,9 +242,9 @@ pub unsafe fn record_vk_create_swapchain(
                 dpb,
                 encode_session,
                 decode_session,
-                images,
+                _images: images,
                 image_views,
-                frame_index: 0,
+                _frame_index: 0,
             }
         });
         let leaked = Box::leak(swapchain_data);
@@ -328,7 +322,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
             if let Some(parameters) = parameters {
                 (video_queue_fn.destroy_video_session_parameters_khr)(
                     device.handle(),
-                    parameters.parameters(),
+                    parameters,
                     p_allocator,
                 );
             }
@@ -347,7 +341,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
             if let Some(parameters) = parameters {
                 (video_queue_fn.destroy_video_session_parameters_khr)(
                     device.handle(),
-                    parameters.parameters(),
+                    parameters,
                     p_allocator,
                 );
             }

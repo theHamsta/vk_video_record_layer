@@ -14,7 +14,6 @@ use crate::{
 
 pub struct Dpb {
     extent: vk::Extent2D,
-    video_format: vk::Format,
     images: Vec<vk::Image>,
     views: Vec<vk::ImageView>,
     y_views: Vec<vk::ImageView>,
@@ -28,7 +27,7 @@ pub struct Dpb {
     next_image: u32,
     compute_family_index: u32,
     encode_family_index: u32,
-    decode_family_index: u32,
+    _decode_family_index: u32,
     compute_cmd_buffers: HashMap<(vk::ImageView, u32), vk::CommandBuffer>,
     sets: Vec<vk::DescriptorSet>,
     compute_pipeline: vk::Pipeline,
@@ -255,7 +254,6 @@ impl Dpb {
                 next_image: 0,
                 frame_index: 0,
                 extent,
-                video_format,
                 images,
                 views,
                 y_views,
@@ -264,7 +262,7 @@ impl Dpb {
                 sampler,
                 compute_family_index,
                 encode_family_index,
-                decode_family_index,
+                _decode_family_index: decode_family_index,
                 compute_cmd_pool,
                 encode_cmd_pool,
                 decode_cmd_pool,
@@ -546,7 +544,7 @@ impl Dpb {
         image_view: vk::ImageView,
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
-        wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
+        _wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
         signal_semaphore_infos: &[vk::SemaphoreSubmitInfo],
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> anyhow::Result<()> {
