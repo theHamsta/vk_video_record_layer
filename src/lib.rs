@@ -5,9 +5,11 @@ mod settings;
 mod shader;
 mod state;
 mod video_session;
+mod profile;
 mod session_parameters;
 mod vk_beta;
 mod vk_layer;
+mod buffer_queue;
 
 use crate::creation::{record_vk_create_device, record_vk_create_instance};
 use crate::video_session::{

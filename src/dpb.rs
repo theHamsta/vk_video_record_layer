@@ -1,4 +1,4 @@
-use std::{collections::HashMap, mem::MaybeUninit, ptr::null};
+use std::{collections::HashMap, mem::MaybeUninit, pin::Pin, ptr::null};
 
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
@@ -6,6 +6,7 @@ use itertools::Itertools;
 use log::{debug, error};
 
 use crate::{
+    buffer_queue::BitstreamBufferRing,
     cmd_buffer_queue::{CommandBuffer, CommandBufferQueue},
     settings::Codec,
     shader::ShaderPipeline,
@@ -36,6 +37,7 @@ pub struct Dpb {
     compute_shader: anyhow::Result<ShaderPipeline>,
     compute_semaphore: vk::Semaphore,
     encode_semaphore: vk::Semaphore,
+    bitstream_buffers: VkResult<BitstreamBufferRing>,
     frame_index: u64,
 }
 
@@ -52,6 +54,7 @@ impl Dpb {
         decode_family_index: u32,
         compute_family_index: u32,
         video_session: &VideoSession,
+        physical_memory_props: &vk::PhysicalDeviceMemoryProperties,
     ) -> VkResult<Self> {
         unsafe {
             let mut images = Vec::new();
@@ -67,20 +70,7 @@ impl Dpb {
                 compute_family_index,
             ];
 
-            let profile = vk::VideoProfileInfoKHR::default()
-                .video_codec_operation(match (video_session.is_encode(), video_session.codec()) {
-                    (true, Codec::H264) => vk::VideoCodecOperationFlagsKHR::ENCODE_H264_EXT,
-                    (true, Codec::H265) => vk::VideoCodecOperationFlagsKHR::ENCODE_H265_EXT,
-                    (true, Codec::AV1) => todo!(),
-                    (false, Codec::H264) => vk::VideoCodecOperationFlagsKHR::DECODE_H264,
-                    (false, Codec::H265) => vk::VideoCodecOperationFlagsKHR::DECODE_H265,
-                    (false, Codec::AV1) => todo!(),
-                })
-                .luma_bit_depth(vk::VideoComponentBitDepthFlagsKHR::TYPE_8)
-                .chroma_bit_depth(vk::VideoComponentBitDepthFlagsKHR::TYPE_8)
-                .chroma_subsampling(vk::VideoChromaSubsamplingFlagsKHR::TYPE_420);
-
-            let mut info = vk::ImageCreateInfo::default()
+            let info = vk::ImageCreateInfo::default()
                 .extent(vk::Extent3D {
                     width,
                     height,
@@ -102,9 +92,9 @@ impl Dpb {
                 )
                 .tiling(vk::ImageTiling::OPTIMAL)
                 .initial_layout(vk::ImageLayout::UNDEFINED);
-            let profiles = &[profile];
-            let mut profile_list = vk::VideoProfileListInfoKHR::default().profiles(profiles);
-            info = info.push_next(&mut profile_list);
+            let profiles = [*video_session.profile().profile()];
+            let mut profile_list = vk::VideoProfileListInfoKHR::default().profiles(&profiles);
+            let info = info.push_next(&mut profile_list);
 
             let mut view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
@@ -250,6 +240,16 @@ impl Dpb {
                 })
                 .unwrap_or(vk::Semaphore::null());
 
+            let buffer_info = vk::BufferCreateInfo::default().push_next(&mut profile_list);
+            let bitstream_buffers = BitstreamBufferRing::new(
+                device,
+                &buffer_info,
+                30,
+                physical_memory_props,
+                vk::MemoryPropertyFlags::DEVICE_LOCAL,
+                allocator,
+            );
+
             let mut rtn = Self {
                 next_image: 0,
                 frame_index: 0,
@@ -274,6 +274,7 @@ impl Dpb {
                 compute_shader,
                 compute_semaphore,
                 encode_semaphore,
+                bitstream_buffers,
                 sets: Default::default(),
             };
 
@@ -428,13 +429,12 @@ impl Dpb {
         video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
         video_session: &VideoSession,
         quality_level: u32,
-        allocator: Option<&vk::AllocationCallbacks>,
     ) -> anyhow::Result<CommandBuffer> {
         let cmd = self
             .encode_cmd_pool
             .as_mut()
             .map_err(|e| *e)?
-            .next(device, allocator)?;
+            .next(device)?;
         unsafe {
             let cmd = cmd.cmd;
             let info = vk::VideoBeginCodingInfoKHR::default()
@@ -546,7 +546,6 @@ impl Dpb {
         encode_queue: vk::Queue,
         _wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
         signal_semaphore_infos: &[vk::SemaphoreSubmitInfo],
-        allocator: Option<&vk::AllocationCallbacks>,
     ) -> anyhow::Result<()> {
         unsafe {
             let cmd = self.compute_cmd_buffers[&(image_view, self.next_image)];
@@ -558,7 +557,6 @@ impl Dpb {
                 video_encode_queue_fn,
                 video_session,
                 quality_level,
-                allocator,
             )?;
 
             // TODO: mutex around compute queue

@@ -277,9 +277,9 @@ pub extern "system" fn record_vk_create_device(
 
                 let mut features11 =
                     vk::PhysicalDeviceVulkan11Features::default().sampler_ycbcr_conversion(true);
-                let mut features12 =
-                    vk::PhysicalDeviceVulkan12Features::default().timeline_semaphore(true);
-                //.buffer_device_address(true)
+                let mut features12 = vk::PhysicalDeviceVulkan12Features::default()
+                    .timeline_semaphore(true)
+                    .buffer_device_address(true);
                 //.vulkan_memory_model(true);
                 let mut features13 = vk::PhysicalDeviceVulkan13Features::default()
                     .private_data(true)

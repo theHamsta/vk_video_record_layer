@@ -1,0 +1,170 @@
+use ash::{prelude::VkResult, vk};
+use log::{debug, error};
+
+// From ash examples
+fn find_memorytype_index(
+    memory_req: &vk::MemoryRequirements,
+    memory_prop: &vk::PhysicalDeviceMemoryProperties,
+    flags: vk::MemoryPropertyFlags,
+) -> Option<u32> {
+    memory_prop.memory_types[..memory_prop.memory_type_count as _]
+        .iter()
+        .enumerate()
+        .find(|(index, memory_type)| {
+            (1 << index) & memory_req.memory_type_bits != 0
+                && memory_type.property_flags & flags == flags
+        })
+        .map(|(index, _memory_type)| index as _)
+}
+
+pub struct Buffer {
+    buffer: vk::Buffer,
+    memory: vk::DeviceMemory,
+    fence: vk::Fence,
+    size: u64,
+}
+
+impl Buffer {
+    pub fn new(
+        device: &ash::Device,
+        buffer_create_info: &vk::BufferCreateInfo,
+        memory_props: &vk::PhysicalDeviceMemoryProperties,
+        memory_property_flags: vk::MemoryPropertyFlags,
+        allocator: Option<&vk::AllocationCallbacks>,
+    ) -> VkResult<Self> {
+        debug!("allocating memory: {:?}", buffer_create_info);
+        unsafe {
+            let buffer = device.create_buffer(buffer_create_info, allocator)?;
+            let size = buffer_create_info.size;
+            let mut rtn = Self {
+                memory: vk::DeviceMemory::null(),
+                buffer,
+                fence: vk::Fence::null(),
+                size,
+            };
+            rtn.fence = device
+                .create_fence(
+                    &vk::FenceCreateInfo::default().flags(vk::FenceCreateFlags::SIGNALED),
+                    allocator,
+                )
+                .map_err(|e| {
+                    rtn.destroy(device, allocator);
+                    error!("Failed create fence: {e}");
+                    e
+                })?;
+
+            let req = device.get_buffer_memory_requirements(buffer);
+            let index = find_memorytype_index(&req, memory_props, memory_property_flags)
+                .ok_or_else(|| {
+                    rtn.destroy(device, allocator);
+                    error!("Failed to get memory index");
+                    vk::Result::ERROR_INITIALIZATION_FAILED
+                })?;
+
+            let info = vk::MemoryAllocateInfo::default()
+                .allocation_size(req.size)
+                .memory_type_index(index);
+            let mut flag_info = vk::MemoryAllocateFlagsInfo::default()
+                .flags(vk::MemoryAllocateFlags::DEVICE_ADDRESS);
+            let info = info.push_next(&mut flag_info);
+            rtn.memory = device.allocate_memory(&info, allocator).map_err(|e| {
+                rtn.destroy(device, allocator);
+                error!("Failed to allocate memory: {e}");
+                e
+            })?;
+
+            device
+                .bind_buffer_memory(buffer, rtn.memory, 0)
+                .map_err(|e| {
+                    rtn.destroy(device, allocator);
+                    error!("Failed to bind memory: {e}");
+                    e
+                })?;
+
+            Ok(rtn)
+        }
+    }
+
+    pub fn buffer(&self) -> vk::Buffer {
+        self.buffer
+    }
+
+    pub fn size(&self) -> u64 {
+        self.size
+    }
+
+    fn destroy(&self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
+        unsafe {
+            device.destroy_buffer(self.buffer, allocator);
+            device.free_memory(self.memory, allocator);
+            device.destroy_fence(self.fence, allocator);
+        }
+    }
+
+    pub fn fence(&self) -> vk::Fence {
+        self.fence
+    }
+}
+
+pub struct BitstreamBufferRing {
+    buffers: Vec<Buffer>,
+    current: usize,
+}
+
+impl BitstreamBufferRing {
+    pub fn new(
+        device: &ash::Device,
+        buffer_create_info: &vk::BufferCreateInfo,
+        count: usize,
+        memory_props: &vk::PhysicalDeviceMemoryProperties,
+        memory_property_flags: vk::MemoryPropertyFlags,
+        allocator: Option<&vk::AllocationCallbacks>,
+    ) -> VkResult<Self> {
+        let mut rtn = Self {
+            buffers: Vec::with_capacity(count),
+            current: 0,
+        };
+
+        for _ in 0..count {
+            let buffer = Buffer::new(
+                device,
+                buffer_create_info,
+                memory_props,
+                memory_property_flags,
+                allocator,
+            )
+            .map_err(|e| {
+                rtn.destroy(device, allocator);
+                error!("Failed to create buffer: {e}");
+                e
+            })?;
+            rtn.buffers.push(buffer);
+        }
+        Ok(rtn)
+    }
+
+    fn destroy(&mut self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
+        for buffer in self.buffers.drain(..) {
+            buffer.destroy(device, allocator);
+        }
+    }
+
+    fn next(
+        &mut self,
+        device: &ash::Device,
+        timeout: u64,
+    ) -> VkResult<&Buffer> {
+        let buffer = &self.buffers[self.current];
+
+        unsafe {
+            device.wait_for_fences(&[buffer.fence], true, timeout)?;
+            device.reset_fences(&[buffer.fence])?;
+        }
+
+        self.current += 1;
+        if self.current > self.buffers.len() {
+            self.current = 0;
+        }
+        Ok(buffer)
+    }
+}

@@ -1,11 +1,12 @@
 use std::mem::transmute;
-use std::ptr::{null, null_mut};
+use std::ptr::null_mut;
 
 use ash::prelude::VkResult;
 use ash::vk;
 use log::{debug, error, info, trace, warn};
 
 use crate::dpb::Dpb;
+use crate::profile::VideoProfile;
 use crate::session_parameters::make_h264_video_session_parameters;
 use crate::settings::Codec;
 
@@ -20,15 +21,16 @@ use crate::vk_beta::{
     VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
 };
 
-pub struct VideoSession {
+pub struct VideoSession<'a> {
     session: vk::VideoSessionKHR,
+    profile: Box<VideoProfile<'a>>,
     memories: Vec<vk::DeviceMemory>,
     parameters: Option<vk::VideoSessionParametersKHR>,
     is_encode: bool,
     codec: Codec,
 }
 
-impl VideoSession {
+impl VideoSession<'_> {
     pub fn is_encode(&self) -> &bool {
         &self.is_encode
     }
@@ -44,22 +46,26 @@ impl VideoSession {
     pub fn session(&self) -> vk::VideoSessionKHR {
         self.session
     }
+
+    pub fn profile(&self) -> &Box<VideoProfile<'_>> {
+        &self.profile
+    }
 }
 
-struct SwapChainData {
+struct SwapChainData<'a> {
     dpb: VkResult<Dpb>,
     _video_max_extent: vk::Extent2D,
     _swapchain_format: vk::Format,
     //swapchain_color_space: vk::ColorSpacekHz,
-    encode_session: VkResult<VideoSession>,
-    decode_session: VkResult<VideoSession>,
+    encode_session: VkResult<VideoSession<'a>>,
+    decode_session: VkResult<VideoSession<'a>>,
     _images: VkResult<Vec<vk::Image>>,
     image_views: VkResult<Vec<vk::ImageView>>,
     semaphores: Vec<VkResult<vk::Semaphore>>,
     _frame_index: u64,
 }
 
-impl SwapChainData {
+impl SwapChainData<'_> {
     pub fn destroy(&mut self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
         if let Ok(views) = self.image_views.as_mut() {
             for view in views.drain(..) {
@@ -89,7 +95,6 @@ impl SwapChainData {
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
         present_info: &vk::PresentInfoKHR,
-        allocator: Option<&vk::AllocationCallbacks>,
     ) {
         if let (Ok(views), Ok(dpb), Ok(encode_session)) =
             (&self.image_views, &mut self.dpb, &self.encode_session)
@@ -119,7 +124,6 @@ impl SwapChainData {
                     encode_queue,
                     &wait_semaphore_infos,
                     &signal_semaphore_infos,
-                    allocator,
                 );
                 if let Err(err) = err {
                     error!("Failed to encode frame: {err}");
@@ -142,11 +146,19 @@ pub unsafe fn record_vk_create_swapchain(
     let swapchain_fn = lock.as_ref().unwrap();
     let result =
         (swapchain_fn.create_swapchain_khr)(device, p_create_info, p_allocator, p_swapchain);
+
     if result == vk::Result::SUCCESS {
         info!("Created swapchain");
         let slot = get_state().private_slot.read().unwrap();
         let lock = get_state().device.read().unwrap();
         let device = lock.as_ref().unwrap();
+        let lock = get_state().physical_device.read().unwrap();
+        let physical_device = lock.as_ref().unwrap();
+        let lock = get_state().instance.read().unwrap();
+        let instance = lock.as_ref().unwrap();
+
+        let physical_memory_props =
+            instance.get_physical_device_memory_properties(*physical_device);
         let create_info = p_create_info.as_ref().unwrap();
         //let swapchain_color_space =
         let swapchain_data = Box::new({
@@ -207,6 +219,7 @@ pub unsafe fn record_vk_create_swapchain(
                     *get_state().decode_queue_family_idx.read().unwrap(),
                     *get_state().compute_queue_family_idx.read().unwrap(),
                     s,
+                    &physical_memory_props,
                 )
             });
             let present_family_idx = *get_state().graphics_queue_family_idx.read().unwrap();
@@ -390,7 +403,6 @@ pub unsafe extern "system" fn record_vk_queue_present(
             compute_queue,
             encode_queue,
             &present_info,
-            None, // TODO: safe allocator from before or preallocate fences
         );
     }
     (get_state()
@@ -412,18 +424,6 @@ fn create_video_session(
 ) -> VkResult<VideoSession> {
     trace!("create_video_session");
     let state = get_state();
-    let mut profile = vk::VideoProfileInfoKHR::default()
-        .video_codec_operation(match (is_encode, state.settings.codec) {
-            (true, Codec::H264) => vk::VideoCodecOperationFlagsKHR::ENCODE_H264_EXT,
-            (true, Codec::H265) => vk::VideoCodecOperationFlagsKHR::ENCODE_H265_EXT,
-            (true, Codec::AV1) => todo!(),
-            (false, Codec::H264) => vk::VideoCodecOperationFlagsKHR::DECODE_H264,
-            (false, Codec::H265) => vk::VideoCodecOperationFlagsKHR::DECODE_H265,
-            (false, Codec::AV1) => todo!(),
-        })
-        .luma_bit_depth(vk::VideoComponentBitDepthFlagsKHR::TYPE_8)
-        .chroma_bit_depth(vk::VideoComponentBitDepthFlagsKHR::TYPE_8)
-        .chroma_subsampling(vk::VideoChromaSubsamplingFlagsKHR::TYPE_420);
     let header_version = match (is_encode, state.settings.codec) {
         (true, Codec::H264) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
@@ -449,37 +449,7 @@ fn create_video_session(
         (false, Codec::AV1) => todo!(),
     };
 
-    let mut encode_usage = vk::VideoEncodeUsageInfoKHR::default()
-        .video_usage_hints(vk::VideoEncodeUsageFlagsKHR::RECORDING)
-        .video_content_hints(vk::VideoEncodeContentFlagsKHR::RENDERED)
-        .tuning_mode(vk::VideoEncodeTuningModeKHR::HIGH_QUALITY);
-    let mut decode_usage = vk::VideoEncodeUsageInfoKHR::default()
-        .video_usage_hints(vk::VideoEncodeUsageFlagsKHR::STREAMING);
-    if is_encode {
-        profile = profile.push_next(&mut encode_usage);
-    } else {
-        profile = profile.push_next(&mut decode_usage);
-    }
-    let mut h264_encode_profile = vk::VideoEncodeH264ProfileInfoEXT::default()
-        .std_profile_idc(vk::native::StdVideoH264ProfileIdc_STD_VIDEO_H264_PROFILE_IDC_MAIN);
-    let mut h265_encode_profile = vk::VideoEncodeH265ProfileInfoEXT::default();
-    let mut h264_decode_profile = vk::VideoDecodeH264ProfileInfoKHR::default();
-    let mut h265_decode_profile = vk::VideoDecodeH265ProfileInfoKHR::default();
-    if is_encode {
-        match state.settings.codec {
-            Codec::H264 => profile = profile.push_next(&mut h264_encode_profile),
-            Codec::H265 => profile = profile.push_next(&mut h265_encode_profile),
-            Codec::AV1 => todo!(),
-        };
-    } else {
-        match state.settings.codec {
-            Codec::H264 => profile = profile.push_next(&mut h264_decode_profile),
-            Codec::H265 => profile = profile.push_next(&mut h265_decode_profile),
-            Codec::AV1 => todo!(),
-        };
-    }
-
-    assert!(profile.p_next != null());
+    let profile = VideoProfile::new(video_format, state.settings.codec, is_encode)?;
     let info = vk::VideoSessionCreateInfoKHR::default()
         .queue_family_index(queue_family_idx)
         .max_coded_extent(max_coded_extent)
@@ -488,7 +458,7 @@ fn create_video_session(
         .max_dpb_slots(16)
         .max_active_reference_pictures(8)
         .std_header_version(&header_version)
-        .video_profile(&profile);
+        .video_profile(profile.profile());
 
     let lock = state.device.read().unwrap();
     let device = lock.as_ref().unwrap();
@@ -523,6 +493,7 @@ fn create_video_session(
             is_encode,
             codec: state.settings.codec,
             session,
+            profile,
             memories: {
                 let mut memories = Vec::new();
                 unsafe {
@@ -614,6 +585,7 @@ fn create_video_session(
                     (true, Codec::H264) => make_h264_video_session_parameters(
                         device,
                         video_queue_fn,
+                        session,
                         video_format,
                         coded_extent,
                         unsafe { p_allocator.as_ref() },

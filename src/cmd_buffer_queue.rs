@@ -22,7 +22,6 @@ impl CommandBufferQueue {
         timeout: u64,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
-        let mut res = vk::Result::SUCCESS;
         let mut rtn = Self {
             pool: vk::CommandPool::null(),
             current: 0,
@@ -38,49 +37,45 @@ impl CommandBufferQueue {
                     vk::CommandPoolCreateFlags::TRANSIENT
                         | vk::CommandPoolCreateFlags::RESET_COMMAND_BUFFER,
                 );
-            let Ok(pool) = device
+            let pool = device
                 .create_command_pool(&info, allocator)
                 .map_err(|err| {
                     error!("Failed to create command pool");
-                    res = err
-                }) else {
-                return Err(res);
-            };
+                    err
+                })?;
             rtn.pool = pool;
 
             let info = vk::CommandBufferAllocateInfo::default()
                 .command_pool(pool)
                 .level(vk::CommandBufferLevel::PRIMARY)
                 .command_buffer_count(queue_length);
-            let Ok(cmds) = device.allocate_command_buffers(&info).map_err(|e| {
+            let cmds = device.allocate_command_buffers(&info).map_err(|e| {
                 error!("Failed to allocate command buffers for queue family index {queue_family_index}");
-                res = e
-            }) else {
                 rtn.destroy(device, allocator);
-                return Err(res);
-            };
+                e
+            })?;
+
+            for _ in 0..queue_length {
+                let info = vk::FenceCreateInfo::default().flags(vk::FenceCreateFlags::SIGNALED);
+                let fence = device.create_fence(&info, allocator).map_err(|e| {
+                    error!("Failed to create fence: {e}");
+                    rtn.destroy(device, allocator);
+                    e
+                })?;
+                rtn.fences.push(fence);
+            }
+
             rtn.cmds = cmds;
 
             Ok(rtn)
         }
     }
 
-    pub fn next(
-        &mut self,
-        device: &ash::Device,
-        allocator: Option<&vk::AllocationCallbacks>,
-    ) -> VkResult<CommandBuffer> {
+    pub fn next(&mut self, device: &ash::Device) -> VkResult<CommandBuffer> {
         unsafe {
-            let fence = if let Some(fence) = self.fences.get(self.current).copied() {
-                device.wait_for_fences(&[fence], true, self.timeout)?;
-                device.reset_fences(&[fence])?;
-                fence
-            } else {
-                let info = vk::FenceCreateInfo::default();
-                let fence = device.create_fence(&info, allocator)?;
-                self.fences.push(fence);
-                fence
-            };
+            let fence = self.fences[self.current];
+            device.wait_for_fences(&[fence], true, self.timeout)?;
+            device.reset_fences(&[fence])?;
 
             self.current += 1;
             if self.current >= self.cmds.len() {
