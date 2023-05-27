@@ -5,8 +5,6 @@ use ash::prelude::VkResult;
 use ash::vk;
 use log::error;
 
-use crate::video_session::VideoSession;
-
 //// TODO: handle vui with valid pointers
 //pub enum CodecParameters {
 //H264Parameters {
