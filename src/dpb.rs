@@ -1,4 +1,4 @@
-use std::{collections::HashMap, mem::MaybeUninit, pin::Pin, ptr::null};
+use std::{collections::HashMap, mem::MaybeUninit, ptr::null};
 
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
@@ -240,7 +240,15 @@ impl Dpb {
                 })
                 .unwrap_or(vk::Semaphore::null());
 
-            let buffer_info = vk::BufferCreateInfo::default().push_next(&mut profile_list);
+            let indices = [encode_family_index];
+            let buffer_info = vk::BufferCreateInfo::default()
+                .size(10_000_000)
+                .usage(
+                    vk::BufferUsageFlags::VIDEO_ENCODE_DST_KHR | vk::BufferUsageFlags::TRANSFER_SRC,
+                )
+                .sharing_mode(vk::SharingMode::EXCLUSIVE)
+                .queue_family_indices(&indices)
+                .push_next(&mut profile_list);
             let bitstream_buffers = BitstreamBufferRing::new(
                 device,
                 &buffer_info,

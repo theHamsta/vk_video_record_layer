@@ -114,7 +114,7 @@ pub fn make_h264_video_session_parameters(
         second_chroma_qp_index_offset: 0,
         pScalingLists: null(),
     }];
-    let mut add_info = vk::VideoEncodeH264SessionParametersAddInfoEXT::default()
+    let add_info = vk::VideoEncodeH264SessionParametersAddInfoEXT::default()
         .std_sp_ss(&sps)
         .std_pp_ss(&pps);
     let mut codec_info = vk::VideoEncodeH264SessionParametersCreateInfoEXT::default()
