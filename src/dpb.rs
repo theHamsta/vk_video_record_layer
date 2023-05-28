@@ -6,7 +6,7 @@ use itertools::Itertools;
 use log::{debug, error};
 
 use crate::{
-    buffer_queue::{BitstreamBufferRing, Buffer},
+    buffer_queue::{BitstreamBufferRing, Buffer, SyncPrimitive},
     cmd_buffer_queue::{CommandBuffer, CommandBufferQueue},
     settings::Codec,
     shader::ShaderPipeline,
@@ -255,7 +255,7 @@ impl Dpb {
                 30,
                 physical_memory_props,
                 vk::MemoryPropertyFlags::DEVICE_LOCAL,
-                false,
+                SyncPrimitive::Nothing,
                 allocator,
             );
 
@@ -564,7 +564,8 @@ impl Dpb {
                 .bitstream_buffers
                 .as_mut()
                 .map_err(|e| *e)?
-                .next(device, 100)?.clone();
+                .next(device, 100)?
+                .clone();
 
             let encode_cmd = self.record_encode_cmd_buffer(
                 device,
