@@ -1,5 +1,8 @@
+use core::slice;
+use std::{fs::File, io::Write};
+
 use ash::{prelude::VkResult, vk};
-use log::{debug, error};
+use log::{debug, error, warn};
 
 // From ash examples
 fn find_memorytype_index(
@@ -23,25 +26,10 @@ pub struct BufferPair {
     pub host: Buffer,
 }
 
-#[derive(Clone, Copy, Default)]
-pub enum Fence {
-    Fence(vk::Fence),
-    #[default]
-    Nothing,
-}
-
-#[derive(Clone, Copy)]
-#[allow(dead_code)] // we don't use fence at the moment
-pub enum SyncPrimitive {
-    Fence,
-    Nothing,
-}
-
 #[derive(Clone, Copy)]
 pub struct Buffer {
     buffer: vk::Buffer,
     memory: vk::DeviceMemory,
-    fence: Fence,
     size: u64,
     //_marker: PhantomData<Box<()>>, //TODO
 }
@@ -52,7 +40,6 @@ impl Buffer {
         buffer_create_info: &vk::BufferCreateInfo,
         memory_props: &vk::PhysicalDeviceMemoryProperties,
         memory_property_flags: vk::MemoryPropertyFlags,
-        sync_primitive: SyncPrimitive,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
         debug!("allocating memory: {:?}", buffer_create_info);
@@ -62,27 +49,8 @@ impl Buffer {
             let mut rtn = Self {
                 memory: vk::DeviceMemory::null(),
                 buffer,
-                fence: Fence::default(),
                 size,
             };
-            match sync_primitive {
-                SyncPrimitive::Fence => {
-                    rtn.fence = Fence::Fence(
-                        device
-                            .create_fence(
-                                &vk::FenceCreateInfo::default()
-                                    .flags(vk::FenceCreateFlags::SIGNALED),
-                                allocator,
-                            )
-                            .map_err(|e| {
-                                rtn.destroy(device, allocator);
-                                error!("Failed create fence: {e}");
-                                e
-                            })?,
-                    );
-                }
-                SyncPrimitive::Nothing => (),
-            }
 
             let req = device.get_buffer_memory_requirements(buffer);
             let index = find_memorytype_index(&req, memory_props, memory_property_flags)
@@ -128,18 +96,21 @@ impl Buffer {
         unsafe {
             device.destroy_buffer(self.buffer, allocator);
             device.free_memory(self.memory, allocator);
-            match self.fence {
-                Fence::Fence(fence) => device.destroy_fence(fence, allocator),
-                Fence::Nothing => (),
-            }
         }
+    }
+
+    pub fn memory(&self) -> vk::DeviceMemory {
+        self.memory
     }
 }
 
 pub struct BitstreamBufferRing {
     buffers: Vec<Buffer>,
     host_buffers: Vec<Buffer>,
+    buffer_generation: Vec<u64>,
     current: usize,
+    generation: u64,
+    semaphore: vk::Semaphore,
 }
 
 impl BitstreamBufferRing {
@@ -149,14 +120,21 @@ impl BitstreamBufferRing {
         count: usize,
         memory_props: &vk::PhysicalDeviceMemoryProperties,
         memory_property_flags: vk::MemoryPropertyFlags,
-        sync_primitive: SyncPrimitive,
+        buffer_result_timeline_semaphore: vk::Semaphore,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
         let mut rtn = Self {
             buffers: Vec::with_capacity(count),
             host_buffers: Vec::with_capacity(count),
+            buffer_generation: vec![0; count],
+            semaphore: buffer_result_timeline_semaphore,
             current: 0,
+            generation: 0,
         };
+        if buffer_result_timeline_semaphore == vk::Semaphore::null() {
+            warn!("Could not create bitstream buffers because no valid timeline semaphore was provided!");
+            return Err(vk::Result::ERROR_INITIALIZATION_FAILED);
+        }
 
         let mut host_buffer_create_info = vk::BufferCreateInfo::default()
             .usage(vk::BufferUsageFlags::TRANSFER_DST)
@@ -171,7 +149,6 @@ impl BitstreamBufferRing {
                 buffer_create_info,
                 memory_props,
                 memory_property_flags,
-                sync_primitive,
                 allocator,
             )
             .map_err(|e| {
@@ -186,7 +163,6 @@ impl BitstreamBufferRing {
                 &host_buffer_create_info,
                 memory_props,
                 vk::MemoryPropertyFlags::HOST_VISIBLE,
-                sync_primitive,
                 allocator,
             )
             .map_err(|e| {
@@ -211,17 +187,50 @@ impl BitstreamBufferRing {
     pub fn next(&mut self, device: &ash::Device, timeout: u64) -> VkResult<BufferPair> {
         let buffer = &self.buffers[self.current];
 
+        let host = &self.host_buffers[self.current];
+        let semaphores = [self.semaphore];
+        let values = [self.buffer_generation[self.current]];
+        let info = vk::SemaphoreWaitInfo::default()
+            .values(&values)
+            .semaphores(&semaphores);
         unsafe {
-            match buffer.fence {
-                Fence::Fence(fence) => {
-                    device.wait_for_fences(&[fence], true, timeout)?;
-                    device.reset_fences(&[fence])?;
+            device.wait_semaphores(&info, timeout).map_err(|e| {
+                let actual_value = device.get_semaphore_counter_value(self.semaphore);
+                warn!(
+                    "Failed to wait for encode timeline semaphore in bitstream buffer for value {}. Current value {actual_value:?}",
+                    values[0]
+                );
+                e
+            })?;
+        }
+
+        if values[0] != 0 {
+            // TODO: offload to IO thread
+            if let Ok(_) = std::env::var("VK_RECORD_LAYER_DEBUG_DUMP") {
+                let filename = format!("/tmp/frame{}.h264", self.buffer_generation[self.current]);
+                let mut file = File::create(&filename);
+                unsafe {
+                    let data = device.map_memory(
+                        host.memory(),
+                        0,
+                        host.size(),
+                        vk::MemoryMapFlags::default(),
+                    );
+                    if let (Ok(data), Ok(file)) = (data, &mut file) {
+                        let res = file.write_all(slice::from_raw_parts(
+                            data as *const u8,
+                            host.size() as usize,
+                        ));
+                        debug!("Wrote file {filename}: {res:?}");
+                    }
+                    let _ = device.unmap_memory(host.memory());
                 }
-                Fence::Nothing => (),
             }
         }
-        let host = &self.host_buffers[self.current];
 
+        self.buffer_generation[self.current] = self.generation + 1;
+
+        self.generation += 1;
         self.current += 1;
         if self.current >= self.buffers.len() {
             self.current = 0;

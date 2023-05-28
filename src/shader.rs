@@ -47,7 +47,6 @@ impl ShaderPipeline {
                     )?
                 },
                 info,
-                //alt_info,
             });
         }
         Ok(Self { shaders })

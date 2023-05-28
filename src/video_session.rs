@@ -76,13 +76,13 @@ struct SwapChainData<'a> {
     dpb: VkResult<Dpb>,
     _video_max_extent: vk::Extent2D,
     _swapchain_format: vk::Format,
-    //swapchain_color_space: vk::ColorSpacekHz,
+    //swapchain_color_space: vk::ColorSpace,
     encode_session: VkResult<VideoSession<'a>>,
     decode_session: VkResult<VideoSession<'a>>,
     _images: VkResult<Vec<vk::Image>>,
     image_views: VkResult<Vec<vk::ImageView>>,
     semaphores: Vec<VkResult<vk::Semaphore>>,
-    _frame_index: u64,
+    frame_index: u64,
 }
 
 impl SwapChainData<'_> {
@@ -140,8 +140,9 @@ impl SwapChainData<'_> {
                 .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
             let semaphore = self.semaphores[swapchain_index];
             if let Ok(semaphore) = semaphore {
-                let signal_semaphore_infos =
-                    [vk::SemaphoreSubmitInfo::default().semaphore(semaphore)];
+                let signal_semaphore_compute = [vk::SemaphoreSubmitInfo::default()
+                    .semaphore(semaphore)
+                    .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
 
                 let present_view = views[swapchain_index];
                 let err = dpb.encode_frame(
@@ -154,10 +155,12 @@ impl SwapChainData<'_> {
                     compute_queue,
                     encode_queue,
                     &wait_semaphore_infos,
-                    &signal_semaphore_infos,
+                    &signal_semaphore_compute,
                 );
                 if let Err(err) = err {
-                    error!("Failed to encode frame: {err}");
+                    error!("Failed to encode frame {}: {err}", self.frame_index);
+                } else {
+                    self.frame_index += 1;
                 }
             } else {
                 error!("Something is terribly wrong: a semaphore is missing!");
@@ -290,7 +293,7 @@ pub unsafe fn record_vk_create_swapchain(
                 decode_session,
                 _images: images,
                 image_views,
-                _frame_index: 0,
+                frame_index: 0,
             }
         });
         let leaked = Box::leak(swapchain_data);

@@ -6,7 +6,7 @@ use itertools::Itertools;
 use log::{debug, error};
 
 use crate::{
-    buffer_queue::{BitstreamBufferRing, BufferPair, SyncPrimitive},
+    buffer_queue::{BitstreamBufferRing, BufferPair},
     cmd_buffer_queue::{CommandBuffer, CommandBufferQueue},
     settings::Codec,
     shader::ShaderPipeline,
@@ -255,7 +255,7 @@ impl Dpb {
                 30,
                 physical_memory_props,
                 vk::MemoryPropertyFlags::DEVICE_LOCAL,
-                SyncPrimitive::Nothing,
+                encode_semaphore,
                 allocator,
             );
 
@@ -577,7 +577,7 @@ impl Dpb {
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
         _wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
-        signal_semaphore_infos: &[vk::SemaphoreSubmitInfo],
+        signal_semaphore_compute: &[vk::SemaphoreSubmitInfo],
     ) -> anyhow::Result<()> {
         unsafe {
             let cmd = self.compute_cmd_buffers[&(image_view, self.next_image)];
@@ -602,11 +602,11 @@ impl Dpb {
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
             let signal_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(self.compute_semaphore)
-                .value(self.frame_index)
+                .value(self.frame_index + 1)
                 .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)]
             .iter()
             .copied()
-            .chain(signal_semaphore_infos.iter().copied())
+            .chain(signal_semaphore_compute.iter().copied())
             .collect_vec();
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
@@ -618,12 +618,17 @@ impl Dpb {
 
             let wait_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(self.compute_semaphore)
-                .value(self.frame_index)
-                .stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)];
+                .value(self.frame_index + 1)
+                .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
+            let signal_infos = [vk::SemaphoreSubmitInfo::default()
+                .semaphore(self.encode_semaphore)
+                .value(self.frame_index + 1)
+                .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
-                .wait_semaphore_infos(&wait_infos);
+                .wait_semaphore_infos(&wait_infos)
+                .signal_semaphore_infos(&signal_infos);
             device
                 .queue_submit2(encode_queue, &[info], encode_cmd.fence)
                 .map_err(|err| anyhow!("Failed to submit to encode queue: {err}"))?;
