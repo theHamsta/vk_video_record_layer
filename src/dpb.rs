@@ -6,7 +6,7 @@ use itertools::Itertools;
 use log::{debug, error};
 
 use crate::{
-    buffer_queue::{BitstreamBufferRing, Buffer, SyncPrimitive},
+    buffer_queue::{BitstreamBufferRing, BufferPair, SyncPrimitive},
     cmd_buffer_queue::{CommandBuffer, CommandBufferQueue},
     settings::Codec,
     shader::ShaderPipeline,
@@ -434,7 +434,7 @@ impl Dpb {
     fn record_encode_cmd_buffer(
         &mut self,
         device: &ash::Device,
-        buffer: &Buffer,
+        buffer: &BufferPair,
         video_queue_fn: &vk::KhrVideoQueueFn,
         video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
         video_session: &VideoSession,
@@ -447,6 +447,9 @@ impl Dpb {
             .next(device)?;
         unsafe {
             let cmd = cmd.cmd;
+            let info = vk::CommandBufferBeginInfo::default()
+                .flags(vk::CommandBufferUsageFlags::ONE_TIME_SUBMIT);
+            device.begin_command_buffer(cmd, &info)?;
             let info = vk::VideoBeginCodingInfoKHR::default()
                 .video_session(video_session.session())
                 .video_session_parameters(
@@ -524,10 +527,11 @@ impl Dpb {
             let mut h264_info = vk::VideoEncodeH264VclFrameInfoEXT::default()
                 .nalu_slice_entries(h264_nalus)
                 .std_picture_info(&h264_pic);
+
             let mut info = vk::VideoEncodeInfoKHR::default()
                 .quality_level(quality_level)
-                .dst_buffer(buffer.buffer())
-                .dst_buffer_range(buffer.size())
+                .dst_buffer(buffer.device.buffer())
+                .dst_buffer_range(buffer.device.size())
                 .src_picture_resource(pic);
             match video_session.codec() {
                 Codec::H264 => info = info.push_next(&mut h264_info),
@@ -538,6 +542,25 @@ impl Dpb {
 
             let info = vk::VideoEndCodingInfoKHR::default();
             (video_queue_fn.cmd_end_video_coding_khr)(cmd, &info);
+
+            let barriers = [vk::BufferMemoryBarrier2::default()
+                .src_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
+                .src_access_mask(vk::AccessFlags2::MEMORY_WRITE)
+                .src_queue_family_index(self.encode_family_index)
+                .dst_stage_mask(vk::PipelineStageFlags2::TRANSFER)
+                .dst_access_mask(vk::AccessFlags2::TRANSFER_READ)
+                .dst_queue_family_index(self.encode_family_index)
+                .buffer(buffer.device.buffer())
+                .size(buffer.device.size())];
+            let info = vk::DependencyInfo::default().buffer_memory_barriers(&barriers);
+            device.cmd_pipeline_barrier2(cmd, &info);
+            let copies = [vk::BufferCopy2::default().size(buffer.device.size())];
+            let info = vk::CopyBufferInfo2::default()
+                .src_buffer(buffer.device.buffer())
+                .dst_buffer(buffer.host.buffer())
+                .regions(&copies);
+            device.cmd_copy_buffer2(cmd, &info);
+            device.end_command_buffer(cmd)?;
         }
 
         Ok(cmd)
@@ -564,8 +587,7 @@ impl Dpb {
                 .bitstream_buffers
                 .as_mut()
                 .map_err(|e| *e)?
-                .next(device, 100)?
-                .clone();
+                .next(device, 100)?;
 
             let encode_cmd = self.record_encode_cmd_buffer(
                 device,

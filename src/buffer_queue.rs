@@ -17,6 +17,12 @@ fn find_memorytype_index(
         .map(|(index, _memory_type)| index as _)
 }
 
+#[derive(Clone, Copy)]
+pub struct BufferPair {
+    pub device: Buffer,
+    pub host: Buffer,
+}
+
 #[derive(Clone, Copy, Default)]
 pub enum Fence {
     Fence(vk::Fence),
@@ -128,14 +134,11 @@ impl Buffer {
             }
         }
     }
-
-    //pub fn fence(&self) -> vk::Fence {
-    //self.fence
-    //}
 }
 
 pub struct BitstreamBufferRing {
     buffers: Vec<Buffer>,
+    host_buffers: Vec<Buffer>,
     current: usize,
 }
 
@@ -151,9 +154,17 @@ impl BitstreamBufferRing {
     ) -> VkResult<Self> {
         let mut rtn = Self {
             buffers: Vec::with_capacity(count),
+            host_buffers: Vec::with_capacity(count),
             current: 0,
         };
 
+        let mut host_buffer_create_info = vk::BufferCreateInfo::default()
+            .usage(vk::BufferUsageFlags::TRANSFER_DST)
+            .size(buffer_create_info.size)
+            .sharing_mode(vk::SharingMode::EXCLUSIVE);
+        host_buffer_create_info.p_queue_family_indices = buffer_create_info.p_queue_family_indices;
+        host_buffer_create_info.queue_family_index_count =
+            buffer_create_info.queue_family_index_count;
         for _ in 0..count {
             let buffer = Buffer::new(
                 device,
@@ -169,6 +180,21 @@ impl BitstreamBufferRing {
                 e
             })?;
             rtn.buffers.push(buffer);
+
+            let buffer = Buffer::new(
+                device,
+                &host_buffer_create_info,
+                memory_props,
+                vk::MemoryPropertyFlags::HOST_VISIBLE,
+                sync_primitive,
+                allocator,
+            )
+            .map_err(|e| {
+                rtn.destroy(device, allocator);
+                error!("Failed to create host buffer: {e}");
+                e
+            })?;
+            rtn.host_buffers.push(buffer);
         }
         Ok(rtn)
     }
@@ -177,9 +203,12 @@ impl BitstreamBufferRing {
         for buffer in self.buffers.drain(..) {
             buffer.destroy(device, allocator);
         }
+        for buffer in self.host_buffers.drain(..) {
+            buffer.destroy(device, allocator);
+        }
     }
 
-    pub fn next(&mut self, device: &ash::Device, timeout: u64) -> VkResult<&Buffer> {
+    pub fn next(&mut self, device: &ash::Device, timeout: u64) -> VkResult<BufferPair> {
         let buffer = &self.buffers[self.current];
 
         unsafe {
@@ -191,11 +220,15 @@ impl BitstreamBufferRing {
                 Fence::Nothing => (),
             }
         }
+        let host = &self.host_buffers[self.current];
 
         self.current += 1;
         if self.current >= self.buffers.len() {
             self.current = 0;
         }
-        Ok(buffer)
+        Ok(BufferPair {
+            device: *buffer,
+            host: *host,
+        })
     }
 }
