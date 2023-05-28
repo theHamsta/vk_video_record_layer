@@ -6,7 +6,7 @@ use itertools::Itertools;
 use log::{debug, error};
 
 use crate::{
-    buffer_queue::BitstreamBufferRing,
+    buffer_queue::{BitstreamBufferRing, Buffer},
     cmd_buffer_queue::{CommandBuffer, CommandBufferQueue},
     settings::Codec,
     shader::ShaderPipeline,
@@ -255,6 +255,7 @@ impl Dpb {
                 30,
                 physical_memory_props,
                 vk::MemoryPropertyFlags::DEVICE_LOCAL,
+                false,
                 allocator,
             );
 
@@ -433,6 +434,7 @@ impl Dpb {
     fn record_encode_cmd_buffer(
         &mut self,
         device: &ash::Device,
+        buffer: &Buffer,
         video_queue_fn: &vk::KhrVideoQueueFn,
         video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
         video_session: &VideoSession,
@@ -483,7 +485,6 @@ impl Dpb {
 
             // TODO: encode pps and sps. Don't I have to do this myself?
 
-            let buffer = vk::Buffer::null();
             let pic = vk::VideoPictureResourceInfoKHR::default()
                 .coded_extent(self.extent)
                 .image_view_binding(image_view);
@@ -525,8 +526,8 @@ impl Dpb {
                 .std_picture_info(&h264_pic);
             let mut info = vk::VideoEncodeInfoKHR::default()
                 .quality_level(quality_level)
-                .dst_buffer(buffer)
-                .dst_buffer_range(0)
+                .dst_buffer(buffer.buffer())
+                .dst_buffer_range(buffer.size())
                 .src_picture_resource(pic);
             match video_session.codec() {
                 Codec::H264 => info = info.push_next(&mut h264_info),
@@ -559,8 +560,15 @@ impl Dpb {
             let cmd = self.compute_cmd_buffers[&(image_view, self.next_image)];
             debug!("encode_frame");
 
+            let buffer = self
+                .bitstream_buffers
+                .as_mut()
+                .map_err(|e| *e)?
+                .next(device, 100)?.clone();
+
             let encode_cmd = self.record_encode_cmd_buffer(
                 device,
+                &buffer,
                 video_queue_fn,
                 video_encode_queue_fn,
                 video_session,

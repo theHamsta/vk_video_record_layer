@@ -26,15 +26,10 @@ pub struct VideoSession<'a> {
     profile: Box<VideoProfile<'a>>,
     memories: Vec<vk::DeviceMemory>,
     parameters: Option<vk::VideoSessionParametersKHR>,
-    is_encode: bool,
     codec: Codec,
 }
 
 impl VideoSession<'_> {
-    pub fn is_encode(&self) -> &bool {
-        &self.is_encode
-    }
-
     pub fn codec(&self) -> Codec {
         self.codec
     }
@@ -49,6 +44,31 @@ impl VideoSession<'_> {
 
     pub fn profile(&self) -> &Box<VideoProfile<'_>> {
         &self.profile
+    }
+
+    fn destroy(
+        &mut self,
+        device: &ash::Device,
+        video_queue_fn: &vk::KhrVideoQueueFn,
+        allocator: Option<&vk::AllocationCallbacks>,
+    ) {
+        unsafe {
+            for memory in self.memories.drain(..) {
+                device.free_memory(memory, allocator);
+            }
+            (video_queue_fn.destroy_video_session_khr)(
+                device.handle(),
+                self.session,
+                transmute(allocator),
+            );
+            if let Some(parameter) = self.parameters.take() {
+                (video_queue_fn.destroy_video_session_parameters_khr)(
+                    device.handle(),
+                    parameter,
+                    transmute(allocator),
+                );
+            }
+        }
     }
 }
 
@@ -66,7 +86,12 @@ struct SwapChainData<'a> {
 }
 
 impl SwapChainData<'_> {
-    pub fn destroy(&mut self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
+    pub fn destroy(
+        &mut self,
+        device: &ash::Device,
+        video_queue_fn: &vk::KhrVideoQueueFn,
+        allocator: Option<&vk::AllocationCallbacks>,
+    ) {
         if let Ok(views) = self.image_views.as_mut() {
             for view in views.drain(..) {
                 unsafe {
@@ -81,6 +106,12 @@ impl SwapChainData<'_> {
         for semaphore in self.semaphores.drain(..) {
             if let Ok(semaphore) = semaphore {
                 unsafe { device.destroy_semaphore(semaphore, allocator) };
+            }
+        }
+
+        for session in [&mut self.encode_session, &mut self.decode_session].iter_mut() {
+            if let Ok(session) = session {
+                session.destroy(device, video_queue_fn, allocator);
             }
         }
     }
@@ -156,6 +187,8 @@ pub unsafe fn record_vk_create_swapchain(
         let physical_device = lock.as_ref().unwrap();
         let lock = get_state().instance.read().unwrap();
         let instance = lock.as_ref().unwrap();
+        let lock = get_state().video_queue_fn.read().unwrap();
+        let video_queue_fn = lock.as_ref().unwrap();
 
         let physical_memory_props =
             instance.get_physical_device_memory_properties(*physical_device);
@@ -266,7 +299,7 @@ pub unsafe fn record_vk_create_swapchain(
             .is_err()
         {
             error!("Could not set private data!");
-            Box::from_raw(leaked).destroy(device, allocator);
+            Box::from_raw(leaked).destroy(device, video_queue_fn, allocator);
         }
     } else {
         warn!("Failed to create swapchain");
@@ -322,46 +355,7 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
         let mut swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
             device.get_private_data(swapchain, *slot),
         ));
-        swapchain_data.destroy(device, allocator);
-
-        if let Ok(VideoSession {
-            session,
-            memories,
-            parameters,
-            ..
-        }) = swapchain_data.decode_session
-        {
-            (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
-            if let Some(parameters) = parameters {
-                (video_queue_fn.destroy_video_session_parameters_khr)(
-                    device.handle(),
-                    parameters,
-                    p_allocator,
-                );
-            }
-            for memory in memories {
-                device.free_memory(memory, allocator);
-            }
-        }
-        if let Ok(VideoSession {
-            session,
-            memories,
-            parameters,
-            ..
-        }) = swapchain_data.encode_session
-        {
-            (video_queue_fn.destroy_video_session_khr)(device.handle(), session, p_allocator);
-            if let Some(parameters) = parameters {
-                (video_queue_fn.destroy_video_session_parameters_khr)(
-                    device.handle(),
-                    parameters,
-                    p_allocator,
-                );
-            }
-            for memory in memories {
-                device.free_memory(memory, allocator);
-            }
-        }
+        swapchain_data.destroy(device, video_queue_fn, allocator);
     }
     (get_state()
         .swapchain_fn
@@ -462,8 +456,8 @@ fn create_video_session(
 
     let lock = state.device.read().unwrap();
     let device = lock.as_ref().unwrap();
-    let mut lock = state.video_queue_fn.write().unwrap();
-    let video_queue_fn = lock.as_mut().unwrap();
+    let lock = state.video_queue_fn.read().unwrap();
+    let video_queue_fn = lock.as_ref().unwrap();
 
     let mut video_session = vk::VideoSessionKHR::null();
     let res = unsafe {
@@ -490,7 +484,6 @@ fn create_video_session(
 
     res.and_then(|session| {
         Ok(VideoSession {
-            is_encode,
             codec: state.settings.codec,
             session,
             profile,

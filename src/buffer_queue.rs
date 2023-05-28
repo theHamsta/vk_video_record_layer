@@ -1,3 +1,4 @@
+
 use ash::{prelude::VkResult, vk};
 use log::{debug, error};
 
@@ -17,11 +18,13 @@ fn find_memorytype_index(
         .map(|(index, _memory_type)| index as _)
 }
 
+#[derive(Clone, Copy)]
 pub struct Buffer {
     buffer: vk::Buffer,
     memory: vk::DeviceMemory,
     fence: vk::Fence,
     size: u64,
+    with_owned_fence: bool, //_marker: PhantomData<Box<()>>, //TODO
 }
 
 impl Buffer {
@@ -30,6 +33,7 @@ impl Buffer {
         buffer_create_info: &vk::BufferCreateInfo,
         memory_props: &vk::PhysicalDeviceMemoryProperties,
         memory_property_flags: vk::MemoryPropertyFlags,
+        with_fence: bool,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
         debug!("allocating memory: {:?}", buffer_create_info);
@@ -41,17 +45,20 @@ impl Buffer {
                 buffer,
                 fence: vk::Fence::null(),
                 size,
+                with_owned_fence: with_fence,
             };
-            rtn.fence = device
-                .create_fence(
-                    &vk::FenceCreateInfo::default().flags(vk::FenceCreateFlags::SIGNALED),
-                    allocator,
-                )
-                .map_err(|e| {
-                    rtn.destroy(device, allocator);
-                    error!("Failed create fence: {e}");
-                    e
-                })?;
+            if with_fence {
+                rtn.fence = device
+                    .create_fence(
+                        &vk::FenceCreateInfo::default().flags(vk::FenceCreateFlags::SIGNALED),
+                        allocator,
+                    )
+                    .map_err(|e| {
+                        rtn.destroy(device, allocator);
+                        error!("Failed create fence: {e}");
+                        e
+                    })?;
+            }
 
             let req = device.get_buffer_memory_requirements(buffer);
             let index = find_memorytype_index(&req, memory_props, memory_property_flags)
@@ -93,17 +100,19 @@ impl Buffer {
         self.size
     }
 
-    fn destroy(&self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
+    fn destroy(self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
         unsafe {
             device.destroy_buffer(self.buffer, allocator);
             device.free_memory(self.memory, allocator);
-            device.destroy_fence(self.fence, allocator);
+            if self.with_owned_fence {
+                device.destroy_fence(self.fence, allocator);
+            }
         }
     }
 
-    pub fn fence(&self) -> vk::Fence {
-        self.fence
-    }
+    //pub fn fence(&self) -> vk::Fence {
+        //self.fence
+    //}
 }
 
 pub struct BitstreamBufferRing {
@@ -118,6 +127,7 @@ impl BitstreamBufferRing {
         count: usize,
         memory_props: &vk::PhysicalDeviceMemoryProperties,
         memory_property_flags: vk::MemoryPropertyFlags,
+        with_own_fences: bool,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
         let mut rtn = Self {
@@ -131,6 +141,7 @@ impl BitstreamBufferRing {
                 buffer_create_info,
                 memory_props,
                 memory_property_flags,
+                with_own_fences,
                 allocator,
             )
             .map_err(|e| {
@@ -143,26 +154,24 @@ impl BitstreamBufferRing {
         Ok(rtn)
     }
 
-    fn destroy(&mut self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
+    pub fn destroy(&mut self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
         for buffer in self.buffers.drain(..) {
             buffer.destroy(device, allocator);
         }
     }
 
-    fn next(
-        &mut self,
-        device: &ash::Device,
-        timeout: u64,
-    ) -> VkResult<&Buffer> {
+    pub fn next(&mut self, device: &ash::Device, timeout: u64) -> VkResult<&Buffer> {
         let buffer = &self.buffers[self.current];
 
         unsafe {
-            device.wait_for_fences(&[buffer.fence], true, timeout)?;
-            device.reset_fences(&[buffer.fence])?;
+            if buffer.fence != vk::Fence::null() {
+                device.wait_for_fences(&[buffer.fence], true, timeout)?;
+                device.reset_fences(&[buffer.fence])?;
+            }
         }
 
         self.current += 1;
-        if self.current > self.buffers.len() {
+        if self.current >= self.buffers.len() {
             self.current = 0;
         }
         Ok(buffer)
