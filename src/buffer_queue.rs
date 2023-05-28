@@ -162,7 +162,7 @@ impl BitstreamBufferRing {
                 device,
                 &host_buffer_create_info,
                 memory_props,
-                vk::MemoryPropertyFlags::HOST_VISIBLE,
+                vk::MemoryPropertyFlags::HOST_VISIBLE | vk::MemoryPropertyFlags::HOST_COHERENT,
                 allocator,
             )
             .map_err(|e| {
