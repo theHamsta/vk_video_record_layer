@@ -226,6 +226,7 @@ pub unsafe fn record_vk_create_swapchain(
             };
 
             let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
+            debug!("Create encode session");
             let encode_session = create_video_session(
                 *get_state().encode_queue_family_idx.read().unwrap(),
                 create_info.image_extent,
@@ -234,6 +235,7 @@ pub unsafe fn record_vk_create_swapchain(
                 true,
                 p_allocator,
             );
+            debug!("Create decode session");
             let decode_session = create_video_session(
                 *get_state().decode_queue_family_idx.read().unwrap(),
                 create_info.image_extent,
@@ -471,6 +473,13 @@ fn create_video_session(
             &mut video_session,
         )
         .result_with_success(video_session)
+        .map_err(|e| {
+            error!(
+                "Failed to create video session: {is_encode:?} {:?}",
+                state.settings.codec
+            );
+            e
+        })
     };
 
     if let Err(err) = res {

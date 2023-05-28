@@ -57,6 +57,9 @@ impl Settings {
         if let Ok(codec) = std::env::var("VK_VIDEO_RECORD_CODEC") {
             settings.codec = codec.into();
         }
+        if settings.quality_level == 0 {
+            settings.quality_level = 10;
+        }
         info!("{:?}", settings);
         settings
     }

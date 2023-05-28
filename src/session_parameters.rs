@@ -42,33 +42,38 @@ pub fn make_h264_video_session_parameters(
     allocator: Option<&vk::AllocationCallbacks>,
 ) -> VkResult<vk::VideoSessionParametersKHR> {
     let bitdepth = 8;
-    //let flags = MaybeUninit::zeroed();
-    //let vui = vk::native::StdVideoH264SequenceParameterSetVui {
-    //flags,
-    //aspect_ratio_idc: todo!(),
-    //sar_width: todo!(),
-    //sar_height: todo!(),
-    //video_format: todo!(),
-    //colour_primaries: todo!(),
-    //transfer_characteristics: todo!(),
-    //matrix_coefficients: todo!(),
-    //num_units_in_tick: todo!(),
-    //time_scale: todo!(),
-    //max_num_reorder_frames: todo!(),
-    //max_dec_frame_buffering: todo!(),
-    //chroma_sample_loc_type_top_field: todo!(),
-    //chroma_sample_loc_type_bottom_field: todo!(),
-    //reserved1: 0,
-    //pHrdParameters: null(),
-    //};
+    let flags = unsafe { MaybeUninit::zeroed().assume_init() };
+    let _vui = vk::native::StdVideoH264SequenceParameterSetVui {
+        flags,
+        aspect_ratio_idc:
+            ash::vk::native::StdVideoH265AspectRatioIdc_STD_VIDEO_H265_ASPECT_RATIO_IDC_SQUARE,
+        sar_width: 0,
+        sar_height: 0,
+        video_format: 0,
+        colour_primaries: 0,
+        transfer_characteristics: 0,
+        matrix_coefficients: 0,
+        num_units_in_tick: 1000,
+        time_scale: 0,
+        max_num_reorder_frames: 0,
+        max_dec_frame_buffering: 0,
+        chroma_sample_loc_type_top_field: 0,
+        chroma_sample_loc_type_bottom_field: 0,
+        reserved1: 0,
+        pHrdParameters: null(),
+    };
     assert_eq!(format, vk::Format::G8_B8R8_2PLANE_420_UNORM);
 
     let flags = MaybeUninit::zeroed();
-    let flags = unsafe { flags.assume_init() };
+    let mut flags: vk::native::StdVideoH264SpsFlags = unsafe { flags.assume_init() };
+    // Use whatever ffmpeg uses for h264 nvenc
+    flags.set_frame_mbs_only_flag(1);
+    flags.set_direct_8x8_inference_flag(1);
+    //https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#decode-h264-sps
     let mut sps = vec![vk::native::StdVideoH264SequenceParameterSet {
         flags,
         profile_idc: vk::native::StdVideoH264ProfileIdc_STD_VIDEO_H264_PROFILE_IDC_MAIN,
-        level_idc: vk::native::StdVideoH264LevelIdc_STD_VIDEO_H264_LEVEL_IDC_5_2,
+        level_idc: vk::native::StdVideoH264LevelIdc_STD_VIDEO_H264_LEVEL_IDC_5_1,
         chroma_format_idc:
             vk::native::StdVideoH264ChromaFormatIdc_STD_VIDEO_H264_CHROMA_FORMAT_IDC_420,
         seq_parameter_set_id: 0,
@@ -91,8 +96,7 @@ pub fn make_h264_video_session_parameters(
         reserved2: 0,
         pOffsetForRefFrame: null(),
         pScalingLists: null(),
-        pSequenceParameterSetVui: null(), //&vui, will break CodecParameters when needing
-                                          //self-referential structs
+        pSequenceParameterSetVui: null(), //&vui (requires vui_is_present_flag)
     }];
     if sps[0].frame_crop_right_offset != 0 || sps[0].frame_crop_bottom_offset != 0 {
         sps[0].flags.set_frame_cropping_flag(1);
@@ -101,6 +105,7 @@ pub fn make_h264_video_session_parameters(
     let mut flags: vk::native::StdVideoH264PpsFlags = unsafe { flags.assume_init() };
     flags.set_entropy_coding_mode_flag(1);
     flags.set_deblocking_filter_control_present_flag(1);
+    //https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#decode-h264-pps
     let pps = vec![vk::native::StdVideoH264PictureParameterSet {
         flags,
         seq_parameter_set_id: 0,
@@ -124,7 +129,6 @@ pub fn make_h264_video_session_parameters(
     unsafe {
         let mut info =
             vk::VideoSessionParametersCreateInfoKHR::default().video_session(video_session);
-        info.p_next = transmute(&codec_info);
         info = info.push_next(&mut codec_info);
         let mut parameters = MaybeUninit::zeroed();
         let res = (video_queue_fn.create_video_session_parameters_khr)(
