@@ -307,7 +307,7 @@ impl Dpb {
         src_queue_family_index: u32,
         dst_queue_family_index: u32,
     ) -> anyhow::Result<()> {
-        if input_format != vk::Format::B8G8R8A8_UNORM {
+        if input_format != vk::Format::B8G8R8A8_UNORM && input_format != vk::Format::B8G8R8A8_SRGB {
             panic!("Conversion for input format {input_format:?} not implemented yet");
         }
 
