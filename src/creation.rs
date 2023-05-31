@@ -216,7 +216,10 @@ pub extern "system" fn record_vk_create_device(
                 let Some(encode_idx) = queue_props.iter().position(|prop| {
                     prop.queue_family_properties
                         .queue_flags
-                        .contains(vk::QueueFlags::VIDEO_ENCODE_KHR)
+                        .contains(vk::QueueFlags::VIDEO_ENCODE_KHR) &&
+                    prop.queue_family_properties
+                        .queue_flags
+                        .contains(vk::QueueFlags::TRANSFER)
                 }) else {
                     error!("Device doesn't support encode");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;

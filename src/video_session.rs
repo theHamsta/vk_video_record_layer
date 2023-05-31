@@ -27,6 +27,7 @@ pub struct VideoSession<'a> {
     memories: Vec<vk::DeviceMemory>,
     parameters: Option<vk::VideoSessionParametersKHR>,
     codec: Codec,
+    needs_reset: bool,
 }
 
 impl VideoSession<'_> {
@@ -69,6 +70,14 @@ impl VideoSession<'_> {
                 );
             }
         }
+    }
+
+    pub fn needs_reset(&self) -> bool {
+        self.needs_reset
+    }
+
+    pub fn set_needs_reset(&mut self, needs_reset: bool) {
+        self.needs_reset = needs_reset;
     }
 }
 
@@ -128,7 +137,7 @@ impl SwapChainData<'_> {
         present_info: &vk::PresentInfoKHR,
     ) {
         if let (Ok(views), Ok(dpb), Ok(encode_session)) =
-            (&self.image_views, &mut self.dpb, &self.encode_session)
+            (&self.image_views, &mut self.dpb, &mut self.encode_session)
         {
             let wait_semaphore_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(unsafe {
@@ -496,6 +505,7 @@ fn create_video_session(
 
     res.and_then(|session| {
         Ok(VideoSession {
+            needs_reset: true,
             codec: state.settings.codec,
             session,
             profile,

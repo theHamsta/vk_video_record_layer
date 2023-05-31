@@ -185,7 +185,7 @@ impl Dpb {
             let encode_cmd_pool =
                 CommandBufferQueue::new(device, encode_family_index, 10, 100, allocator);
             let decode_cmd_pool =
-                CommandBufferQueue::new(device, encode_family_index, 10, 100, allocator);
+                CommandBufferQueue::new(device, decode_family_index, 10, 100, allocator);
 
             let num_pools = max_input_image_views * num_images;
             let pool_sizes = vec![
@@ -437,7 +437,7 @@ impl Dpb {
         buffer: &BufferPair,
         video_queue_fn: &vk::KhrVideoQueueFn,
         video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
-        video_session: &VideoSession,
+        video_session: &mut VideoSession,
         quality_level: u32,
     ) -> anyhow::Result<CommandBuffer> {
         let cmd = self
@@ -457,6 +457,13 @@ impl Dpb {
                         .parameters()
                         .ok_or_else(|| anyhow!("Can't encode: missing VideoSessionParameters"))?,
                 );
+            if video_session.needs_reset() {
+                let info = vk::VideoCodingControlInfoKHR::default()
+                    .flags(vk::VideoCodingControlFlagsKHR::RESET);
+                (video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
+                video_session.set_needs_reset(false);
+            }
+
             (video_queue_fn.cmd_begin_video_coding_khr)(cmd, &info);
 
             let image = self.images[self.next_image as usize];
@@ -545,7 +552,7 @@ impl Dpb {
 
             let barriers = [vk::BufferMemoryBarrier2::default()
                 .src_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
-                .src_access_mask(vk::AccessFlags2::MEMORY_WRITE)
+                .src_access_mask(vk::AccessFlags2::VIDEO_ENCODE_WRITE_KHR)
                 .src_queue_family_index(self.encode_family_index)
                 .dst_stage_mask(vk::PipelineStageFlags2::TRANSFER)
                 .dst_access_mask(vk::AccessFlags2::TRANSFER_READ)
@@ -571,7 +578,7 @@ impl Dpb {
         device: &ash::Device,
         video_queue_fn: &vk::KhrVideoQueueFn,
         video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
-        video_session: &VideoSession,
+        video_session: &mut VideoSession,
         quality_level: u32,
         image_view: vk::ImageView,
         compute_queue: vk::Queue,
