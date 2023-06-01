@@ -256,6 +256,7 @@ impl Dpb {
                 physical_memory_props,
                 vk::MemoryPropertyFlags::DEVICE_LOCAL,
                 encode_semaphore,
+                &mut profiles[0].clone(),
                 allocator,
             );
 
@@ -450,28 +451,9 @@ impl Dpb {
             let info = vk::CommandBufferBeginInfo::default()
                 .flags(vk::CommandBufferUsageFlags::ONE_TIME_SUBMIT);
             device.begin_command_buffer(cmd, &info)?;
-            let info = vk::VideoBeginCodingInfoKHR::default()
-                .video_session(video_session.session())
-                .video_session_parameters(
-                    video_session
-                        .parameters()
-                        .ok_or_else(|| anyhow!("Can't encode: missing VideoSessionParameters"))?,
-                );
-            if video_session.needs_reset() {
-                let info = vk::VideoCodingControlInfoKHR::default()
-                    .flags(vk::VideoCodingControlFlagsKHR::RESET);
-                (video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
-                video_session.set_needs_reset(false);
-            }
-
-            (video_queue_fn.cmd_begin_video_coding_khr)(cmd, &info);
 
             let image = self.images[self.next_image as usize];
             let image_view = self.views[self.next_image as usize];
-
-            // TODO: rate control at least once
-            //(video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
-
             let barriers = vec![vk::ImageMemoryBarrier2::default()
                 .src_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
                 .dst_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
@@ -491,15 +473,36 @@ impl Dpb {
                 )
                 .image(image)];
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
-            device.cmd_pipeline_barrier2(cmd, &info);
+            //device.cmd_pipeline_barrier2(cmd, &info);
 
-            // TODO: encode pps and sps. Don't I have to do this myself?
+            let info = vk::VideoBeginCodingInfoKHR::default()
+                .video_session(video_session.session())
+                .video_session_parameters(
+                    video_session
+                        .parameters()
+                        .ok_or_else(|| anyhow!("Can't encode: missing VideoSessionParameters"))?,
+                );
+            (video_queue_fn.cmd_begin_video_coding_khr)(cmd, &info);
+
+            if video_session.needs_reset() {
+                let info = vk::VideoCodingControlInfoKHR::default()
+                    .flags(vk::VideoCodingControlFlagsKHR::RESET);
+                (video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
+                video_session.set_needs_reset(false);
+            }
+            device.cmd_begin_query(
+                cmd,
+                buffer.query_pool,
+                buffer.slot,
+                vk::QueryControlFlags::default(),
+            );
 
             let pic = vk::VideoPictureResourceInfoKHR::default()
                 .coded_extent(self.extent)
                 .image_view_binding(image_view);
             let flags = MaybeUninit::zeroed();
-            let flags = flags.assume_init();
+            let mut flags: vk::native::StdVideoEncodeH264PictureInfoFlags = flags.assume_init();
+            flags.set_idr_flag(1);
             let h264_pic = vk::native::StdVideoEncodeH264PictureInfo {
                 flags,
                 seq_parameter_set_id: 0,
@@ -514,7 +517,7 @@ impl Dpb {
             let h264_header = vk::native::StdVideoEncodeH264SliceHeader {
                 flags,
                 first_mb_in_slice: 0,
-                slice_type: 0,
+                slice_type: vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
                 idr_pic_id: 0,
                 num_ref_idx_l0_active_minus1: 0,
                 num_ref_idx_l1_active_minus1: 0,
@@ -545,6 +548,7 @@ impl Dpb {
                 Codec::H265 => todo!(),
                 Codec::AV1 => todo!(),
             };
+            device.cmd_end_query(cmd, buffer.query_pool, buffer.slot);
             (video_encode_queue_fn.cmd_encode_video_khr)(cmd, &info);
 
             let info = vk::VideoEndCodingInfoKHR::default();
@@ -634,7 +638,7 @@ impl Dpb {
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
-                .wait_semaphore_infos(&wait_infos)
+                //.wait_semaphore_infos(&wait_infos)
                 .signal_semaphore_infos(&signal_infos);
             device
                 .queue_submit2(encode_queue, &[info], encode_cmd.fence)

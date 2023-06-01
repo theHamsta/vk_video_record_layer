@@ -2,7 +2,7 @@ use core::slice;
 use std::{fs::File, io::Write};
 
 use ash::{prelude::VkResult, vk};
-use log::{debug, error, warn};
+use log::{debug, error, info, warn};
 
 // From ash examples
 fn find_memorytype_index(
@@ -24,6 +24,8 @@ fn find_memorytype_index(
 pub struct BufferPair {
     pub device: Buffer,
     pub host: Buffer,
+    pub slot: u32,
+    pub query_pool: vk::QueryPool,
 }
 
 #[derive(Clone, Copy)]
@@ -111,6 +113,7 @@ pub struct BitstreamBufferRing {
     current: usize,
     generation: u64,
     semaphore: vk::Semaphore,
+    query_pool: vk::QueryPool,
 }
 
 impl BitstreamBufferRing {
@@ -121,6 +124,7 @@ impl BitstreamBufferRing {
         memory_props: &vk::PhysicalDeviceMemoryProperties,
         memory_property_flags: vk::MemoryPropertyFlags,
         buffer_result_timeline_semaphore: vk::Semaphore,
+        profile_info: &mut vk::VideoProfileInfoKHR,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
         let mut rtn = Self {
@@ -130,6 +134,7 @@ impl BitstreamBufferRing {
             semaphore: buffer_result_timeline_semaphore,
             current: 0,
             generation: 0,
+            query_pool: vk::QueryPool::null(),
         };
         if buffer_result_timeline_semaphore == vk::Semaphore::null() {
             warn!("Could not create bitstream buffers because no valid timeline semaphore was provided!");
@@ -172,6 +177,23 @@ impl BitstreamBufferRing {
             })?;
             rtn.host_buffers.push(buffer);
         }
+
+        let mut encode_info = vk::QueryPoolVideoEncodeFeedbackCreateInfoKHR::default()
+            .encode_feedback_flags(
+                vk::VideoEncodeFeedbackFlagsKHR::BITSTREAM_BUFFER_OFFSET
+                    | vk::VideoEncodeFeedbackFlagsKHR::BITSTREAM_BYTES_WRITTEN,
+            );
+        let info = vk::QueryPoolCreateInfo::default()
+            .query_count(count as u32)
+            .query_type(vk::QueryType::VIDEO_ENCODE_FEEDBACK_KHR)
+            .push_next(&mut encode_info)
+            .push_next(profile_info);
+
+        rtn.query_pool = unsafe { device.create_query_pool(&info, allocator) }.map_err(|e| {
+            rtn.destroy(device, allocator);
+            error!("Failed to create query buffer: {e}");
+            e
+        })?;
         Ok(rtn)
     }
 
@@ -181,6 +203,9 @@ impl BitstreamBufferRing {
         }
         for buffer in self.host_buffers.drain(..) {
             buffer.destroy(device, allocator);
+        }
+        unsafe {
+            device.destroy_query_pool(self.query_pool, allocator);
         }
     }
 
@@ -204,7 +229,37 @@ impl BitstreamBufferRing {
             })?;
         }
 
+        #[derive(Default, Debug, Copy, Clone)]
+        #[repr(C)]
+        struct QueryStatus {
+            _offset: u32,
+            _size: u32,
+            _result: vk::QueryResultStatusKHR,
+        }
+        let mut result = [QueryStatus::default()];
+
         if values[0] != 0 {
+            let slot = ((values[0] as usize - 1) % self.buffer_generation.len()) as u32;
+            unsafe {
+                let result = device
+                    .get_query_pool_results(
+                        self.query_pool,
+                        slot,
+                        &mut result,
+                        //vk::QueryResultFlags::default(),
+                        vk::QueryResultFlags::WAIT | vk::QueryResultFlags::WITH_STATUS_KHR,
+                    )
+                    .map_err(|e| {
+                        warn!(
+                            "Failed to get query results for query slot {slot} for encoding {}",
+                            values[0]
+                        );
+                        e
+                    })
+                    .and_then(|_| Ok(result[0]));
+                device.reset_query_pool(self.query_pool, slot, 1);
+                info!("{:?} slot {slot} encoding {}", result, values[0]);
+            }
             // TODO: offload to IO thread
             if let Ok(_) = std::env::var("VK_RECORD_LAYER_DEBUG_DUMP") {
                 let filename = format!("/tmp/frame{}.h264", self.buffer_generation[self.current]);
@@ -229,15 +284,17 @@ impl BitstreamBufferRing {
         }
 
         self.buffer_generation[self.current] = self.generation + 1;
-
+        let rtn = BufferPair {
+            device: *buffer,
+            host: *host,
+            slot: self.current as u32,
+            query_pool: self.query_pool,
+        };
         self.generation += 1;
         self.current += 1;
         if self.current >= self.buffers.len() {
             self.current = 0;
         }
-        Ok(BufferPair {
-            device: *buffer,
-            host: *host,
-        })
+        Ok(rtn)
     }
 }
