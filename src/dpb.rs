@@ -1,15 +1,16 @@
-use std::{collections::HashMap, mem::MaybeUninit, ptr::null};
-
+use crate::vulkan_utils::name_object;
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;
 use log::{debug, error};
+use std::{collections::HashMap, mem::MaybeUninit, ptr::null};
 
 use crate::{
     buffer_queue::{BitstreamBufferRing, BufferPair},
     cmd_buffer_queue::{CommandBuffer, CommandBufferQueue},
     settings::Codec,
     shader::ShaderPipeline,
+    state::Extensions,
     video_session::VideoSession,
 };
 
@@ -41,10 +42,72 @@ pub struct Dpb {
     frame_index: u64,
 }
 
+#[allow(dead_code)]
+#[derive(Debug, Copy, Clone)]
+enum PictureType {
+    IDR,
+    I,
+    P,
+    B,
+}
+
+#[allow(dead_code)]
+impl PictureType {
+    fn to_h264_slice_type(self) -> vk::native::StdVideoH264SliceType {
+        match self {
+            PictureType::IDR | PictureType::I => {
+                vk::native::StdVideoH264SliceType_STD_VIDEO_H264_SLICE_TYPE_I
+            }
+            PictureType::P => vk::native::StdVideoH264SliceType_STD_VIDEO_H264_SLICE_TYPE_P,
+            PictureType::B => vk::native::StdVideoH264SliceType_STD_VIDEO_H264_SLICE_TYPE_B,
+        }
+    }
+    fn to_h264_picture_type(self) -> vk::native::StdVideoH264PictureType {
+        match self {
+            PictureType::IDR => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
+            PictureType::I => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_I,
+            PictureType::P => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_P,
+            PictureType::B => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_B,
+        }
+    }
+    /// Returns `true` if the picture type is [`IDR`].
+    ///
+    /// [`IDR`]: PictureType::IDR
+    #[must_use]
+    fn is_idr(&self) -> bool {
+        matches!(self, Self::IDR)
+    }
+
+    /// Returns `true` if the picture type is [`I`].
+    ///
+    /// [`I`]: PictureType::I
+    #[must_use]
+    fn is_i(&self) -> bool {
+        matches!(self, Self::I)
+    }
+
+    /// Returns `true` if the picture type is [`P`].
+    ///
+    /// [`P`]: PictureType::P
+    #[must_use]
+    fn is_p(&self) -> bool {
+        matches!(self, Self::P)
+    }
+
+    /// Returns `true` if the picture type is [`B`].
+    ///
+    /// [`B`]: PictureType::B
+    #[must_use]
+    fn is_b(&self) -> bool {
+        matches!(self, Self::B)
+    }
+}
+
 impl Dpb {
     pub fn new(
         // src_queue_family_index
         device: &ash::Device,
+        extensions: &Extensions,
         video_format: vk::Format,
         extent: vk::Extent2D,
         num_images: u32,
@@ -127,10 +190,13 @@ impl Dpb {
                     layer_count: 1,
                 });
 
-            for _ in 0..num_images {
+            for i in 0..num_images {
                 let image = device.create_image(&info, allocator);
                 let Ok(image) = image.map_err(|e| { error!("Failed to create image for DPB: {e}"); res = e}) else { break; };
                 images.push(image);
+
+                #[cfg(debug_assertions)]
+                name_object(device, extensions, image, &format!("DPB image {}", i));
 
                 view_info.image = image;
                 let view = device.create_image_view(&view_info, allocator);
@@ -435,12 +501,13 @@ impl Dpb {
     fn record_encode_cmd_buffer(
         &mut self,
         device: &ash::Device,
+        extensions: &Extensions,
         buffer: &BufferPair,
-        video_queue_fn: &vk::KhrVideoQueueFn,
-        video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
         video_session: &mut VideoSession,
         quality_level: u32,
     ) -> anyhow::Result<CommandBuffer> {
+        let video_queue_fn = extensions.video_queue_fn();
+        let video_encode_queue_fn = extensions.video_encode_queue_fn();
         let cmd = self
             .encode_cmd_pool
             .as_mut()
@@ -473,7 +540,13 @@ impl Dpb {
                 )
                 .image(image)];
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
-            //device.cmd_pipeline_barrier2(cmd, &info);
+            device.cmd_pipeline_barrier2(cmd, &info);
+
+            let image_type = if video_session.needs_reset() {
+                PictureType::IDR
+            } else {
+                PictureType::I
+            };
 
             let info = vk::VideoBeginCodingInfoKHR::default()
                 .video_session(video_session.session())
@@ -502,7 +575,7 @@ impl Dpb {
                 .image_view_binding(image_view);
             let flags = MaybeUninit::zeroed();
             let mut flags: vk::native::StdVideoEncodeH264PictureInfoFlags = flags.assume_init();
-            flags.set_idr_flag(1);
+            flags.set_idr_flag(image_type.is_idr() as u32);
             let h264_pic = vk::native::StdVideoEncodeH264PictureInfo {
                 flags,
                 seq_parameter_set_id: 0,
@@ -510,14 +583,14 @@ impl Dpb {
                 reserved1: 0,
                 frame_num: 0,
                 PicOrderCnt: 0,
-                pictureType: vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
+                pictureType: image_type.to_h264_picture_type(),
             };
             let flags = MaybeUninit::zeroed();
             let flags = flags.assume_init();
             let h264_header = vk::native::StdVideoEncodeH264SliceHeader {
                 flags,
                 first_mb_in_slice: 0,
-                slice_type: vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
+                slice_type: image_type.to_h264_slice_type(),
                 idr_pic_id: 0,
                 num_ref_idx_l0_active_minus1: 0,
                 num_ref_idx_l1_active_minus1: 0,
@@ -580,8 +653,7 @@ impl Dpb {
     pub fn encode_frame(
         &mut self,
         device: &ash::Device,
-        video_queue_fn: &vk::KhrVideoQueueFn,
-        video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
+        extensions: &Extensions,
         video_session: &mut VideoSession,
         quality_level: u32,
         image_view: vk::ImageView,
@@ -602,9 +674,8 @@ impl Dpb {
 
             let encode_cmd = self.record_encode_cmd_buffer(
                 device,
+                extensions,
                 &buffer,
-                video_queue_fn,
-                video_encode_queue_fn,
                 video_session,
                 quality_level,
             )?;
@@ -638,7 +709,7 @@ impl Dpb {
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
-                //.wait_semaphore_infos(&wait_infos)
+                .wait_semaphore_infos(&wait_infos)
                 .signal_semaphore_infos(&signal_infos);
             device
                 .queue_submit2(encode_queue, &[info], encode_cmd.fence)

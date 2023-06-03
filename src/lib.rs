@@ -10,6 +10,7 @@ mod session_parameters;
 mod vk_beta;
 mod vk_layer;
 mod buffer_queue;
+mod vulkan_utils;
 
 use crate::creation::{record_vk_create_device, record_vk_create_instance};
 use crate::video_session::{

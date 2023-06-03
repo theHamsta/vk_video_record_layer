@@ -74,7 +74,20 @@ pub extern "system" fn record_vk_create_instance(
                 let create_info = p_create_info.as_mut().unwrap().clone();
                 let app_info = (*(*p_create_info).p_application_info)
                     .api_version(vk::make_api_version(0, 1, 3, 249));
-                let create_info = create_info.application_info(&app_info);
+                let mut extensions = vec![
+                    #[cfg(debug_assertions)]
+                    ash::extensions::ext::DebugUtils::NAME.as_ptr(),
+                ];
+                for i in 0..create_info.enabled_extension_count {
+                    debug!(
+                        "Detected instance extension {:?}",
+                        CStr::from_ptr(*create_info.pp_enabled_extension_names.offset(i as isize))
+                    );
+                    extensions.push(*create_info.pp_enabled_extension_names.offset(i as isize));
+                }
+                let create_info = create_info
+                    .application_info(&app_info)
+                    .enabled_extension_names(&extensions);
 
                 let real_create_instance: vk::PFN_vkCreateInstance =
                     transmute(real_create_instance);
@@ -351,7 +364,8 @@ pub extern "system" fn record_vk_create_device(
                             name.as_ptr() as *const _,
                         ))
                     });
-                    *state.swapchain_fn.write().unwrap() = Some(swapchain_fn);
+                    let mut extensions = state.extensions.write().unwrap();
+                    extensions.set_swapchain_fn(Some(swapchain_fn));
 
                     let video_queue_fn = vk::KhrVideoQueueFn::load(|name| {
                         transmute((get_device_proc_addr.unwrap())(
@@ -359,7 +373,7 @@ pub extern "system" fn record_vk_create_device(
                             name.as_ptr() as *const _,
                         ))
                     });
-                    *state.video_queue_fn.write().unwrap() = Some(video_queue_fn);
+                    extensions.set_video_queue_fn(Some(video_queue_fn));
 
                     let video_encode_queue_fn = vk::KhrVideoEncodeQueueFn::load(|name| {
                         transmute((get_device_proc_addr.unwrap())(
@@ -367,7 +381,18 @@ pub extern "system" fn record_vk_create_device(
                             name.as_ptr() as *const _,
                         ))
                     });
-                    *state.video_encode_queue_fn.write().unwrap() = Some(video_encode_queue_fn);
+                    extensions.set_video_encode_queue_fn(Some(video_encode_queue_fn));
+
+                    #[cfg(debug_assertions)]
+                    {
+                        let debug_utils_fn = vk::ExtDebugUtilsFn::load(|name| {
+                            transmute((get_instance_proc_addr.unwrap())(
+                                transmute(instance.handle()),
+                                name.as_ptr() as *const _,
+                            ))
+                        });
+                        extensions.set_debug_utils_fn(Some(debug_utils_fn));
+                    }
 
                     let Ok(slot) = device.create_private_data_slot(
                         &vk::PrivateDataSlotCreateInfo::default(),

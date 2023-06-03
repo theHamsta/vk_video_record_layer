@@ -10,7 +10,7 @@ use crate::profile::VideoProfile;
 use crate::session_parameters::make_h264_video_session_parameters;
 use crate::settings::Codec;
 
-use crate::state::get_state;
+use crate::state::{get_state, Extensions};
 use crate::vk_beta::{
     /*StdVideoH264PictureParameterSet, StdVideoH264SequenceParameterSet, VkStructureType,
     VkVideoEncodeH264SessionParametersAddInfoEXT, VkVideoEncodeH264SessionParametersCreateInfoEXT,
@@ -128,8 +128,7 @@ impl SwapChainData<'_> {
     pub fn encode_image(
         &mut self,
         device: &ash::Device,
-        video_queue_fn: &vk::KhrVideoQueueFn,
-        video_encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
+        extensions: &Extensions,
         quality_level: u32,
         swapchain_index: usize,
         compute_queue: vk::Queue,
@@ -156,8 +155,7 @@ impl SwapChainData<'_> {
                 let present_view = views[swapchain_index];
                 let err = dpb.encode_frame(
                     device,
-                    video_queue_fn,
-                    video_encode_queue_fn,
+                    extensions,
                     encode_session,
                     quality_level,
                     present_view,
@@ -185,8 +183,8 @@ pub unsafe fn record_vk_create_swapchain(
     p_swapchain: *mut vk::SwapchainKHR,
 ) -> vk::Result {
     let allocator = p_allocator.as_ref();
-    let lock = get_state().swapchain_fn.read().unwrap();
-    let swapchain_fn = lock.as_ref().unwrap();
+    let extensions = get_state().extensions.read().unwrap();
+    let swapchain_fn = extensions.swapchain_fn();
     let result =
         (swapchain_fn.create_swapchain_khr)(device, p_create_info, p_allocator, p_swapchain);
 
@@ -199,8 +197,6 @@ pub unsafe fn record_vk_create_swapchain(
         let physical_device = lock.as_ref().unwrap();
         let lock = get_state().instance.read().unwrap();
         let instance = lock.as_ref().unwrap();
-        let lock = get_state().video_queue_fn.read().unwrap();
-        let video_queue_fn = lock.as_ref().unwrap();
 
         let physical_memory_props =
             instance.get_physical_device_memory_properties(*physical_device);
@@ -257,6 +253,7 @@ pub unsafe fn record_vk_create_swapchain(
             let mut dpb = encode_session.as_ref().map_err(|e| *e).and_then(|s| {
                 Dpb::new(
                     device,
+                    &extensions,
                     video_format,
                     create_info.image_extent,
                     16,
@@ -313,7 +310,7 @@ pub unsafe fn record_vk_create_swapchain(
             .is_err()
         {
             error!("Could not set private data!");
-            Box::from_raw(leaked).destroy(device, video_queue_fn, allocator);
+            Box::from_raw(leaked).destroy(device, extensions.video_queue_fn(), allocator);
         }
     } else {
         warn!("Failed to create swapchain");
@@ -361,23 +358,16 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
 ) {
     let slot = get_state().private_slot.read().unwrap();
     let allocator = p_allocator.as_ref();
+    let extensions = get_state().extensions.read().unwrap();
     {
         let lock = get_state().device.read().unwrap();
         let device = lock.as_ref().unwrap();
-        let lock = get_state().video_queue_fn.read().unwrap();
-        let video_queue_fn = lock.as_ref().unwrap();
         let mut swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
             device.get_private_data(swapchain, *slot),
         ));
-        swapchain_data.destroy(device, video_queue_fn, allocator);
+        swapchain_data.destroy(device, &extensions.video_queue_fn(), allocator);
     }
-    (get_state()
-        .swapchain_fn
-        .read()
-        .unwrap()
-        .as_ref()
-        .unwrap()
-        .destroy_swapchain_khr)(device, swapchain, p_allocator)
+    (extensions.swapchain_fn().destroy_swapchain_khr)(device, swapchain, p_allocator)
 }
 
 pub unsafe extern "system" fn record_vk_queue_present(
@@ -389,10 +379,7 @@ pub unsafe extern "system" fn record_vk_queue_present(
     let device = lock.as_ref().unwrap();
     let slot = get_state().private_slot.read().unwrap();
     let present_info = p_present_info.as_ref().unwrap();
-    let lock = get_state().video_queue_fn.read().unwrap();
-    let video_queue_fn = lock.as_ref().unwrap();
-    let lock = get_state().video_encode_queue_fn.read().unwrap();
-    let video_encode_queue_fn = lock.as_ref().unwrap();
+    let extensions = get_state().extensions.read().unwrap();
     let quality_level = get_state().settings.quality_level;
 
     let swapchain_data = transmute::<u64, &mut SwapChainData>(
@@ -404,8 +391,7 @@ pub unsafe extern "system" fn record_vk_queue_present(
     if let (Some(compute_queue), Some(encode_queue)) = (compute_queue, encode_queue) {
         swapchain_data.encode_image(
             device,
-            video_queue_fn,
-            video_encode_queue_fn,
+            &extensions,
             quality_level,
             *present_info.p_image_indices as usize,
             compute_queue,
@@ -413,13 +399,7 @@ pub unsafe extern "system" fn record_vk_queue_present(
             &present_info,
         );
     }
-    (get_state()
-        .swapchain_fn
-        .read()
-        .unwrap()
-        .as_ref()
-        .unwrap()
-        .queue_present_khr)(queue, p_present_info)
+    (extensions.swapchain_fn().queue_present_khr)(queue, p_present_info)
 }
 
 fn create_video_session(
@@ -470,8 +450,8 @@ fn create_video_session(
 
     let lock = state.device.read().unwrap();
     let device = lock.as_ref().unwrap();
-    let lock = state.video_queue_fn.read().unwrap();
-    let video_queue_fn = lock.as_ref().unwrap();
+    let extensions = state.extensions.read().unwrap();
+    let video_queue_fn = extensions.video_queue_fn();
 
     let mut video_session = vk::VideoSessionKHR::null();
     let res = unsafe {

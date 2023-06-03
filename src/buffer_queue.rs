@@ -2,7 +2,7 @@ use core::slice;
 use std::{fs::File, io::Write};
 
 use ash::{prelude::VkResult, vk};
-use log::{debug, error, info, warn};
+use log::{debug, error, warn};
 
 // From ash examples
 fn find_memorytype_index(
@@ -233,8 +233,8 @@ impl BitstreamBufferRing {
         #[repr(C)]
         struct QueryStatus {
             _offset: u32,
-            _size: u32,
-            _result: vk::QueryResultStatusKHR,
+            size: u32,
+            status: vk::QueryResultStatusKHR,
         }
         let mut result = [QueryStatus::default()];
 
@@ -258,7 +258,12 @@ impl BitstreamBufferRing {
                     })
                     .and_then(|_| Ok(result[0]));
                 device.reset_query_pool(self.query_pool, slot, 1);
-                info!("{:?} slot {slot} encoding {}", result, values[0]);
+                if result.is_err()
+                    || result.unwrap().status != vk::QueryResultStatusKHR::COMPLETE
+                    || result.unwrap().size == 0
+                {
+                    warn!("{:?} slot {slot} encoding {}", result, values[0]);
+                }
             }
             // TODO: offload to IO thread
             if let Ok(_) = std::env::var("VK_RECORD_LAYER_DEBUG_DUMP") {
