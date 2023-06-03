@@ -2,7 +2,6 @@ use anyhow::{anyhow, bail};
 use ash::{util::read_spv, vk};
 use itertools::Itertools;
 use log::debug;
-use spirv_reflect::types::ReflectDescriptorBinding;
 use std::collections::HashMap;
 use std::ffi::CString;
 use std::intrinsics::transmute;
@@ -10,7 +9,7 @@ use std::io::Cursor;
 
 pub struct Shader {
     module: vk::ShaderModule,
-    info: spirv_reflect::ShaderModule,
+    info: rspirv_reflect::Reflection,
 }
 
 pub struct ShaderPipeline {
@@ -27,16 +26,9 @@ impl ShaderPipeline {
     pub fn new(device: &ash::Device, shader_bytes: &[&[u8]]) -> anyhow::Result<Self> {
         let mut shaders = Vec::new();
         for &bytes in shader_bytes {
-            let info = spirv_reflect::ShaderModule::load_u8_data(bytes)
+            let info = rspirv_reflect::Reflection::new_from_spirv(bytes)
                 .map_err(|err| anyhow::anyhow!("{err}"))?;
-            debug!(
-                "Loaded shader {:?} ({:?}) in: {:?}, out: {:?} _push_constant_blocks {:?}",
-                info.get_source_file(),
-                info.get_shader_stage(),
-                info.enumerate_input_variables(None),
-                info.enumerate_output_variables(None),
-                info.enumerate_push_constant_blocks(None)
-            );
+            debug!("Loaded shader",);
 
             shaders.push(Shader {
                 module: unsafe {
@@ -64,27 +56,25 @@ impl ShaderPipeline {
         Vec<vk::DescriptorSetLayout>,
     )> {
         let mut bindings: HashMap<u32, Vec<vk::DescriptorSetLayoutBinding>> = Default::default();
-        for &ReflectDescriptorBinding {
-            set,
-            binding,
-            descriptor_type,
-            count,
-            ..
-        } in self.shaders[0]
+        for (&set, info) in self.shaders[0]
             .info
-            .enumerate_descriptor_bindings(Some(entry_point))
+            .get_descriptor_sets()
             .map_err(|str| anyhow!("{str}"))?
             .iter()
         {
-            bindings.entry(set).or_default().push(
-                vk::DescriptorSetLayoutBinding::default()
-                    .binding(binding)
-                    .descriptor_type(unsafe {
-                        transmute(transmute::<_, u8>(descriptor_type) as u32)
-                    })
-                    .descriptor_count(count)
-                    .stage_flags(vk::ShaderStageFlags::COMPUTE),
-            )
+            for (&binding, info) in info.iter() {
+                bindings.entry(set).or_default().push(dbg!(
+                    vk::DescriptorSetLayoutBinding::default()
+                        .binding(binding)
+                        .descriptor_type(unsafe { transmute(transmute::<_, u32>(info.ty)) })
+                        .descriptor_count(match info.binding_count {
+                            rspirv_reflect::BindingCount::One => 1,
+                            rspirv_reflect::BindingCount::StaticSized(size) => size as u32,
+                            rspirv_reflect::BindingCount::Unbounded => todo!(),
+                        })
+                        .stage_flags(vk::ShaderStageFlags::COMPUTE),
+                ))
+            }
         }
         let mut layouts = bindings
             .iter()
@@ -114,7 +104,7 @@ impl ShaderPipeline {
             .push_constant_ranges(push_constant_ranges);
 
         let pipeline_layout =
-            unsafe { device.create_pipeline_layout(&layout_create_info, allocator) }
+            unsafe { device.create_pipeline_layout(dbg!(&layout_create_info), allocator) }
                 .map_err(|e| anyhow!("Failed to create pipeline layout: {e}"))?; //TODO: unwrap
 
         let shader = &self.shaders[0];
@@ -123,16 +113,16 @@ impl ShaderPipeline {
         let shader_stage_create_info = vk::PipelineShaderStageCreateInfo::default()
             .name(&entry_point)
             .module(shader.module)
-            .stage(unsafe { transmute(shader.info.get_shader_stage()) });
+            .stage(vk::ShaderStageFlags::COMPUTE);
 
         let pipeline = unsafe {
-            device.create_compute_pipelines(
+            dbg!(device.create_compute_pipelines(
                 vk::PipelineCache::null(),
                 &[vk::ComputePipelineCreateInfo::default()
                     .stage(shader_stage_create_info)
                     .layout(pipeline_layout)],
                 allocator,
-            )
+            ))
         }
         .map_err(|(pipelines, r)| {
             for p in pipelines {
