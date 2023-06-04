@@ -16,6 +16,42 @@ pub struct ShaderPipeline {
     shaders: Vec<Shader>,
 }
 
+#[derive(Default)]
+pub struct ComputePipelineDescriptor {
+    pipeline: vk::Pipeline,
+    layout: vk::PipelineLayout,
+    descriptor_set_layouts: Vec<vk::DescriptorSetLayout>,
+    #[allow(dead_code)]
+    push_constant_ranges: Vec<vk::PushConstantRange>,
+}
+
+impl ComputePipelineDescriptor {
+    pub fn pipeline(&self) -> vk::Pipeline {
+        self.pipeline
+    }
+
+    pub fn layout(&self) -> vk::PipelineLayout {
+        self.layout
+    }
+
+    pub fn descriptor_set_layouts(&self) -> &[vk::DescriptorSetLayout] {
+        self.descriptor_set_layouts.as_ref()
+    }
+
+    pub(crate) fn destroy(
+        &mut self,
+        device: &ash::Device,
+        allocator: Option<&vk::AllocationCallbacks>,
+    ) {
+        unsafe {
+            device.destroy_pipeline(self.pipeline, allocator);
+            for layout in self.descriptor_set_layouts.drain(..) {
+                device.destroy_descriptor_set_layout(layout, allocator);
+            }
+        }
+    }
+}
+
 impl ShaderPipeline {
     pub fn destroy(&mut self, device: &ash::Device, allocator: Option<&vk::AllocationCallbacks>) {
         for s in self.shaders.drain(..) {
@@ -49,12 +85,7 @@ impl ShaderPipeline {
         device: &ash::Device,
         entry_point: &str,
         allocator: Option<&vk::AllocationCallbacks>,
-    ) -> anyhow::Result<(
-        vk::Pipeline,
-        vk::PipelineLayout,
-        Vec<vk::DescriptorSetLayout>,
-        Vec<vk::PushConstantRange>,
-    )> {
+    ) -> anyhow::Result<ComputePipelineDescriptor> {
         let mut bindings: HashMap<u32, Vec<vk::DescriptorSetLayoutBinding>> = Default::default();
         for (&set, info) in self.shaders[0]
             .info
@@ -76,7 +107,7 @@ impl ShaderPipeline {
                 ))
             }
         }
-        let mut layouts = bindings
+        let mut descriptor_set_layouts = bindings
             .iter()
             .map_while(|(set, bindings)| {
                 let info = vk::DescriptorSetLayoutCreateInfo::default().bindings(bindings);
@@ -105,8 +136,8 @@ impl ShaderPipeline {
             });
 
         // When we could not create layouts all layouts
-        if layouts.len() != bindings.len() || push_constant_ranges.is_err() {
-            for layout in layouts.drain(..) {
+        if descriptor_set_layouts.len() != bindings.len() || push_constant_ranges.is_err() {
+            for layout in descriptor_set_layouts.drain(..) {
                 unsafe { device.destroy_descriptor_set_layout(layout, allocator) };
             }
             bail!("Failed to create all descriptor set layouts");
@@ -114,7 +145,7 @@ impl ShaderPipeline {
         let push_constant_ranges = push_constant_ranges.unwrap();
 
         let layout_create_info = vk::PipelineLayoutCreateInfo::default()
-            .set_layouts(&layouts)
+            .set_layouts(&descriptor_set_layouts)
             .push_constant_ranges(&push_constant_ranges);
 
         let pipeline_layout =
@@ -145,6 +176,11 @@ impl ShaderPipeline {
             r
         })?[0];
 
-        Ok((pipeline, pipeline_layout, layouts, push_constant_ranges))
+        Ok(ComputePipelineDescriptor {
+            pipeline,
+            layout: pipeline_layout,
+            descriptor_set_layouts,
+            push_constant_ranges,
+        })
     }
 }

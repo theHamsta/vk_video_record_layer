@@ -1,4 +1,7 @@
-use crate::vulkan_utils::{find_memorytype_index, name_object};
+use crate::{
+    shader::ComputePipelineDescriptor,
+    vulkan_utils::{find_memorytype_index, name_object},
+};
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;
@@ -31,9 +34,7 @@ pub struct Dpb {
     _decode_family_index: u32,
     compute_cmd_buffers: HashMap<(vk::ImageView, u32), vk::CommandBuffer>,
     sets: Vec<vk::DescriptorSet>,
-    compute_pipeline: vk::Pipeline,
-    compute_pipeline_layout: vk::PipelineLayout,
-    compute_descriptor_layouts: Vec<vk::DescriptorSetLayout>,
+    compute_pipeline: anyhow::Result<ComputePipelineDescriptor>,
     compute_shader: anyhow::Result<ShaderPipeline>,
     compute_semaphore: vk::Semaphore,
     encode_semaphore: vk::Semaphore,
@@ -300,32 +301,18 @@ impl Dpb {
                 &[include_bytes!("../shaders/bgr_to_yuv_rec709.hlsl.spirv")],
             );
 
-            let (
-                compute_pipeline,
-                compute_pipeline_layout,
-                compute_descriptor_layouts,
-                _push_constant_ranges,
-            ) = if let Ok(shader) = compute_shader.as_ref() {
+            let compute_pipeline = if let Ok(shader) = compute_shader.as_ref() {
                 shader
                     .make_compute_pipeline(device, "main", allocator)
-                    .unwrap_or_else(|e| {
+                    .map_err(|e| {
                         error!("Failed to create compute pipeline: {e}");
-                        (
-                            vk::Pipeline::null(),
-                            vk::PipelineLayout::null(),
-                            Vec::new(),
-                            Vec::new(),
-                        )
+                        e
                     })
             } else {
                 error!("Failed to create compute pipeline!");
-                (
-                    vk::Pipeline::null(),
-                    vk::PipelineLayout::null(),
-                    Vec::new(),
-                    Vec::new(),
-                )
+                Err(anyhow!("Missing shader"))
             };
+
             let mut timeline_info =
                 vk::SemaphoreTypeCreateInfo::default().semaphore_type(vk::SemaphoreType::TIMELINE);
             let mut info = vk::SemaphoreCreateInfo::default();
@@ -347,7 +334,7 @@ impl Dpb {
 
             let indices = [encode_family_index];
             let buffer_info = vk::BufferCreateInfo::default()
-                .size(10_000_000)
+                .size(10_000)
                 .usage(
                     vk::BufferUsageFlags::VIDEO_ENCODE_DST_KHR | vk::BufferUsageFlags::TRANSFER_SRC,
                 )
@@ -383,8 +370,6 @@ impl Dpb {
                 descriptor_pool,
                 compute_cmd_buffers: Default::default(),
                 compute_pipeline,
-                compute_pipeline_layout,
-                compute_descriptor_layouts,
                 compute_shader,
                 compute_semaphore,
                 encode_semaphore,
@@ -423,6 +408,7 @@ impl Dpb {
                 .level(vk::CommandBufferLevel::PRIMARY)
                 .command_buffer_count((input_images.len() * self.views.len()) as u32);
             let mut cmds = device.allocate_command_buffers(&info)?;
+            let compute_pipeline = self.compute_pipeline.as_ref().unwrap();
             for (&image, &view) in input_images.iter().zip(input_image_views) {
                 for i in 0..self.views.len() {
                     let cmd = cmds.pop().unwrap();
@@ -497,7 +483,7 @@ impl Dpb {
                     device.cmd_pipeline_barrier2(cmd, &dep_info_present_to_compute);
                     let info = vk::DescriptorSetAllocateInfo::default()
                         .descriptor_pool(self.descriptor_pool)
-                        .set_layouts(&self.compute_descriptor_layouts);
+                        .set_layouts(compute_pipeline.descriptor_set_layouts());
 
                     let set = device.allocate_descriptor_sets(&info)?;
                     self.sets.push(set[0]);
@@ -531,7 +517,7 @@ impl Dpb {
                     device.cmd_bind_descriptor_sets(
                         cmd,
                         vk::PipelineBindPoint::COMPUTE,
-                        self.compute_pipeline_layout,
+                        compute_pipeline.layout(),
                         0,
                         &[set[0]],
                         &[0],
@@ -539,7 +525,7 @@ impl Dpb {
                     device.cmd_bind_pipeline(
                         cmd,
                         vk::PipelineBindPoint::COMPUTE,
-                        self.compute_pipeline,
+                        compute_pipeline.pipeline(),
                     );
                     device.cmd_dispatch(cmd, self.extent.width / 8, self.extent.height / 8, 1);
                     device.cmd_pipeline_barrier2(cmd, &dep_info_compute_to_present);
@@ -795,14 +781,13 @@ impl Dpb {
             for memory in self.memory.drain(..) {
                 device.free_memory(memory, allocator);
             }
-            for layout in self.compute_descriptor_layouts.drain(..) {
-                device.destroy_descriptor_set_layout(layout, allocator);
+            if let Ok(compute_pipeline) = &mut self.compute_pipeline {
+                compute_pipeline.destroy(device, allocator);
             }
             if let Ok(shader) = self.compute_shader.as_mut() {
                 shader.destroy(device, allocator);
             }
 
-            device.destroy_pipeline(self.compute_pipeline, allocator);
             device.destroy_descriptor_pool(self.descriptor_pool, allocator);
             device.destroy_command_pool(self.compute_cmd_pool, allocator);
             if let Ok(pool) = &mut self.encode_cmd_pool {

@@ -6,7 +6,6 @@ use log::{debug, error, warn};
 
 use crate::vulkan_utils::find_memorytype_index;
 
-
 #[derive(Clone, Copy)]
 pub struct BufferPair {
     pub device: Buffer,
@@ -219,7 +218,7 @@ impl BitstreamBufferRing {
         #[derive(Default, Debug, Copy, Clone)]
         #[repr(C)]
         struct QueryStatus {
-            _offset: u32,
+            offset: u32,
             size: u32,
             status: vk::QueryResultStatusKHR,
         }
@@ -227,13 +226,12 @@ impl BitstreamBufferRing {
 
         if values[0] != 0 {
             let slot = ((values[0] as usize - 1) % self.buffer_generation.len()) as u32;
-            unsafe {
+            let result = unsafe {
                 let result = device
                     .get_query_pool_results(
                         self.query_pool,
                         slot,
                         &mut result,
-                        //vk::QueryResultFlags::default(),
                         vk::QueryResultFlags::WAIT | vk::QueryResultFlags::WITH_STATUS_KHR,
                     )
                     .map_err(|e| {
@@ -251,24 +249,24 @@ impl BitstreamBufferRing {
                 {
                     warn!("{:?} slot {slot} encoding {}", result, values[0]);
                 }
-            }
+                result
+            };
             // TODO: offload to IO thread
-            if let Ok(_) = std::env::var("VK_RECORD_LAYER_DEBUG_DUMP") {
+            if let (Ok(_), Ok(result)) = (std::env::var("VK_RECORD_LAYER_DEBUG_DUMP"), result) {
                 let filename = format!("/tmp/frame{}.h264", self.buffer_generation[self.current]);
                 let mut file = File::create(&filename);
+                let size = host.size().min(result.size.into());
                 unsafe {
                     let data = device.map_memory(
                         host.memory(),
-                        0,
-                        host.size(),
+                        result.offset.into(),
+                        size,
                         vk::MemoryMapFlags::default(),
                     );
                     if let (Ok(data), Ok(file)) = (data, &mut file) {
-                        let res = file.write_all(slice::from_raw_parts(
-                            data as *const u8,
-                            host.size() as usize,
-                        ));
-                        debug!("Wrote file {filename}: {res:?}");
+                        let res =
+                            file.write_all(slice::from_raw_parts(data as *const u8, size as usize));
+                        debug!("Wrote file {filename} with size {}B: {res:?}", size);
                     }
                     let _ = device.unmap_memory(host.memory());
                 }
