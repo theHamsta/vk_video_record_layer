@@ -24,6 +24,7 @@ pub fn main() -> anyhow::Result<()> {
                     .args([
                         "-T",
                         "cs_6_5",
+                        "-O3",
                         "-spirv",
                         "-fspv-target-env=vulkan1.3",
                         "-Zi",

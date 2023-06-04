@@ -1,6 +1,8 @@
 use ash::{prelude::VkResult, vk};
 use log::error;
 
+use crate::{state::Extensions, vulkan_utils::name_object};
+
 pub struct CommandBuffer {
     pub cmd: vk::CommandBuffer,
     pub fence: vk::Fence,
@@ -17,9 +19,11 @@ pub struct CommandBufferQueue {
 impl CommandBufferQueue {
     pub fn new(
         device: &ash::Device,
+        extensions: &Extensions,
         queue_family_index: u32,
         queue_length: u32,
         timeout: u64,
+        debug_name: &str,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
         let mut rtn = Self {
@@ -45,6 +49,9 @@ impl CommandBufferQueue {
                 })?;
             rtn.pool = pool;
 
+            #[cfg(debug_assertions)]
+            name_object(device, extensions, pool, debug_name);
+
             let info = vk::CommandBufferAllocateInfo::default()
                 .command_pool(pool)
                 .level(vk::CommandBufferLevel::PRIMARY)
@@ -54,8 +61,17 @@ impl CommandBufferQueue {
                 rtn.destroy(device, allocator);
                 e
             })?;
+            rtn.cmds = cmds;
 
-            for _ in 0..queue_length {
+            for i in 0..queue_length {
+                #[cfg(debug_assertions)]
+                name_object(
+                    device,
+                    extensions,
+                    rtn.cmds[i as usize],
+                    &format!("{debug_name} {i}"),
+                );
+
                 let info = vk::FenceCreateInfo::default().flags(vk::FenceCreateFlags::SIGNALED);
                 let fence = device.create_fence(&info, allocator).map_err(|e| {
                     error!("Failed to create fence: {e}");
@@ -65,7 +81,8 @@ impl CommandBufferQueue {
                 rtn.fences.push(fence);
             }
 
-            rtn.cmds = cmds;
+            drop(debug_name);
+            drop(extensions);
 
             Ok(rtn)
         }

@@ -1,15 +1,15 @@
+mod buffer_queue;
 mod cmd_buffer_queue;
 mod creation;
 mod dpb;
+mod profile;
+mod session_parameters;
 mod settings;
 mod shader;
 mod state;
 mod video_session;
-mod profile;
-mod session_parameters;
 mod vk_beta;
 mod vk_layer;
-mod buffer_queue;
 mod vulkan_utils;
 
 use crate::creation::{record_vk_create_device, record_vk_create_instance};
@@ -51,6 +51,10 @@ pub extern "system" fn record_vk_get_instance_proc_addr(
     }
 }
 
+//fn record_vk_aquire_next_image() -> vk::Result {
+    //vk::Result::SUCCESS
+//}
+
 #[no_mangle]
 pub extern "system" fn record_vk_get_device_proc_addr(
     device: *mut VkDevice_T,
@@ -66,6 +70,7 @@ pub extern "system" fn record_vk_get_device_proc_addr(
         trace!("{device:?} {str_fn_name:?}");
         match str_fn_name {
             "vkCreateSwapchainKHR" => Some(transmute(record_vk_create_swapchain as *mut c_void)),
+            //"vkAcquireNextImageKHR" => Some(transmute(record_vk_aquire_next_image as *mut c_void)),
             "vkDestroySwapchainKHR" => Some(transmute(record_vk_destroy_swapchain as *mut c_void)),
             "vkDestroyDevice" => Some(transmute(record_vk_destroy_device as *mut c_void)),
             "vkQueuePresentKHR" => Some(transmute(record_vk_queue_present as *mut c_void)),

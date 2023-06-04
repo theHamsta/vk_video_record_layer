@@ -1,4 +1,4 @@
-use crate::vulkan_utils::name_object;
+use crate::vulkan_utils::{find_memorytype_index, name_object};
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;
@@ -21,7 +21,6 @@ pub struct Dpb {
     y_views: Vec<vk::ImageView>,
     uv_views: Vec<vk::ImageView>,
     memory: Vec<vk::DeviceMemory>, // TODO: only one memory?
-    sampler: vk::Sampler,
     compute_cmd_pool: vk::CommandPool,
     encode_cmd_pool: VkResult<CommandBufferQueue>,
     decode_cmd_pool: VkResult<CommandBufferQueue>,
@@ -42,18 +41,18 @@ pub struct Dpb {
     frame_index: u64,
 }
 
-#[allow(dead_code)]
 #[derive(Debug, Copy, Clone)]
 enum PictureType {
     IDR,
     I,
+    #[allow(dead_code)]
     P,
+    #[allow(dead_code)]
     B,
 }
 
-#[allow(dead_code)]
 impl PictureType {
-    fn to_h264_slice_type(self) -> vk::native::StdVideoH264SliceType {
+    fn as_h264_slice_type(self) -> vk::native::StdVideoH264SliceType {
         match self {
             PictureType::IDR | PictureType::I => {
                 vk::native::StdVideoH264SliceType_STD_VIDEO_H264_SLICE_TYPE_I
@@ -62,7 +61,8 @@ impl PictureType {
             PictureType::B => vk::native::StdVideoH264SliceType_STD_VIDEO_H264_SLICE_TYPE_B,
         }
     }
-    fn to_h264_picture_type(self) -> vk::native::StdVideoH264PictureType {
+
+    fn as_h264_picture_type(self) -> vk::native::StdVideoH264PictureType {
         match self {
             PictureType::IDR => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
             PictureType::I => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_I,
@@ -82,6 +82,7 @@ impl PictureType {
     ///
     /// [`I`]: PictureType::I
     #[must_use]
+    #[allow(dead_code)]
     fn is_i(&self) -> bool {
         matches!(self, Self::I)
     }
@@ -89,6 +90,7 @@ impl PictureType {
     /// Returns `true` if the picture type is [`P`].
     ///
     /// [`P`]: PictureType::P
+    #[allow(dead_code)]
     #[must_use]
     fn is_p(&self) -> bool {
         matches!(self, Self::P)
@@ -98,6 +100,7 @@ impl PictureType {
     ///
     /// [`B`]: PictureType::B
     #[must_use]
+    #[allow(dead_code)]
     fn is_b(&self) -> bool {
         matches!(self, Self::B)
     }
@@ -171,7 +174,7 @@ impl Dpb {
                 });
             let mut y_view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
-                .format(video_format)
+                .format(vk::Format::R8_UNORM)
                 .subresource_range(vk::ImageSubresourceRange {
                     aspect_mask: vk::ImageAspectFlags::PLANE_0,
                     base_mip_level: 0,
@@ -181,7 +184,7 @@ impl Dpb {
                 });
             let mut uv_view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
-                .format(video_format)
+                .format(vk::Format::R8G8_UNORM)
                 .subresource_range(vk::ImageSubresourceRange {
                     aspect_mask: vk::ImageAspectFlags::PLANE_1,
                     base_mip_level: 0,
@@ -198,45 +201,51 @@ impl Dpb {
                 #[cfg(debug_assertions)]
                 name_object(device, extensions, image, &format!("DPB image {}", i));
 
+                let req = device.get_image_memory_requirements(image);
+                let mem_index = find_memorytype_index(
+                    &req,
+                    physical_memory_props,
+                    vk::MemoryPropertyFlags::DEVICE_LOCAL,
+                )
+                .ok_or(vk::Result::ERROR_INITIALIZATION_FAILED)?;
+
+                let info = vk::MemoryAllocateInfo::default()
+                    .allocation_size(req.size)
+                    .memory_type_index(mem_index);
+                let Ok(mem) = device.allocate_memory(&info, allocator).map_err(|e| res = e) else {break;}; // TODO: one big allocation
+                memory.push(mem);
+
+                if let Err(err) = device.bind_image_memory(image, mem, 0) {
+                    res = err;
+                    break;
+                }
+                #[cfg(debug_assertions)]
+                name_object(device, extensions, mem, &format!("DPB image memory {}", i));
+
                 view_info.image = image;
                 let view = device.create_image_view(&view_info, allocator);
                 let Ok(view) = view.map_err(|e| { error!("Failed to create color image view for DPB: {e}"); res = e}) else { break; };
                 views.push(view);
+
+                #[cfg(debug_assertions)]
+                name_object(device, extensions, view, &format!("DPB view {i}"));
 
                 y_view_info.image = image;
                 let view = device.create_image_view(&y_view_info, allocator);
                 let Ok(view) = view.map_err(|e| { error!("Failed to create luma image view for DPB: {e}"); res = e}) else { break; };
                 y_views.push(view);
 
+                #[cfg(debug_assertions)]
+                name_object(device, extensions, view, &format!("Y view {i}"));
+
                 uv_view_info.image = image;
                 let view = device.create_image_view(&uv_view_info, allocator);
                 let Ok(view) = view.map_err(|e| { error!("Failed to create chroma image view for DPB: {e}"); res = e}) else { break; };
                 uv_views.push(view);
 
-                let req = device.get_image_memory_requirements(image);
-                let info = vk::MemoryAllocateInfo::default()
-                    .allocation_size(req.size)
-                    .memory_type_index(req.memory_type_bits.trailing_zeros());
-                let Ok(mem) = device.allocate_memory(&info, allocator).map_err(|e| res = e) else {break;}; // TODO: one big allocation
-                memory.push(mem);
-
-                if let Err(err) = device.bind_image_memory(image, mem, req.size) {
-                    res = err;
-                    break;
-                }
+                #[cfg(debug_assertions)]
+                name_object(device, extensions, view, &format!("UV view {i}"));
             }
-
-            let sampler = device
-                .create_sampler(
-                    &vk::SamplerCreateInfo::default()
-                        .unnormalized_coordinates(true)
-                        .address_mode_u(vk::SamplerAddressMode::CLAMP_TO_BORDER)
-                        .address_mode_v(vk::SamplerAddressMode::CLAMP_TO_BORDER)
-                        .address_mode_w(vk::SamplerAddressMode::CLAMP_TO_BORDER),
-                    allocator,
-                )
-                .map_err(|err| res = err)
-                .unwrap_or(vk::Sampler::null());
 
             let info =
                 vk::CommandPoolCreateInfo::default().queue_family_index(compute_family_index);
@@ -248,22 +257,36 @@ impl Dpb {
                 })
                 .unwrap_or(vk::CommandPool::null());
 
-            let encode_cmd_pool =
-                CommandBufferQueue::new(device, encode_family_index, 10, 100, allocator);
-            let decode_cmd_pool =
-                CommandBufferQueue::new(device, decode_family_index, 10, 100, allocator);
+            let encode_cmd_pool = CommandBufferQueue::new(
+                device,
+                extensions,
+                encode_family_index,
+                10,
+                100,
+                "Encode command buffer",
+                allocator,
+            );
+            let decode_cmd_pool = CommandBufferQueue::new(
+                device,
+                extensions,
+                decode_family_index,
+                10,
+                100,
+                "Decode command buffer",
+                allocator,
+            );
 
             let num_pools = max_input_image_views * num_images;
             let pool_sizes = vec![
                 vk::DescriptorPoolSize::default()
-                    .ty(vk::DescriptorType::SAMPLED_IMAGE)
-                    .descriptor_count(1),
-                vk::DescriptorPoolSize::default()
-                    .ty(vk::DescriptorType::SAMPLER)
+                    .ty(vk::DescriptorType::STORAGE_IMAGE)
                     .descriptor_count(1),
                 vk::DescriptorPoolSize::default()
                     .ty(vk::DescriptorType::STORAGE_IMAGE)
-                    .descriptor_count(2),
+                    .descriptor_count(1),
+                vk::DescriptorPoolSize::default()
+                    .ty(vk::DescriptorType::STORAGE_IMAGE)
+                    .descriptor_count(1),
             ];
             let info = vk::DescriptorPoolCreateInfo::default()
                 .max_sets(num_pools)
@@ -275,16 +298,19 @@ impl Dpb {
             let compute_shader = ShaderPipeline::new(
                 device,
                 &[include_bytes!("../shaders/bgr_to_yuv_rec709.hlsl.spirv")],
+                //&[include_bytes!("../shaders/bgr_to_yuv_rec709.glsl.spirv")],
             );
 
             let (compute_pipeline, compute_pipeline_layout, compute_descriptor_layouts) =
                 if let Ok(shader) = compute_shader.as_ref() {
                     shader
                         .make_compute_pipeline(device, "main", &[], allocator)
-                        .unwrap_or_else(|_| {
+                        .unwrap_or_else(|e| {
+                            error!("Failed to create compute pipeline: {e}");
                             (vk::Pipeline::null(), vk::PipelineLayout::null(), Vec::new())
                         })
                 } else {
+                    error!("Failed to create compute pipeline!");
                     (vk::Pipeline::null(), vk::PipelineLayout::null(), Vec::new())
                 };
             let mut timeline_info =
@@ -335,7 +361,6 @@ impl Dpb {
                 y_views,
                 uv_views,
                 memory,
-                sampler,
                 compute_family_index,
                 encode_family_index,
                 _decode_family_index: decode_family_index,
@@ -388,24 +413,47 @@ impl Dpb {
             for (&image, &view) in input_images.iter().zip(input_image_views) {
                 for i in 0..self.views.len() {
                     let cmd = cmds.pop().unwrap();
-                    let barriers = vec![vk::ImageMemoryBarrier2::default()
-                        .src_stage_mask(vk::PipelineStageFlags2::ALL_GRAPHICS)
-                        .dst_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
-                        .src_access_mask(vk::AccessFlags2::SHADER_WRITE)
-                        .dst_access_mask(vk::AccessFlags2::SHADER_READ)
-                        .old_layout(vk::ImageLayout::PRESENT_SRC_KHR)
-                        .new_layout(vk::ImageLayout::SHADER_READ_ONLY_OPTIMAL)
-                        .src_queue_family_index(src_queue_family_index)
-                        .dst_queue_family_index(self.compute_family_index)
-                        .subresource_range(
-                            vk::ImageSubresourceRange::default()
-                                .aspect_mask(vk::ImageAspectFlags::COLOR)
-                                .base_mip_level(0)
-                                .level_count(1)
-                                .base_array_layer(0)
-                                .layer_count(1),
-                        )
-                        .image(image)];
+                    let barriers = vec![
+                        vk::ImageMemoryBarrier2::default()
+                            .src_stage_mask(vk::PipelineStageFlags2::ALL_GRAPHICS)
+                            .dst_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
+                            .src_access_mask(vk::AccessFlags2::SHADER_WRITE)
+                            .dst_access_mask(vk::AccessFlags2::SHADER_READ)
+                            .old_layout(vk::ImageLayout::PRESENT_SRC_KHR)
+                            .new_layout(vk::ImageLayout::SHADER_READ_ONLY_OPTIMAL)
+                            .src_queue_family_index(src_queue_family_index)
+                            .dst_queue_family_index(self.compute_family_index)
+                            .subresource_range(
+                                vk::ImageSubresourceRange::default()
+                                    .aspect_mask(vk::ImageAspectFlags::COLOR)
+                                    .base_mip_level(0)
+                                    .level_count(1)
+                                    .base_array_layer(0)
+                                    .layer_count(1),
+                            )
+                            .image(image),
+                        vk::ImageMemoryBarrier2::default()
+                            .src_stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)
+                            .dst_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
+                            .src_access_mask(vk::AccessFlags2::VIDEO_ENCODE_READ_KHR)
+                            .dst_access_mask(vk::AccessFlags2::SHADER_WRITE)
+                            .old_layout(vk::ImageLayout::UNDEFINED)
+                            .new_layout(vk::ImageLayout::GENERAL)
+                            .src_queue_family_index(self.compute_family_index)
+                            .dst_queue_family_index(self.compute_family_index)
+                            .subresource_range(
+                                vk::ImageSubresourceRange::default()
+                                    .aspect_mask(
+                                        vk::ImageAspectFlags::PLANE_0
+                                            | vk::ImageAspectFlags::PLANE_1,
+                                    )
+                                    .base_mip_level(0)
+                                    .level_count(1)
+                                    .base_array_layer(0)
+                                    .layer_count(1),
+                            )
+                            .image(self.images[i]),
+                    ];
                     let dep_info_present_to_compute =
                         vk::DependencyInfo::default().image_memory_barriers(&barriers);
                     let barriers = vec![vk::ImageMemoryBarrier2::default()
@@ -429,7 +477,7 @@ impl Dpb {
                     let dep_info_compute_to_present =
                         vk::DependencyInfo::default().image_memory_barriers(&barriers);
                     let info = vk::CommandBufferBeginInfo::default()
-                        .flags(vk::CommandBufferUsageFlags::SIMULTANEOUS_USE);
+                        .flags(vk::CommandBufferUsageFlags::default());
                     device
                         .begin_command_buffer(cmd, &info)
                         .map_err(|err| anyhow!("Failed to begin command buffer: {err}"))?;
@@ -445,29 +493,24 @@ impl Dpb {
                             vk::WriteDescriptorSet::default()
                                 .dst_set(set[0])
                                 .dst_binding(0)
-                                .descriptor_type(vk::DescriptorType::SAMPLED_IMAGE)
+                                .descriptor_type(vk::DescriptorType::STORAGE_IMAGE)
                                 .image_info(&[vk::DescriptorImageInfo::default()
                                     .image_view(view)
                                     .image_layout(vk::ImageLayout::SHADER_READ_ONLY_OPTIMAL)]),
                             vk::WriteDescriptorSet::default()
                                 .dst_set(set[0])
                                 .dst_binding(1)
-                                .descriptor_type(vk::DescriptorType::SAMPLER)
-                                .image_info(&[
-                                    vk::DescriptorImageInfo::default().sampler(self.sampler)
-                                ]),
+                                .descriptor_type(vk::DescriptorType::STORAGE_IMAGE)
+                                .image_info(&[vk::DescriptorImageInfo::default()
+                                    .image_view(self.y_views[i])
+                                    .image_layout(vk::ImageLayout::GENERAL)]),
                             vk::WriteDescriptorSet::default()
                                 .dst_set(set[0])
                                 .dst_binding(2)
                                 .descriptor_type(vk::DescriptorType::STORAGE_IMAGE)
-                                .image_info(&[
-                                    vk::DescriptorImageInfo::default()
-                                        .image_view(self.y_views[i])
-                                        .image_layout(vk::ImageLayout::GENERAL),
-                                    vk::DescriptorImageInfo::default()
-                                        .image_view(self.uv_views[i])
-                                        .image_layout(vk::ImageLayout::GENERAL),
-                                ]),
+                                .image_info(&[vk::DescriptorImageInfo::default()
+                                    .image_view(self.uv_views[i])
+                                    .image_layout(vk::ImageLayout::GENERAL)]),
                         ],
                         &[],
                     );
@@ -583,14 +626,14 @@ impl Dpb {
                 reserved1: 0,
                 frame_num: 0,
                 PicOrderCnt: 0,
-                pictureType: image_type.to_h264_picture_type(),
+                pictureType: image_type.as_h264_picture_type(),
             };
             let flags = MaybeUninit::zeroed();
             let flags = flags.assume_init();
             let h264_header = vk::native::StdVideoEncodeH264SliceHeader {
                 flags,
                 first_mb_in_slice: 0,
-                slice_type: image_type.to_h264_slice_type(),
+                slice_type: image_type.as_h264_slice_type(),
                 idr_pic_id: 0,
                 num_ref_idx_l0_active_minus1: 0,
                 num_ref_idx_l1_active_minus1: 0,
@@ -679,7 +722,6 @@ impl Dpb {
                 video_session,
                 quality_level,
             )?;
-
             // TODO: mutex around compute queue
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
             let signal_infos = [vk::SemaphoreSubmitInfo::default()

@@ -409,6 +409,18 @@ pub extern "system" fn record_vk_create_device(
                     *state.decode_queue_family_idx.write().unwrap() = decode_idx as u32;
                     *state.device.write().unwrap() = Some(device);
 
+                    //let instance = state.instance.read().unwrap();
+                    //let instance = instance.as_ref().unwrap();
+                    //let mut props3 = vk::FormatProperties3::default();
+                    //let mut props2 = vk::FormatProperties2::default().push_next(&mut props3);
+                    //let res = instance.get_physical_device_format_properties2(
+                        //physical_device,
+                        //vk::Format::R8_UINT,
+                        //&mut props2
+                    //);
+                    //dbg!(&props2);
+                    //dbg!(&props3);
+
                     return vk::Result::SUCCESS;
                 }
             }
