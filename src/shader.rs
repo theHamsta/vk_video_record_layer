@@ -48,12 +48,12 @@ impl ShaderPipeline {
         &self,
         device: &ash::Device,
         entry_point: &str,
-        push_constant_ranges: &[vk::PushConstantRange], // TODO: do this via reflection
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> anyhow::Result<(
         vk::Pipeline,
         vk::PipelineLayout,
         Vec<vk::DescriptorSetLayout>,
+        Vec<vk::PushConstantRange>,
     )> {
         let mut bindings: HashMap<u32, Vec<vk::DescriptorSetLayoutBinding>> = Default::default();
         for (&set, info) in self.shaders[0]
@@ -91,17 +91,31 @@ impl ShaderPipeline {
             .map(|(_set, bindings)| bindings)
             .collect_vec();
 
+        let push_constant_ranges: Result<Vec<vk::PushConstantRange>, _> =
+            self.shaders[0].info.get_push_constant_range().map(|info| {
+                info.map(|info| {
+                    vk::PushConstantRange::default()
+                        .size(info.size)
+                        .offset(info.offset)
+                        .stage_flags(vk::ShaderStageFlags::COMPUTE)
+                })
+                .iter()
+                .copied()
+                .collect()
+            });
+
         // When we could not create layouts all layouts
-        if layouts.len() != bindings.len() {
+        if layouts.len() != bindings.len() || push_constant_ranges.is_err() {
             for layout in layouts.drain(..) {
                 unsafe { device.destroy_descriptor_set_layout(layout, allocator) };
             }
             bail!("Failed to create all descriptor set layouts");
         }
+        let push_constant_ranges = push_constant_ranges.unwrap();
 
         let layout_create_info = vk::PipelineLayoutCreateInfo::default()
             .set_layouts(&layouts)
-            .push_constant_ranges(push_constant_ranges);
+            .push_constant_ranges(&push_constant_ranges);
 
         let pipeline_layout =
             unsafe { device.create_pipeline_layout(dbg!(&layout_create_info), allocator) }
@@ -131,6 +145,6 @@ impl ShaderPipeline {
             r
         })?[0];
 
-        Ok((pipeline, pipeline_layout, layouts))
+        Ok((pipeline, pipeline_layout, layouts, push_constant_ranges))
     }
 }

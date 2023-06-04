@@ -298,21 +298,34 @@ impl Dpb {
             let compute_shader = ShaderPipeline::new(
                 device,
                 &[include_bytes!("../shaders/bgr_to_yuv_rec709.hlsl.spirv")],
-                //&[include_bytes!("../shaders/bgr_to_yuv_rec709.glsl.spirv")],
             );
 
-            let (compute_pipeline, compute_pipeline_layout, compute_descriptor_layouts) =
-                if let Ok(shader) = compute_shader.as_ref() {
-                    shader
-                        .make_compute_pipeline(device, "main", &[], allocator)
-                        .unwrap_or_else(|e| {
-                            error!("Failed to create compute pipeline: {e}");
-                            (vk::Pipeline::null(), vk::PipelineLayout::null(), Vec::new())
-                        })
-                } else {
-                    error!("Failed to create compute pipeline!");
-                    (vk::Pipeline::null(), vk::PipelineLayout::null(), Vec::new())
-                };
+            let (
+                compute_pipeline,
+                compute_pipeline_layout,
+                compute_descriptor_layouts,
+                _push_constant_ranges,
+            ) = if let Ok(shader) = compute_shader.as_ref() {
+                shader
+                    .make_compute_pipeline(device, "main", allocator)
+                    .unwrap_or_else(|e| {
+                        error!("Failed to create compute pipeline: {e}");
+                        (
+                            vk::Pipeline::null(),
+                            vk::PipelineLayout::null(),
+                            Vec::new(),
+                            Vec::new(),
+                        )
+                    })
+            } else {
+                error!("Failed to create compute pipeline!");
+                (
+                    vk::Pipeline::null(),
+                    vk::PipelineLayout::null(),
+                    Vec::new(),
+                    Vec::new(),
+                )
+            };
             let mut timeline_info =
                 vk::SemaphoreTypeCreateInfo::default().semaphore_type(vk::SemaphoreType::TIMELINE);
             let mut info = vk::SemaphoreCreateInfo::default();
