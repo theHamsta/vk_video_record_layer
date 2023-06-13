@@ -52,7 +52,7 @@ pub extern "system" fn record_vk_get_instance_proc_addr(
 }
 
 //fn record_vk_aquire_next_image() -> vk::Result {
-    //vk::Result::SUCCESS
+//vk::Result::SUCCESS
 //}
 
 #[no_mangle]

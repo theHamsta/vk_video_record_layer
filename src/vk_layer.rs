@@ -117,7 +117,7 @@ pub const __STDC_IEC_60559_COMPLEX__: u32 = 201404;
 pub const __STDC_ISO_10646__: u32 = 201706;
 pub const __GNU_LIBRARY__: u32 = 6;
 pub const __GLIBC__: u32 = 2;
-pub const __GLIBC_MINOR__: u32 = 36;
+pub const __GLIBC_MINOR__: u32 = 37;
 pub const _SYS_CDEFS_H: u32 = 1;
 pub const __glibc_c99_flexarr_available: u32 = 1;
 pub const __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI: u32 = 0;
@@ -179,7 +179,7 @@ pub const SIZE_MAX: i32 = -1;
 pub const WINT_MIN: u32 = 0;
 pub const WINT_MAX: u32 = 4294967295;
 pub const VK_USE_64_BIT_PTR_DEFINES: u32 = 1;
-pub const VK_HEADER_VERSION: u32 = 248;
+pub const VK_HEADER_VERSION: u32 = 253;
 pub const VK_ATTACHMENT_UNUSED: i32 = -1;
 pub const VK_FALSE: u32 = 0;
 pub const VK_LOD_CLAMP_NONE: f64 = 1000.0;
@@ -552,6 +552,10 @@ pub const VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME: &[u8; 31usize] =
 pub const VK_KHR_maintenance4: u32 = 1;
 pub const VK_KHR_MAINTENANCE_4_SPEC_VERSION: u32 = 2;
 pub const VK_KHR_MAINTENANCE_4_EXTENSION_NAME: &[u8; 20usize] = b"VK_KHR_maintenance4\0";
+pub const VK_KHR_ray_tracing_position_fetch: u32 = 1;
+pub const VK_KHR_RAY_TRACING_POSITION_FETCH_SPEC_VERSION: u32 = 1;
+pub const VK_KHR_RAY_TRACING_POSITION_FETCH_EXTENSION_NAME: &[u8; 34usize] =
+    b"VK_KHR_ray_tracing_position_fetch\0";
 pub const VK_EXT_debug_report: u32 = 1;
 pub const VK_EXT_DEBUG_REPORT_SPEC_VERSION: u32 = 10;
 pub const VK_EXT_DEBUG_REPORT_EXTENSION_NAME: &[u8; 20usize] = b"VK_EXT_debug_report\0";
@@ -1243,6 +1247,10 @@ pub const VK_EXT_IMAGE_COMPRESSION_CONTROL_SWAPCHAIN_EXTENSION_NAME: &[u8; 43usi
 pub const VK_QCOM_image_processing: u32 = 1;
 pub const VK_QCOM_IMAGE_PROCESSING_SPEC_VERSION: u32 = 1;
 pub const VK_QCOM_IMAGE_PROCESSING_EXTENSION_NAME: &[u8; 25usize] = b"VK_QCOM_image_processing\0";
+pub const VK_EXT_external_memory_acquire_unmodified: u32 = 1;
+pub const VK_EXT_EXTERNAL_MEMORY_ACQUIRE_UNMODIFIED_SPEC_VERSION: u32 = 1;
+pub const VK_EXT_EXTERNAL_MEMORY_ACQUIRE_UNMODIFIED_EXTENSION_NAME: &[u8; 42usize] =
+    b"VK_EXT_external_memory_acquire_unmodified\0";
 pub const VK_EXT_extended_dynamic_state3: u32 = 1;
 pub const VK_EXT_EXTENDED_DYNAMIC_STATE_3_SPEC_VERSION: u32 = 2;
 pub const VK_EXT_EXTENDED_DYNAMIC_STATE_3_EXTENSION_NAME: &[u8; 31usize] =
@@ -1303,10 +1311,18 @@ pub const VK_EXT_pipeline_library_group_handles: u32 = 1;
 pub const VK_EXT_PIPELINE_LIBRARY_GROUP_HANDLES_SPEC_VERSION: u32 = 1;
 pub const VK_EXT_PIPELINE_LIBRARY_GROUP_HANDLES_EXTENSION_NAME: &[u8; 38usize] =
     b"VK_EXT_pipeline_library_group_handles\0";
+pub const VK_EXT_dynamic_rendering_unused_attachments: u32 = 1;
+pub const VK_EXT_DYNAMIC_RENDERING_UNUSED_ATTACHMENTS_SPEC_VERSION: u32 = 1;
+pub const VK_EXT_DYNAMIC_RENDERING_UNUSED_ATTACHMENTS_EXTENSION_NAME: &[u8; 44usize] =
+    b"VK_EXT_dynamic_rendering_unused_attachments\0";
 pub const VK_QCOM_multiview_per_view_render_areas: u32 = 1;
 pub const VK_QCOM_MULTIVIEW_PER_VIEW_RENDER_AREAS_SPEC_VERSION: u32 = 1;
 pub const VK_QCOM_MULTIVIEW_PER_VIEW_RENDER_AREAS_EXTENSION_NAME: &[u8; 40usize] =
     b"VK_QCOM_multiview_per_view_render_areas\0";
+pub const VK_EXT_attachment_feedback_loop_dynamic_state: u32 = 1;
+pub const VK_EXT_ATTACHMENT_FEEDBACK_LOOP_DYNAMIC_STATE_SPEC_VERSION: u32 = 1;
+pub const VK_EXT_ATTACHMENT_FEEDBACK_LOOP_DYNAMIC_STATE_EXTENSION_NAME: &[u8; 46usize] =
+    b"VK_EXT_attachment_feedback_loop_dynamic_state\0";
 pub const VK_KHR_acceleration_structure: u32 = 1;
 pub const VK_KHR_ACCELERATION_STRUCTURE_SPEC_VERSION: u32 = 13;
 pub const VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME: &[u8; 30usize] =
@@ -3136,6 +3152,7 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_PROCESSING_FEATURES_QCOM = 1000440000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_PROCESSING_PROPERTIES_QCOM = 1000440001,
     VK_STRUCTURE_TYPE_IMAGE_VIEW_SAMPLE_WEIGHT_CREATE_INFO_QCOM = 1000440002,
+    VK_STRUCTURE_TYPE_EXTERNAL_MEMORY_ACQUIRE_UNMODIFIED_EXT = 1000453000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_DYNAMIC_STATE_3_FEATURES_EXT = 1000455000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_DYNAMIC_STATE_3_PROPERTIES_EXT = 1000455001,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBPASS_MERGE_FEEDBACK_FEATURES_EXT = 1000458000,
@@ -3159,6 +3176,7 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_OPTICAL_FLOW_SESSION_CREATE_PRIVATE_DATA_INFO_NV = 1000464010,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LEGACY_DITHERING_FEATURES_EXT = 1000465000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_PROTECTED_ACCESS_FEATURES_EXT = 1000466000,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_POSITION_FETCH_FEATURES_KHR = 1000481000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_OBJECT_FEATURES_EXT = 1000482000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_OBJECT_PROPERTIES_EXT = 1000482001,
     VK_STRUCTURE_TYPE_SHADER_CREATE_INFO_EXT = 1000482002,
@@ -3174,8 +3192,12 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CORE_BUILTINS_FEATURES_ARM = 1000497000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CORE_BUILTINS_PROPERTIES_ARM = 1000497001,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_LIBRARY_GROUP_HANDLES_FEATURES_EXT = 1000498000,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_UNUSED_ATTACHMENTS_FEATURES_EXT =
+        1000499000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MULTIVIEW_PER_VIEW_RENDER_AREAS_FEATURES_QCOM = 1000510000,
     VK_STRUCTURE_TYPE_MULTIVIEW_PER_VIEW_RENDER_AREAS_RENDER_PASS_BEGIN_INFO_QCOM = 1000510001,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ATTACHMENT_FEEDBACK_LOOP_DYNAMIC_STATE_FEATURES_EXT =
+        1000524000,
     VK_STRUCTURE_TYPE_MAX_ENUM = 2147483647,
 }
 #[repr(u32)]
@@ -4114,6 +4136,7 @@ pub enum VkDynamicState {
     VK_DYNAMIC_STATE_SHADING_RATE_IMAGE_ENABLE_NV = 1000455030,
     VK_DYNAMIC_STATE_REPRESENTATIVE_FRAGMENT_TEST_ENABLE_NV = 1000455031,
     VK_DYNAMIC_STATE_COVERAGE_REDUCTION_MODE_NV = 1000455032,
+    VK_DYNAMIC_STATE_ATTACHMENT_FEEDBACK_LOOP_ENABLE_EXT = 1000524000,
     VK_DYNAMIC_STATE_MAX_ENUM = 2147483647,
 }
 #[repr(u32)]
@@ -53443,7 +53466,7 @@ impl Default for VkVideoDecodeH265SessionParametersCreateInfoKHR {
 pub struct VkVideoDecodeH265PictureInfoKHR {
     pub sType: VkStructureType,
     pub pNext: *const ::std::os::raw::c_void,
-    pub pStdPictureInfo: *mut StdVideoDecodeH265PictureInfo,
+    pub pStdPictureInfo: *const StdVideoDecodeH265PictureInfo,
     pub sliceSegmentCount: u32,
     pub pSliceSegmentOffsets: *const u32,
 }
@@ -56873,6 +56896,74 @@ extern "system" {
         pSparseMemoryRequirementCount: *mut u32,
         pSparseMemoryRequirements: *mut VkSparseImageMemoryRequirements2,
     );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub rayTracingPositionFetch: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).rayTracingPositionFetch) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR),
+            "::",
+            stringify!(rayTracingPositionFetch)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -65786,6 +65877,7 @@ pub enum VkBuildAccelerationStructureFlagBitsKHR {
     VK_BUILD_ACCELERATION_STRUCTURE_ALLOW_OPACITY_MICROMAP_UPDATE_EXT = 64,
     VK_BUILD_ACCELERATION_STRUCTURE_ALLOW_DISABLE_OPACITY_MICROMAPS_EXT = 128,
     VK_BUILD_ACCELERATION_STRUCTURE_ALLOW_OPACITY_MICROMAP_DATA_UPDATE_EXT = 256,
+    VK_BUILD_ACCELERATION_STRUCTURE_ALLOW_DATA_ACCESS_KHR = 2048,
     VK_BUILD_ACCELERATION_STRUCTURE_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
 }
 pub type VkBuildAccelerationStructureFlagsKHR = VkFlags;
@@ -89056,6 +89148,74 @@ impl Default for VkPhysicalDeviceImageProcessingPropertiesQCOM {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkExternalMemoryAcquireUnmodifiedEXT {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub acquireUnmodifiedMemory: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkExternalMemoryAcquireUnmodifiedEXT() {
+    const UNINIT: ::std::mem::MaybeUninit<VkExternalMemoryAcquireUnmodifiedEXT> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkExternalMemoryAcquireUnmodifiedEXT>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkExternalMemoryAcquireUnmodifiedEXT)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkExternalMemoryAcquireUnmodifiedEXT>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkExternalMemoryAcquireUnmodifiedEXT)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkExternalMemoryAcquireUnmodifiedEXT),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkExternalMemoryAcquireUnmodifiedEXT),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).acquireUnmodifiedMemory) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkExternalMemoryAcquireUnmodifiedEXT),
+            "::",
+            stringify!(acquireUnmodifiedMemory)
+        )
+    );
+}
+impl Default for VkExternalMemoryAcquireUnmodifiedEXT {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct VkPhysicalDeviceExtendedDynamicState3FeaturesEXT {
     pub sType: VkStructureType,
     pub pNext: *mut ::std::os::raw::c_void,
@@ -93175,6 +93335,77 @@ impl Default for VkPhysicalDevicePipelineLibraryGroupHandlesFeaturesEXT {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub dynamicRenderingUnusedAttachments: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT() {
+    const UNINIT: ::std::mem::MaybeUninit<
+        VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT,
+    > = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).dynamicRenderingUnusedAttachments) as usize - ptr as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT),
+            "::",
+            stringify!(dynamicRenderingUnusedAttachments)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceDynamicRenderingUnusedAttachmentsFeaturesEXT {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct VkPhysicalDeviceMultiviewPerViewRenderAreasFeaturesQCOM {
     pub sType: VkStructureType,
     pub pNext: *mut ::std::os::raw::c_void,
@@ -93319,6 +93550,86 @@ impl Default for VkMultiviewPerViewRenderAreasRenderPassBeginInfoQCOM {
             s.assume_init()
         }
     }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub attachmentFeedbackLoopDynamicState: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT() {
+    const UNINIT: ::std::mem::MaybeUninit<
+        VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT,
+    > = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).attachmentFeedbackLoopDynamicState) as usize - ptr as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT),
+            "::",
+            stringify!(attachmentFeedbackLoopDynamicState)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceAttachmentFeedbackLoopDynamicStateFeaturesEXT {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+pub type PFN_vkCmdSetAttachmentFeedbackLoopEnableEXT = ::std::option::Option<
+    unsafe extern "system" fn(commandBuffer: VkCommandBuffer, aspectMask: VkImageAspectFlags),
+>;
+extern "system" {
+    pub fn vkCmdSetAttachmentFeedbackLoopEnableEXT(
+        commandBuffer: VkCommandBuffer,
+        aspectMask: VkImageAspectFlags,
+    );
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]

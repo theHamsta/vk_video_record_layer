@@ -52,12 +52,18 @@ impl Extensions {
         self.debug_utils_fn = debug_utils_fn;
     }
 
-    pub fn set_video_encode_queue_fn(&mut self, video_encode_queue_fn: Option<vk::KhrVideoEncodeQueueFn>) {
+    pub fn set_video_encode_queue_fn(
+        &mut self,
+        video_encode_queue_fn: Option<vk::KhrVideoEncodeQueueFn>,
+    ) {
         self.video_encode_queue_fn = video_encode_queue_fn;
     }
 
     #[allow(dead_code)]
-    pub fn set_video_decode_queue_fn(&mut self, video_decode_queue_fn: Option<vk::KhrVideoDecodeQueueFn>) {
+    pub fn set_video_decode_queue_fn(
+        &mut self,
+        video_decode_queue_fn: Option<vk::KhrVideoDecodeQueueFn>,
+    ) {
         self.video_decode_queue_fn = video_decode_queue_fn;
     }
 }

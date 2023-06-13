@@ -28,6 +28,7 @@ bindgen \
   --with-derive-ord \
   --default-macro-constant-type unsigned \
   /usr/local/include/vulkan/vulkan.h \
+  --allowlist-var ".*_EXTENSION_NAME" \
   -- -DVK_ENABLE_BETA_EXTENSIONS=1 \
   >> src/vk_beta.rs
 

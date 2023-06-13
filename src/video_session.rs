@@ -129,7 +129,6 @@ impl SwapChainData<'_> {
         &mut self,
         device: &ash::Device,
         extensions: &Extensions,
-        quality_level: u32,
         swapchain_index: usize,
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
@@ -157,7 +156,6 @@ impl SwapChainData<'_> {
                     device,
                     extensions,
                     encode_session,
-                    quality_level,
                     present_view,
                     compute_queue,
                     encode_queue,
@@ -201,6 +199,8 @@ pub unsafe fn record_vk_create_swapchain(
         let physical_memory_props =
             instance.get_physical_device_memory_properties(*physical_device);
         let create_info = p_create_info.as_ref().unwrap();
+        let create_info =
+            create_info.image_usage(create_info.image_usage | vk::ImageUsageFlags::STORAGE);
         //let swapchain_color_space =
         let swapchain_data = Box::new({
             let images = get_swapchain_images(device, swapchain_fn, *p_swapchain);
@@ -380,7 +380,6 @@ pub unsafe extern "system" fn record_vk_queue_present(
     let slot = get_state().private_slot.read().unwrap();
     let present_info = p_present_info.as_ref().unwrap();
     let extensions = get_state().extensions.read().unwrap();
-    let quality_level = get_state().settings.quality_level;
 
     let swapchain_data = transmute::<u64, &mut SwapChainData>(
         device.get_private_data(*present_info.p_swapchains, *slot),
@@ -392,7 +391,6 @@ pub unsafe extern "system" fn record_vk_queue_present(
         swapchain_data.encode_image(
             device,
             &extensions,
-            quality_level,
             *present_info.p_image_indices as usize,
             compute_queue,
             encode_queue,

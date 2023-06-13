@@ -409,14 +409,29 @@ pub extern "system" fn record_vk_create_device(
                     *state.decode_queue_family_idx.write().unwrap() = decode_idx as u32;
                     *state.device.write().unwrap() = Some(device);
 
+                    //let instance_exts = ash::Entry::load()
+                    //.unwrap()
+                    //.enumerate_instance_extension_properties(None);
+                    //dbg!(&instance_exts);
+
                     //let instance = state.instance.read().unwrap();
                     //let instance = instance.as_ref().unwrap();
                     //let mut props3 = vk::FormatProperties3::default();
                     //let mut props2 = vk::FormatProperties2::default().push_next(&mut props3);
                     //let res = instance.get_physical_device_format_properties2(
-                        //physical_device,
-                        //vk::Format::R8_UINT,
-                        //&mut props2
+                    //physical_device,
+                    //vk::Format::G8_B8R8_2PLANE_420_UNORM,
+                    //&mut props2,
+                    //);
+                    //assert!(
+                    //props2
+                    //.format_properties
+                    //.linear_tiling_features
+                    //.contains(vk::FormatFeatureFlags::VIDEO_DECODE_DPB_KHR)
+                    //| props2
+                    //.format_properties
+                    //.optimal_tiling_features
+                    //.contains(vk::FormatFeatureFlags::VIDEO_DECODE_DPB_KHR)
                     //);
                     //dbg!(&props2);
                     //dbg!(&props3);
