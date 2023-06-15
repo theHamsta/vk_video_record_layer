@@ -94,7 +94,7 @@ impl ShaderPipeline {
             .iter()
         {
             for (&binding, info) in info.iter() {
-                bindings.entry(set).or_default().push(dbg!(
+                bindings.entry(set).or_default().push(
                     vk::DescriptorSetLayoutBinding::default()
                         .binding(binding)
                         .descriptor_type(unsafe { transmute(transmute::<_, u32>(info.ty)) })
@@ -104,7 +104,7 @@ impl ShaderPipeline {
                             rspirv_reflect::BindingCount::Unbounded => todo!(),
                         })
                         .stage_flags(vk::ShaderStageFlags::COMPUTE),
-                ))
+                )
             }
         }
         let mut descriptor_set_layouts = bindings
@@ -149,7 +149,7 @@ impl ShaderPipeline {
             .push_constant_ranges(&push_constant_ranges);
 
         let pipeline_layout =
-            unsafe { device.create_pipeline_layout(dbg!(&layout_create_info), allocator) }
+            unsafe { device.create_pipeline_layout(&layout_create_info, allocator) }
                 .map_err(|e| anyhow!("Failed to create pipeline layout: {e}"))?; //TODO: unwrap
 
         let shader = &self.shaders[0];
@@ -161,13 +161,13 @@ impl ShaderPipeline {
             .stage(vk::ShaderStageFlags::COMPUTE);
 
         let pipeline = unsafe {
-            dbg!(device.create_compute_pipelines(
+            device.create_compute_pipelines(
                 vk::PipelineCache::null(),
                 &[vk::ComputePipelineCreateInfo::default()
                     .stage(shader_stage_create_info)
                     .layout(pipeline_layout)],
                 allocator,
-            ))
+            )
         }
         .map_err(|(pipelines, r)| {
             for p in pipelines {

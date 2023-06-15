@@ -702,7 +702,6 @@ impl Dpb {
         signal_semaphore_compute: &[vk::SemaphoreSubmitInfo],
     ) -> anyhow::Result<()> {
         unsafe {
-            dbg!(&_wait_semaphore_infos);
             let cmd = self.compute_cmd_buffers[&(image_view, self.next_image)];
             debug!("encode_frame");
 
@@ -726,7 +725,7 @@ impl Dpb {
             .collect_vec();
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
-                .wait_semaphore_infos(_wait_semaphore_infos)
+                //.wait_semaphore_infos(_wait_semaphore_infos)
                 .signal_semaphore_infos(&signal_infos);
             device
                 .queue_submit2(compute_queue, &[info], vk::Fence::null())
