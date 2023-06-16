@@ -38,8 +38,8 @@ pub fn write_h264_sps(
         &mut writer,
         sps.flags.gaps_in_frame_num_value_allowed_flag(),
     )?;
-    ue(&mut writer, sps.pic_width_in_mbs_minus1)?;
-    ue(&mut writer, sps.pic_height_in_map_units_minus1)?;
+    ue(&mut writer, sps.pic_width_in_mbs_minus1.into())?;
+    ue(&mut writer, sps.pic_height_in_map_units_minus1.into())?;
     u(1, &mut writer, sps.flags.frame_mbs_only_flag())?;
     if sps.flags.frame_mbs_only_flag() != 1 {
         writer.write(1, sps.flags.mb_adaptive_frame_field_flag())?;
@@ -47,12 +47,12 @@ pub fn write_h264_sps(
     u(1, &mut writer, sps.flags.direct_8x8_inference_flag())?;
     u(1, &mut writer, sps.flags.frame_cropping_flag())?;
     if sps.flags.frame_cropping_flag() == 1 {
-        ue(&mut writer, sps.frame_crop_left_offset)?;
-        ue(&mut writer, sps.frame_crop_right_offset)?;
-        ue(&mut writer, sps.frame_crop_top_offset)?;
-        ue(&mut writer, sps.frame_crop_bottom_offset)?;
+        ue(&mut writer, sps.frame_crop_left_offset.into())?;
+        ue(&mut writer, sps.frame_crop_right_offset.into())?;
+        ue(&mut writer, sps.frame_crop_top_offset.into())?;
+        ue(&mut writer, sps.frame_crop_bottom_offset.into())?;
     }
-    ue(&mut writer, sps.frame_crop_left_offset)?;
+    ue(&mut writer, sps.frame_crop_left_offset.into())?;
 
     u(1, &mut writer, sps.flags.vui_parameters_present_flag())?;
     if sps.flags.vui_parameters_present_flag() == 1 {
@@ -103,9 +103,9 @@ pub fn write_h264_pps(
 #[allow(dead_code)]
 fn se<W: std::io::Write, E: bitstream_io::Endianness>(
     writer: &mut BitWriter<W, E>,
-    data: i32,
+    data: i64,
 ) -> std::io::Result<()> {
-    let mut k = data.abs() as u32 * 2;
+    let mut k = data.abs() as u64 * 2;
     if data > 0 {
         k -= 1;
     }
@@ -114,15 +114,15 @@ fn se<W: std::io::Write, E: bitstream_io::Endianness>(
 
 fn ue<W: std::io::Write, E: bitstream_io::Endianness>(
     writer: &mut BitWriter<W, E>,
-    data: u32,
+    data: u64,
 ) -> std::io::Result<()> {
     let xp1 = data.wrapping_add(1);
 
     let lz = xp1.leading_zeros();
 
-    let num_zeros = 32 - lz - 1;
-    writer.write(0, num_zeros)?;
-    writer.write(xp1, num_zeros + 1)?;
+    let num_zeros = 64 - lz - 1;
+    writer.write(num_zeros, 0)?;
+    writer.write(num_zeros + 1, xp1)?;
     Ok(())
 }
 
