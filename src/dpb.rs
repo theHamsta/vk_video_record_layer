@@ -1,6 +1,6 @@
 use crate::{
     shader::ComputePipelineDescriptor,
-    vulkan_utils::{find_memorytype_index, name_object, ptr_chain_get_next_ref},
+    vulkan_utils::{find_memorytype_index, name_object},
 };
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
@@ -50,13 +50,6 @@ enum PictureType {
     P,
     #[allow(dead_code)]
     B,
-}
-
-fn serialize_video_encode_info(info: &vk::VideoEncodeInfoKHR, write: &impl Write) {
-    let h264_info = ptr_chain_get_next_ref::<_, vk::VideoEncodeH264VclFrameInfoEXT>(info);
-    if let Some(h264_info) = h264_info {
-
-    }
 }
 
 impl PictureType {
@@ -707,6 +700,7 @@ impl Dpb {
         encode_queue: vk::Queue,
         _wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
         signal_semaphore_compute: &[vk::SemaphoreSubmitInfo],
+        output: Option<&mut impl Write>,
     ) -> anyhow::Result<()> {
         unsafe {
             let cmd = self.compute_cmd_buffers[&(image_view, self.next_image)];
@@ -716,7 +710,7 @@ impl Dpb {
                 .bitstream_buffers
                 .as_mut()
                 .map_err(|e| *e)?
-                .next(device, 100)?;
+                .next(device, 100, output)?;
 
             let encode_cmd =
                 self.record_encode_cmd_buffer(device, extensions, &buffer, video_session)?;

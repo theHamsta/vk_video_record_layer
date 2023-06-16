@@ -1,5 +1,5 @@
 use core::slice;
-use std::{fs::File, io::Write};
+use std::io::Write;
 
 use ash::{prelude::VkResult, vk};
 use log::{debug, error, warn};
@@ -195,7 +195,12 @@ impl BitstreamBufferRing {
         }
     }
 
-    pub fn next(&mut self, device: &ash::Device, timeout: u64) -> VkResult<BufferPair> {
+    pub fn next(
+        &mut self,
+        device: &ash::Device,
+        timeout: u64,
+        output: Option<&mut impl Write>,
+    ) -> VkResult<BufferPair> {
         let buffer = &self.buffers[self.current];
 
         let host = &self.host_buffers[self.current];
@@ -253,8 +258,6 @@ impl BitstreamBufferRing {
             };
             // TODO: offload to IO thread
             if let (Ok(_), Ok(result)) = (std::env::var("VK_RECORD_LAYER_DEBUG_DUMP"), result) {
-                let filename = format!("/tmp/frame{}.h264", self.buffer_generation[self.current]);
-                let mut file = File::create(&filename);
                 let size = host.size().min(result.size.into());
                 unsafe {
                     let data = device.map_memory(
@@ -263,10 +266,10 @@ impl BitstreamBufferRing {
                         size,
                         vk::MemoryMapFlags::default(),
                     );
-                    if let (Ok(data), Ok(file)) = (data, &mut file) {
-                        let res =
-                            file.write_all(slice::from_raw_parts(data as *const u8, size as usize));
-                        debug!("Wrote file {filename} with size {}B: {res:?}", size);
+                    if let (Ok(data), Some(output)) = (data, output) {
+                        let res = output
+                            .write_all(slice::from_raw_parts(data as *const u8, size as usize));
+                        debug!("Wrote {}B to output file: {res:?}", size);
                     }
                     let _ = device.unmap_memory(host.memory());
                 }
