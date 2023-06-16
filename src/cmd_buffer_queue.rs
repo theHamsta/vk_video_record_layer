@@ -81,9 +81,6 @@ impl CommandBufferQueue {
                 rtn.fences.push(fence);
             }
 
-            drop(debug_name);
-            drop(extensions);
-
             Ok(rtn)
         }
     }

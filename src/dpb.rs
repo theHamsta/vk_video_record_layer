@@ -1,12 +1,12 @@
 use crate::{
     shader::ComputePipelineDescriptor,
-    vulkan_utils::{find_memorytype_index, name_object},
+    vulkan_utils::{find_memorytype_index, name_object, ptr_chain_get_next_ref},
 };
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;
 use log::{debug, error};
-use std::{collections::HashMap, mem::MaybeUninit, ptr::null};
+use std::{collections::HashMap, mem::MaybeUninit, ptr::null, io::Write};
 
 use crate::{
     buffer_queue::{BitstreamBufferRing, BufferPair},
@@ -50,6 +50,13 @@ enum PictureType {
     P,
     #[allow(dead_code)]
     B,
+}
+
+fn serialize_video_encode_info(info: &vk::VideoEncodeInfoKHR, write: &impl Write) {
+    let h264_info = ptr_chain_get_next_ref::<_, vk::VideoEncodeH264VclFrameInfoEXT>(info);
+    if let Some(h264_info) = h264_info {
+
+    }
 }
 
 impl PictureType {

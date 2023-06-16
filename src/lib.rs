@@ -11,6 +11,7 @@ mod video_session;
 mod vk_beta;
 mod vk_layer;
 mod vulkan_utils;
+mod bitstream;
 
 use crate::creation::{record_vk_create_device, record_vk_create_instance};
 use crate::video_session::{

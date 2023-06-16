@@ -15,31 +15,10 @@ use crate::vk_beta::{
 };
 use crate::vk_layer;
 use crate::vk_layer::VkLayerFunction;
+use crate::vulkan_utils::ptr_chain_get_next;
 use log::{debug, error, info};
 use std::collections::HashSet;
 use std::{ffi::CStr, mem::transmute};
-
-pub(crate) unsafe fn ptr_chain_get_next<SRC, DST>(
-    start_struct: *const SRC,
-    predicate: impl Fn(&*const vk::BaseOutStructure) -> bool,
-) -> Option<*mut DST> {
-    unsafe {
-        let iter = {
-            // inlined (by rust-analyzer): private ptr_chain_iter from ash
-            let ptr = <*const SRC>::cast::<vk::BaseOutStructure>(start_struct);
-            (0..).scan(ptr, |p_ptr, _| {
-                if p_ptr.is_null() {
-                    return None;
-                }
-                let n_ptr = (**p_ptr).p_next;
-                let old = *p_ptr;
-                *p_ptr = n_ptr;
-                Some(old)
-            })
-        };
-        iter.filter(predicate).map(|s| transmute(s)).next()
-    }
-}
 
 #[no_mangle]
 pub extern "system" fn record_vk_create_instance(

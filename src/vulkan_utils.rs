@@ -1,4 +1,4 @@
-use std::ffi::CString;
+use std::{ffi::CString, mem::transmute};
 
 use crate::state::Extensions;
 use ash::vk;
@@ -45,4 +45,45 @@ pub fn find_memorytype_index(
                 && memory_type.property_flags & flags == flags
         })
         .map(|(index, _memory_type)| index as _)
+}
+
+pub(crate) unsafe fn ptr_chain_get_next<SRC, DST>(
+    start_struct: *const SRC,
+    predicate: impl Fn(&*const vk::BaseOutStructure) -> bool,
+) -> Option<*mut DST> {
+    unsafe {
+        let iter = {
+            // inlined (by rust-analyzer): private ptr_chain_iter from ash
+            let ptr = <*const SRC>::cast::<vk::BaseOutStructure>(start_struct);
+            (0..).scan(ptr, |p_ptr, _| {
+                if p_ptr.is_null() {
+                    return None;
+                }
+                let n_ptr = (**p_ptr).p_next;
+                let old = *p_ptr;
+                *p_ptr = n_ptr;
+                Some(old)
+            })
+        };
+        iter.filter(predicate).map(|s| transmute(s)).next()
+    }
+}
+
+pub(crate) fn ptr_chain_get_next_ref<SRC, DST>(start_struct: &SRC) -> Option<&DST> {
+    unsafe {
+        let iter = {
+            // inlined (by rust-analyzer): private ptr_chain_iter from ash
+            let ptr = <*const SRC>::cast::<vk::BaseOutStructure>(start_struct);
+            (0..).scan(ptr, |p_ptr, _| {
+                if p_ptr.is_null() {
+                    return None;
+                }
+                let n_ptr = (**p_ptr).p_next;
+                let old = *p_ptr;
+                *p_ptr = n_ptr;
+                Some(old)
+            })
+        };
+        iter.map(|s| transmute(s)).next()
+    }
 }
