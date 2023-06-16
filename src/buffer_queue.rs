@@ -257,7 +257,7 @@ impl BitstreamBufferRing {
                 result
             };
             // TODO: offload to IO thread
-            if let (Ok(_), Ok(result)) = (std::env::var("VK_RECORD_LAYER_DEBUG_DUMP"), result) {
+            if let Ok(result) = result {
                 let size = host.size().min(result.size.into());
                 unsafe {
                     let data = device.map_memory(
