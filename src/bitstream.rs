@@ -16,7 +16,6 @@ pub fn write_h264_sps(
     sps: &vk::native::StdVideoH264SequenceParameterSet,
 ) -> std::io::Result<()> {
     let mut writer = BitWriter::<_, BigEndian>::new(writer);
-    dbg!(sps);
 
     u(32, &mut writer, START_CODE)?;
     u(1, &mut writer, FORBIDDEN_ZERO_BIT)?;
@@ -52,13 +51,10 @@ pub fn write_h264_sps(
         },
     )?;
     ue(&mut writer, sps.seq_parameter_set_id.into())?;
-    ue(&mut writer, dbg!(sps.log2_max_frame_num_minus4.into()))?;
+    ue(&mut writer, sps.log2_max_frame_num_minus4.into())?;
     ue(&mut writer, sps.pic_order_cnt_type.into())?;
-    if dbg!(sps.pic_order_cnt_type) == 0 {
-        ue(
-            &mut writer,
-            dbg!(sps.log2_max_pic_order_cnt_lsb_minus4).into(),
-        )?;
+    if sps.pic_order_cnt_type == 0 {
+        ue(&mut writer, sps.log2_max_pic_order_cnt_lsb_minus4.into())?;
     } else {
         todo!();
     }
@@ -68,8 +64,8 @@ pub fn write_h264_sps(
         &mut writer,
         sps.flags.gaps_in_frame_num_value_allowed_flag(),
     )?;
-    ue(&mut writer, dbg!(sps.pic_width_in_mbs_minus1.into()))?;
-    ue(&mut writer, dbg!(sps.pic_height_in_map_units_minus1.into()))?;
+    ue(&mut writer, sps.pic_width_in_mbs_minus1.into())?;
+    ue(&mut writer, sps.pic_height_in_map_units_minus1.into())?;
     u(1, &mut writer, sps.flags.frame_mbs_only_flag())?;
     if sps.flags.frame_mbs_only_flag() != 1 {
         writer.write(1, sps.flags.mb_adaptive_frame_field_flag())?;
