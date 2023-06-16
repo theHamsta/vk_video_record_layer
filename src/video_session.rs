@@ -1,5 +1,10 @@
+use chrono::offset::Utc;
+use chrono::DateTime;
+use std::fs::File;
 use std::mem::transmute;
+use std::path::PathBuf;
 use std::ptr::null_mut;
+use std::time::SystemTime;
 
 use ash::prelude::VkResult;
 use ash::vk;
@@ -92,6 +97,7 @@ struct SwapChainData<'a> {
     image_views: VkResult<Vec<vk::ImageView>>,
     semaphores: Vec<VkResult<vk::Semaphore>>,
     frame_index: u64,
+    output_file: Option<PathBuf>,
 }
 
 impl SwapChainData<'_> {
@@ -231,6 +237,20 @@ pub unsafe fn record_vk_create_swapchain(
             };
 
             let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
+
+            let output_folder = &get_state().settings.output_folder;
+            let lock = get_state().application_name.read().unwrap();
+            let application_name = lock.as_ref().map(|s| s.as_str()).unwrap_or("UnknownApp");
+            let time = SystemTime::now();
+            let datetime: DateTime<Utc> = time.into();
+            let output_file = output_folder.join(format!(
+                "{application_name}_{}.h264",
+                datetime.format("%d.%m.%Y_%H_%M_%S")
+            ));
+            info!("Starting output file: {output_file:?}");
+            let output_file_handle = File::create(&output_file);
+            let output_file = Some(output_file);
+
             debug!("Create encode session");
             let encode_session = create_video_session(
                 *get_state().encode_queue_family_idx.read().unwrap(),
@@ -238,8 +258,10 @@ pub unsafe fn record_vk_create_swapchain(
                 create_info.image_extent,
                 video_format,
                 true,
+                output_file_handle.ok(),
                 p_allocator,
             );
+
             debug!("Create decode session");
             let decode_session = create_video_session(
                 *get_state().decode_queue_family_idx.read().unwrap(),
@@ -247,6 +269,7 @@ pub unsafe fn record_vk_create_swapchain(
                 create_info.image_extent,
                 video_format,
                 false,
+                None,
                 p_allocator,
             );
             let swapchain_format = create_info.image_format;
@@ -302,6 +325,7 @@ pub unsafe fn record_vk_create_swapchain(
                 _images: images,
                 image_views,
                 frame_index: 0,
+                output_file,
             }
         });
         let leaked = Box::leak(swapchain_data);
@@ -406,6 +430,7 @@ fn create_video_session(
     coded_extent: vk::Extent2D,
     video_format: vk::Format,
     is_encode: bool,
+    output_file: Option<File>,
     p_allocator: *const vk::AllocationCallbacks,
 ) -> VkResult<VideoSession> {
     trace!("create_video_session");
@@ -581,6 +606,7 @@ fn create_video_session(
                         session,
                         video_format,
                         coded_extent,
+                        output_file,
                         unsafe { p_allocator.as_ref() },
                     )
                     .ok(),

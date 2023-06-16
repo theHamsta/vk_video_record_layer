@@ -77,6 +77,7 @@ pub struct State {
     pub device: RwLock<Option<ash::Device>>,
     pub physical_device: RwLock<Option<vk::PhysicalDevice>>,
     pub extensions: RwLock<Extensions>,
+    pub application_name: RwLock<Option<String>>,
     pub instance_get_fn: RwLock<Option<vk::PFN_vkGetInstanceProcAddr>>,
     pub device_get_fn: RwLock<Option<vk::PFN_vkGetDeviceProcAddr>>,
     pub settings: Settings,

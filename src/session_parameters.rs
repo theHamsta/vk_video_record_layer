@@ -1,9 +1,10 @@
-use std::mem::{transmute, MaybeUninit};
-use std::ptr::null;
-
+use crate::bitstream::{write_h264_pps, write_h264_sps};
 use ash::prelude::VkResult;
 use ash::vk;
 use log::error;
+use std::io::Write;
+use std::mem::{transmute, MaybeUninit};
+use std::ptr::null;
 
 //// TODO: handle vui with valid pointers
 //pub enum CodecParameters {
@@ -39,6 +40,7 @@ pub fn make_h264_video_session_parameters(
     video_session: vk::VideoSessionKHR,
     format: vk::Format,
     extent: vk::Extent2D,
+    output_file: Option<impl Write>,
     allocator: Option<&vk::AllocationCallbacks>,
 ) -> VkResult<vk::VideoSessionParametersKHR> {
     let bitdepth = 8;
@@ -126,6 +128,21 @@ pub fn make_h264_video_session_parameters(
         .max_std_sps_count(sps.len() as u32)
         .max_std_pps_count(pps.len() as u32)
         .parameters_add_info(&add_info);
+
+    if let Some(mut output_file) = output_file {
+        write_h264_sps(&mut output_file, &sps[0]).map_err(|e| {
+            error!("Error writing sps: {e}!");
+            vk::Result::ERROR_INITIALIZATION_FAILED
+        })?;
+        write_h264_pps(&mut output_file, &sps[0], &pps[0]).map_err(|e| {
+            error!("Error writing pps: {e}!");
+            vk::Result::ERROR_INITIALIZATION_FAILED
+        })?;
+        output_file.flush().map_err(|e| {
+            error!("Failed flushing output file: {e}!");
+            vk::Result::ERROR_INITIALIZATION_FAILED
+        })?;
+    }
     unsafe {
         let mut info =
             vk::VideoSessionParametersCreateInfoKHR::default().video_session(video_session);

@@ -13,6 +13,7 @@ bench = false
 anyhow = "1.0.71"
 ash = { git = "https://github.com/ash-rs/ash/", branch = "update" }
 bitstream-io = "1.6.0"
+chrono = "0.4.26"
 dirs = "5.0.0"
 itertools = "0.10.5"
 log = "0.4.17"
