@@ -6,7 +6,12 @@ use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;
 use log::{debug, error};
-use std::{collections::HashMap, mem::MaybeUninit, ptr::null, io::Write};
+use std::{
+    collections::HashMap,
+    io::Write,
+    mem::{transmute, MaybeUninit},
+    ptr::null,
+};
 
 use crate::{
     buffer_queue::{BitstreamBufferRing, BufferPair},
@@ -129,7 +134,12 @@ impl Dpb {
             let mut views = Vec::new();
             let mut y_views = Vec::new();
             let mut uv_views = Vec::new();
-            let vk::Extent2D { width, height } = extent;
+            let vk::Extent2D {
+                mut width,
+                mut height,
+            } = extent;
+            width = (width + 15) / 16 * 16;
+            height = (height + 15) / 16 * 16;
             let mut res = vk::Result::SUCCESS;
             let indices = [
                 encode_family_index,
@@ -414,12 +424,12 @@ impl Dpb {
                     let cmd = cmds.pop().unwrap();
                     let barriers = vec![
                         vk::ImageMemoryBarrier2::default()
-                            .src_stage_mask(vk::PipelineStageFlags2::ALL_GRAPHICS)
+                            .src_stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)
                             .dst_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
-                            .src_access_mask(vk::AccessFlags2::SHADER_WRITE)
-                            .dst_access_mask(vk::AccessFlags2::SHADER_READ)
+                            .src_access_mask(vk::AccessFlags2::MEMORY_READ)
+                            .dst_access_mask(vk::AccessFlags2::SHADER_STORAGE_READ)
                             .old_layout(vk::ImageLayout::PRESENT_SRC_KHR)
-                            .new_layout(vk::ImageLayout::SHADER_READ_ONLY_OPTIMAL)
+                            .new_layout(vk::ImageLayout::GENERAL)
                             .src_queue_family_index(src_queue_family_index)
                             .dst_queue_family_index(self.compute_family_index)
                             .subresource_range(
@@ -435,15 +445,16 @@ impl Dpb {
                             .src_stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)
                             .dst_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
                             .src_access_mask(vk::AccessFlags2::VIDEO_ENCODE_READ_KHR)
-                            .dst_access_mask(vk::AccessFlags2::SHADER_WRITE)
+                            .dst_access_mask(vk::AccessFlags2::SHADER_STORAGE_WRITE)
                             .old_layout(vk::ImageLayout::UNDEFINED)
                             .new_layout(vk::ImageLayout::GENERAL)
-                            .src_queue_family_index(self.compute_family_index)
+                            .src_queue_family_index(self.encode_family_index)
                             .dst_queue_family_index(self.compute_family_index)
                             .subresource_range(
                                 vk::ImageSubresourceRange::default()
                                     .aspect_mask(
-                                        vk::ImageAspectFlags::PLANE_0
+                                        vk::ImageAspectFlags::COLOR
+                                            | vk::ImageAspectFlags::PLANE_0
                                             | vk::ImageAspectFlags::PLANE_1,
                                     )
                                     .base_mip_level(0)
@@ -457,10 +468,10 @@ impl Dpb {
                         vk::DependencyInfo::default().image_memory_barriers(&barriers);
                     let barriers = vec![vk::ImageMemoryBarrier2::default()
                         .src_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
-                        .dst_stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)
-                        .src_access_mask(vk::AccessFlags2::SHADER_READ)
-                        .dst_access_mask(vk::AccessFlags2::NONE)
-                        .old_layout(vk::ImageLayout::SHADER_READ_ONLY_OPTIMAL)
+                        .dst_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
+                        .src_access_mask(vk::AccessFlags2::SHADER_STORAGE_READ)
+                        .dst_access_mask(vk::AccessFlags2::MEMORY_READ)
+                        .old_layout(vk::ImageLayout::GENERAL)
                         .new_layout(vk::ImageLayout::PRESENT_SRC_KHR)
                         .src_queue_family_index(self.compute_family_index)
                         .dst_queue_family_index(dst_queue_family_index)
@@ -495,7 +506,7 @@ impl Dpb {
                                 .descriptor_type(vk::DescriptorType::STORAGE_IMAGE)
                                 .image_info(&[vk::DescriptorImageInfo::default()
                                     .image_view(view)
-                                    .image_layout(vk::ImageLayout::SHADER_READ_ONLY_OPTIMAL)]),
+                                    .image_layout(vk::ImageLayout::GENERAL)]),
                             vk::WriteDescriptorSet::default()
                                 .dst_set(set[0])
                                 .dst_binding(1)
@@ -527,7 +538,15 @@ impl Dpb {
                         vk::PipelineBindPoint::COMPUTE,
                         compute_pipeline.pipeline(),
                     );
-                    device.cmd_dispatch(cmd, self.extent.width / 8, self.extent.height / 8, 1);
+                    device.cmd_push_constants(
+                        cmd,
+                        compute_pipeline.layout(),
+                        vk::ShaderStageFlags::COMPUTE,
+                        0,
+                        &transmute::<_, [u8; 8]>(self.extent),
+                    );
+                    let extent = self.coded_extent();
+                    device.cmd_dispatch(cmd, (extent.width + 7) / 8, (extent.height + 7) / 8, 1);
                     device.cmd_pipeline_barrier2(cmd, &dep_info_compute_to_present);
                     device
                         .end_command_buffer(cmd)
@@ -612,7 +631,7 @@ impl Dpb {
             );
 
             let pic = vk::VideoPictureResourceInfoKHR::default()
-                .coded_extent(self.extent)
+                .coded_extent(self.coded_extent())
                 .image_view_binding(image_view);
             let flags = MaybeUninit::zeroed();
             let mut flags: vk::native::StdVideoEncodeH264PictureInfoFlags = flags.assume_init();
@@ -794,4 +813,14 @@ impl Dpb {
         }
     }
     // TODO: DropBomb?
+
+    pub fn coded_extent(&self) -> vk::Extent2D {
+        let vk::Extent2D {
+            mut width,
+            mut height,
+        } = self.extent;
+        width = (width + 15) / 16 * 16;
+        height = (height + 15) / 16 * 16;
+        vk::Extent2D { width, height }
+    }
 }

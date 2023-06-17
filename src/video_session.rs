@@ -190,8 +190,11 @@ pub unsafe fn record_vk_create_swapchain(
     let allocator = p_allocator.as_ref();
     let extensions = get_state().extensions.read().unwrap();
     let swapchain_fn = extensions.swapchain_fn();
+    let create_info = p_create_info.as_ref().unwrap();
+    let create_info =
+        create_info.image_usage(create_info.image_usage | vk::ImageUsageFlags::STORAGE);
     let result =
-        (swapchain_fn.create_swapchain_khr)(device, p_create_info, p_allocator, p_swapchain);
+        (swapchain_fn.create_swapchain_khr)(device, &create_info, p_allocator, p_swapchain);
 
     if result == vk::Result::SUCCESS {
         info!("Created swapchain");
@@ -205,9 +208,6 @@ pub unsafe fn record_vk_create_swapchain(
 
         let physical_memory_props =
             instance.get_physical_device_memory_properties(*physical_device);
-        let create_info = p_create_info.as_ref().unwrap();
-        let create_info =
-            create_info.image_usage(create_info.image_usage | vk::ImageUsageFlags::STORAGE);
         //let swapchain_color_space =
         let swapchain_data = Box::new({
             let images = get_swapchain_images(device, swapchain_fn, *p_swapchain);
