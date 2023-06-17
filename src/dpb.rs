@@ -622,6 +622,10 @@ impl Dpb {
                     .flags(vk::VideoCodingControlFlagsKHR::RESET);
                 (video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
                 video_session.set_needs_reset(false);
+                // TODO: rate control
+                //let mut rate_control = vk::VideoEncodeRateControlInfoKHR::default();
+                //let info = vk::VideoCodingControlInfoKHR::default().push_next(&mut rate_control);
+                //(video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
             }
             device.cmd_begin_query(
                 cmd,
