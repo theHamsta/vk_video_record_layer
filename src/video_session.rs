@@ -24,6 +24,7 @@ use crate::vk_beta::{
     VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
     VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
 };
+use crate::vulkan_utils::name_object;
 
 pub struct VideoSession<'a> {
     session: vk::VideoSessionKHR,
@@ -226,9 +227,28 @@ pub unsafe fn record_vk_create_swapchain(
                 if let Ok(images) = &images {
                     images
                         .iter()
-                        .map(|&image| {
+                        .enumerate()
+                        .map(|(i, &image)| {
+                            #[cfg(debug_assertions)]
+                            name_object(
+                                device,
+                                &extensions,
+                                image,
+                                &format!("Swapchain image {i}"),
+                            );
                             view_info.image = image;
-                            device.create_image_view(&view_info, allocator)
+                            let view = device.create_image_view(&view_info, allocator);
+
+                            let _ = view.map(|view| {
+                                #[cfg(debug_assertions)]
+                                name_object(
+                                    device,
+                                    &extensions,
+                                    view,
+                                    &format!("Swapchain image view {i}"),
+                                )
+                            });
+                            view
                         })
                         .collect()
                 } else {
@@ -420,7 +440,10 @@ pub unsafe extern "system" fn record_vk_queue_present(
             &present_info,
         );
     }
-    (extensions.swapchain_fn().queue_present_khr)(queue, p_present_info)
+    let info = p_present_info.as_ref().unwrap();
+    let semaphores = [swapchain_data.semaphores[info.p_image_indices.read() as usize].unwrap()];
+    let info = info.wait_semaphores(&semaphores);
+    (extensions.swapchain_fn().queue_present_khr)(queue, &info)
 }
 
 fn create_video_session<'file, 'video_session>(
