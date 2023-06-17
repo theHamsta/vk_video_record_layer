@@ -54,11 +54,16 @@ pub extern "system" fn record_vk_create_instance(
                 let app_info = (*(*p_create_info).p_application_info)
                     .api_version(vk::make_api_version(0, 1, 3, 249));
 
-                *state.application_name.write().unwrap() = Some(
-                    CStr::from_ptr(app_info.p_application_name)
-                        .to_string_lossy()
-                        .to_string(),
-                );
+                *state.application_name.write().unwrap() = if app_info.p_application_name.is_null()
+                {
+                    None
+                } else {
+                    Some(
+                        CStr::from_ptr(app_info.p_application_name)
+                            .to_string_lossy()
+                            .to_string(),
+                    )
+                };
                 let mut extensions = vec![
                     #[cfg(debug_assertions)]
                     ash::extensions::ext::DebugUtils::NAME.as_ptr(),
