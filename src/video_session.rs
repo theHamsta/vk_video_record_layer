@@ -263,8 +263,9 @@ pub unsafe fn record_vk_create_swapchain(
             let application_name = lock.as_ref().map(|s| s.as_str()).unwrap_or("UnknownApp");
             let time = SystemTime::now();
             let datetime: DateTime<Utc> = time.into();
+            let vk::Extent2D { width, height } = create_info.image_extent;
             let output_file = output_folder.join(format!(
-                "{application_name}_{}.h264",
+                "{application_name}_{width}x{height}_{}.h264",
                 datetime.format("%d.%m.%Y_%H_%M_%S")
             ));
             info!("Starting output file: {output_file:?}");
