@@ -167,7 +167,7 @@ pub extern "system" fn record_vk_create_device(
                 let mut extensions: HashSet<&CStr> = (0isize
                     ..(*p_create_info).enabled_extension_count as isize)
                     .map(|i| {
-                        CStr::from_ptr((*(*p_create_info).pp_enabled_extension_names).offset(i))
+                        CStr::from_ptr(create_info.pp_enabled_extension_names.offset(i).read())
                     })
                     .collect();
                 info!("Enabled extensions: {:?}", extensions);
