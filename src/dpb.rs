@@ -344,7 +344,7 @@ impl Dpb {
 
             let indices = [encode_family_index];
             let buffer_info = vk::BufferCreateInfo::default()
-                .size(10_000)
+                .size(50000)
                 .usage(
                     vk::BufferUsageFlags::VIDEO_ENCODE_DST_KHR | vk::BufferUsageFlags::TRANSFER_SRC,
                 )
