@@ -35,7 +35,7 @@ checksum = "9c7d0618f0e0b7e8ff11427422b64564d5fb0be1940354bfe2e0529b18a9d9b8"
 [[package]]
 name = "ash"
 version = "0.37.0+1.3.252"
-source = "git+https://github.com/ash-rs/ash/?branch=update#ddce9199e80f6cadc761e1f8a0577baf06fbbb6f"
+source = "git+https://github.com/theHamsta/ash/?branch=update#ddce9199e80f6cadc761e1f8a0577baf06fbbb6f"
 dependencies = [
  "libloading",
 ]
