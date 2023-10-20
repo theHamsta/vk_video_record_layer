@@ -30,7 +30,7 @@
 			"ENABLE_VK_VIDEO_RECORD_LAYER": "1"
 		},
 		"disable_environment": {
-			"ENABLE_VK_VIDEO_RECORD_LAYER": "1"
+			"DISABLE_VK_VIDEO_RECORD_LAYER": "1"
 		},
 		"features": {
 			"settings": [
