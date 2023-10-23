@@ -118,10 +118,8 @@ impl SwapChainData<'_> {
             dpb.destroy(device, allocator);
         }
 
-        for semaphore in self.semaphores.drain(..) {
-            if let Ok(semaphore) = semaphore {
-                unsafe { device.destroy_semaphore(semaphore, allocator) };
-            }
+        for semaphore in self.semaphores.drain(..).flatten() {
+            unsafe { device.destroy_semaphore(semaphore, allocator) };
         }
 
         for session in [&mut self.encode_session, &mut self.decode_session].iter_mut() {
