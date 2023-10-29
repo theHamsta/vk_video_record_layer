@@ -669,13 +669,13 @@ impl Dpb {
                 flags,
                 seq_parameter_set_id: 0,
                 pic_parameter_set_id: 0,
-                reserved1: [0;3],
+                reserved1: [0; 3],
                 frame_num: 0,
                 PicOrderCnt: 0,
                 idr_pic_id: 0,
                 temporal_id: 0,
                 primary_pic_type: image_type.as_h264_picture_type(),
-                pRefLists: std::ptr::null()
+                pRefLists: std::ptr::null(),
             };
             let flags = MaybeUninit::zeroed();
             let flags = flags.assume_init();
@@ -691,8 +691,8 @@ impl Dpb {
                 slice_qp_delta: 0,
                 pWeightTable: null(),
             };
-            let h264_nalus = &[vk::VideoEncodeH264NaluSliceInfoEXT::default()
-                .std_slice_header(&h264_header)];
+            let h264_nalus =
+                &[vk::VideoEncodeH264NaluSliceInfoEXT::default().std_slice_header(&h264_header)];
             let mut h264_info = vk::VideoEncodeH264PictureInfoEXT::default()
                 .nalu_slice_entries(h264_nalus)
                 .std_picture_info(&h264_pic);

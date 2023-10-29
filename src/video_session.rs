@@ -15,6 +15,12 @@ use crate::session_parameters::make_h264_video_session_parameters;
 use crate::settings::Codec;
 
 use crate::state::{get_state, Extensions};
+use crate::vk_beta::{
+    VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
+    VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
+    VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
+    VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
+};
 use crate::vulkan_utils::name_object;
 
 pub struct VideoSession<'a> {
@@ -39,7 +45,7 @@ impl VideoSession<'_> {
         self.session
     }
 
-    pub fn profile(&self) -> &Box<VideoProfile<'_>> {
+    pub fn profile(&self) -> &VideoProfile<'_> {
         &self.profile
     }
 
@@ -449,31 +455,23 @@ fn create_video_session<'video_session>(
     let header_version = match (is_encode, state.settings.codec) {
         (true, Codec::H264) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
-                std::slice::from_raw_parts(vk::KhrVideoDecodeH264Fn::NAME.as_ptr() as *const _, 256)
-                    .try_into()
-                    .unwrap()
+                *(VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
             })
-            .spec_version(vk::make_api_version(0, 1, 0, 0)),
+            .spec_version(vk::make_api_version(0, 0, 9, 11)),
         (true, Codec::H265) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
-                std::slice::from_raw_parts(vk::KhrVideoDecodeH265Fn::NAME.as_ptr() as *const _, 256)
-                    .try_into()
-                    .unwrap()
+                *(VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
             })
-            .spec_version(vk::make_api_version(0, 1, 0, 0)),
+            .spec_version(vk::make_api_version(0, 0, 9, 12)),
         (true, Codec::AV1) => todo!(),
         (false, Codec::H264) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
-                std::slice::from_raw_parts(vk::ExtVideoEncodeH264Fn::NAME.as_ptr() as *const _, 256)
-                    .try_into()
-                    .unwrap()
+                *(VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME.as_ptr() as *const _)
             })
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (false, Codec::H265) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
-                std::slice::from_raw_parts(vk::ExtVideoEncodeH265Fn::NAME.as_ptr() as *const _, 256)
-                    .try_into()
-                    .unwrap()
+                *(VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME.as_ptr() as *const _)
             })
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (false, Codec::AV1) => todo!(),
