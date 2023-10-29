@@ -2,9 +2,29 @@ use std::process::Command;
 
 use anyhow::bail;
 use glob::glob;
+use std::env;
+use std::path::Path;
+use std::path::PathBuf;
+
+fn get_output_path() -> PathBuf {
+    //<root or manifest path>/target/<profile>/
+    let manifest_dir_string = env::var("CARGO_MANIFEST_DIR").unwrap();
+    let build_type = env::var("PROFILE").unwrap();
+    let path = Path::new(&manifest_dir_string)
+        .join("target")
+        .join(build_type);
+    return PathBuf::from(path);
+}
 
 pub fn main() -> anyhow::Result<()> {
     println!("cargo:rerun-if-changed=shaders");
+    println!("cargo:rerun-if-changed=vk_video_record.json");
+
+    std::fs::copy(
+        "./vk_video_record.json",
+        get_output_path().join("vk_video_record.json"),
+    )
+    .expect("Failed to copy layer JSON manifest to target dir");
 
     for entry in glob("./shaders/*").expect("Failed to read glob pattern") {
         let entry = entry?;
