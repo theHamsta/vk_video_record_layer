@@ -206,7 +206,12 @@ impl Dpb {
 
             for i in 0..num_images {
                 let image = device.create_image(&info, allocator);
-                let Ok(image) = image.map_err(|e| { error!("Failed to create image for DPB: {e}"); res = e}) else { break; };
+                let Ok(image) = image.map_err(|e| {
+                    error!("Failed to create image for DPB: {e}");
+                    res = e
+                }) else {
+                    break;
+                };
                 images.push(image);
 
                 #[cfg(debug_assertions)]
@@ -223,7 +228,12 @@ impl Dpb {
                 let info = vk::MemoryAllocateInfo::default()
                     .allocation_size(req.size)
                     .memory_type_index(mem_index);
-                let Ok(mem) = device.allocate_memory(&info, allocator).map_err(|e| res = e) else {break;}; // TODO: one big allocation
+                let Ok(mem) = device
+                    .allocate_memory(&info, allocator)
+                    .map_err(|e| res = e)
+                else {
+                    break;
+                }; // TODO: one big allocation
                 memory.push(mem);
 
                 if let Err(err) = device.bind_image_memory(image, mem, 0) {
@@ -235,7 +245,12 @@ impl Dpb {
 
                 view_info.image = image;
                 let view = device.create_image_view(&view_info, allocator);
-                let Ok(view) = view.map_err(|e| { error!("Failed to create color image view for DPB: {e}"); res = e}) else { break; };
+                let Ok(view) = view.map_err(|e| {
+                    error!("Failed to create color image view for DPB: {e}");
+                    res = e
+                }) else {
+                    break;
+                };
                 views.push(view);
 
                 #[cfg(debug_assertions)]
@@ -243,7 +258,12 @@ impl Dpb {
 
                 y_view_info.image = image;
                 let view = device.create_image_view(&y_view_info, allocator);
-                let Ok(view) = view.map_err(|e| { error!("Failed to create luma image view for DPB: {e}"); res = e}) else { break; };
+                let Ok(view) = view.map_err(|e| {
+                    error!("Failed to create luma image view for DPB: {e}");
+                    res = e
+                }) else {
+                    break;
+                };
                 y_views.push(view);
 
                 #[cfg(debug_assertions)]
@@ -251,7 +271,12 @@ impl Dpb {
 
                 uv_view_info.image = image;
                 let view = device.create_image_view(&uv_view_info, allocator);
-                let Ok(view) = view.map_err(|e| { error!("Failed to create chroma image view for DPB: {e}"); res = e}) else { break; };
+                let Ok(view) = view.map_err(|e| {
+                    error!("Failed to create chroma image view for DPB: {e}");
+                    res = e
+                }) else {
+                    break;
+                };
                 uv_views.push(view);
 
                 #[cfg(debug_assertions)]
@@ -639,15 +664,18 @@ impl Dpb {
                 .image_view_binding(image_view);
             let flags = MaybeUninit::zeroed();
             let mut flags: vk::native::StdVideoEncodeH264PictureInfoFlags = flags.assume_init();
-            flags.set_idr_flag(image_type.is_idr() as u32);
+            flags.set_IdrPicFlag(image_type.is_idr() as u32);
             let h264_pic = vk::native::StdVideoEncodeH264PictureInfo {
                 flags,
                 seq_parameter_set_id: 0,
                 pic_parameter_set_id: 0,
-                reserved1: 0,
+                reserved1: [0; 3],
                 frame_num: 0,
                 PicOrderCnt: 0,
-                pictureType: image_type.as_h264_picture_type(),
+                idr_pic_id: 0,
+                temporal_id: 0,
+                primary_pic_type: image_type.as_h264_picture_type(),
+                pRefLists: std::ptr::null(),
             };
             let flags = MaybeUninit::zeroed();
             let flags = flags.assume_init();
@@ -655,23 +683,17 @@ impl Dpb {
                 flags,
                 first_mb_in_slice: 0,
                 slice_type: image_type.as_h264_slice_type(),
-                idr_pic_id: 0,
-                num_ref_idx_l0_active_minus1: 0,
-                num_ref_idx_l1_active_minus1: 0,
                 cabac_init_idc: 0,
                 disable_deblocking_filter_idc: 0,
                 slice_alpha_c0_offset_div2: 0,
                 slice_beta_offset_div2: 0,
                 reserved1: 0,
-                reserved2: 0,
+                slice_qp_delta: 0,
                 pWeightTable: null(),
             };
-            let mb_width = (self.extent.width + 15) / 16;
-            let mb_height = (self.extent.height + 15) / 16;
-            let h264_nalus = &[vk::VideoEncodeH264NaluSliceInfoEXT::default()
-                .std_slice_header(&h264_header)
-                .mb_count(mb_width * mb_height)];
-            let mut h264_info = vk::VideoEncodeH264VclFrameInfoEXT::default()
+            let h264_nalus =
+                &[vk::VideoEncodeH264NaluSliceInfoEXT::default().std_slice_header(&h264_header)];
+            let mut h264_info = vk::VideoEncodeH264PictureInfoEXT::default()
                 .nalu_slice_entries(h264_nalus)
                 .std_picture_info(&h264_pic);
 

@@ -4,8 +4,8 @@
 	"layer": {
 		"name": "VK_LAYER_THEHAMSTA_video_record",
 		"type": "GLOBAL",
-		"library_path": "/home/stephan/projects/vk_video_record_layer/target/debug/libvk_video_record_layer.so",
-		"api_version": "1.3.249",
+		"library_path": "./libvk_video_record_layer.so",
+		"api_version": "1.3.269",
 		"introduction": "",
 		"url": "",
 		"platforms": [

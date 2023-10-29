@@ -2,17 +2,6 @@ use ash::vk;
 use core::ptr::null_mut;
 
 use crate::state::get_state;
-use crate::vk_beta::{
-    VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME,
-    VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
-    //VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
-    VK_KHR_VIDEO_QUEUE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
-    //VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
-};
 use crate::vk_layer;
 use crate::vk_layer::VkLayerFunction;
 use crate::vulkan_utils::ptr_chain_get_next;
@@ -45,9 +34,12 @@ pub extern "system" fn record_vk_create_instance(
                 *state.instance_get_fn.write().unwrap() =
                     transmute((*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr);
                 let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
-                let Some(real_create_instance)  = get_instance_proc_addr
-                    .map(|f| f(null_mut(), transmute(b"vkCreateInstance\0"))).flatten()
-                else { return vk::Result::ERROR_INITIALIZATION_FAILED };
+                let Some(real_create_instance) = get_instance_proc_addr
+                    .map(|f| f(null_mut(), transmute(b"vkCreateInstance\0")))
+                    .flatten()
+                else {
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
                 let create_info = p_create_info.as_mut().unwrap().clone();
@@ -131,37 +123,31 @@ pub extern "system" fn record_vk_create_device(
                 let instance = lock.as_ref().unwrap();
                 let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
 
-                let Some(real_create_device)  = get_instance_proc_addr
-                    .map(|f| f(transmute(lock.as_ref().unwrap().handle()), b"vkCreateDevice\0".as_ptr()as *const i8)).flatten()
-                else { return vk::Result::ERROR_INITIALIZATION_FAILED };
+                let Some(real_create_device) = get_instance_proc_addr
+                    .map(|f| {
+                        f(
+                            transmute(lock.as_ref().unwrap().handle()),
+                            b"vkCreateDevice\0".as_ptr() as *const i8,
+                        )
+                    })
+                    .flatten()
+                else {
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
 
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
 
-                const REQUIRED_EXTENSIONS: [&'static CStr; 7] = unsafe {
-                    [
-                        CStr::from_bytes_with_nul_unchecked(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
-                        ),
-                    ]
-                };
+                const REQUIRED_EXTENSIONS: [&CStr; 7] = [
+                    vk::KhrVideoQueueFn::NAME,
+                    vk::KhrVideoDecodeQueueFn::NAME,
+                    vk::KhrVideoEncodeQueueFn::NAME,
+                    vk::KhrVideoDecodeH264Fn::NAME,
+                    vk::KhrVideoDecodeH265Fn::NAME,
+                    vk::ExtVideoEncodeH264Fn::NAME,
+                    vk::ExtVideoEncodeH265Fn::NAME,
+                ];
 
                 let mut create_info = p_create_info.cast_mut().as_mut().unwrap().clone();
                 let mut extensions: HashSet<&CStr> = (0isize
@@ -219,10 +205,11 @@ pub extern "system" fn record_vk_create_device(
                 let Some(encode_idx) = queue_props.iter().position(|prop| {
                     prop.queue_family_properties
                         .queue_flags
-                        .contains(vk::QueueFlags::VIDEO_ENCODE_KHR) &&
-                    prop.queue_family_properties
-                        .queue_flags
-                        .contains(vk::QueueFlags::TRANSFER)
+                        .contains(vk::QueueFlags::VIDEO_ENCODE_KHR)
+                        && prop
+                            .queue_family_properties
+                            .queue_flags
+                            .contains(vk::QueueFlags::TRANSFER)
                 }) else {
                     error!("Device doesn't support encode");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
