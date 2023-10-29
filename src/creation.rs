@@ -5,13 +5,9 @@ use crate::state::get_state;
 use crate::vk_beta::{
     VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME,
     VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
-    //VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
     VK_KHR_VIDEO_QUEUE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
-    //VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
+    VK_STD_VULKAN_VIDEO_CODEC_H264_EXTENSION_NAME,
+    VK_STD_VULKAN_VIDEO_CODEC_H265_EXTENSION_NAME,
 };
 use crate::vk_layer;
 use crate::vk_layer::VkLayerFunction;
@@ -150,7 +146,7 @@ pub extern "system" fn record_vk_create_device(
 
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
 
-                const REQUIRED_EXTENSIONS: [&'static CStr; 7] = unsafe {
+                const REQUIRED_EXTENSIONS: [&'static CStr; 5] = unsafe {
                     [
                         CStr::from_bytes_with_nul_unchecked(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME),
                         CStr::from_bytes_with_nul_unchecked(
@@ -160,16 +156,10 @@ pub extern "system" fn record_vk_create_device(
                             VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
                         ),
                         CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME,
+                            VK_STD_VULKAN_VIDEO_CODEC_H264_EXTENSION_NAME,
                         ),
                         CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME,
+                            VK_STD_VULKAN_VIDEO_CODEC_H265_EXTENSION_NAME,
                         ),
                     ]
                 };
