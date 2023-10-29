@@ -34,15 +34,17 @@ pub extern "system" fn record_vk_create_instance(
                 *state.instance_get_fn.write().unwrap() =
                     transmute((*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr);
                 let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
-                let Some(real_create_instance) = get_instance_proc_addr
-                    .map(|f| f(null_mut(), transmute(b"vkCreateInstance\0")))
-                    .flatten()
-                else {
+                let Some(real_create_instance) = get_instance_proc_addr.and_then(|f| {
+                    f(
+                        null_mut(),
+                        b"vkCreateInstance\0" as *const [u8; 17] as *const i8,
+                    )
+                }) else {
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
-                let create_info = p_create_info.as_mut().unwrap().clone();
+                let create_info = *p_create_info.as_mut().unwrap();
                 let app_info = (*(*p_create_info).p_application_info)
                     .api_version(vk::make_api_version(0, 1, 3, 249));
 
