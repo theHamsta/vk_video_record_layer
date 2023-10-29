@@ -45,9 +45,12 @@ pub extern "system" fn record_vk_create_instance(
                 *state.instance_get_fn.write().unwrap() =
                     transmute((*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr);
                 let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
-                let Some(real_create_instance)  = get_instance_proc_addr
-                    .map(|f| f(null_mut(), transmute(b"vkCreateInstance\0"))).flatten()
-                else { return vk::Result::ERROR_INITIALIZATION_FAILED };
+                let Some(real_create_instance) = get_instance_proc_addr
+                    .map(|f| f(null_mut(), transmute(b"vkCreateInstance\0")))
+                    .flatten()
+                else {
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
                 let create_info = p_create_info.as_mut().unwrap().clone();
@@ -131,9 +134,17 @@ pub extern "system" fn record_vk_create_device(
                 let instance = lock.as_ref().unwrap();
                 let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
 
-                let Some(real_create_device)  = get_instance_proc_addr
-                    .map(|f| f(transmute(lock.as_ref().unwrap().handle()), b"vkCreateDevice\0".as_ptr()as *const i8)).flatten()
-                else { return vk::Result::ERROR_INITIALIZATION_FAILED };
+                let Some(real_create_device) = get_instance_proc_addr
+                    .map(|f| {
+                        f(
+                            transmute(lock.as_ref().unwrap().handle()),
+                            b"vkCreateDevice\0".as_ptr() as *const i8,
+                        )
+                    })
+                    .flatten()
+                else {
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
 
@@ -219,10 +230,11 @@ pub extern "system" fn record_vk_create_device(
                 let Some(encode_idx) = queue_props.iter().position(|prop| {
                     prop.queue_family_properties
                         .queue_flags
-                        .contains(vk::QueueFlags::VIDEO_ENCODE_KHR) &&
-                    prop.queue_family_properties
-                        .queue_flags
-                        .contains(vk::QueueFlags::TRANSFER)
+                        .contains(vk::QueueFlags::VIDEO_ENCODE_KHR)
+                        && prop
+                            .queue_family_properties
+                            .queue_flags
+                            .contains(vk::QueueFlags::TRANSFER)
                 }) else {
                     error!("Device doesn't support encode");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;

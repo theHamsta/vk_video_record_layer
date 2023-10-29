@@ -206,7 +206,12 @@ impl Dpb {
 
             for i in 0..num_images {
                 let image = device.create_image(&info, allocator);
-                let Ok(image) = image.map_err(|e| { error!("Failed to create image for DPB: {e}"); res = e}) else { break; };
+                let Ok(image) = image.map_err(|e| {
+                    error!("Failed to create image for DPB: {e}");
+                    res = e
+                }) else {
+                    break;
+                };
                 images.push(image);
 
                 #[cfg(debug_assertions)]
@@ -223,7 +228,12 @@ impl Dpb {
                 let info = vk::MemoryAllocateInfo::default()
                     .allocation_size(req.size)
                     .memory_type_index(mem_index);
-                let Ok(mem) = device.allocate_memory(&info, allocator).map_err(|e| res = e) else {break;}; // TODO: one big allocation
+                let Ok(mem) = device
+                    .allocate_memory(&info, allocator)
+                    .map_err(|e| res = e)
+                else {
+                    break;
+                }; // TODO: one big allocation
                 memory.push(mem);
 
                 if let Err(err) = device.bind_image_memory(image, mem, 0) {
@@ -235,7 +245,12 @@ impl Dpb {
 
                 view_info.image = image;
                 let view = device.create_image_view(&view_info, allocator);
-                let Ok(view) = view.map_err(|e| { error!("Failed to create color image view for DPB: {e}"); res = e}) else { break; };
+                let Ok(view) = view.map_err(|e| {
+                    error!("Failed to create color image view for DPB: {e}");
+                    res = e
+                }) else {
+                    break;
+                };
                 views.push(view);
 
                 #[cfg(debug_assertions)]
@@ -243,7 +258,12 @@ impl Dpb {
 
                 y_view_info.image = image;
                 let view = device.create_image_view(&y_view_info, allocator);
-                let Ok(view) = view.map_err(|e| { error!("Failed to create luma image view for DPB: {e}"); res = e}) else { break; };
+                let Ok(view) = view.map_err(|e| {
+                    error!("Failed to create luma image view for DPB: {e}");
+                    res = e
+                }) else {
+                    break;
+                };
                 y_views.push(view);
 
                 #[cfg(debug_assertions)]
@@ -251,7 +271,12 @@ impl Dpb {
 
                 uv_view_info.image = image;
                 let view = device.create_image_view(&uv_view_info, allocator);
-                let Ok(view) = view.map_err(|e| { error!("Failed to create chroma image view for DPB: {e}"); res = e}) else { break; };
+                let Ok(view) = view.map_err(|e| {
+                    error!("Failed to create chroma image view for DPB: {e}");
+                    res = e
+                }) else {
+                    break;
+                };
                 uv_views.push(view);
 
                 #[cfg(debug_assertions)]
