@@ -15,12 +15,6 @@ use crate::session_parameters::make_h264_video_session_parameters;
 use crate::settings::Codec;
 
 use crate::state::{get_state, Extensions};
-use crate::vk_beta::{
-    /*StdVideoH264PictureParameterSet, StdVideoH264SequenceParameterSet, VkStructureType,
-    VkVideoEncodeH264SessionParametersAddInfoEXT, VkVideoEncodeH264SessionParametersCreateInfoEXT,
-    VkVideoSessionParametersCreateInfokHz,*/
-    VK_STD_VULKAN_VIDEO_CODEC_H264_EXTENSION_NAME, VK_STD_VULKAN_VIDEO_CODEC_H265_EXTENSION_NAME,
-};
 use crate::vulkan_utils::name_object;
 
 pub struct VideoSession<'a> {
@@ -377,8 +371,8 @@ fn get_swapchain_images(
             return Err(res);
         }
 
-        let mut images = Vec::with_capacity(len as usize);
-        images.set_len(len as usize);
+        let mut images = Vec::new();
+        images.resize(len as usize, vk::Image::null());
 
         (swapchain_fn.get_swapchain_images_khr)(
             device.handle(),
@@ -401,10 +395,9 @@ pub unsafe extern "system" fn record_vk_destroy_swapchain(
     {
         let lock = get_state().device.read().unwrap();
         let device = lock.as_ref().unwrap();
-        let mut swapchain_data = Box::from_raw(transmute::<u64, *mut SwapChainData>(
-            device.get_private_data(swapchain, *slot),
-        ));
-        swapchain_data.destroy(device, &extensions.video_queue_fn(), allocator);
+        let mut swapchain_data =
+            Box::from_raw(device.get_private_data(swapchain, *slot) as *mut SwapChainData);
+        swapchain_data.destroy(device, extensions.video_queue_fn(), allocator);
     }
     (extensions.swapchain_fn().destroy_swapchain_khr)(device, swapchain, p_allocator)
 }
@@ -453,18 +446,37 @@ fn create_video_session<'video_session>(
 ) -> VkResult<VideoSession<'video_session>> {
     trace!("create_video_session");
     let state = get_state();
-    let header_version = match state.settings.codec {
-        Codec::H264 => vk::ExtensionProperties::default()
+    let header_version = match (is_encode, state.settings.codec) {
+        (true, Codec::H264) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
-                *(VK_STD_VULKAN_VIDEO_CODEC_H264_EXTENSION_NAME.as_ptr() as *const _)
+                std::slice::from_raw_parts(vk::KhrVideoDecodeH264Fn::NAME.as_ptr() as *const _, 256)
+                    .try_into()
+                    .unwrap()
             })
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
-        Codec::H265 => vk::ExtensionProperties::default()
+        (true, Codec::H265) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
-                *(VK_STD_VULKAN_VIDEO_CODEC_H265_EXTENSION_NAME.as_ptr() as *const _)
+                std::slice::from_raw_parts(vk::KhrVideoDecodeH265Fn::NAME.as_ptr() as *const _, 256)
+                    .try_into()
+                    .unwrap()
             })
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
-        Codec::AV1 => todo!(),
+        (true, Codec::AV1) => todo!(),
+        (false, Codec::H264) => vk::ExtensionProperties::default()
+            .extension_name(unsafe {
+                std::slice::from_raw_parts(vk::ExtVideoEncodeH264Fn::NAME.as_ptr() as *const _, 256)
+                    .try_into()
+                    .unwrap()
+            })
+            .spec_version(vk::make_api_version(0, 1, 0, 0)),
+        (false, Codec::H265) => vk::ExtensionProperties::default()
+            .extension_name(unsafe {
+                std::slice::from_raw_parts(vk::ExtVideoEncodeH265Fn::NAME.as_ptr() as *const _, 256)
+                    .try_into()
+                    .unwrap()
+            })
+            .spec_version(vk::make_api_version(0, 1, 0, 0)),
+        (false, Codec::AV1) => todo!(),
     };
 
     let profile = VideoProfile::new(video_format, state.settings.codec, is_encode)?;

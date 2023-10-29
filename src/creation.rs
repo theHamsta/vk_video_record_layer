@@ -2,13 +2,6 @@ use ash::vk;
 use core::ptr::null_mut;
 
 use crate::state::get_state;
-use crate::vk_beta::{
-    VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME,
-    VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
-    VK_KHR_VIDEO_QUEUE_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H264_EXTENSION_NAME,
-    VK_STD_VULKAN_VIDEO_CODEC_H265_EXTENSION_NAME,
-};
 use crate::vk_layer;
 use crate::vk_layer::VkLayerFunction;
 use crate::vulkan_utils::ptr_chain_get_next;
@@ -146,23 +139,15 @@ pub extern "system" fn record_vk_create_device(
 
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
 
-                const REQUIRED_EXTENSIONS: [&'static CStr; 5] = unsafe {
-                    [
-                        CStr::from_bytes_with_nul_unchecked(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H264_EXTENSION_NAME,
-                        ),
-                        CStr::from_bytes_with_nul_unchecked(
-                            VK_STD_VULKAN_VIDEO_CODEC_H265_EXTENSION_NAME,
-                        ),
-                    ]
-                };
+                const REQUIRED_EXTENSIONS: [&CStr; 7] = [
+                    vk::KhrVideoQueueFn::NAME,
+                    vk::KhrVideoDecodeQueueFn::NAME,
+                    vk::KhrVideoEncodeQueueFn::NAME,
+                    vk::KhrVideoDecodeH264Fn::NAME,
+                    vk::KhrVideoDecodeH265Fn::NAME,
+                    vk::ExtVideoEncodeH264Fn::NAME,
+                    vk::ExtVideoEncodeH265Fn::NAME,
+                ];
 
                 let mut create_info = p_create_info.cast_mut().as_mut().unwrap().clone();
                 let mut extensions: HashSet<&CStr> = (0isize
