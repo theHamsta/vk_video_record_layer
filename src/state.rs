@@ -92,10 +92,9 @@ pub struct State {
 }
 
 pub fn get_state() -> &'static State {
-    static STATE: Lazy<State> = Lazy::new(|| {
-        let mut state = State::default();
-        state.settings = Settings::new_from_env();
-        state
+    static STATE: Lazy<State> = Lazy::new(|| State {
+        settings: Settings::new_from_env(),
+        ..Default::default()
     });
     &STATE
 }

@@ -125,15 +125,12 @@ pub extern "system" fn record_vk_create_device(
                 let instance = lock.as_ref().unwrap();
                 let get_instance_proc_addr = (*layer_info.u.pLayerInfo).pfnNextGetInstanceProcAddr;
 
-                let Some(real_create_device) = get_instance_proc_addr
-                    .map(|f| {
-                        f(
-                            transmute(lock.as_ref().unwrap().handle()),
-                            b"vkCreateDevice\0".as_ptr() as *const i8,
-                        )
-                    })
-                    .flatten()
-                else {
+                let Some(real_create_device) = get_instance_proc_addr.and_then(|f| {
+                    f(
+                        transmute(lock.as_ref().unwrap().handle()),
+                        b"vkCreateDevice\0".as_ptr() as *const i8,
+                    )
+                }) else {
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 };
 
@@ -151,7 +148,7 @@ pub extern "system" fn record_vk_create_device(
                     vk::ExtVideoEncodeH265Fn::NAME,
                 ];
 
-                let mut create_info = p_create_info.cast_mut().as_mut().unwrap().clone();
+                let mut create_info = *p_create_info.cast_mut().as_mut().unwrap();
                 let mut extensions: HashSet<&CStr> = (0isize
                     ..(*p_create_info).enabled_extension_count as isize)
                     .map(|i| {
@@ -164,8 +161,7 @@ pub extern "system" fn record_vk_create_device(
                     extensions.insert(e);
                 }
                 info!("Enabled extensions after layer: {:?}", extensions);
-                let extensions: Vec<_> =
-                    extensions.iter().map(|s| s.as_ptr() as *const i8).collect();
+                let extensions: Vec<_> = extensions.iter().map(|s| s.as_ptr()).collect();
 
                 //*p_create_info = (*p_create_info).enabled_extension_names(&extensions);
                 create_info.enabled_extension_count = extensions.len() as u32;
@@ -228,7 +224,7 @@ pub extern "system" fn record_vk_create_device(
                 let compute_queue = device_queues
                     .iter()
                     .find(|q| q.queue_family_index as usize == compute_idx);
-                if !compute_queue.is_some() {
+                if compute_queue.is_none() {
                     info!(
                         "App didn't request a queue with compute bit! So we're doing it right now"
                     );
@@ -241,7 +237,7 @@ pub extern "system" fn record_vk_create_device(
                 let encode_queue = device_queues
                     .iter()
                     .find(|q| q.queue_family_index as usize == compute_idx);
-                if !encode_queue.is_some() {
+                if encode_queue.is_none() {
                     error!("App already requested a queue with encode bit!");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 }
@@ -249,7 +245,7 @@ pub extern "system" fn record_vk_create_device(
                 let decode_queue = device_queues
                     .iter()
                     .find(|q| q.queue_family_index as usize == compute_idx);
-                if !decode_queue.is_some() {
+                if decode_queue.is_none() {
                     error!("App already requested a queue with decode bit!");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 }
@@ -280,24 +276,24 @@ pub extern "system" fn record_vk_create_device(
                     .private_data(true)
                     .synchronization2(true);
 
-                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                if ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
                     (*(*c)).s_type == features11.s_type
                 })
-                .is_some()
+                .is_none()
                 {
                     create_info = create_info.push_next(&mut features11);
                 }
-                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                if ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
                     (*(*c)).s_type == features12.s_type
                 })
-                .is_some()
+                .is_none()
                 {
                     create_info = create_info.push_next(&mut features12);
                 }
-                if !ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
+                if ptr_chain_get_next::<_, vk::BaseOutStructure>(&create_info, |c| {
                     (*(*c)).s_type == features13.s_type
                 })
-                .is_some()
+                .is_none()
                 {
                     create_info = create_info.push_next(&mut features13);
                 }
@@ -307,7 +303,7 @@ pub extern "system" fn record_vk_create_device(
                 // TODO: patch application info to support vk video
                 let res = real_create_device(physical_device, &create_info, p_allocator, p_device);
                 if res == vk::Result::SUCCESS {
-                    let device = transmute(*p_device);
+                    let device = *p_device;
 
                     let device = ash::Device::load(
                         &vk::InstanceFnV1_0 {

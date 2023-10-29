@@ -246,7 +246,7 @@ impl BitstreamBufferRing {
                         );
                         e
                     })
-                    .and_then(|_| Ok(result[0]));
+                    .map(|_| result[0]);
                 device.reset_query_pool(self.query_pool, slot, 1);
                 if result.is_err()
                     || result.unwrap().status != vk::QueryResultStatusKHR::COMPLETE

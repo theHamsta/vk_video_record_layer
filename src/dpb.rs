@@ -49,7 +49,7 @@ pub struct Dpb {
 
 #[derive(Debug, Copy, Clone)]
 enum PictureType {
-    IDR,
+    Idr,
     I,
     #[allow(dead_code)]
     P,
@@ -60,7 +60,7 @@ enum PictureType {
 impl PictureType {
     fn as_h264_slice_type(self) -> vk::native::StdVideoH264SliceType {
         match self {
-            PictureType::IDR | PictureType::I => {
+            PictureType::Idr | PictureType::I => {
                 vk::native::StdVideoH264SliceType_STD_VIDEO_H264_SLICE_TYPE_I
             }
             PictureType::P => vk::native::StdVideoH264SliceType_STD_VIDEO_H264_SLICE_TYPE_P,
@@ -70,18 +70,18 @@ impl PictureType {
 
     fn as_h264_picture_type(self) -> vk::native::StdVideoH264PictureType {
         match self {
-            PictureType::IDR => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
+            PictureType::Idr => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
             PictureType::I => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_I,
             PictureType::P => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_P,
             PictureType::B => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_B,
         }
     }
-    /// Returns `true` if the picture type is [`IDR`].
+    /// Returns `true` if the picture type is [`Idr`].
     ///
-    /// [`IDR`]: PictureType::IDR
+    /// [`Idr`]: PictureType::Idr
     #[must_use]
     fn is_idr(&self) -> bool {
-        matches!(self, Self::IDR)
+        matches!(self, Self::Idr)
     }
 
     /// Returns `true` if the picture type is [`I`].
@@ -628,7 +628,7 @@ impl Dpb {
             device.cmd_pipeline_barrier2(cmd, &info);
 
             let image_type = if video_session.needs_reset() {
-                PictureType::IDR
+                PictureType::Idr
             } else {
                 PictureType::I
             };

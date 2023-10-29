@@ -136,7 +136,7 @@ fn se<W: std::io::Write, E: bitstream_io::Endianness>(
     writer: &mut BitWriter<W, E>,
     data: i64,
 ) -> std::io::Result<()> {
-    let mut k = data.abs() as u64 * 2;
+    let mut k = data.unsigned_abs() * 2;
     if data > 0 {
         k -= 1;
     }

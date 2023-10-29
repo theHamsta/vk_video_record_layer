@@ -6,7 +6,7 @@ use std::io::Write;
 use std::mem::{transmute, MaybeUninit};
 use std::ptr::null;
 
-//// TODO: handle vui with valid pointers
+// TODO: handle vui with valid pointers
 //pub enum CodecParameters {
 //H264Parameters {
 //sps: vk::native::StdVideoH264SequenceParameterSet,

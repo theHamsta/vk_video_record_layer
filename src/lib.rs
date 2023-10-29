@@ -27,7 +27,7 @@ use std::{
 use vk_layer::{VkDevice_T, VkInstance_T, VkNegotiateLayerInterface};
 
 #[no_mangle]
-pub extern "system" fn record_vk_get_instance_proc_addr(
+pub unsafe extern "system" fn record_vk_get_instance_proc_addr(
     instance: *mut VkInstance_T,
     fn_name: *const i8,
 ) -> vk::PFN_vkVoidFunction {
@@ -57,7 +57,7 @@ pub extern "system" fn record_vk_get_instance_proc_addr(
 //}
 
 #[no_mangle]
-pub extern "system" fn record_vk_get_device_proc_addr(
+pub unsafe extern "system" fn record_vk_get_device_proc_addr(
     device: *mut VkDevice_T,
     fn_name: *const i8,
 ) -> vk::PFN_vkVoidFunction {
@@ -89,7 +89,7 @@ pub extern "system" fn record_vk_get_device_proc_addr(
 }
 
 #[no_mangle]
-pub extern "system" fn record_vk_destroy_device(
+pub unsafe extern "system" fn record_vk_destroy_device(
     device: vk::Device,
     p_allocator: *const vk::AllocationCallbacks,
 ) {
@@ -108,7 +108,7 @@ pub extern "system" fn record_vk_destroy_device(
 }
 
 #[no_mangle]
-pub extern "system" fn record_vk_negotiate_loader_layer_interface_version(
+pub unsafe extern "system" fn record_vk_negotiate_loader_layer_interface_version(
     interface: *mut VkNegotiateLayerInterface,
 ) -> vk::Result {
     let _ = pretty_env_logger::try_init();

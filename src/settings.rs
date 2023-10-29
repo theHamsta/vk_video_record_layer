@@ -26,7 +26,7 @@ impl Settings {
             Ok(settings_string) => {
                 let regex = Regex::new(r"^thehamsta_video_record.(\w*)\s*=\s*(.*)$").unwrap();
                 for line in settings_string.lines() {
-                    for cap in regex.captures_iter(&line) {
+                    for cap in regex.captures_iter(line) {
                         info!(
                             "Parsed thehamsta_video_record.{} = \"{}\"",
                             &cap[1], &cap[2]
