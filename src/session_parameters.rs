@@ -186,7 +186,7 @@ pub fn make_h264_video_session_parameters(
             };
         }
         let h264_feedback = unsafe {
-            (feedback.p_next as *const vk::VideoEncodeSessionParametersFeedbackInfoKHR).as_ref()
+            (feedback.p_next as *const vk::VideoEncodeH264SessionParametersFeedbackInfoEXT).as_ref()
         };
         if res == vk::Result::SUCCESS {
             info!("Received driver feedback: {size} bytes, {feedback:?} {h264_feedback:?}");
@@ -234,7 +234,6 @@ pub fn make_h265_video_session_parameters(
     output_file: Option<impl Write>,
     allocator: Option<&vk::AllocationCallbacks>,
 ) -> VkResult<vk::VideoSessionParametersKHR> {
-    let bitdepth = 8;
     let flags = unsafe { MaybeUninit::zeroed().assume_init() };
     let _vui = vk::native::StdVideoH265SequenceParameterSetVui {
         flags,
@@ -246,7 +245,7 @@ pub fn make_h265_video_session_parameters(
         colour_primaries: 0,
         transfer_characteristics: 0,
         matrix_coeffs: 0,
-        vui_num_units_in_tick: 1000,
+        vui_num_units_in_tick: 0,
         chroma_sample_loc_type_top_field: 0,
         chroma_sample_loc_type_bottom_field: 0,
         reserved1: 0,
@@ -256,7 +255,7 @@ pub fn make_h265_video_session_parameters(
         def_disp_win_right_offset: 0,
         def_disp_win_top_offset: 0,
         def_disp_win_bottom_offset: 0,
-        vui_time_scale: 1000,
+        vui_time_scale: 0,
         vui_num_ticks_poc_diff_one_minus1: 0,
         min_spatial_segmentation_idc: 0,
         reserved3: Default::default(),
@@ -269,19 +268,17 @@ pub fn make_h265_video_session_parameters(
 
     let flags = MaybeUninit::zeroed();
     let mut flags: vk::native::StdVideoH265VpsFlags = unsafe { flags.assume_init() };
-    // Use whatever ffmpeg uses for h264 nvenc
-    // TODO:
-    //https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#decode-h264-sps
-    let mut vps = vec![vk::native::StdVideoH265VideoParameterSet {
+    flags.set_vps_temporal_id_nesting_flag(1);
+    let vps = vec![vk::native::StdVideoH265VideoParameterSet {
         flags,
         vps_video_parameter_set_id: 0,
-        vps_max_sub_layers_minus1: todo!(),
-        reserved1: todo!(),
-        reserved2: todo!(),
-        vps_num_units_in_tick: todo!(),
-        vps_time_scale: todo!(),
-        vps_num_ticks_poc_diff_one_minus1: todo!(),
-        reserved3: todo!(),
+        vps_max_sub_layers_minus1: 0,
+        reserved1: 0xFF,
+        reserved2: 0xFF,
+        vps_num_units_in_tick: 0,
+        vps_time_scale: 0,
+        vps_num_ticks_poc_diff_one_minus1: 4,
+        reserved3: 0,
         pDecPicBufMgr: null(),
         pHrdParameters: null(),
         pProfileTierLevel: null(),
@@ -289,92 +286,93 @@ pub fn make_h265_video_session_parameters(
 
     let flags = MaybeUninit::zeroed();
     let mut flags: vk::native::StdVideoH265SpsFlags = unsafe { flags.assume_init() };
-    // Use whatever ffmpeg uses for h264 nvenc
-    //https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#decode-h264-sps
-    let mut sps = vec![vk::native::StdVideoH265SequenceParameterSet {
+    flags.set_amp_enabled_flag(1);
+    flags.set_sample_adaptive_offset_enabled_flag(1);
+    let sps = vec![vk::native::StdVideoH265SequenceParameterSet {
         flags,
-        chroma_format_idc: todo!(),
-        pic_width_in_luma_samples: todo!(),
-        pic_height_in_luma_samples: todo!(),
-        sps_video_parameter_set_id: todo!(),
-        sps_max_sub_layers_minus1: todo!(),
-        sps_seq_parameter_set_id: todo!(),
-        bit_depth_luma_minus8: todo!(),
-        bit_depth_chroma_minus8: todo!(),
-        log2_max_pic_order_cnt_lsb_minus4: todo!(),
-        log2_min_luma_coding_block_size_minus3: todo!(),
-        log2_diff_max_min_luma_coding_block_size: todo!(),
-        log2_min_luma_transform_block_size_minus2: todo!(),
-        log2_diff_max_min_luma_transform_block_size: todo!(),
-        max_transform_hierarchy_depth_inter: todo!(),
-        max_transform_hierarchy_depth_intra: todo!(),
-        num_short_term_ref_pic_sets: todo!(),
-        num_long_term_ref_pics_sps: todo!(),
-        pcm_sample_bit_depth_luma_minus1: todo!(),
-        pcm_sample_bit_depth_chroma_minus1: todo!(),
-        log2_min_pcm_luma_coding_block_size_minus3: todo!(),
-        log2_diff_max_min_pcm_luma_coding_block_size: todo!(),
-        reserved1: todo!(),
-        reserved2: todo!(),
-        palette_max_size: todo!(),
-        delta_palette_max_predictor_size: todo!(),
-        motion_vector_resolution_control_idc: todo!(),
-        sps_num_palette_predictor_initializers_minus1: todo!(),
-        conf_win_left_offset: todo!(),
-        conf_win_right_offset: todo!(),
-        conf_win_top_offset: todo!(),
-        conf_win_bottom_offset: todo!(),
-        pProfileTierLevel: todo!(),
-        pDecPicBufMgr: todo!(),
-        pScalingLists: todo!(),
-        pShortTermRefPicSet: todo!(),
-        pLongTermRefPicsSps: todo!(),
-        pSequenceParameterSetVui: todo!(),
-        pPredictorPaletteEntries: todo!(),
+        chroma_format_idc:
+            vk::native::StdVideoH265ChromaFormatIdc_STD_VIDEO_H265_CHROMA_FORMAT_IDC_420,
+        pic_width_in_luma_samples: extent.width,
+        pic_height_in_luma_samples: extent.height,
+        sps_video_parameter_set_id: 0,
+        sps_max_sub_layers_minus1: 0,
+        sps_seq_parameter_set_id: 0,
+        bit_depth_luma_minus8: 0,
+        bit_depth_chroma_minus8: 0,
+        log2_max_pic_order_cnt_lsb_minus4: 8 - 4, // pic order count 0-255
+        log2_min_luma_coding_block_size_minus3: 1,
+        log2_diff_max_min_luma_coding_block_size: 1,
+        log2_min_luma_transform_block_size_minus2: 0,
+        log2_diff_max_min_luma_transform_block_size: 3,
+        max_transform_hierarchy_depth_inter: 3,
+        max_transform_hierarchy_depth_intra: 3,
+        num_short_term_ref_pic_sets: 1,
+        num_long_term_ref_pics_sps: 0,
+        pcm_sample_bit_depth_luma_minus1: 0,
+        pcm_sample_bit_depth_chroma_minus1: 0,
+        log2_min_pcm_luma_coding_block_size_minus3: 0,
+        log2_diff_max_min_pcm_luma_coding_block_size: 0,
+        reserved1: 0,
+        reserved2: 0,
+        palette_max_size: 0,
+        delta_palette_max_predictor_size: 0,
+        motion_vector_resolution_control_idc: 0,
+        sps_num_palette_predictor_initializers_minus1: 0,
+        conf_win_left_offset: 0,
+        conf_win_right_offset: (16 - extent.width % 16) / 2,
+        conf_win_top_offset: 0,
+        conf_win_bottom_offset: (16 - extent.height % 16) / 2,
+        pProfileTierLevel: null(),
+        pDecPicBufMgr: null(),
+        pScalingLists: null(),
+        pShortTermRefPicSet: null(),
+        pLongTermRefPicsSps: null(),
+        pSequenceParameterSetVui: null(),
+        pPredictorPaletteEntries: null(),
     }];
-    //if sps[0].frame_crop_right_offset != 0 || sps[0].frame_crop_bottom_offset != 0 {
-    //sps[0].flags.set_frame_cropping_flag(1);
-    //}
     let flags = MaybeUninit::zeroed();
     let mut flags: vk::native::StdVideoH265PpsFlags = unsafe { flags.assume_init() };
-    //https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#decode-h264-pps
+    flags.set_transform_skip_enabled_flag(1);
+    flags.set_cu_qp_delta_enabled_flag(1);
+    flags.set_loop_filter_across_tiles_enabled_flag(1);
+    flags.set_deblocking_filter_control_present_flag(1);
     let pps = vec![vk::native::StdVideoH265PictureParameterSet {
         flags,
-        pps_pic_parameter_set_id: todo!(),
-        pps_seq_parameter_set_id: todo!(),
-        sps_video_parameter_set_id: todo!(),
-        num_extra_slice_header_bits: todo!(),
-        num_ref_idx_l0_default_active_minus1: todo!(),
-        num_ref_idx_l1_default_active_minus1: todo!(),
-        init_qp_minus26: todo!(),
-        diff_cu_qp_delta_depth: todo!(),
-        pps_cb_qp_offset: todo!(),
-        pps_cr_qp_offset: todo!(),
-        pps_beta_offset_div2: todo!(),
-        pps_tc_offset_div2: todo!(),
-        log2_parallel_merge_level_minus2: todo!(),
-        log2_max_transform_skip_block_size_minus2: todo!(),
-        diff_cu_chroma_qp_offset_depth: todo!(),
-        chroma_qp_offset_list_len_minus1: todo!(),
-        cb_qp_offset_list: todo!(),
-        cr_qp_offset_list: todo!(),
-        log2_sao_offset_scale_luma: todo!(),
-        log2_sao_offset_scale_chroma: todo!(),
-        pps_act_y_qp_offset_plus5: todo!(),
-        pps_act_cb_qp_offset_plus5: todo!(),
-        pps_act_cr_qp_offset_plus3: todo!(),
-        pps_num_palette_predictor_initializers: todo!(),
-        luma_bit_depth_entry_minus8: todo!(),
-        chroma_bit_depth_entry_minus8: todo!(),
-        num_tile_columns_minus1: todo!(),
-        num_tile_rows_minus1: todo!(),
-        reserved1: todo!(),
-        reserved2: todo!(),
-        column_width_minus1: todo!(),
-        row_height_minus1: todo!(),
-        reserved3: todo!(),
-        pScalingLists: todo!(),
-        pPredictorPaletteEntries: todo!(),
+        pps_pic_parameter_set_id: 0,
+        pps_seq_parameter_set_id: 0,
+        sps_video_parameter_set_id: 0,
+        num_extra_slice_header_bits: 0,
+        num_ref_idx_l0_default_active_minus1: 1,
+        num_ref_idx_l1_default_active_minus1: 1,
+        init_qp_minus26: 0,
+        diff_cu_qp_delta_depth: 0,
+        pps_cb_qp_offset: 0,
+        pps_cr_qp_offset: 0,
+        pps_beta_offset_div2: 0,
+        pps_tc_offset_div2: 0,
+        log2_parallel_merge_level_minus2: 0,
+        log2_max_transform_skip_block_size_minus2: 0,
+        diff_cu_chroma_qp_offset_depth: 0,
+        chroma_qp_offset_list_len_minus1: 0,
+        cb_qp_offset_list: Default::default(),
+        cr_qp_offset_list: Default::default(),
+        log2_sao_offset_scale_luma: 0,
+        log2_sao_offset_scale_chroma: 0,
+        pps_act_y_qp_offset_plus5: 0,
+        pps_act_cb_qp_offset_plus5: 0,
+        pps_act_cr_qp_offset_plus3: 0,
+        pps_num_palette_predictor_initializers: 0,
+        luma_bit_depth_entry_minus8: 0,
+        chroma_bit_depth_entry_minus8: 0,
+        num_tile_columns_minus1: 0,
+        num_tile_rows_minus1: 0,
+        reserved1: 0,
+        reserved2: 0,
+        column_width_minus1: Default::default(),
+        row_height_minus1: Default::default(),
+        reserved3: 0,
+        pScalingLists: null(),
+        pPredictorPaletteEntries: null(),
     }];
     let add_info = vk::VideoEncodeH265SessionParametersAddInfoEXT::default()
         .std_vp_ss(&vps)
@@ -415,7 +413,7 @@ pub fn make_h265_video_session_parameters(
         let mut info = vk::VideoEncodeSessionParametersGetInfoKHR::default()
             .video_session_parameters(video_session_parameters);
         info = info.push_next(&mut h265_info);
-        let mut h265_feedback = vk::VideoEncodeH264SessionParametersFeedbackInfoEXT::default();
+        let mut h265_feedback = vk::VideoEncodeH265SessionParametersFeedbackInfoEXT::default();
         let feedback = vk::VideoEncodeSessionParametersFeedbackInfoKHR::default();
         let mut feedback = feedback.push_next(&mut h265_feedback);
         let mut size = 0usize;
@@ -442,11 +440,11 @@ pub fn make_h265_video_session_parameters(
                 )
             };
         }
-        let h264_feedback = unsafe {
-            (feedback.p_next as *const vk::VideoEncodeSessionParametersFeedbackInfoKHR).as_ref()
+        let h265_feedback = unsafe {
+            (feedback.p_next as *const vk::VideoEncodeH265SessionParametersFeedbackInfoEXT).as_ref()
         };
         if res == vk::Result::SUCCESS {
-            info!("Received driver feedback: {size} bytes, {feedback:?} {h264_feedback:?}");
+            info!("Received driver feedback: {size} bytes, {feedback:?} {h265_feedback:?}");
             output_file.write(&data).map_err(|e| {
                 error!("Failed to write to file: {e}");
                 unsafe {
@@ -461,17 +459,17 @@ pub fn make_h265_video_session_parameters(
                 vk::Result::ERROR_INITIALIZATION_FAILED
             })?;
         } else {
-            unsafe {
-                (video_queue_fn.destroy_video_session_parameters_khr)(
-                    device.handle(),
-                    video_session_parameters,
-                    allocator
-                        .map(|e| e as *const vk::AllocationCallbacks)
-                        .unwrap_or(null()),
-                )
-            };
-            warn!("Failed to retrieve encode video session parameters: {res}. Falling back to own bitstream writer logic. Might not use driver applied overwrites");
-            return Err(vk::Result::ERROR_INITIALIZATION_FAILED);
+            //unsafe {
+                //(video_queue_fn.destroy_video_session_parameters_khr)(
+                    //device.handle(),
+                    //video_session_parameters,
+                    //allocator
+                        //.map(|e| e as *const vk::AllocationCallbacks)
+                        //.unwrap_or(null()),
+                //)
+            //};
+            error!("Failed to retrieve encode video session parameters: {res}.");
+            //return Err(vk::Result::ERROR_INITIALIZATION_FAILED);
         }
         output_file.flush().map_err(|e| {
             error!("Failed flushing output file: {e}!");
