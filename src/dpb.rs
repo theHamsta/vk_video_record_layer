@@ -68,12 +68,31 @@ impl PictureType {
         }
     }
 
+    fn as_h265_slice_type(&self) -> vk::native::StdVideoH265SliceType {
+        match self {
+            PictureType::Idr | PictureType::I => {
+                vk::native::StdVideoH265SliceType_STD_VIDEO_H265_SLICE_TYPE_I
+            }
+            PictureType::P => vk::native::StdVideoH265SliceType_STD_VIDEO_H265_SLICE_TYPE_P,
+            PictureType::B => vk::native::StdVideoH265SliceType_STD_VIDEO_H265_SLICE_TYPE_B,
+        }
+    }
+
     fn as_h264_picture_type(self) -> vk::native::StdVideoH264PictureType {
         match self {
             PictureType::Idr => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_IDR,
             PictureType::I => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_I,
             PictureType::P => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_P,
             PictureType::B => vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_B,
+        }
+    }
+
+    fn as_h265_picture_type(&self) -> vk::native::StdVideoH265PictureType {
+        match self {
+            PictureType::Idr => vk::native::StdVideoH265PictureType_STD_VIDEO_H265_PICTURE_TYPE_IDR,
+            PictureType::I => vk::native::StdVideoH265PictureType_STD_VIDEO_H265_PICTURE_TYPE_I,
+            PictureType::P => vk::native::StdVideoH265PictureType_STD_VIDEO_H265_PICTURE_TYPE_P,
+            PictureType::B => vk::native::StdVideoH265PictureType_STD_VIDEO_H265_PICTURE_TYPE_B,
         }
     }
     /// Returns `true` if the picture type is [`Idr`].
@@ -697,13 +716,54 @@ impl Dpb {
                 .nalu_slice_entries(h264_nalus)
                 .std_picture_info(&h264_pic);
 
+            let flags = MaybeUninit::zeroed();
+            let flags: vk::native::StdVideoEncodeH265PictureInfoFlags = flags.assume_init();
+            let h265_pic = vk::native::StdVideoEncodeH265PictureInfo {
+                flags,
+                reserved1: Default::default(),
+                pRefLists: std::ptr::null(),
+                pic_type: image_type.as_h265_picture_type(),
+                sps_video_parameter_set_id: 0,
+                pps_seq_parameter_set_id: 0,
+                pps_pic_parameter_set_id: 0,
+                short_term_ref_pic_set_idx: 0,
+                PicOrderCntVal: 0,
+                TemporalId: 0,
+                pShortTermRefPicSet: null(),
+                pLongTermRefPics: null(),
+            };
+            let flags = MaybeUninit::zeroed();
+            let flags = flags.assume_init();
+            let h265_header = vk::native::StdVideoEncodeH265SliceSegmentHeader {
+                flags,
+                slice_type: image_type.as_h265_slice_type(),
+                slice_beta_offset_div2: 0,
+                reserved1: 0,
+                slice_qp_delta: 0,
+                pWeightTable: null(),
+                slice_segment_address: 0,
+                collocated_ref_idx: 0,
+                MaxNumMergeCand: 0,
+                slice_cb_qp_offset: 0,
+                slice_cr_qp_offset: 0,
+                slice_tc_offset_div2: 0,
+                slice_act_y_qp_offset: 0,
+                slice_act_cb_qp_offset: 0,
+                slice_act_cr_qp_offset: 0,
+            };
+            let h265_nalus = &[vk::VideoEncodeH265NaluSliceSegmentInfoEXT::default()
+                .std_slice_segment_header(&h265_header)];
+            let mut h265_info = vk::VideoEncodeH265PictureInfoEXT::default()
+                .nalu_slice_segment_entries(h265_nalus)
+                .std_picture_info(&h265_pic);
+
             let mut info = vk::VideoEncodeInfoKHR::default()
                 .dst_buffer(buffer.device.buffer())
                 .dst_buffer_range(buffer.device.size())
                 .src_picture_resource(pic);
             match video_session.codec() {
                 Codec::H264 => info = info.push_next(&mut h264_info),
-                Codec::H265 => todo!(),
+                Codec::H265 => info = info.push_next(&mut h265_info),
                 Codec::AV1 => todo!(),
             };
             device.cmd_end_query(cmd, buffer.query_pool, buffer.slot);
