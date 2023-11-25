@@ -1,10 +1,11 @@
 use crate::bitstream::{write_h264_pps, write_h264_sps};
 use ash::prelude::VkResult;
 use ash::vk;
-use log::error;
+use log::{error, info, warn};
+use std::ffi::c_void;
 use std::io::Write;
 use std::mem::{transmute, MaybeUninit};
-use std::ptr::null;
+use std::ptr::{null, null_mut};
 
 // TODO: handle vui with valid pointers
 //pub enum CodecParameters {
@@ -37,6 +38,7 @@ use std::ptr::null;
 pub fn make_h264_video_session_parameters(
     device: &ash::Device,
     video_queue_fn: &vk::KhrVideoQueueFn,
+    encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
     video_session: vk::VideoSessionKHR,
     format: vk::Format,
     extent: vk::Extent2D,
@@ -129,21 +131,7 @@ pub fn make_h264_video_session_parameters(
         .max_std_pps_count(pps.len() as u32)
         .parameters_add_info(&add_info);
 
-    if let Some(mut output_file) = output_file {
-        write_h264_sps(&mut output_file, &sps[0]).map_err(|e| {
-            error!("Error writing sps: {e}!");
-            vk::Result::ERROR_INITIALIZATION_FAILED
-        })?;
-        write_h264_pps(&mut output_file, &sps[0], &pps[0]).map_err(|e| {
-            error!("Error writing pps: {e}!");
-            vk::Result::ERROR_INITIALIZATION_FAILED
-        })?;
-        output_file.flush().map_err(|e| {
-            error!("Failed flushing output file: {e}!");
-            vk::Result::ERROR_INITIALIZATION_FAILED
-        })?;
-    }
-    unsafe {
+    let video_session_parameters = unsafe {
         let mut info =
             vk::VideoSessionParametersCreateInfoKHR::default().video_session(video_session);
         info = info.push_next(&mut codec_info);
@@ -158,12 +146,80 @@ pub fn make_h264_video_session_parameters(
             error!("Failed to create H264 session parameters: {res}");
         }
         res.result_with_success(parameters.assume_init())
-        //res.result_with_success(VideoSessionParameters {
-        //parameters: parameters.assume_init(),
-        //codec_parameters: CodecParameters::H264Parameters {
-        //sps: sps[0],
-        //pps: pps[0],
-        //},
-        //})
+    };
+    if let (Some(mut output_file), Ok(video_session_parameters)) =
+        (output_file, video_session_parameters)
+    {
+        let mut h264_info = vk::VideoEncodeH264SessionParametersGetInfoEXT::default()
+            .write_std_sps(true)
+            .write_std_pps(true)
+            .std_sps_id(0)
+            .std_pps_id(0);
+        let mut info = vk::VideoEncodeSessionParametersGetInfoKHR::default()
+            .video_session_parameters(video_session_parameters);
+        info = info.push_next(&mut h264_info);
+        let mut h264_feedback = vk::VideoEncodeH264SessionParametersFeedbackInfoEXT::default();
+        let feedback = vk::VideoEncodeSessionParametersFeedbackInfoKHR::default();
+        let mut feedback = feedback.push_next(&mut h264_feedback);
+        let mut size = 0usize;
+        let mut data = Vec::new();
+        let mut res = unsafe {
+            (encode_queue_fn.get_encoded_video_session_parameters_khr)(
+                device.handle(),
+                &info,
+                &mut feedback,
+                &mut size,
+                null_mut(),
+            )
+        };
+        if res == vk::Result::SUCCESS {
+            info!("Resizing array for feedback: {size} bytes");
+            data.resize(size, 0);
+            res = unsafe {
+                (encode_queue_fn.get_encoded_video_session_parameters_khr)(
+                    device.handle(),
+                    &info,
+                    &mut feedback,
+                    &mut size,
+                    data.as_mut_ptr() as *mut c_void,
+                )
+            };
+        }
+        let h264_feedback = unsafe {
+            (feedback.p_next as *const vk::VideoEncodeSessionParametersFeedbackInfoKHR).as_ref()
+        };
+        if res == vk::Result::SUCCESS {
+            info!("Received driver feedback: {size} bytes, {feedback:?} {h264_feedback:?}");
+            output_file.write(&data).map_err(|e| {
+                error!("Failed to write to file: {e}");
+                unsafe {
+                    (video_queue_fn.destroy_video_session_parameters_khr)(
+                        device.handle(),
+                        video_session_parameters,
+                        allocator
+                            .map(|e| e as *const vk::AllocationCallbacks)
+                            .unwrap_or(null()),
+                    )
+                };
+                vk::Result::ERROR_INITIALIZATION_FAILED
+            })?;
+        } else {
+            warn!("Failed to retrieve encode video session parameters: {res}. Falling back to own bitstream writer logic. Might not use driver applied overwrites");
+            // Own logic to write sps/pps
+            write_h264_sps(&mut output_file, &sps[0]).map_err(|e| {
+                error!("Error writing sps: {e}!");
+                vk::Result::ERROR_INITIALIZATION_FAILED
+            })?;
+            write_h264_pps(&mut output_file, &sps[0], &pps[0]).map_err(|e| {
+                error!("Error writing pps: {e}!");
+                vk::Result::ERROR_INITIALIZATION_FAILED
+            })?;
+        }
+        output_file.flush().map_err(|e| {
+            error!("Failed flushing output file: {e}!");
+            vk::Result::ERROR_INITIALIZATION_FAILED
+        })?;
     }
+
+    video_session_parameters
 }

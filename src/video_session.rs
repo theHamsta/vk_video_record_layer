@@ -492,6 +492,7 @@ fn create_video_session<'video_session>(
     let device = lock.as_ref().unwrap();
     let extensions = state.extensions.read().unwrap();
     let video_queue_fn = extensions.video_queue_fn();
+    let encode_queue_fn = extensions.video_encode_queue_fn();
 
     let mut video_session = vk::VideoSessionKHR::null();
     let res = unsafe {
@@ -620,6 +621,7 @@ fn create_video_session<'video_session>(
                     (true, Codec::H264) => make_h264_video_session_parameters(
                         device,
                         video_queue_fn,
+                        encode_queue_fn,
                         session,
                         video_format,
                         coded_extent,
