@@ -11,7 +11,9 @@ use log::{debug, error, info, trace, warn};
 
 use crate::dpb::Dpb;
 use crate::profile::VideoProfile;
-use crate::session_parameters::make_h264_video_session_parameters;
+use crate::session_parameters::{
+    make_h264_video_session_parameters, make_h265_video_session_parameters,
+};
 use crate::settings::Codec;
 
 use crate::state::{get_state, Extensions};
@@ -254,13 +256,19 @@ pub unsafe fn record_vk_create_swapchain(
             let video_format = vk::Format::G8_B8R8_2PLANE_420_UNORM;
 
             let output_folder = &get_state().settings.output_folder;
+            let codec = &get_state().settings.codec;
             let lock = get_state().application_name.read().unwrap();
             let application_name = lock.as_ref().map(|s| s.as_str()).unwrap_or("UnknownApp");
             let time = SystemTime::now();
             let datetime: DateTime<Utc> = time.into();
             let vk::Extent2D { width, height } = create_info.image_extent;
+            let codec_file_ext = match codec {
+                Codec::H264 => "h264",
+                Codec::H265 => "h265",
+                Codec::AV1 => "av1",
+            };
             let output_file = output_folder.join(format!(
-                "{application_name}_{width}x{height}_{}.h264",
+                "{application_name}_{width}x{height}_{}.{codec_file_ext}",
                 datetime.format("%d.%m.%Y_%H_%M_%S")
             ));
             info!("Starting output file: {output_file:?}");
@@ -450,14 +458,17 @@ fn create_video_session<'video_session>(
     output_file: Option<&File>,
     p_allocator: *const vk::AllocationCallbacks,
 ) -> VkResult<VideoSession<'video_session>> {
-    trace!("create_video_session");
     let state = get_state();
+    trace!(
+        "create_video_session {:?} {coded_extent:?}",
+        state.settings.codec
+    );
     let header_version = match (is_encode, state.settings.codec) {
         (true, Codec::H264) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
                 *(VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
             })
-            .spec_version(vk::make_api_version(0, 0, 9, 11)),
+            .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (true, Codec::H265) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
                 *(VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
@@ -629,8 +640,18 @@ fn create_video_session<'video_session>(
                         unsafe { p_allocator.as_ref() },
                     )
                     .ok(),
-                    (true, Codec::H265) => None,
-                    (true, Codec::AV1) => None,
+                    (true, Codec::H265) => make_h265_video_session_parameters(
+                        device,
+                        video_queue_fn,
+                        encode_queue_fn,
+                        session,
+                        video_format,
+                        coded_extent,
+                        output_file,
+                        unsafe { p_allocator.as_ref() },
+                    )
+                    .ok(),
+                    (true, Codec::AV1) => todo!(),
                     (false, Codec::H264) => None,
                     (false, Codec::H265) => None,
                     (false, Codec::AV1) => None,
