@@ -733,7 +733,13 @@ impl Dpb {
                 pLongTermRefPics: null(),
             };
             let flags = MaybeUninit::zeroed();
-            let flags = flags.assume_init();
+            let mut flags: vk::native::StdVideoEncodeH265SliceSegmentHeaderFlags =
+                flags.assume_init();
+            flags.set_first_slice_segment_in_pic_flag(1);
+            flags.set_slice_sao_luma_flag(1);
+            flags.set_slice_sao_chroma_flag(1);
+            flags.set_slice_deblocking_filter_disabled_flag(1);
+
             let h265_header = vk::native::StdVideoEncodeH265SliceSegmentHeader {
                 flags,
                 slice_type: image_type.as_h265_slice_type(),
