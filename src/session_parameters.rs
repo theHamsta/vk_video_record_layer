@@ -269,6 +269,49 @@ pub fn make_h265_video_session_parameters(
     let flags = MaybeUninit::zeroed();
     let mut flags: vk::native::StdVideoH265VpsFlags = unsafe { flags.assume_init() };
     flags.set_vps_temporal_id_nesting_flag(1);
+    let dec_pic_buf_mgr = vk::native::StdVideoH265DecPicBufMgr {
+        max_latency_increase_plus1: Default::default(),
+        max_dec_pic_buffering_minus1: Default::default(),
+        max_num_reorder_pics: Default::default(),
+    };
+    let sub_layer_hdr_parameters = vk::native::StdVideoH265SubLayerHrdParameters {
+        bit_rate_value_minus1: Default::default(),
+        cpb_size_value_minus1: Default::default(),
+        cpb_size_du_value_minus1: Default::default(),
+        bit_rate_du_value_minus1: Default::default(),
+        cbr_flag: 0,
+    };
+    let sub_layer_hdr_parameters_vcl = sub_layer_hdr_parameters;
+    let hdr_parameters = vk::native::StdVideoH265HrdParameters {
+        flags: vk::native::StdVideoH265HrdFlags {
+            _bitfield_align_1: Default::default(),
+            _bitfield_1: Default::default(),
+        },
+        tick_divisor_minus2: 0,
+        du_cpb_removal_delay_increment_length_minus1: 0,
+        dpb_output_delay_du_length_minus1: 0,
+        bit_rate_scale: 0,
+        cpb_size_scale: 0,
+        cpb_size_du_scale: 0,
+        initial_cpb_removal_delay_length_minus1: 0,
+        au_cpb_removal_delay_length_minus1: 0,
+        dpb_output_delay_length_minus1: 0,
+        cpb_cnt_minus1: Default::default(),
+        elemental_duration_in_tc_minus1: Default::default(),
+        reserved: Default::default(),
+        pSubLayerHrdParametersNal: &sub_layer_hdr_parameters,
+        pSubLayerHrdParametersVcl: &sub_layer_hdr_parameters_vcl,
+    };
+    let profile_tier_level = vk::native::StdVideoH265ProfileTierLevel {
+        flags: vk::native::StdVideoH265ProfileTierLevelFlags {
+            _bitfield_align_1: Default::default(),
+            _bitfield_1: Default::default(),
+            __bindgen_padding_0: Default::default(),
+        },
+        general_profile_idc: 0,
+        general_level_idc: 0,
+    };
+    //.profile_tier_level(vk::native::StdVideoH265LevelIdc_STD_VIDEO_H265_LEVEL_IDC_6_1);
     let vps = vec![vk::native::StdVideoH265VideoParameterSet {
         flags,
         vps_video_parameter_set_id: 0,
@@ -279,13 +322,34 @@ pub fn make_h265_video_session_parameters(
         vps_time_scale: 0,
         vps_num_ticks_poc_diff_one_minus1: 4,
         reserved3: 0,
-        pDecPicBufMgr: null(),
-        pHrdParameters: null(),
-        pProfileTierLevel: null(),
+        pDecPicBufMgr: &dec_pic_buf_mgr,
+        pHrdParameters: &hdr_parameters,
+        pProfileTierLevel: &profile_tier_level,
     }];
 
-    let flags = MaybeUninit::zeroed();
-    let mut flags: vk::native::StdVideoH265SpsFlags = unsafe { flags.assume_init() };
+    let flags: vk::native::StdVideoH265ShortTermRefPicSetFlags =
+        unsafe { MaybeUninit::zeroed().assume_init() };
+    let short_term_ref_pics_set = vk::native::StdVideoH265ShortTermRefPicSet {
+        flags,
+        delta_idx_minus1: 0,
+        use_delta_flag: 0,
+        abs_delta_rps_minus1: 0,
+        used_by_curr_pic_flag: 0,
+        used_by_curr_pic_s0_flag: 0,
+        used_by_curr_pic_s1_flag: 0,
+        reserved1: 0,
+        reserved2: 0,
+        reserved3: 0,
+        num_negative_pics: 0,
+        num_positive_pics: 0,
+        delta_poc_s0_minus1: Default::default(),
+        delta_poc_s1_minus1: Default::default(),
+    };
+    let long_term_ref_pics_sps = vk::native::StdVideoH265LongTermRefPicsSps {
+        used_by_curr_pic_lt_sps_flag: 0,
+        lt_ref_pic_poc_lsb_sps: Default::default(),
+    };
+    let mut flags: vk::native::StdVideoH265SpsFlags = unsafe { MaybeUninit::zeroed().assume_init() };
     flags.set_amp_enabled_flag(1);
     flags.set_sample_adaptive_offset_enabled_flag(1);
     let sps = vec![vk::native::StdVideoH265SequenceParameterSet {
@@ -322,11 +386,11 @@ pub fn make_h265_video_session_parameters(
         conf_win_right_offset: (16 - extent.width % 16) / 2,
         conf_win_top_offset: 0,
         conf_win_bottom_offset: (16 - extent.height % 16) / 2,
-        pProfileTierLevel: null(),
-        pDecPicBufMgr: null(),
+        pProfileTierLevel: &profile_tier_level,
+        pDecPicBufMgr: &dec_pic_buf_mgr,
         pScalingLists: null(),
-        pShortTermRefPicSet: null(),
-        pLongTermRefPicsSps: null(),
+        pShortTermRefPicSet: &short_term_ref_pics_set,
+        pLongTermRefPicsSps: &long_term_ref_pics_sps,
         pSequenceParameterSetVui: null(),
         pPredictorPaletteEntries: null(),
     }];
@@ -460,13 +524,13 @@ pub fn make_h265_video_session_parameters(
             })?;
         } else {
             //unsafe {
-                //(video_queue_fn.destroy_video_session_parameters_khr)(
-                    //device.handle(),
-                    //video_session_parameters,
-                    //allocator
-                        //.map(|e| e as *const vk::AllocationCallbacks)
-                        //.unwrap_or(null()),
-                //)
+            //(video_queue_fn.destroy_video_session_parameters_khr)(
+            //device.handle(),
+            //video_session_parameters,
+            //allocator
+            //.map(|e| e as *const vk::AllocationCallbacks)
+            //.unwrap_or(null()),
+            //)
             //};
             error!("Failed to retrieve encode video session parameters: {res}.");
             //return Err(vk::Result::ERROR_INITIALIZATION_FAILED);

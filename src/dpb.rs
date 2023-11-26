@@ -498,8 +498,8 @@ impl Dpb {
                                 vk::ImageSubresourceRange::default()
                                     .aspect_mask(
                                         vk::ImageAspectFlags::COLOR
-                                            | vk::ImageAspectFlags::PLANE_0
-                                            | vk::ImageAspectFlags::PLANE_1,
+                                        //vk::ImageAspectFlags::PLANE_0 // TODO: 
+                                            //| vk::ImageAspectFlags::PLANE_1,
                                     )
                                     .base_mip_level(0)
                                     .level_count(1)

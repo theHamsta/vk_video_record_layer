@@ -468,7 +468,7 @@ fn create_video_session<'video_session>(
             .extension_name(unsafe {
                 *(VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
             })
-            .spec_version(vk::make_api_version(0, 1, 0, 0)),
+            .spec_version(vk::make_api_version(0, 0, 9, 11)),
         (true, Codec::H265) => vk::ExtensionProperties::default()
             .extension_name(unsafe {
                 *(VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
