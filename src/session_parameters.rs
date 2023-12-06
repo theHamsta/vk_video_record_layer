@@ -230,7 +230,7 @@ pub fn make_h265_video_session_parameters(
     encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
     video_session: vk::VideoSessionKHR,
     format: vk::Format,
-    extent: vk::Extent2D,
+    coded_extent: vk::Extent2D,
     output_file: Option<impl Write>,
     allocator: Option<&vk::AllocationCallbacks>,
 ) -> VkResult<vk::VideoSessionParametersKHR> {
@@ -308,10 +308,9 @@ pub fn make_h265_video_session_parameters(
             _bitfield_1: Default::default(),
             __bindgen_padding_0: Default::default(),
         },
-        general_profile_idc: 0,
-        general_level_idc: 0,
+        general_profile_idc: vk::native::StdVideoH265ProfileIdc_STD_VIDEO_H265_PROFILE_IDC_MAIN,
+        general_level_idc: vk::native::StdVideoH265LevelIdc_STD_VIDEO_H265_LEVEL_IDC_5_1,
     };
-    //.profile_tier_level(vk::native::StdVideoH265LevelIdc_STD_VIDEO_H265_LEVEL_IDC_6_1);
     let vps = vec![vk::native::StdVideoH265VideoParameterSet {
         flags,
         vps_video_parameter_set_id: 0,
@@ -349,15 +348,16 @@ pub fn make_h265_video_session_parameters(
         used_by_curr_pic_lt_sps_flag: 0,
         lt_ref_pic_poc_lsb_sps: Default::default(),
     };
-    let mut flags: vk::native::StdVideoH265SpsFlags = unsafe { MaybeUninit::zeroed().assume_init() };
+    let mut flags: vk::native::StdVideoH265SpsFlags =
+        unsafe { MaybeUninit::zeroed().assume_init() };
     flags.set_amp_enabled_flag(1);
     flags.set_sample_adaptive_offset_enabled_flag(1);
     let sps = vec![vk::native::StdVideoH265SequenceParameterSet {
         flags,
         chroma_format_idc:
             vk::native::StdVideoH265ChromaFormatIdc_STD_VIDEO_H265_CHROMA_FORMAT_IDC_420,
-        pic_width_in_luma_samples: extent.width,
-        pic_height_in_luma_samples: extent.height,
+        pic_width_in_luma_samples: coded_extent.width,
+        pic_height_in_luma_samples: coded_extent.height,
         sps_video_parameter_set_id: 0,
         sps_max_sub_layers_minus1: 0,
         sps_seq_parameter_set_id: 0,
@@ -383,9 +383,9 @@ pub fn make_h265_video_session_parameters(
         motion_vector_resolution_control_idc: 0,
         sps_num_palette_predictor_initializers_minus1: 0,
         conf_win_left_offset: 0,
-        conf_win_right_offset: (16 - extent.width % 16) / 2,
+        conf_win_right_offset: (32 - coded_extent.width % 32) / 2,
         conf_win_top_offset: 0,
-        conf_win_bottom_offset: (16 - extent.height % 16) / 2,
+        conf_win_bottom_offset: (32 - coded_extent.height % 32) / 2,
         pProfileTierLevel: &profile_tier_level,
         pDecPicBufMgr: &dec_pic_buf_mgr,
         pScalingLists: null(),

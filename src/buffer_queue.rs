@@ -271,7 +271,7 @@ impl BitstreamBufferRing {
                             .write_all(slice::from_raw_parts(data as *const u8, size as usize));
                         debug!("Wrote {}B to output file: {res:?}", size);
                     }
-                    let _ = device.unmap_memory(host.memory());
+                    device.unmap_memory(host.memory());
                 }
             }
         }

@@ -24,6 +24,7 @@ use crate::{
 
 pub struct Dpb {
     extent: vk::Extent2D,
+    coded_extent: vk::Extent2D,
     images: Vec<vk::Image>,
     views: Vec<vk::ImageView>,
     y_views: Vec<vk::ImageView>,
@@ -157,8 +158,17 @@ impl Dpb {
                 mut width,
                 mut height,
             } = extent;
-            width = (width + 15) / 16 * 16;
-            height = (height + 15) / 16 * 16;
+            match video_session.codec() {
+                Codec::H264 => {
+                    width = (width + 15) / 16 * 16;
+                    height = (height + 15) / 16 * 16;
+                }
+                Codec::H265 => {
+                    width = (width + 31) / 32 * 32;
+                    height = (height + 31) / 32 * 32;
+                }
+                Codec::AV1 => todo!(),
+            }
             let mut res = vk::Result::SUCCESS;
             let indices = [
                 encode_family_index,
@@ -405,11 +415,13 @@ impl Dpb {
                 &mut profiles[0].clone(),
                 allocator,
             );
+            let coded_extent = vk::Extent2D { width, height };
 
             let mut rtn = Self {
                 next_image: 0,
                 frame_index: 0,
                 extent,
+                coded_extent,
                 images,
                 views,
                 y_views,
@@ -908,12 +920,6 @@ impl Dpb {
     // TODO: DropBomb?
 
     pub fn coded_extent(&self) -> vk::Extent2D {
-        let vk::Extent2D {
-            mut width,
-            mut height,
-        } = self.extent;
-        width = (width + 15) / 16 * 16;
-        height = (height + 15) / 16 * 16;
-        vk::Extent2D { width, height }
+        self.coded_extent
     }
 }
