@@ -1,5 +1,6 @@
 use chrono::offset::Utc;
 use chrono::DateTime;
+use std::ffi::CStr;
 use std::fs::File;
 use std::mem::transmute;
 use std::ptr::null_mut;
@@ -465,25 +466,33 @@ fn create_video_session<'video_session>(
     );
     let header_version = match (is_encode, state.settings.codec) {
         (true, Codec::H264) => vk::ExtensionProperties::default()
-            .extension_name(unsafe {
-                *(VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
-            })
+            .extension_name(
+                CStr::from_bytes_until_nul(VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME)
+                    .unwrap(),
+            )
+            .unwrap()
             .spec_version(vk::make_api_version(0, 0, 9, 11)),
         (true, Codec::H265) => vk::ExtensionProperties::default()
-            .extension_name(unsafe {
-                *(VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME.as_ptr() as *const _)
-            })
+            .extension_name(
+                CStr::from_bytes_until_nul(VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME)
+                    .unwrap(),
+            )
+            .unwrap()
             .spec_version(vk::make_api_version(0, 0, 9, 12)),
         (true, Codec::AV1) => todo!(),
         (false, Codec::H264) => vk::ExtensionProperties::default()
-            .extension_name(unsafe {
-                *(VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME.as_ptr() as *const _)
-            })
+            .extension_name(
+                CStr::from_bytes_until_nul(VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME)
+                    .unwrap(),
+            )
+            .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (false, Codec::H265) => vk::ExtensionProperties::default()
-            .extension_name(unsafe {
-                *(VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME.as_ptr() as *const _)
-            })
+            .extension_name(
+                CStr::from_bytes_until_nul(VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME)
+                    .unwrap(),
+            )
+            .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (false, Codec::AV1) => todo!(),
     };
