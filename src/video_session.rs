@@ -471,14 +471,14 @@ fn create_video_session<'video_session>(
                     .unwrap(),
             )
             .unwrap()
-            .spec_version(vk::make_api_version(0, 0, 9, 11)),
+            .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (true, Codec::H265) => vk::ExtensionProperties::default()
             .extension_name(
                 CStr::from_bytes_until_nul(VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME)
                     .unwrap(),
             )
             .unwrap()
-            .spec_version(vk::make_api_version(0, 0, 9, 12)),
+            .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (true, Codec::AV1) => todo!(),
         (false, Codec::H264) => vk::ExtensionProperties::default()
             .extension_name(

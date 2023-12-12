@@ -266,6 +266,18 @@ pub fn make_h265_video_session_parameters(
     };
     assert_eq!(format, vk::Format::G8_B8R8_2PLANE_420_UNORM);
 
+    let mut flags = unsafe {
+        MaybeUninit::<vk::native::StdVideoH265ProfileTierLevelFlags>::zeroed().assume_init()
+    };
+    flags.set_general_progressive_source_flag(1);
+    flags.set_general_frame_only_constraint_flag(1);
+
+    let profile_tier_level = vk::native::StdVideoH265ProfileTierLevel {
+        flags,
+        general_profile_idc: vk::native::StdVideoH265ProfileIdc_STD_VIDEO_H265_PROFILE_IDC_MAIN,
+        general_level_idc: vk::native::StdVideoH265LevelIdc_STD_VIDEO_H265_LEVEL_IDC_6_1,
+    };
+
     let flags = MaybeUninit::zeroed();
     let mut flags: vk::native::StdVideoH265VpsFlags = unsafe { flags.assume_init() };
     flags.set_vps_temporal_id_nesting_flag(1);
@@ -301,15 +313,6 @@ pub fn make_h265_video_session_parameters(
         reserved: Default::default(),
         pSubLayerHrdParametersNal: &sub_layer_hdr_parameters,
         pSubLayerHrdParametersVcl: &sub_layer_hdr_parameters_vcl,
-    };
-    let profile_tier_level = vk::native::StdVideoH265ProfileTierLevel {
-        flags: vk::native::StdVideoH265ProfileTierLevelFlags {
-            _bitfield_align_1: Default::default(),
-            _bitfield_1: Default::default(),
-            __bindgen_padding_0: Default::default(),
-        },
-        general_profile_idc: vk::native::StdVideoH265ProfileIdc_STD_VIDEO_H265_PROFILE_IDC_MAIN,
-        general_level_idc: vk::native::StdVideoH265LevelIdc_STD_VIDEO_H265_LEVEL_IDC_5_1,
     };
     let vps = vec![vk::native::StdVideoH265VideoParameterSet {
         flags,
@@ -364,8 +367,8 @@ pub fn make_h265_video_session_parameters(
         bit_depth_luma_minus8: 0,
         bit_depth_chroma_minus8: 0,
         log2_max_pic_order_cnt_lsb_minus4: 8 - 4, // pic order count 0-255
-        log2_min_luma_coding_block_size_minus3: 1,
-        log2_diff_max_min_luma_coding_block_size: 1,
+        log2_min_luma_coding_block_size_minus3: 1, // 16
+        log2_diff_max_min_luma_coding_block_size: 1, // 32
         log2_min_luma_transform_block_size_minus2: 0,
         log2_diff_max_min_luma_transform_block_size: 3,
         max_transform_hierarchy_depth_inter: 3,
@@ -426,8 +429,8 @@ pub fn make_h265_video_session_parameters(
         pps_act_cb_qp_offset_plus5: 0,
         pps_act_cr_qp_offset_plus3: 0,
         pps_num_palette_predictor_initializers: 0,
-        luma_bit_depth_entry_minus8: 0,
-        chroma_bit_depth_entry_minus8: 0,
+        luma_bit_depth_entry_minus8: 248,
+        chroma_bit_depth_entry_minus8: 248,
         num_tile_columns_minus1: 0,
         num_tile_rows_minus1: 0,
         reserved1: 0,
