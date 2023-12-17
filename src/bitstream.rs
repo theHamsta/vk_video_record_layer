@@ -11,6 +11,7 @@ const NAL_NAL_UNIT_TYPE_SPS: u32 = 7;
 const NAL_NAL_UNIT_TYPE_PPS: u32 = 8;
 const RBSP_STOP_ONE_BIT: u32 = 1;
 
+// TODO: remove? does not currently handle 0x000003
 pub fn write_h264_sps(
     writer: &mut impl Write,
     sps: &vk::native::StdVideoH264SequenceParameterSet,
