@@ -113,6 +113,7 @@ impl BitstreamBufferRing {
         profile_info: &mut vk::VideoProfileInfoKHR,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
+        dbg!(&count);
         let mut rtn = Self {
             buffers: Vec::with_capacity(count),
             host_buffers: Vec::with_capacity(count),
@@ -206,6 +207,8 @@ impl BitstreamBufferRing {
         let host = &self.host_buffers[self.current];
         let semaphores = [self.semaphore];
         let values = [self.buffer_generation[self.current]];
+        dbg!(&self.buffer_generation);
+        dbg!(&values);
         let info = vk::SemaphoreWaitInfo::default()
             .values(&values)
             .semaphores(&semaphores);

@@ -144,10 +144,8 @@ pub extern "system" fn record_vk_create_device(
                     vk::KhrVideoEncodeQueueFn::NAME,
                     vk::KhrVideoDecodeH264Fn::NAME,
                     vk::KhrVideoDecodeH265Fn::NAME,
-                    //vk::ExtVideoEncodeH264Fn::NAME,
-                    c"VK_KHR_video_encode_h264",
-                    c"VK_KHR_video_encode_h265",
-                    //vk::ExtVideoEncodeH265Fn::NAME,
+                    vk::KhrVideoEncodeH264Fn::NAME,
+                    vk::KhrVideoEncodeH265Fn::NAME,
                 ];
 
                 let mut create_info = *p_create_info.cast_mut().as_mut().unwrap();

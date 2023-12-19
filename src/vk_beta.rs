@@ -9,6 +9,12 @@ pub const VK_KHR_SAMPLER_MIRROR_CLAMP_TO_EDGE_EXTENSION_NAME: &[u8; 36] =
     b"VK_KHR_sampler_mirror_clamp_to_edge\0";
 pub const VK_KHR_VIDEO_QUEUE_EXTENSION_NAME: &[u8; 19] = b"VK_KHR_video_queue\0";
 pub const VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_video_decode_queue\0";
+pub const VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME: &[u8; 38] =
+    b"VK_STD_vulkan_video_codec_h264_encode\0";
+pub const VK_KHR_VIDEO_ENCODE_H264_EXTENSION_NAME: &[u8; 25] = b"VK_KHR_video_encode_h264\0";
+pub const VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME: &[u8; 38] =
+    b"VK_STD_vulkan_video_codec_h265_encode\0";
+pub const VK_KHR_VIDEO_ENCODE_H265_EXTENSION_NAME: &[u8; 25] = b"VK_KHR_video_encode_h265\0";
 pub const VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME: &[u8; 38] =
     b"VK_STD_vulkan_video_codec_h264_decode\0";
 pub const VK_KHR_VIDEO_DECODE_H264_EXTENSION_NAME: &[u8; 25] = b"VK_KHR_video_decode_h264\0";
@@ -111,6 +117,7 @@ pub const VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME: &[u8; 24] = b"VK_KHR_pipeline_
 pub const VK_KHR_SHADER_NON_SEMANTIC_INFO_EXTENSION_NAME: &[u8; 32] =
     b"VK_KHR_shader_non_semantic_info\0";
 pub const VK_KHR_PRESENT_ID_EXTENSION_NAME: &[u8; 18] = b"VK_KHR_present_id\0";
+pub const VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_video_encode_queue\0";
 pub const VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME: &[u8; 24] = b"VK_KHR_synchronization2\0";
 pub const VK_KHR_FRAGMENT_SHADER_BARYCENTRIC_EXTENSION_NAME: &[u8; 35] =
     b"VK_KHR_fragment_shader_barycentric\0";
@@ -132,6 +139,12 @@ pub const VK_KHR_MAINTENANCE_5_EXTENSION_NAME: &[u8; 20] = b"VK_KHR_maintenance5
 pub const VK_KHR_RAY_TRACING_POSITION_FETCH_EXTENSION_NAME: &[u8; 34] =
     b"VK_KHR_ray_tracing_position_fetch\0";
 pub const VK_KHR_COOPERATIVE_MATRIX_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_cooperative_matrix\0";
+pub const VK_KHR_VIDEO_MAINTENANCE_1_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_video_maintenance1\0";
+pub const VK_KHR_VERTEX_ATTRIBUTE_DIVISOR_EXTENSION_NAME: &[u8; 32] =
+    b"VK_KHR_vertex_attribute_divisor\0";
+pub const VK_KHR_CALIBRATED_TIMESTAMPS_EXTENSION_NAME: &[u8; 29] =
+    b"VK_KHR_calibrated_timestamps\0";
+pub const VK_KHR_MAINTENANCE_6_EXTENSION_NAME: &[u8; 20] = b"VK_KHR_maintenance6\0";
 pub const VK_EXT_DEBUG_REPORT_EXTENSION_NAME: &[u8; 20] = b"VK_EXT_debug_report\0";
 pub const VK_NV_GLSL_SHADER_EXTENSION_NAME: &[u8; 18] = b"VK_NV_glsl_shader\0";
 pub const VK_EXT_DEPTH_RANGE_UNRESTRICTED_EXTENSION_NAME: &[u8; 32] =
@@ -405,6 +418,7 @@ pub const VK_VALVE_DESCRIPTOR_SET_HOST_MAPPING_EXTENSION_NAME: &[u8; 37] =
 pub const VK_EXT_DEPTH_CLAMP_ZERO_ONE_EXTENSION_NAME: &[u8; 28] = b"VK_EXT_depth_clamp_zero_one\0";
 pub const VK_EXT_NON_SEAMLESS_CUBE_MAP_EXTENSION_NAME: &[u8; 29] =
     b"VK_EXT_non_seamless_cube_map\0";
+pub const VK_ARM_RENDER_PASS_STRIPED_EXTENSION_NAME: &[u8; 27] = b"VK_ARM_render_pass_striped\0";
 pub const VK_QCOM_FRAGMENT_DENSITY_MAP_OFFSET_EXTENSION_NAME: &[u8; 36] =
     b"VK_QCOM_fragment_density_map_offset\0";
 pub const VK_NV_COPY_MEMORY_INDIRECT_EXTENSION_NAME: &[u8; 27] = b"VK_NV_copy_memory_indirect\0";
@@ -446,6 +460,7 @@ pub const VK_NV_EXTENDED_SPARSE_ADDRESS_SPACE_EXTENSION_NAME: &[u8; 36] =
     b"VK_NV_extended_sparse_address_space\0";
 pub const VK_EXT_MUTABLE_DESCRIPTOR_TYPE_EXTENSION_NAME: &[u8; 31] =
     b"VK_EXT_mutable_descriptor_type\0";
+pub const VK_EXT_LAYER_SETTINGS_EXTENSION_NAME: &[u8; 22] = b"VK_EXT_layer_settings\0";
 pub const VK_ARM_SHADER_CORE_BUILTINS_EXTENSION_NAME: &[u8; 28] = b"VK_ARM_shader_core_builtins\0";
 pub const VK_EXT_PIPELINE_LIBRARY_GROUP_HANDLES_EXTENSION_NAME: &[u8; 38] =
     b"VK_EXT_pipeline_library_group_handles\0";
@@ -454,6 +469,8 @@ pub const VK_EXT_DYNAMIC_RENDERING_UNUSED_ATTACHMENTS_EXTENSION_NAME: &[u8; 44] 
 pub const VK_NV_LOW_LATENCY_2_EXTENSION_NAME: &[u8; 19] = b"VK_NV_low_latency2\0";
 pub const VK_QCOM_MULTIVIEW_PER_VIEW_RENDER_AREAS_EXTENSION_NAME: &[u8; 40] =
     b"VK_QCOM_multiview_per_view_render_areas\0";
+pub const VK_NV_PER_STAGE_DESCRIPTOR_SET_EXTENSION_NAME: &[u8; 31] =
+    b"VK_NV_per_stage_descriptor_set\0";
 pub const VK_QCOM_IMAGE_PROCESSING_2_EXTENSION_NAME: &[u8; 26] = b"VK_QCOM_image_processing2\0";
 pub const VK_QCOM_FILTER_CUBIC_WEIGHTS_EXTENSION_NAME: &[u8; 29] =
     b"VK_QCOM_filter_cubic_weights\0";
@@ -470,12 +487,5 @@ pub const VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME: &[u8; 28] = b"VK_KHR_ray_t
 pub const VK_KHR_RAY_QUERY_EXTENSION_NAME: &[u8; 17] = b"VK_KHR_ray_query\0";
 pub const VK_EXT_MESH_SHADER_EXTENSION_NAME: &[u8; 19] = b"VK_EXT_mesh_shader\0";
 pub const VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_portability_subset\0";
-pub const VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_video_encode_queue\0";
-pub const VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME: &[u8; 38] =
-    b"VK_STD_vulkan_video_codec_h264_encode\0";
-pub const VK_EXT_VIDEO_ENCODE_H264_EXTENSION_NAME: &[u8; 25] = b"VK_EXT_video_encode_h264\0";
-pub const VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME: &[u8; 38] =
-    b"VK_STD_vulkan_video_codec_h265_encode\0";
-pub const VK_EXT_VIDEO_ENCODE_H265_EXTENSION_NAME: &[u8; 25] = b"VK_EXT_video_encode_h265\0";
 pub const VK_AMDX_SHADER_ENQUEUE_EXTENSION_NAME: &[u8; 23] = b"VK_AMDX_shader_enqueue\0";
 pub const VK_NV_DISPLACEMENT_MICROMAP_EXTENSION_NAME: &[u8; 28] = b"VK_NV_displacement_micromap\0";

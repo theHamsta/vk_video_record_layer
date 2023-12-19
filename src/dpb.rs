@@ -724,8 +724,8 @@ impl Dpb {
                 pWeightTable: null(),
             };
             let h264_nalus =
-                &[vk::VideoEncodeH264NaluSliceInfoEXT::default().std_slice_header(&h264_header)];
-            let mut h264_info = vk::VideoEncodeH264PictureInfoEXT::default()
+                &[vk::VideoEncodeH264NaluSliceInfoKHR::default().std_slice_header(&h264_header)];
+            let mut h264_info = vk::VideoEncodeH264PictureInfoKHR::default()
                 .nalu_slice_entries(h264_nalus)
                 .std_picture_info(&h264_pic);
 
@@ -770,9 +770,9 @@ impl Dpb {
                 slice_act_cb_qp_offset: 0,
                 slice_act_cr_qp_offset: 0,
             };
-            let h265_nalus = &[vk::VideoEncodeH265NaluSliceSegmentInfoEXT::default()
+            let h265_nalus = &[vk::VideoEncodeH265NaluSliceSegmentInfoKHR::default()
                 .std_slice_segment_header(&h265_header)];
-            let mut h265_info = vk::VideoEncodeH265PictureInfoEXT::default()
+            let mut h265_info = vk::VideoEncodeH265PictureInfoKHR::default()
                 .nalu_slice_segment_entries(h265_nalus)
                 .std_picture_info(&h265_pic);
 

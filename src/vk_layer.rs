@@ -180,7 +180,7 @@ pub const SIZE_MAX: i32 = -1;
 pub const WINT_MIN: u32 = 0;
 pub const WINT_MAX: u32 = 4294967295;
 pub const VK_USE_64_BIT_PTR_DEFINES: u32 = 1;
-pub const VK_HEADER_VERSION: u32 = 270;
+pub const VK_HEADER_VERSION: u32 = 274;
 pub const VK_ATTACHMENT_UNUSED: i32 = -1;
 pub const VK_FALSE: u32 = 0;
 pub const VK_LOD_CLAMP_NONE: f64 = 1000.0;
@@ -224,9 +224,9 @@ pub const VK_KHR_video_queue: u32 = 1;
 pub const VK_KHR_VIDEO_QUEUE_SPEC_VERSION: u32 = 8;
 pub const VK_KHR_VIDEO_QUEUE_EXTENSION_NAME: &[u8; 19] = b"VK_KHR_video_queue\0";
 pub const VK_KHR_video_decode_queue: u32 = 1;
-pub const VK_KHR_VIDEO_DECODE_QUEUE_SPEC_VERSION: u32 = 7;
+pub const VK_KHR_VIDEO_DECODE_QUEUE_SPEC_VERSION: u32 = 8;
 pub const VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_video_decode_queue\0";
-pub const VK_KHR_video_decode_h264: u32 = 1;
+pub const VK_KHR_video_encode_h264: u32 = 1;
 pub const VULKAN_VIDEO_CODEC_H264STD_H_: u32 = 1;
 pub const vulkan_video_codec_h264std: u32 = 1;
 pub const VULKAN_VIDEO_CODECS_COMMON_H_: u32 = 1;
@@ -239,12 +239,51 @@ pub const STD_VIDEO_H264_SCALING_LIST_8X8_NUM_ELEMENTS: u32 = 64;
 pub const STD_VIDEO_H264_MAX_NUM_LIST_REF: u32 = 32;
 pub const STD_VIDEO_H264_MAX_CHROMA_PLANES: u32 = 2;
 pub const STD_VIDEO_H264_NO_REFERENCE_PICTURE: u32 = 255;
+pub const VULKAN_VIDEO_CODEC_H264STD_ENCODE_H_: u32 = 1;
+pub const vulkan_video_codec_h264std_encode: u32 = 1;
+pub const VK_STD_VULKAN_VIDEO_CODEC_H264_ENCODE_EXTENSION_NAME: &[u8; 38] =
+    b"VK_STD_vulkan_video_codec_h264_encode\0";
+pub const VK_KHR_VIDEO_ENCODE_H264_SPEC_VERSION: u32 = 14;
+pub const VK_KHR_VIDEO_ENCODE_H264_EXTENSION_NAME: &[u8; 25] = b"VK_KHR_video_encode_h264\0";
+pub const VK_KHR_video_encode_h265: u32 = 1;
+pub const VULKAN_VIDEO_CODEC_H265STD_H_: u32 = 1;
+pub const vulkan_video_codec_h265std: u32 = 1;
+pub const STD_VIDEO_H265_CPB_CNT_LIST_SIZE: u32 = 32;
+pub const STD_VIDEO_H265_SUBLAYERS_LIST_SIZE: u32 = 7;
+pub const STD_VIDEO_H265_SCALING_LIST_4X4_NUM_LISTS: u32 = 6;
+pub const STD_VIDEO_H265_SCALING_LIST_4X4_NUM_ELEMENTS: u32 = 16;
+pub const STD_VIDEO_H265_SCALING_LIST_8X8_NUM_LISTS: u32 = 6;
+pub const STD_VIDEO_H265_SCALING_LIST_8X8_NUM_ELEMENTS: u32 = 64;
+pub const STD_VIDEO_H265_SCALING_LIST_16X16_NUM_LISTS: u32 = 6;
+pub const STD_VIDEO_H265_SCALING_LIST_16X16_NUM_ELEMENTS: u32 = 64;
+pub const STD_VIDEO_H265_SCALING_LIST_32X32_NUM_LISTS: u32 = 2;
+pub const STD_VIDEO_H265_SCALING_LIST_32X32_NUM_ELEMENTS: u32 = 64;
+pub const STD_VIDEO_H265_CHROMA_QP_OFFSET_LIST_SIZE: u32 = 6;
+pub const STD_VIDEO_H265_CHROMA_QP_OFFSET_TILE_COLS_LIST_SIZE: u32 = 19;
+pub const STD_VIDEO_H265_CHROMA_QP_OFFSET_TILE_ROWS_LIST_SIZE: u32 = 21;
+pub const STD_VIDEO_H265_PREDICTOR_PALETTE_COMPONENTS_LIST_SIZE: u32 = 3;
+pub const STD_VIDEO_H265_PREDICTOR_PALETTE_COMP_ENTRIES_LIST_SIZE: u32 = 128;
+pub const STD_VIDEO_H265_MAX_NUM_LIST_REF: u32 = 15;
+pub const STD_VIDEO_H265_MAX_CHROMA_PLANES: u32 = 2;
+pub const STD_VIDEO_H265_MAX_SHORT_TERM_REF_PIC_SETS: u32 = 64;
+pub const STD_VIDEO_H265_MAX_DPB_SIZE: u32 = 16;
+pub const STD_VIDEO_H265_MAX_LONG_TERM_REF_PICS_SPS: u32 = 32;
+pub const STD_VIDEO_H265_MAX_LONG_TERM_PICS: u32 = 16;
+pub const STD_VIDEO_H265_MAX_DELTA_POC: u32 = 48;
+pub const STD_VIDEO_H265_NO_REFERENCE_PICTURE: u32 = 255;
+pub const VULKAN_VIDEO_CODEC_H265STD_ENCODE_H_: u32 = 1;
+pub const vulkan_video_codec_h265std_encode: u32 = 1;
+pub const VK_STD_VULKAN_VIDEO_CODEC_H265_ENCODE_EXTENSION_NAME: &[u8; 38] =
+    b"VK_STD_vulkan_video_codec_h265_encode\0";
+pub const VK_KHR_VIDEO_ENCODE_H265_SPEC_VERSION: u32 = 14;
+pub const VK_KHR_VIDEO_ENCODE_H265_EXTENSION_NAME: &[u8; 25] = b"VK_KHR_video_encode_h265\0";
+pub const VK_KHR_video_decode_h264: u32 = 1;
 pub const VULKAN_VIDEO_CODEC_H264STD_DECODE_H_: u32 = 1;
 pub const vulkan_video_codec_h264std_decode: u32 = 1;
 pub const VK_STD_VULKAN_VIDEO_CODEC_H264_DECODE_EXTENSION_NAME: &[u8; 38] =
     b"VK_STD_vulkan_video_codec_h264_decode\0";
 pub const STD_VIDEO_DECODE_H264_FIELD_ORDER_COUNT_LIST_SIZE: u32 = 2;
-pub const VK_KHR_VIDEO_DECODE_H264_SPEC_VERSION: u32 = 8;
+pub const VK_KHR_VIDEO_DECODE_H264_SPEC_VERSION: u32 = 9;
 pub const VK_KHR_VIDEO_DECODE_H264_EXTENSION_NAME: &[u8; 25] = b"VK_KHR_video_decode_h264\0";
 pub const VK_KHR_dynamic_rendering: u32 = 1;
 pub const VK_KHR_DYNAMIC_RENDERING_SPEC_VERSION: u32 = 1;
@@ -398,37 +437,12 @@ pub const VK_KHR_shader_clock: u32 = 1;
 pub const VK_KHR_SHADER_CLOCK_SPEC_VERSION: u32 = 1;
 pub const VK_KHR_SHADER_CLOCK_EXTENSION_NAME: &[u8; 20] = b"VK_KHR_shader_clock\0";
 pub const VK_KHR_video_decode_h265: u32 = 1;
-pub const VULKAN_VIDEO_CODEC_H265STD_H_: u32 = 1;
-pub const vulkan_video_codec_h265std: u32 = 1;
-pub const STD_VIDEO_H265_CPB_CNT_LIST_SIZE: u32 = 32;
-pub const STD_VIDEO_H265_SUBLAYERS_LIST_SIZE: u32 = 7;
-pub const STD_VIDEO_H265_SCALING_LIST_4X4_NUM_LISTS: u32 = 6;
-pub const STD_VIDEO_H265_SCALING_LIST_4X4_NUM_ELEMENTS: u32 = 16;
-pub const STD_VIDEO_H265_SCALING_LIST_8X8_NUM_LISTS: u32 = 6;
-pub const STD_VIDEO_H265_SCALING_LIST_8X8_NUM_ELEMENTS: u32 = 64;
-pub const STD_VIDEO_H265_SCALING_LIST_16X16_NUM_LISTS: u32 = 6;
-pub const STD_VIDEO_H265_SCALING_LIST_16X16_NUM_ELEMENTS: u32 = 64;
-pub const STD_VIDEO_H265_SCALING_LIST_32X32_NUM_LISTS: u32 = 2;
-pub const STD_VIDEO_H265_SCALING_LIST_32X32_NUM_ELEMENTS: u32 = 64;
-pub const STD_VIDEO_H265_CHROMA_QP_OFFSET_LIST_SIZE: u32 = 6;
-pub const STD_VIDEO_H265_CHROMA_QP_OFFSET_TILE_COLS_LIST_SIZE: u32 = 19;
-pub const STD_VIDEO_H265_CHROMA_QP_OFFSET_TILE_ROWS_LIST_SIZE: u32 = 21;
-pub const STD_VIDEO_H265_PREDICTOR_PALETTE_COMPONENTS_LIST_SIZE: u32 = 3;
-pub const STD_VIDEO_H265_PREDICTOR_PALETTE_COMP_ENTRIES_LIST_SIZE: u32 = 128;
-pub const STD_VIDEO_H265_MAX_NUM_LIST_REF: u32 = 15;
-pub const STD_VIDEO_H265_MAX_CHROMA_PLANES: u32 = 2;
-pub const STD_VIDEO_H265_MAX_SHORT_TERM_REF_PIC_SETS: u32 = 64;
-pub const STD_VIDEO_H265_MAX_DPB_SIZE: u32 = 16;
-pub const STD_VIDEO_H265_MAX_LONG_TERM_REF_PICS_SPS: u32 = 32;
-pub const STD_VIDEO_H265_MAX_LONG_TERM_PICS: u32 = 16;
-pub const STD_VIDEO_H265_MAX_DELTA_POC: u32 = 48;
-pub const STD_VIDEO_H265_NO_REFERENCE_PICTURE: u32 = 255;
 pub const VULKAN_VIDEO_CODEC_H265STD_DECODE_H_: u32 = 1;
 pub const vulkan_video_codec_h265std_decode: u32 = 1;
 pub const VK_STD_VULKAN_VIDEO_CODEC_H265_DECODE_EXTENSION_NAME: &[u8; 38] =
     b"VK_STD_vulkan_video_codec_h265_decode\0";
 pub const STD_VIDEO_DECODE_H265_REF_PIC_SET_LIST_SIZE: u32 = 8;
-pub const VK_KHR_VIDEO_DECODE_H265_SPEC_VERSION: u32 = 7;
+pub const VK_KHR_VIDEO_DECODE_H265_SPEC_VERSION: u32 = 8;
 pub const VK_KHR_VIDEO_DECODE_H265_EXTENSION_NAME: &[u8; 25] = b"VK_KHR_video_decode_h265\0";
 pub const VK_KHR_global_priority: u32 = 1;
 pub const VK_MAX_GLOBAL_PRIORITY_SIZE_KHR: u32 = 16;
@@ -512,6 +526,9 @@ pub const VK_KHR_SHADER_NON_SEMANTIC_INFO_EXTENSION_NAME: &[u8; 32] =
 pub const VK_KHR_present_id: u32 = 1;
 pub const VK_KHR_PRESENT_ID_SPEC_VERSION: u32 = 1;
 pub const VK_KHR_PRESENT_ID_EXTENSION_NAME: &[u8; 18] = b"VK_KHR_present_id\0";
+pub const VK_KHR_video_encode_queue: u32 = 1;
+pub const VK_KHR_VIDEO_ENCODE_QUEUE_SPEC_VERSION: u32 = 12;
+pub const VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_video_encode_queue\0";
 pub const VK_KHR_synchronization2: u32 = 1;
 pub const VK_KHR_SYNCHRONIZATION_2_SPEC_VERSION: u32 = 1;
 pub const VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME: &[u8; 24] = b"VK_KHR_synchronization2\0";
@@ -559,6 +576,20 @@ pub const VK_KHR_RAY_TRACING_POSITION_FETCH_EXTENSION_NAME: &[u8; 34] =
 pub const VK_KHR_cooperative_matrix: u32 = 1;
 pub const VK_KHR_COOPERATIVE_MATRIX_SPEC_VERSION: u32 = 2;
 pub const VK_KHR_COOPERATIVE_MATRIX_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_cooperative_matrix\0";
+pub const VK_KHR_video_maintenance1: u32 = 1;
+pub const VK_KHR_VIDEO_MAINTENANCE_1_SPEC_VERSION: u32 = 1;
+pub const VK_KHR_VIDEO_MAINTENANCE_1_EXTENSION_NAME: &[u8; 26] = b"VK_KHR_video_maintenance1\0";
+pub const VK_KHR_vertex_attribute_divisor: u32 = 1;
+pub const VK_KHR_VERTEX_ATTRIBUTE_DIVISOR_SPEC_VERSION: u32 = 1;
+pub const VK_KHR_VERTEX_ATTRIBUTE_DIVISOR_EXTENSION_NAME: &[u8; 32] =
+    b"VK_KHR_vertex_attribute_divisor\0";
+pub const VK_KHR_calibrated_timestamps: u32 = 1;
+pub const VK_KHR_CALIBRATED_TIMESTAMPS_SPEC_VERSION: u32 = 1;
+pub const VK_KHR_CALIBRATED_TIMESTAMPS_EXTENSION_NAME: &[u8; 29] =
+    b"VK_KHR_calibrated_timestamps\0";
+pub const VK_KHR_maintenance6: u32 = 1;
+pub const VK_KHR_MAINTENANCE_6_SPEC_VERSION: u32 = 1;
+pub const VK_KHR_MAINTENANCE_6_EXTENSION_NAME: &[u8; 20] = b"VK_KHR_maintenance6\0";
 pub const VK_EXT_debug_report: u32 = 1;
 pub const VK_EXT_DEBUG_REPORT_SPEC_VERSION: u32 = 10;
 pub const VK_EXT_DEBUG_REPORT_EXTENSION_NAME: &[u8; 20] = b"VK_EXT_debug_report\0";
@@ -640,7 +671,7 @@ pub const VK_NV_external_memory: u32 = 1;
 pub const VK_NV_EXTERNAL_MEMORY_SPEC_VERSION: u32 = 1;
 pub const VK_NV_EXTERNAL_MEMORY_EXTENSION_NAME: &[u8; 22] = b"VK_NV_external_memory\0";
 pub const VK_EXT_validation_flags: u32 = 1;
-pub const VK_EXT_VALIDATION_FLAGS_SPEC_VERSION: u32 = 2;
+pub const VK_EXT_VALIDATION_FLAGS_SPEC_VERSION: u32 = 3;
 pub const VK_EXT_VALIDATION_FLAGS_EXTENSION_NAME: &[u8; 24] = b"VK_EXT_validation_flags\0";
 pub const VK_EXT_shader_subgroup_ballot: u32 = 1;
 pub const VK_EXT_SHADER_SUBGROUP_BALLOT_SPEC_VERSION: u32 = 1;
@@ -934,7 +965,7 @@ pub const VK_EXT_SEPARATE_STENCIL_USAGE_SPEC_VERSION: u32 = 1;
 pub const VK_EXT_SEPARATE_STENCIL_USAGE_EXTENSION_NAME: &[u8; 30] =
     b"VK_EXT_separate_stencil_usage\0";
 pub const VK_EXT_validation_features: u32 = 1;
-pub const VK_EXT_VALIDATION_FEATURES_SPEC_VERSION: u32 = 5;
+pub const VK_EXT_VALIDATION_FEATURES_SPEC_VERSION: u32 = 6;
 pub const VK_EXT_VALIDATION_FEATURES_EXTENSION_NAME: &[u8; 27] = b"VK_EXT_validation_features\0";
 pub const VK_NV_cooperative_matrix: u32 = 1;
 pub const VK_NV_COOPERATIVE_MATRIX_SPEC_VERSION: u32 = 1;
@@ -1178,7 +1209,7 @@ pub const VK_EXT_load_store_op_none: u32 = 1;
 pub const VK_EXT_LOAD_STORE_OP_NONE_SPEC_VERSION: u32 = 1;
 pub const VK_EXT_LOAD_STORE_OP_NONE_EXTENSION_NAME: &[u8; 26] = b"VK_EXT_load_store_op_none\0";
 pub const VK_HUAWEI_cluster_culling_shader: u32 = 1;
-pub const VK_HUAWEI_CLUSTER_CULLING_SHADER_SPEC_VERSION: u32 = 2;
+pub const VK_HUAWEI_CLUSTER_CULLING_SHADER_SPEC_VERSION: u32 = 3;
 pub const VK_HUAWEI_CLUSTER_CULLING_SHADER_EXTENSION_NAME: &[u8; 33] =
     b"VK_HUAWEI_cluster_culling_shader\0";
 pub const VK_EXT_border_color_swizzle: u32 = 1;
@@ -1211,6 +1242,9 @@ pub const VK_EXT_non_seamless_cube_map: u32 = 1;
 pub const VK_EXT_NON_SEAMLESS_CUBE_MAP_SPEC_VERSION: u32 = 1;
 pub const VK_EXT_NON_SEAMLESS_CUBE_MAP_EXTENSION_NAME: &[u8; 29] =
     b"VK_EXT_non_seamless_cube_map\0";
+pub const VK_ARM_render_pass_striped: u32 = 1;
+pub const VK_ARM_RENDER_PASS_STRIPED_SPEC_VERSION: u32 = 1;
+pub const VK_ARM_RENDER_PASS_STRIPED_EXTENSION_NAME: &[u8; 27] = b"VK_ARM_render_pass_striped\0";
 pub const VK_QCOM_fragment_density_map_offset: u32 = 1;
 pub const VK_QCOM_FRAGMENT_DENSITY_MAP_OFFSET_SPEC_VERSION: u32 = 1;
 pub const VK_QCOM_FRAGMENT_DENSITY_MAP_OFFSET_EXTENSION_NAME: &[u8; 36] =
@@ -1303,6 +1337,9 @@ pub const VK_EXT_mutable_descriptor_type: u32 = 1;
 pub const VK_EXT_MUTABLE_DESCRIPTOR_TYPE_SPEC_VERSION: u32 = 1;
 pub const VK_EXT_MUTABLE_DESCRIPTOR_TYPE_EXTENSION_NAME: &[u8; 31] =
     b"VK_EXT_mutable_descriptor_type\0";
+pub const VK_EXT_layer_settings: u32 = 1;
+pub const VK_EXT_LAYER_SETTINGS_SPEC_VERSION: u32 = 2;
+pub const VK_EXT_LAYER_SETTINGS_EXTENSION_NAME: &[u8; 22] = b"VK_EXT_layer_settings\0";
 pub const VK_ARM_shader_core_builtins: u32 = 1;
 pub const VK_ARM_SHADER_CORE_BUILTINS_SPEC_VERSION: u32 = 2;
 pub const VK_ARM_SHADER_CORE_BUILTINS_EXTENSION_NAME: &[u8; 28] = b"VK_ARM_shader_core_builtins\0";
@@ -1315,12 +1352,16 @@ pub const VK_EXT_DYNAMIC_RENDERING_UNUSED_ATTACHMENTS_SPEC_VERSION: u32 = 1;
 pub const VK_EXT_DYNAMIC_RENDERING_UNUSED_ATTACHMENTS_EXTENSION_NAME: &[u8; 44] =
     b"VK_EXT_dynamic_rendering_unused_attachments\0";
 pub const VK_NV_low_latency2: u32 = 1;
-pub const VK_NV_LOW_LATENCY_2_SPEC_VERSION: u32 = 1;
+pub const VK_NV_LOW_LATENCY_2_SPEC_VERSION: u32 = 2;
 pub const VK_NV_LOW_LATENCY_2_EXTENSION_NAME: &[u8; 19] = b"VK_NV_low_latency2\0";
 pub const VK_QCOM_multiview_per_view_render_areas: u32 = 1;
 pub const VK_QCOM_MULTIVIEW_PER_VIEW_RENDER_AREAS_SPEC_VERSION: u32 = 1;
 pub const VK_QCOM_MULTIVIEW_PER_VIEW_RENDER_AREAS_EXTENSION_NAME: &[u8; 40] =
     b"VK_QCOM_multiview_per_view_render_areas\0";
+pub const VK_NV_per_stage_descriptor_set: u32 = 1;
+pub const VK_NV_PER_STAGE_DESCRIPTOR_SET_SPEC_VERSION: u32 = 1;
+pub const VK_NV_PER_STAGE_DESCRIPTOR_SET_EXTENSION_NAME: &[u8; 31] =
+    b"VK_NV_per_stage_descriptor_set\0";
 pub const VK_QCOM_image_processing2: u32 = 1;
 pub const VK_QCOM_IMAGE_PROCESSING_2_SPEC_VERSION: u32 = 1;
 pub const VK_QCOM_IMAGE_PROCESSING_2_EXTENSION_NAME: &[u8; 26] = b"VK_QCOM_image_processing2\0";
@@ -1746,6 +1787,7 @@ pub enum VkResult {
     VK_THREAD_DONE_KHR = 1000268001,
     VK_OPERATION_DEFERRED_KHR = 1000268002,
     VK_OPERATION_NOT_DEFERRED_KHR = 1000268003,
+    VK_ERROR_INVALID_VIDEO_STD_PARAMETERS_KHR = -1000299000,
     VK_ERROR_COMPRESSION_EXHAUSTED_EXT = -1000338000,
     VK_ERROR_INCOMPATIBLE_SHADER_BINARY_EXT = 1000482000,
     VK_RESULT_MAX_ENUM = 2147483647,
@@ -2163,6 +2205,20 @@ impl VkStructureType {
 impl VkStructureType {
     pub const VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_ATOMIC_INT64_FEATURES_KHR: VkStructureType =
         VkStructureType::VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_ATOMIC_INT64_FEATURES;
+}
+impl VkStructureType {
+    pub const VK_STRUCTURE_TYPE_CALIBRATED_TIMESTAMP_INFO_EXT: VkStructureType =
+        VkStructureType::VK_STRUCTURE_TYPE_CALIBRATED_TIMESTAMP_INFO_KHR;
+}
+impl VkStructureType {
+    pub const VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_DIVISOR_STATE_CREATE_INFO_EXT:
+        VkStructureType =
+        VkStructureType::VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_DIVISOR_STATE_CREATE_INFO_KHR;
+}
+impl VkStructureType {
+    pub const VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_FEATURES_EXT:
+        VkStructureType =
+        VkStructureType::VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_FEATURES_KHR;
 }
 impl VkStructureType {
     pub const VK_STRUCTURE_TYPE_PIPELINE_CREATION_FEEDBACK_CREATE_INFO_EXT: VkStructureType =
@@ -2751,6 +2807,34 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_CU_LAUNCH_INFO_NVX = 1000029002,
     VK_STRUCTURE_TYPE_IMAGE_VIEW_HANDLE_INFO_NVX = 1000030000,
     VK_STRUCTURE_TYPE_IMAGE_VIEW_ADDRESS_PROPERTIES_NVX = 1000030001,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_CAPABILITIES_KHR = 1000038000,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_SESSION_PARAMETERS_CREATE_INFO_KHR = 1000038001,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_SESSION_PARAMETERS_ADD_INFO_KHR = 1000038002,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_PICTURE_INFO_KHR = 1000038003,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_DPB_SLOT_INFO_KHR = 1000038004,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_NALU_SLICE_INFO_KHR = 1000038005,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_GOP_REMAINING_FRAME_INFO_KHR = 1000038006,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_PROFILE_INFO_KHR = 1000038007,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_RATE_CONTROL_INFO_KHR = 1000038008,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_RATE_CONTROL_LAYER_INFO_KHR = 1000038009,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_SESSION_CREATE_INFO_KHR = 1000038010,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_QUALITY_LEVEL_PROPERTIES_KHR = 1000038011,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_SESSION_PARAMETERS_GET_INFO_KHR = 1000038012,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H264_SESSION_PARAMETERS_FEEDBACK_INFO_KHR = 1000038013,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_CAPABILITIES_KHR = 1000039000,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_SESSION_PARAMETERS_CREATE_INFO_KHR = 1000039001,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_SESSION_PARAMETERS_ADD_INFO_KHR = 1000039002,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_PICTURE_INFO_KHR = 1000039003,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_DPB_SLOT_INFO_KHR = 1000039004,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_NALU_SLICE_SEGMENT_INFO_KHR = 1000039005,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_GOP_REMAINING_FRAME_INFO_KHR = 1000039006,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_PROFILE_INFO_KHR = 1000039007,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_RATE_CONTROL_INFO_KHR = 1000039009,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_RATE_CONTROL_LAYER_INFO_KHR = 1000039010,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_SESSION_CREATE_INFO_KHR = 1000039011,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_QUALITY_LEVEL_PROPERTIES_KHR = 1000039012,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_SESSION_PARAMETERS_GET_INFO_KHR = 1000039013,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_H265_SESSION_PARAMETERS_FEEDBACK_INFO_KHR = 1000039014,
     VK_STRUCTURE_TYPE_VIDEO_DECODE_H264_CAPABILITIES_KHR = 1000040000,
     VK_STRUCTURE_TYPE_VIDEO_DECODE_H264_PICTURE_INFO_KHR = 1000040001,
     VK_STRUCTURE_TYPE_VIDEO_DECODE_H264_PROFILE_INFO_KHR = 1000040003,
@@ -2912,7 +2996,6 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_MEMORY_HOST_PROPERTIES_EXT = 1000178002,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CLOCK_FEATURES_KHR = 1000181000,
     VK_STRUCTURE_TYPE_PIPELINE_COMPILER_CONTROL_CREATE_INFO_AMD = 1000183000,
-    VK_STRUCTURE_TYPE_CALIBRATED_TIMESTAMP_INFO_EXT = 1000184000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CORE_PROPERTIES_AMD = 1000185000,
     VK_STRUCTURE_TYPE_VIDEO_DECODE_H265_CAPABILITIES_KHR = 1000187000,
     VK_STRUCTURE_TYPE_VIDEO_DECODE_H265_SESSION_PARAMETERS_CREATE_INFO_KHR = 1000187001,
@@ -2925,8 +3008,6 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_QUEUE_FAMILY_GLOBAL_PRIORITY_PROPERTIES_KHR = 1000388001,
     VK_STRUCTURE_TYPE_DEVICE_MEMORY_OVERALLOCATION_CREATE_INFO_AMD = 1000189000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_PROPERTIES_EXT = 1000190000,
-    VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_DIVISOR_STATE_CREATE_INFO_EXT = 1000190001,
-    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_FEATURES_EXT = 1000190002,
     VK_STRUCTURE_TYPE_PRESENT_FRAME_TOKEN_GGP = 1000191000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COMPUTE_SHADER_DERIVATIVES_FEATURES_NV = 1000201000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MESH_SHADER_FEATURES_NV = 1000202000,
@@ -3047,6 +3128,17 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_SWAPCHAIN_PRESENT_BARRIER_CREATE_INFO_NV = 1000292002,
     VK_STRUCTURE_TYPE_PRESENT_ID_KHR = 1000294000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENT_ID_FEATURES_KHR = 1000294001,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_INFO_KHR = 1000299000,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_RATE_CONTROL_INFO_KHR = 1000299001,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_RATE_CONTROL_LAYER_INFO_KHR = 1000299002,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_CAPABILITIES_KHR = 1000299003,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_USAGE_INFO_KHR = 1000299004,
+    VK_STRUCTURE_TYPE_QUERY_POOL_VIDEO_ENCODE_FEEDBACK_CREATE_INFO_KHR = 1000299005,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VIDEO_ENCODE_QUALITY_LEVEL_INFO_KHR = 1000299006,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_QUALITY_LEVEL_PROPERTIES_KHR = 1000299007,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_QUALITY_LEVEL_INFO_KHR = 1000299008,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_SESSION_PARAMETERS_GET_INFO_KHR = 1000299009,
+    VK_STRUCTURE_TYPE_VIDEO_ENCODE_SESSION_PARAMETERS_FEEDBACK_INFO_KHR = 1000299010,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DIAGNOSTICS_CONFIG_FEATURES_NV = 1000300000,
     VK_STRUCTURE_TYPE_DEVICE_DIAGNOSTICS_CONFIG_CREATE_INFO_NV = 1000300001,
     VK_STRUCTURE_TYPE_CUDA_MODULE_CREATE_INFO_NV = 1000307000,
@@ -3177,6 +3269,7 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_TRIANGLES_OPACITY_MICROMAP_EXT = 1000396009,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_CULLING_SHADER_FEATURES_HUAWEI = 1000404000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_CULLING_SHADER_PROPERTIES_HUAWEI = 1000404001,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_CULLING_SHADER_VRS_FEATURES_HUAWEI = 1000404002,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BORDER_COLOR_SWIZZLE_FEATURES_EXT = 1000411000,
     VK_STRUCTURE_TYPE_SAMPLER_BORDER_COLOR_COMPONENT_MAPPING_CREATE_INFO_EXT = 1000411001,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PAGEABLE_DEVICE_LOCAL_MEMORY_FEATURES_EXT = 1000412000,
@@ -3191,6 +3284,11 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_HOST_MAPPING_INFO_VALVE = 1000420002,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLAMP_ZERO_ONE_FEATURES_EXT = 1000421000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_NON_SEAMLESS_CUBE_MAP_FEATURES_EXT = 1000422000,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RENDER_PASS_STRIPED_FEATURES_ARM = 1000424000,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RENDER_PASS_STRIPED_PROPERTIES_ARM = 1000424001,
+    VK_STRUCTURE_TYPE_RENDER_PASS_STRIPE_BEGIN_INFO_ARM = 1000424002,
+    VK_STRUCTURE_TYPE_RENDER_PASS_STRIPE_INFO_ARM = 1000424003,
+    VK_STRUCTURE_TYPE_RENDER_PASS_STRIPE_SUBMIT_INFO_ARM = 1000424004,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_FEATURES_QCOM = 1000425000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_QCOM = 1000425001,
     VK_STRUCTURE_TYPE_SUBPASS_FRAGMENT_DENSITY_MAP_OFFSET_END_INFO_QCOM = 1000425002,
@@ -3258,6 +3356,7 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_SPARSE_ADDRESS_SPACE_PROPERTIES_NV = 1000492001,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MUTABLE_DESCRIPTOR_TYPE_FEATURES_EXT = 1000351000,
     VK_STRUCTURE_TYPE_MUTABLE_DESCRIPTOR_TYPE_CREATE_INFO_EXT = 1000351002,
+    VK_STRUCTURE_TYPE_LAYER_SETTINGS_CREATE_INFO_EXT = 1000496000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CORE_BUILTINS_FEATURES_ARM = 1000497000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_CORE_BUILTINS_PROPERTIES_ARM = 1000497001,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_LIBRARY_GROUP_HANDLES_FEATURES_EXT = 1000498000,
@@ -3277,6 +3376,9 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_MATRIX_PROPERTIES_KHR = 1000506002,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MULTIVIEW_PER_VIEW_RENDER_AREAS_FEATURES_QCOM = 1000510000,
     VK_STRUCTURE_TYPE_MULTIVIEW_PER_VIEW_RENDER_AREAS_RENDER_PASS_BEGIN_INFO_QCOM = 1000510001,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VIDEO_MAINTENANCE_1_FEATURES_KHR = 1000515000,
+    VK_STRUCTURE_TYPE_VIDEO_INLINE_QUERY_INFO_KHR = 1000515001,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PER_STAGE_DESCRIPTOR_SET_FEATURES_NV = 1000516000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_PROCESSING_2_FEATURES_QCOM = 1000518000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_PROCESSING_2_PROPERTIES_QCOM = 1000518001,
     VK_STRUCTURE_TYPE_SAMPLER_BLOCK_MATCH_WINDOW_CREATE_INFO_QCOM = 1000518002,
@@ -3288,12 +3390,25 @@ pub enum VkStructureType {
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUBIC_CLAMP_FEATURES_QCOM = 1000521000,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ATTACHMENT_FEEDBACK_LOOP_DYNAMIC_STATE_FEATURES_EXT =
         1000524000,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_PROPERTIES_KHR = 1000525000,
+    VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_DIVISOR_STATE_CREATE_INFO_KHR = 1000190001,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_FEATURES_KHR = 1000190002,
     VK_STRUCTURE_TYPE_SCREEN_BUFFER_PROPERTIES_QNX = 1000529000,
     VK_STRUCTURE_TYPE_SCREEN_BUFFER_FORMAT_PROPERTIES_QNX = 1000529001,
     VK_STRUCTURE_TYPE_IMPORT_SCREEN_BUFFER_INFO_QNX = 1000529002,
     VK_STRUCTURE_TYPE_EXTERNAL_FORMAT_QNX = 1000529003,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_MEMORY_SCREEN_BUFFER_FEATURES_QNX = 1000529004,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LAYERED_DRIVER_PROPERTIES_MSFT = 1000530000,
+    VK_STRUCTURE_TYPE_CALIBRATED_TIMESTAMP_INFO_KHR = 1000184000,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_6_FEATURES_KHR = 1000545000,
+    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_6_PROPERTIES_KHR = 1000545001,
+    VK_STRUCTURE_TYPE_BIND_MEMORY_STATUS_KHR = 1000545002,
+    VK_STRUCTURE_TYPE_BIND_DESCRIPTOR_SETS_INFO_KHR = 1000545003,
+    VK_STRUCTURE_TYPE_PUSH_CONSTANTS_INFO_KHR = 1000545004,
+    VK_STRUCTURE_TYPE_PUSH_DESCRIPTOR_SET_INFO_KHR = 1000545005,
+    VK_STRUCTURE_TYPE_PUSH_DESCRIPTOR_SET_WITH_TEMPLATE_INFO_KHR = 1000545006,
+    VK_STRUCTURE_TYPE_SET_DESCRIPTOR_BUFFER_OFFSETS_INFO_EXT = 1000545007,
+    VK_STRUCTURE_TYPE_BIND_DESCRIPTOR_BUFFER_EMBEDDED_SAMPLERS_INFO_EXT = 1000545008,
     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_POOL_OVERALLOCATION_FEATURES_NV = 1000546000,
     VK_STRUCTURE_TYPE_MAX_ENUM = 2147483647,
 }
@@ -3366,6 +3481,9 @@ pub enum VkImageLayout {
     VK_IMAGE_LAYOUT_SHARED_PRESENT_KHR = 1000111000,
     VK_IMAGE_LAYOUT_FRAGMENT_DENSITY_MAP_OPTIMAL_EXT = 1000218000,
     VK_IMAGE_LAYOUT_FRAGMENT_SHADING_RATE_ATTACHMENT_OPTIMAL_KHR = 1000164003,
+    VK_IMAGE_LAYOUT_VIDEO_ENCODE_DST_KHR = 1000299000,
+    VK_IMAGE_LAYOUT_VIDEO_ENCODE_SRC_KHR = 1000299001,
+    VK_IMAGE_LAYOUT_VIDEO_ENCODE_DPB_KHR = 1000299002,
     VK_IMAGE_LAYOUT_ATTACHMENT_FEEDBACK_LOOP_OPTIMAL_EXT = 1000339000,
     VK_IMAGE_LAYOUT_MAX_ENUM = 2147483647,
 }
@@ -3971,6 +4089,7 @@ pub enum VkQueryType {
     VK_QUERY_TYPE_ACCELERATION_STRUCTURE_SERIALIZATION_SIZE_KHR = 1000150001,
     VK_QUERY_TYPE_ACCELERATION_STRUCTURE_COMPACTED_SIZE_NV = 1000165000,
     VK_QUERY_TYPE_PERFORMANCE_QUERY_INTEL = 1000210000,
+    VK_QUERY_TYPE_VIDEO_ENCODE_FEEDBACK_KHR = 1000299000,
     VK_QUERY_TYPE_MESH_PRIMITIVES_GENERATED_EXT = 1000328000,
     VK_QUERY_TYPE_PRIMITIVES_GENERATED_EXT = 1000382000,
     VK_QUERY_TYPE_ACCELERATION_STRUCTURE_SERIALIZATION_BOTTOM_LEVEL_POINTERS_KHR = 1000386000,
@@ -4616,6 +4735,8 @@ pub enum VkFormatFeatureFlagBits {
     VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_CUBIC_BIT_EXT = 8192,
     VK_FORMAT_FEATURE_FRAGMENT_DENSITY_MAP_BIT_EXT = 16777216,
     VK_FORMAT_FEATURE_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR = 1073741824,
+    VK_FORMAT_FEATURE_VIDEO_ENCODE_INPUT_BIT_KHR = 134217728,
+    VK_FORMAT_FEATURE_VIDEO_ENCODE_DPB_BIT_KHR = 268435456,
     VK_FORMAT_FEATURE_FLAG_BITS_MAX_ENUM = 2147483647,
 }
 pub type VkFormatFeatureFlags = VkFlags;
@@ -4665,6 +4786,7 @@ pub enum VkImageCreateFlagBits {
     VK_IMAGE_CREATE_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_BIT_EXT = 262144,
     VK_IMAGE_CREATE_2D_VIEW_COMPATIBLE_BIT_EXT = 131072,
     VK_IMAGE_CREATE_FRAGMENT_DENSITY_MAP_OFFSET_BIT_QCOM = 32768,
+    VK_IMAGE_CREATE_VIDEO_PROFILE_INDEPENDENT_BIT_KHR = 1048576,
     VK_IMAGE_CREATE_FLAG_BITS_MAX_ENUM = 2147483647,
 }
 pub type VkImageCreateFlags = VkFlags;
@@ -4702,6 +4824,9 @@ pub enum VkImageUsageFlagBits {
     VK_IMAGE_USAGE_FRAGMENT_DENSITY_MAP_BIT_EXT = 512,
     VK_IMAGE_USAGE_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR = 256,
     VK_IMAGE_USAGE_HOST_TRANSFER_BIT_EXT = 4194304,
+    VK_IMAGE_USAGE_VIDEO_ENCODE_DST_BIT_KHR = 8192,
+    VK_IMAGE_USAGE_VIDEO_ENCODE_SRC_BIT_KHR = 16384,
+    VK_IMAGE_USAGE_VIDEO_ENCODE_DPB_BIT_KHR = 32768,
     VK_IMAGE_USAGE_ATTACHMENT_FEEDBACK_LOOP_BIT_EXT = 524288,
     VK_IMAGE_USAGE_INVOCATION_MASK_BIT_HUAWEI = 262144,
     VK_IMAGE_USAGE_SAMPLE_WEIGHT_BIT_QCOM = 1048576,
@@ -4752,6 +4877,7 @@ pub enum VkQueueFlagBits {
     VK_QUEUE_SPARSE_BINDING_BIT = 8,
     VK_QUEUE_PROTECTED_BIT = 16,
     VK_QUEUE_VIDEO_DECODE_BIT_KHR = 32,
+    VK_QUEUE_VIDEO_ENCODE_BIT_KHR = 64,
     VK_QUEUE_OPTICAL_FLOW_BIT_NV = 256,
     VK_QUEUE_FLAG_BITS_MAX_ENUM = 2147483647,
 }
@@ -4906,6 +5032,7 @@ pub enum VkBufferCreateFlagBits {
     VK_BUFFER_CREATE_PROTECTED_BIT = 8,
     VK_BUFFER_CREATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT = 16,
     VK_BUFFER_CREATE_DESCRIPTOR_BUFFER_CAPTURE_REPLAY_BIT_EXT = 32,
+    VK_BUFFER_CREATE_VIDEO_PROFILE_INDEPENDENT_BIT_KHR = 64,
     VK_BUFFER_CREATE_FLAG_BITS_MAX_ENUM = 2147483647,
 }
 pub type VkBufferCreateFlags = VkFlags;
@@ -4942,6 +5069,8 @@ pub enum VkBufferUsageFlagBits {
     VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR = 524288,
     VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR = 1048576,
     VK_BUFFER_USAGE_SHADER_BINDING_TABLE_BIT_KHR = 1024,
+    VK_BUFFER_USAGE_VIDEO_ENCODE_DST_BIT_KHR = 32768,
+    VK_BUFFER_USAGE_VIDEO_ENCODE_SRC_BIT_KHR = 65536,
     VK_BUFFER_USAGE_SAMPLER_DESCRIPTOR_BUFFER_BIT_EXT = 2097152,
     VK_BUFFER_USAGE_RESOURCE_DESCRIPTOR_BUFFER_BIT_EXT = 4194304,
     VK_BUFFER_USAGE_PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER_BIT_EXT = 67108864,
@@ -5216,6 +5345,7 @@ pub enum VkDescriptorSetLayoutCreateFlagBits {
     VK_DESCRIPTOR_SET_LAYOUT_CREATE_EMBEDDED_IMMUTABLE_SAMPLERS_BIT_EXT = 32,
     VK_DESCRIPTOR_SET_LAYOUT_CREATE_INDIRECT_BINDABLE_BIT_NV = 128,
     VK_DESCRIPTOR_SET_LAYOUT_CREATE_HOST_ONLY_POOL_BIT_EXT = 4,
+    VK_DESCRIPTOR_SET_LAYOUT_CREATE_PER_STAGE_BIT_NV = 64,
     VK_DESCRIPTOR_SET_LAYOUT_CREATE_FLAG_BITS_MAX_ENUM = 2147483647,
 }
 pub type VkDescriptorSetLayoutCreateFlags = VkFlags;
@@ -31744,6 +31874,7 @@ pub const VK_PIPELINE_STAGE_2_PRE_RASTERIZATION_SHADERS_BIT: VkPipelineStageFlag
 pub const VK_PIPELINE_STAGE_2_PRE_RASTERIZATION_SHADERS_BIT_KHR: VkPipelineStageFlagBits2 =
     274877906944;
 pub const VK_PIPELINE_STAGE_2_VIDEO_DECODE_BIT_KHR: VkPipelineStageFlagBits2 = 67108864;
+pub const VK_PIPELINE_STAGE_2_VIDEO_ENCODE_BIT_KHR: VkPipelineStageFlagBits2 = 134217728;
 pub const VK_PIPELINE_STAGE_2_TRANSFORM_FEEDBACK_BIT_EXT: VkPipelineStageFlagBits2 = 16777216;
 pub const VK_PIPELINE_STAGE_2_CONDITIONAL_RENDERING_BIT_EXT: VkPipelineStageFlagBits2 = 262144;
 pub const VK_PIPELINE_STAGE_2_COMMAND_PREPROCESS_BIT_NV: VkPipelineStageFlagBits2 = 131072;
@@ -31816,6 +31947,8 @@ pub const VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT: VkAccessFlagBits2 = 17179869184;
 pub const VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT_KHR: VkAccessFlagBits2 = 17179869184;
 pub const VK_ACCESS_2_VIDEO_DECODE_READ_BIT_KHR: VkAccessFlagBits2 = 34359738368;
 pub const VK_ACCESS_2_VIDEO_DECODE_WRITE_BIT_KHR: VkAccessFlagBits2 = 68719476736;
+pub const VK_ACCESS_2_VIDEO_ENCODE_READ_BIT_KHR: VkAccessFlagBits2 = 137438953472;
+pub const VK_ACCESS_2_VIDEO_ENCODE_WRITE_BIT_KHR: VkAccessFlagBits2 = 274877906944;
 pub const VK_ACCESS_2_TRANSFORM_FEEDBACK_WRITE_BIT_EXT: VkAccessFlagBits2 = 33554432;
 pub const VK_ACCESS_2_TRANSFORM_FEEDBACK_COUNTER_READ_BIT_EXT: VkAccessFlagBits2 = 67108864;
 pub const VK_ACCESS_2_TRANSFORM_FEEDBACK_COUNTER_WRITE_BIT_EXT: VkAccessFlagBits2 = 134217728;
@@ -31946,6 +32079,8 @@ pub const VK_FORMAT_FEATURE_2_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR: VkFormat
     1073741824;
 pub const VK_FORMAT_FEATURE_2_HOST_IMAGE_TRANSFER_BIT_EXT: VkFormatFeatureFlagBits2 =
     70368744177664;
+pub const VK_FORMAT_FEATURE_2_VIDEO_ENCODE_INPUT_BIT_KHR: VkFormatFeatureFlagBits2 = 134217728;
+pub const VK_FORMAT_FEATURE_2_VIDEO_ENCODE_DPB_BIT_KHR: VkFormatFeatureFlagBits2 = 268435456;
 pub const VK_FORMAT_FEATURE_2_LINEAR_COLOR_ATTACHMENT_BIT_NV: VkFormatFeatureFlagBits2 =
     274877906944;
 pub const VK_FORMAT_FEATURE_2_WEIGHT_IMAGE_BIT_QCOM: VkFormatFeatureFlagBits2 = 17179869184;
@@ -40619,6 +40754,8 @@ pub enum VkQueryResultStatusKHR {
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub enum VkVideoCodecOperationFlagBitsKHR {
     VK_VIDEO_CODEC_OPERATION_NONE_KHR = 0,
+    VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR = 65536,
+    VK_VIDEO_CODEC_OPERATION_ENCODE_H265_BIT_KHR = 131072,
     VK_VIDEO_CODEC_OPERATION_DECODE_H264_BIT_KHR = 1,
     VK_VIDEO_CODEC_OPERATION_DECODE_H265_BIT_KHR = 2,
     VK_VIDEO_CODEC_OPERATION_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
@@ -40657,6 +40794,8 @@ pub type VkVideoCapabilityFlagsKHR = VkFlags;
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub enum VkVideoSessionCreateFlagBitsKHR {
     VK_VIDEO_SESSION_CREATE_PROTECTED_CONTENT_BIT_KHR = 1,
+    VK_VIDEO_SESSION_CREATE_ALLOW_ENCODE_PARAMETER_OPTIMIZATIONS_BIT_KHR = 2,
+    VK_VIDEO_SESSION_CREATE_INLINE_QUERIES_BIT_KHR = 4,
     VK_VIDEO_SESSION_CREATE_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
 }
 pub type VkVideoSessionCreateFlagsKHR = VkFlags;
@@ -40667,6 +40806,8 @@ pub type VkVideoEndCodingFlagsKHR = VkFlags;
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub enum VkVideoCodingControlFlagBitsKHR {
     VK_VIDEO_CODING_CONTROL_RESET_BIT_KHR = 1,
+    VK_VIDEO_CODING_CONTROL_ENCODE_RATE_CONTROL_BIT_KHR = 2,
+    VK_VIDEO_CODING_CONTROL_ENCODE_QUALITY_LEVEL_BIT_KHR = 4,
     VK_VIDEO_CODING_CONTROL_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
 }
 pub type VkVideoCodingControlFlagsKHR = VkFlags;
@@ -44438,6 +44579,10206 @@ fn bindgen_test_layout_StdVideoH264PictureParameterSet() {
     );
 }
 impl Default for StdVideoH264PictureParameterSet {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264WeightTableFlags {
+    pub luma_weight_l0_flag: u32,
+    pub chroma_weight_l0_flag: u32,
+    pub luma_weight_l1_flag: u32,
+    pub chroma_weight_l1_flag: u32,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264WeightTableFlags() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH264WeightTableFlags> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264WeightTableFlags>(),
+        16usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH264WeightTableFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264WeightTableFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH264WeightTableFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_weight_l0_flag) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTableFlags),
+            "::",
+            stringify!(luma_weight_l0_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_weight_l0_flag) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTableFlags),
+            "::",
+            stringify!(chroma_weight_l0_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_weight_l1_flag) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTableFlags),
+            "::",
+            stringify!(luma_weight_l1_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_weight_l1_flag) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTableFlags),
+            "::",
+            stringify!(chroma_weight_l1_flag)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264WeightTable {
+    pub flags: StdVideoEncodeH264WeightTableFlags,
+    pub luma_log2_weight_denom: u8,
+    pub chroma_log2_weight_denom: u8,
+    pub luma_weight_l0: [i8; 32usize],
+    pub luma_offset_l0: [i8; 32usize],
+    pub chroma_weight_l0: [[i8; 2usize]; 32usize],
+    pub chroma_offset_l0: [[i8; 2usize]; 32usize],
+    pub luma_weight_l1: [i8; 32usize],
+    pub luma_offset_l1: [i8; 32usize],
+    pub chroma_weight_l1: [[i8; 2usize]; 32usize],
+    pub chroma_offset_l1: [[i8; 2usize]; 32usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264WeightTable() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH264WeightTable> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264WeightTable>(),
+        404usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH264WeightTable))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264WeightTable>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoEncodeH264WeightTable))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_log2_weight_denom) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(luma_log2_weight_denom)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_log2_weight_denom) as usize - ptr as usize },
+        17usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(chroma_log2_weight_denom)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_weight_l0) as usize - ptr as usize },
+        18usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(luma_weight_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_offset_l0) as usize - ptr as usize },
+        50usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(luma_offset_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_weight_l0) as usize - ptr as usize },
+        82usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(chroma_weight_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_offset_l0) as usize - ptr as usize },
+        146usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(chroma_offset_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_weight_l1) as usize - ptr as usize },
+        210usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(luma_weight_l1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_offset_l1) as usize - ptr as usize },
+        242usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(luma_offset_l1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_weight_l1) as usize - ptr as usize },
+        274usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(chroma_weight_l1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_offset_l1) as usize - ptr as usize },
+        338usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264WeightTable),
+            "::",
+            stringify!(chroma_offset_l1)
+        )
+    );
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264SliceHeaderFlags {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264SliceHeaderFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264SliceHeaderFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH264SliceHeaderFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264SliceHeaderFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH264SliceHeaderFlags)
+        )
+    );
+}
+impl StdVideoEncodeH264SliceHeaderFlags {
+    #[inline]
+    pub fn direct_spatial_mv_pred_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_direct_spatial_mv_pred_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn num_ref_idx_active_override_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_num_ref_idx_active_override_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 30u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 30u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        direct_spatial_mv_pred_flag: u32,
+        num_ref_idx_active_override_flag: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let direct_spatial_mv_pred_flag: u32 =
+                unsafe { ::std::mem::transmute(direct_spatial_mv_pred_flag) };
+            direct_spatial_mv_pred_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let num_ref_idx_active_override_flag: u32 =
+                unsafe { ::std::mem::transmute(num_ref_idx_active_override_flag) };
+            num_ref_idx_active_override_flag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 30u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264PictureInfoFlags {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264PictureInfoFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264PictureInfoFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH264PictureInfoFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264PictureInfoFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH264PictureInfoFlags)
+        )
+    );
+}
+impl StdVideoEncodeH264PictureInfoFlags {
+    #[inline]
+    pub fn IdrPicFlag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_IdrPicFlag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn is_reference(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_is_reference(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn no_output_of_prior_pics_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_no_output_of_prior_pics_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn long_term_reference_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_long_term_reference_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn adaptive_ref_pic_marking_mode_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_adaptive_ref_pic_marking_mode_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 27u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 27u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        IdrPicFlag: u32,
+        is_reference: u32,
+        no_output_of_prior_pics_flag: u32,
+        long_term_reference_flag: u32,
+        adaptive_ref_pic_marking_mode_flag: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let IdrPicFlag: u32 = unsafe { ::std::mem::transmute(IdrPicFlag) };
+            IdrPicFlag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let is_reference: u32 = unsafe { ::std::mem::transmute(is_reference) };
+            is_reference as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let no_output_of_prior_pics_flag: u32 =
+                unsafe { ::std::mem::transmute(no_output_of_prior_pics_flag) };
+            no_output_of_prior_pics_flag as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let long_term_reference_flag: u32 =
+                unsafe { ::std::mem::transmute(long_term_reference_flag) };
+            long_term_reference_flag as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let adaptive_ref_pic_marking_mode_flag: u32 =
+                unsafe { ::std::mem::transmute(adaptive_ref_pic_marking_mode_flag) };
+            adaptive_ref_pic_marking_mode_flag as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 27u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264ReferenceInfoFlags {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264ReferenceInfoFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264ReferenceInfoFlags>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH264ReferenceInfoFlags)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264ReferenceInfoFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH264ReferenceInfoFlags)
+        )
+    );
+}
+impl StdVideoEncodeH264ReferenceInfoFlags {
+    #[inline]
+    pub fn used_for_long_term_reference(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_used_for_long_term_reference(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 31u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 31u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        used_for_long_term_reference: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let used_for_long_term_reference: u32 =
+                unsafe { ::std::mem::transmute(used_for_long_term_reference) };
+            used_for_long_term_reference as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 31u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264ReferenceListsInfoFlags {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264ReferenceListsInfoFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264ReferenceListsInfoFlags>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfoFlags)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264ReferenceListsInfoFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfoFlags)
+        )
+    );
+}
+impl StdVideoEncodeH264ReferenceListsInfoFlags {
+    #[inline]
+    pub fn ref_pic_list_modification_flag_l0(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ref_pic_list_modification_flag_l0(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ref_pic_list_modification_flag_l1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ref_pic_list_modification_flag_l1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 30u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 30u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        ref_pic_list_modification_flag_l0: u32,
+        ref_pic_list_modification_flag_l1: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ref_pic_list_modification_flag_l0: u32 =
+                unsafe { ::std::mem::transmute(ref_pic_list_modification_flag_l0) };
+            ref_pic_list_modification_flag_l0 as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let ref_pic_list_modification_flag_l1: u32 =
+                unsafe { ::std::mem::transmute(ref_pic_list_modification_flag_l1) };
+            ref_pic_list_modification_flag_l1 as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 30u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264RefListModEntry {
+    pub modification_of_pic_nums_idc: StdVideoH264ModificationOfPicNumsIdc,
+    pub abs_diff_pic_num_minus1: u16,
+    pub long_term_pic_num: u16,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264RefListModEntry() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH264RefListModEntry> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264RefListModEntry>(),
+        8usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH264RefListModEntry))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264RefListModEntry>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH264RefListModEntry)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).modification_of_pic_nums_idc) as usize - ptr as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264RefListModEntry),
+            "::",
+            stringify!(modification_of_pic_nums_idc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).abs_diff_pic_num_minus1) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264RefListModEntry),
+            "::",
+            stringify!(abs_diff_pic_num_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).long_term_pic_num) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264RefListModEntry),
+            "::",
+            stringify!(long_term_pic_num)
+        )
+    );
+}
+impl Default for StdVideoEncodeH264RefListModEntry {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264RefPicMarkingEntry {
+    pub memory_management_control_operation: StdVideoH264MemMgmtControlOp,
+    pub difference_of_pic_nums_minus1: u16,
+    pub long_term_pic_num: u16,
+    pub long_term_frame_idx: u16,
+    pub max_long_term_frame_idx_plus1: u16,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264RefPicMarkingEntry() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH264RefPicMarkingEntry> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264RefPicMarkingEntry>(),
+        12usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH264RefPicMarkingEntry)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264RefPicMarkingEntry>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH264RefPicMarkingEntry)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).memory_management_control_operation) as usize - ptr as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264RefPicMarkingEntry),
+            "::",
+            stringify!(memory_management_control_operation)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).difference_of_pic_nums_minus1) as usize - ptr as usize
+        },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264RefPicMarkingEntry),
+            "::",
+            stringify!(difference_of_pic_nums_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).long_term_pic_num) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264RefPicMarkingEntry),
+            "::",
+            stringify!(long_term_pic_num)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).long_term_frame_idx) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264RefPicMarkingEntry),
+            "::",
+            stringify!(long_term_frame_idx)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).max_long_term_frame_idx_plus1) as usize - ptr as usize
+        },
+        10usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264RefPicMarkingEntry),
+            "::",
+            stringify!(max_long_term_frame_idx_plus1)
+        )
+    );
+}
+impl Default for StdVideoEncodeH264RefPicMarkingEntry {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264ReferenceListsInfo {
+    pub flags: StdVideoEncodeH264ReferenceListsInfoFlags,
+    pub num_ref_idx_l0_active_minus1: u8,
+    pub num_ref_idx_l1_active_minus1: u8,
+    pub RefPicList0: [u8; 32usize],
+    pub RefPicList1: [u8; 32usize],
+    pub refList0ModOpCount: u8,
+    pub refList1ModOpCount: u8,
+    pub refPicMarkingOpCount: u8,
+    pub reserved1: [u8; 7usize],
+    pub pRefList0ModOperations: *const StdVideoEncodeH264RefListModEntry,
+    pub pRefList1ModOperations: *const StdVideoEncodeH264RefListModEntry,
+    pub pRefPicMarkingOperations: *const StdVideoEncodeH264RefPicMarkingEntry,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264ReferenceListsInfo() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH264ReferenceListsInfo> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264ReferenceListsInfo>(),
+        104usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264ReferenceListsInfo>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).num_ref_idx_l0_active_minus1) as usize - ptr as usize
+        },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(num_ref_idx_l0_active_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).num_ref_idx_l1_active_minus1) as usize - ptr as usize
+        },
+        5usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(num_ref_idx_l1_active_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).RefPicList0) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(RefPicList0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).RefPicList1) as usize - ptr as usize },
+        38usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(RefPicList1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).refList0ModOpCount) as usize - ptr as usize },
+        70usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(refList0ModOpCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).refList1ModOpCount) as usize - ptr as usize },
+        71usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(refList1ModOpCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).refPicMarkingOpCount) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(refPicMarkingOpCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        73usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pRefList0ModOperations) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(pRefList0ModOperations)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pRefList1ModOperations) as usize - ptr as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(pRefList1ModOperations)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pRefPicMarkingOperations) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceListsInfo),
+            "::",
+            stringify!(pRefPicMarkingOperations)
+        )
+    );
+}
+impl Default for StdVideoEncodeH264ReferenceListsInfo {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264PictureInfo {
+    pub flags: StdVideoEncodeH264PictureInfoFlags,
+    pub seq_parameter_set_id: u8,
+    pub pic_parameter_set_id: u8,
+    pub idr_pic_id: u16,
+    pub primary_pic_type: StdVideoH264PictureType,
+    pub frame_num: u32,
+    pub PicOrderCnt: i32,
+    pub temporal_id: u8,
+    pub reserved1: [u8; 3usize],
+    pub pRefLists: *const StdVideoEncodeH264ReferenceListsInfo,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264PictureInfo() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH264PictureInfo> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264PictureInfo>(),
+        32usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH264PictureInfo))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264PictureInfo>(),
+        8usize,
+        concat!("Alignment of ", stringify!(StdVideoEncodeH264PictureInfo))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).seq_parameter_set_id) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(seq_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pic_parameter_set_id) as usize - ptr as usize },
+        5usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(pic_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).idr_pic_id) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(idr_pic_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).primary_pic_type) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(primary_pic_type)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frame_num) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(frame_num)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).PicOrderCnt) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(PicOrderCnt)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).temporal_id) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(temporal_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        21usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pRefLists) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264PictureInfo),
+            "::",
+            stringify!(pRefLists)
+        )
+    );
+}
+impl Default for StdVideoEncodeH264PictureInfo {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264ReferenceInfo {
+    pub flags: StdVideoEncodeH264ReferenceInfoFlags,
+    pub primary_pic_type: StdVideoH264PictureType,
+    pub FrameNum: u32,
+    pub PicOrderCnt: i32,
+    pub long_term_pic_num: u16,
+    pub long_term_frame_idx: u16,
+    pub temporal_id: u8,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264ReferenceInfo() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH264ReferenceInfo> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264ReferenceInfo>(),
+        24usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH264ReferenceInfo))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264ReferenceInfo>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoEncodeH264ReferenceInfo))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceInfo),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).primary_pic_type) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceInfo),
+            "::",
+            stringify!(primary_pic_type)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).FrameNum) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceInfo),
+            "::",
+            stringify!(FrameNum)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).PicOrderCnt) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceInfo),
+            "::",
+            stringify!(PicOrderCnt)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).long_term_pic_num) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceInfo),
+            "::",
+            stringify!(long_term_pic_num)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).long_term_frame_idx) as usize - ptr as usize },
+        18usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceInfo),
+            "::",
+            stringify!(long_term_frame_idx)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).temporal_id) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264ReferenceInfo),
+            "::",
+            stringify!(temporal_id)
+        )
+    );
+}
+impl Default for StdVideoEncodeH264ReferenceInfo {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH264SliceHeader {
+    pub flags: StdVideoEncodeH264SliceHeaderFlags,
+    pub first_mb_in_slice: u32,
+    pub slice_type: StdVideoH264SliceType,
+    pub slice_alpha_c0_offset_div2: i8,
+    pub slice_beta_offset_div2: i8,
+    pub slice_qp_delta: i8,
+    pub reserved1: u8,
+    pub cabac_init_idc: StdVideoH264CabacInitIdc,
+    pub disable_deblocking_filter_idc: StdVideoH264DisableDeblockingFilterIdc,
+    pub pWeightTable: *const StdVideoEncodeH264WeightTable,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH264SliceHeader() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH264SliceHeader> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH264SliceHeader>(),
+        32usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH264SliceHeader))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH264SliceHeader>(),
+        8usize,
+        concat!("Alignment of ", stringify!(StdVideoEncodeH264SliceHeader))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).first_mb_in_slice) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(first_mb_in_slice)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_type) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(slice_type)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_alpha_c0_offset_div2) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(slice_alpha_c0_offset_div2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_beta_offset_div2) as usize - ptr as usize },
+        13usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(slice_beta_offset_div2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_qp_delta) as usize - ptr as usize },
+        14usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(slice_qp_delta)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        15usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cabac_init_idc) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(cabac_init_idc)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).disable_deblocking_filter_idc) as usize - ptr as usize
+        },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(disable_deblocking_filter_idc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pWeightTable) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH264SliceHeader),
+            "::",
+            stringify!(pWeightTable)
+        )
+    );
+}
+impl Default for StdVideoEncodeH264SliceHeader {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeH264CapabilityFlagBitsKHR {
+    VK_VIDEO_ENCODE_H264_CAPABILITY_HRD_COMPLIANCE_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_PREDICTION_WEIGHT_TABLE_GENERATED_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_ROW_UNALIGNED_SLICE_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_DIFFERENT_SLICE_TYPE_BIT_KHR = 8,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_B_FRAME_IN_L0_LIST_BIT_KHR = 16,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_B_FRAME_IN_L1_LIST_BIT_KHR = 32,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_PER_PICTURE_TYPE_MIN_MAX_QP_BIT_KHR = 64,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_PER_SLICE_CONSTANT_QP_BIT_KHR = 128,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_GENERATE_PREFIX_NALU_BIT_KHR = 256,
+    VK_VIDEO_ENCODE_H264_CAPABILITY_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeH264CapabilityFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeH264StdFlagBitsKHR {
+    VK_VIDEO_ENCODE_H264_STD_SEPARATE_COLOR_PLANE_FLAG_SET_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_H264_STD_QPPRIME_Y_ZERO_TRANSFORM_BYPASS_FLAG_SET_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_H264_STD_SCALING_MATRIX_PRESENT_FLAG_SET_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_H264_STD_CHROMA_QP_INDEX_OFFSET_BIT_KHR = 8,
+    VK_VIDEO_ENCODE_H264_STD_SECOND_CHROMA_QP_INDEX_OFFSET_BIT_KHR = 16,
+    VK_VIDEO_ENCODE_H264_STD_PIC_INIT_QP_MINUS26_BIT_KHR = 32,
+    VK_VIDEO_ENCODE_H264_STD_WEIGHTED_PRED_FLAG_SET_BIT_KHR = 64,
+    VK_VIDEO_ENCODE_H264_STD_WEIGHTED_BIPRED_IDC_EXPLICIT_BIT_KHR = 128,
+    VK_VIDEO_ENCODE_H264_STD_WEIGHTED_BIPRED_IDC_IMPLICIT_BIT_KHR = 256,
+    VK_VIDEO_ENCODE_H264_STD_TRANSFORM_8X8_MODE_FLAG_SET_BIT_KHR = 512,
+    VK_VIDEO_ENCODE_H264_STD_DIRECT_SPATIAL_MV_PRED_FLAG_UNSET_BIT_KHR = 1024,
+    VK_VIDEO_ENCODE_H264_STD_ENTROPY_CODING_MODE_FLAG_UNSET_BIT_KHR = 2048,
+    VK_VIDEO_ENCODE_H264_STD_ENTROPY_CODING_MODE_FLAG_SET_BIT_KHR = 4096,
+    VK_VIDEO_ENCODE_H264_STD_DIRECT_8X8_INFERENCE_FLAG_UNSET_BIT_KHR = 8192,
+    VK_VIDEO_ENCODE_H264_STD_CONSTRAINED_INTRA_PRED_FLAG_SET_BIT_KHR = 16384,
+    VK_VIDEO_ENCODE_H264_STD_DEBLOCKING_FILTER_DISABLED_BIT_KHR = 32768,
+    VK_VIDEO_ENCODE_H264_STD_DEBLOCKING_FILTER_ENABLED_BIT_KHR = 65536,
+    VK_VIDEO_ENCODE_H264_STD_DEBLOCKING_FILTER_PARTIAL_BIT_KHR = 131072,
+    VK_VIDEO_ENCODE_H264_STD_SLICE_QP_DELTA_BIT_KHR = 524288,
+    VK_VIDEO_ENCODE_H264_STD_DIFFERENT_SLICE_QP_DELTA_BIT_KHR = 1048576,
+    VK_VIDEO_ENCODE_H264_STD_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeH264StdFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeH264RateControlFlagBitsKHR {
+    VK_VIDEO_ENCODE_H264_RATE_CONTROL_ATTEMPT_HRD_COMPLIANCE_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_H264_RATE_CONTROL_REGULAR_GOP_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_H264_RATE_CONTROL_REFERENCE_PATTERN_FLAT_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_H264_RATE_CONTROL_REFERENCE_PATTERN_DYADIC_BIT_KHR = 8,
+    VK_VIDEO_ENCODE_H264_RATE_CONTROL_TEMPORAL_LAYER_PATTERN_DYADIC_BIT_KHR = 16,
+    VK_VIDEO_ENCODE_H264_RATE_CONTROL_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeH264RateControlFlagsKHR = VkFlags;
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264CapabilitiesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub flags: VkVideoEncodeH264CapabilityFlagsKHR,
+    pub maxLevelIdc: StdVideoH264LevelIdc,
+    pub maxSliceCount: u32,
+    pub maxPPictureL0ReferenceCount: u32,
+    pub maxBPictureL0ReferenceCount: u32,
+    pub maxL1ReferenceCount: u32,
+    pub maxTemporalLayerCount: u32,
+    pub expectDyadicTemporalLayerPattern: VkBool32,
+    pub minQp: i32,
+    pub maxQp: i32,
+    pub prefersGopRemainingFrames: VkBool32,
+    pub requiresGopRemainingFrames: VkBool32,
+    pub stdSyntaxFlags: VkVideoEncodeH264StdFlagsKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264CapabilitiesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264CapabilitiesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264CapabilitiesKHR>(),
+        72usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH264CapabilitiesKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264CapabilitiesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxLevelIdc) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(maxLevelIdc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxSliceCount) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(maxSliceCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxPPictureL0ReferenceCount) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(maxPPictureL0ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxBPictureL0ReferenceCount) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(maxBPictureL0ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxL1ReferenceCount) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(maxL1ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxTemporalLayerCount) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(maxTemporalLayerCount)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).expectDyadicTemporalLayerPattern) as usize - ptr as usize
+        },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(expectDyadicTemporalLayerPattern)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).minQp) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(minQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxQp) as usize - ptr as usize },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(maxQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).prefersGopRemainingFrames) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(prefersGopRemainingFrames)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).requiresGopRemainingFrames) as usize - ptr as usize },
+        60usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(requiresGopRemainingFrames)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdSyntaxFlags) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264CapabilitiesKHR),
+            "::",
+            stringify!(stdSyntaxFlags)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264CapabilitiesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264QpKHR {
+    pub qpI: i32,
+    pub qpP: i32,
+    pub qpB: i32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264QpKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264QpKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264QpKHR>(),
+        12usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH264QpKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264QpKHR>(),
+        4usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH264QpKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).qpI) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QpKHR),
+            "::",
+            stringify!(qpI)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).qpP) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QpKHR),
+            "::",
+            stringify!(qpP)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).qpB) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QpKHR),
+            "::",
+            stringify!(qpB)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264QualityLevelPropertiesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub preferredRateControlFlags: VkVideoEncodeH264RateControlFlagsKHR,
+    pub preferredGopFrameCount: u32,
+    pub preferredIdrPeriod: u32,
+    pub preferredConsecutiveBFrameCount: u32,
+    pub preferredTemporalLayerCount: u32,
+    pub preferredConstantQp: VkVideoEncodeH264QpKHR,
+    pub preferredMaxL0ReferenceCount: u32,
+    pub preferredMaxL1ReferenceCount: u32,
+    pub preferredStdEntropyCodingModeFlag: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264QualityLevelPropertiesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264QualityLevelPropertiesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264QualityLevelPropertiesKHR>(),
+        64usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264QualityLevelPropertiesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredRateControlFlags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredRateControlFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredGopFrameCount) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredGopFrameCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredIdrPeriod) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredIdrPeriod)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).preferredConsecutiveBFrameCount) as usize - ptr as usize
+        },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredConsecutiveBFrameCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredTemporalLayerCount) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredTemporalLayerCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredConstantQp) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredConstantQp)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).preferredMaxL0ReferenceCount) as usize - ptr as usize
+        },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredMaxL0ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).preferredMaxL1ReferenceCount) as usize - ptr as usize
+        },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredMaxL1ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).preferredStdEntropyCodingModeFlag) as usize - ptr as usize
+        },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredStdEntropyCodingModeFlag)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264QualityLevelPropertiesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264SessionCreateInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub useMaxLevelIdc: VkBool32,
+    pub maxLevelIdc: StdVideoH264LevelIdc,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264SessionCreateInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264SessionCreateInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264SessionCreateInfoKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH264SessionCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264SessionCreateInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264SessionCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionCreateInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionCreateInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useMaxLevelIdc) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionCreateInfoKHR),
+            "::",
+            stringify!(useMaxLevelIdc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxLevelIdc) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionCreateInfoKHR),
+            "::",
+            stringify!(maxLevelIdc)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264SessionCreateInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264SessionParametersAddInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stdSPSCount: u32,
+    pub pStdSPSs: *const StdVideoH264SequenceParameterSet,
+    pub stdPPSCount: u32,
+    pub pStdPPSs: *const StdVideoH264PictureParameterSet,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264SessionParametersAddInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264SessionParametersAddInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264SessionParametersAddInfoKHR>(),
+        48usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH264SessionParametersAddInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264SessionParametersAddInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264SessionParametersAddInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersAddInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersAddInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdSPSCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersAddInfoKHR),
+            "::",
+            stringify!(stdSPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdSPSs) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersAddInfoKHR),
+            "::",
+            stringify!(pStdSPSs)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdPPSCount) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersAddInfoKHR),
+            "::",
+            stringify!(stdPPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdPPSs) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersAddInfoKHR),
+            "::",
+            stringify!(pStdPPSs)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264SessionParametersAddInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264SessionParametersCreateInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub maxStdSPSCount: u32,
+    pub maxStdPPSCount: u32,
+    pub pParametersAddInfo: *const VkVideoEncodeH264SessionParametersAddInfoKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264SessionParametersCreateInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264SessionParametersCreateInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264SessionParametersCreateInfoKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH264SessionParametersCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264SessionParametersCreateInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264SessionParametersCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxStdSPSCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(maxStdSPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxStdPPSCount) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(maxStdPPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pParametersAddInfo) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(pParametersAddInfo)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264SessionParametersCreateInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264SessionParametersGetInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub writeStdSPS: VkBool32,
+    pub writeStdPPS: VkBool32,
+    pub stdSPSId: u32,
+    pub stdPPSId: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264SessionParametersGetInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264SessionParametersGetInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264SessionParametersGetInfoKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH264SessionParametersGetInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264SessionParametersGetInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264SessionParametersGetInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersGetInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersGetInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).writeStdSPS) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersGetInfoKHR),
+            "::",
+            stringify!(writeStdSPS)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).writeStdPPS) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersGetInfoKHR),
+            "::",
+            stringify!(writeStdPPS)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdSPSId) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersGetInfoKHR),
+            "::",
+            stringify!(stdSPSId)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdPPSId) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersGetInfoKHR),
+            "::",
+            stringify!(stdPPSId)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264SessionParametersGetInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264SessionParametersFeedbackInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub hasStdSPSOverrides: VkBool32,
+    pub hasStdPPSOverrides: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264SessionParametersFeedbackInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264SessionParametersFeedbackInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264SessionParametersFeedbackInfoKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH264SessionParametersFeedbackInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264SessionParametersFeedbackInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264SessionParametersFeedbackInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).hasStdSPSOverrides) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(hasStdSPSOverrides)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).hasStdPPSOverrides) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(hasStdPPSOverrides)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264SessionParametersFeedbackInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264NaluSliceInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub constantQp: i32,
+    pub pStdSliceHeader: *const StdVideoEncodeH264SliceHeader,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264NaluSliceInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264NaluSliceInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264NaluSliceInfoKHR>(),
+        32usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH264NaluSliceInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264NaluSliceInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264NaluSliceInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264NaluSliceInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264NaluSliceInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).constantQp) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264NaluSliceInfoKHR),
+            "::",
+            stringify!(constantQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdSliceHeader) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264NaluSliceInfoKHR),
+            "::",
+            stringify!(pStdSliceHeader)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264NaluSliceInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264PictureInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub naluSliceEntryCount: u32,
+    pub pNaluSliceEntries: *const VkVideoEncodeH264NaluSliceInfoKHR,
+    pub pStdPictureInfo: *const StdVideoEncodeH264PictureInfo,
+    pub generatePrefixNalu: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264PictureInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264PictureInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264PictureInfoKHR>(),
+        48usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH264PictureInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264PictureInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH264PictureInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264PictureInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264PictureInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).naluSliceEntryCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264PictureInfoKHR),
+            "::",
+            stringify!(naluSliceEntryCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNaluSliceEntries) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264PictureInfoKHR),
+            "::",
+            stringify!(pNaluSliceEntries)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdPictureInfo) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264PictureInfoKHR),
+            "::",
+            stringify!(pStdPictureInfo)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).generatePrefixNalu) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264PictureInfoKHR),
+            "::",
+            stringify!(generatePrefixNalu)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264PictureInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264DpbSlotInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub pStdReferenceInfo: *const StdVideoEncodeH264ReferenceInfo,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264DpbSlotInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264DpbSlotInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264DpbSlotInfoKHR>(),
+        24usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH264DpbSlotInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264DpbSlotInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH264DpbSlotInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264DpbSlotInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264DpbSlotInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdReferenceInfo) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264DpbSlotInfoKHR),
+            "::",
+            stringify!(pStdReferenceInfo)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264DpbSlotInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264ProfileInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stdProfileIdc: StdVideoH264ProfileIdc,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264ProfileInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264ProfileInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264ProfileInfoKHR>(),
+        24usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH264ProfileInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264ProfileInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH264ProfileInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264ProfileInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264ProfileInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdProfileIdc) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264ProfileInfoKHR),
+            "::",
+            stringify!(stdProfileIdc)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264ProfileInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264RateControlInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub flags: VkVideoEncodeH264RateControlFlagsKHR,
+    pub gopFrameCount: u32,
+    pub idrPeriod: u32,
+    pub consecutiveBFrameCount: u32,
+    pub temporalLayerCount: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264RateControlInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264RateControlInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264RateControlInfoKHR>(),
+        40usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH264RateControlInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264RateControlInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264RateControlInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlInfoKHR),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gopFrameCount) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlInfoKHR),
+            "::",
+            stringify!(gopFrameCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).idrPeriod) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlInfoKHR),
+            "::",
+            stringify!(idrPeriod)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).consecutiveBFrameCount) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlInfoKHR),
+            "::",
+            stringify!(consecutiveBFrameCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).temporalLayerCount) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlInfoKHR),
+            "::",
+            stringify!(temporalLayerCount)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264RateControlInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264FrameSizeKHR {
+    pub frameISize: u32,
+    pub framePSize: u32,
+    pub frameBSize: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264FrameSizeKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264FrameSizeKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264FrameSizeKHR>(),
+        12usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH264FrameSizeKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264FrameSizeKHR>(),
+        4usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH264FrameSizeKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frameISize) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264FrameSizeKHR),
+            "::",
+            stringify!(frameISize)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).framePSize) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264FrameSizeKHR),
+            "::",
+            stringify!(framePSize)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frameBSize) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264FrameSizeKHR),
+            "::",
+            stringify!(frameBSize)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264RateControlLayerInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub useMinQp: VkBool32,
+    pub minQp: VkVideoEncodeH264QpKHR,
+    pub useMaxQp: VkBool32,
+    pub maxQp: VkVideoEncodeH264QpKHR,
+    pub useMaxFrameSize: VkBool32,
+    pub maxFrameSize: VkVideoEncodeH264FrameSizeKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264RateControlLayerInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264RateControlLayerInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264RateControlLayerInfoKHR>(),
+        64usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264RateControlLayerInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useMinQp) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR),
+            "::",
+            stringify!(useMinQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).minQp) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR),
+            "::",
+            stringify!(minQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useMaxQp) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR),
+            "::",
+            stringify!(useMaxQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxQp) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR),
+            "::",
+            stringify!(maxQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useMaxFrameSize) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR),
+            "::",
+            stringify!(useMaxFrameSize)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxFrameSize) as usize - ptr as usize },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264RateControlLayerInfoKHR),
+            "::",
+            stringify!(maxFrameSize)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264RateControlLayerInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH264GopRemainingFrameInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub useGopRemainingFrames: VkBool32,
+    pub gopRemainingI: u32,
+    pub gopRemainingP: u32,
+    pub gopRemainingB: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH264GopRemainingFrameInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH264GopRemainingFrameInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH264GopRemainingFrameInfoKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH264GopRemainingFrameInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH264GopRemainingFrameInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH264GopRemainingFrameInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useGopRemainingFrames) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(useGopRemainingFrames)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gopRemainingI) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(gopRemainingI)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gopRemainingP) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(gopRemainingP)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gopRemainingB) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH264GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(gopRemainingB)
+        )
+    );
+}
+impl Default for VkVideoEncodeH264GopRemainingFrameInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+impl StdVideoH265ChromaFormatIdc {
+    pub const STD_VIDEO_H265_CHROMA_FORMAT_IDC_MAX_ENUM: StdVideoH265ChromaFormatIdc =
+        StdVideoH265ChromaFormatIdc::STD_VIDEO_H265_CHROMA_FORMAT_IDC_INVALID;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum StdVideoH265ChromaFormatIdc {
+    STD_VIDEO_H265_CHROMA_FORMAT_IDC_MONOCHROME = 0,
+    STD_VIDEO_H265_CHROMA_FORMAT_IDC_420 = 1,
+    STD_VIDEO_H265_CHROMA_FORMAT_IDC_422 = 2,
+    STD_VIDEO_H265_CHROMA_FORMAT_IDC_444 = 3,
+    STD_VIDEO_H265_CHROMA_FORMAT_IDC_INVALID = 2147483647,
+}
+impl StdVideoH265ProfileIdc {
+    pub const STD_VIDEO_H265_PROFILE_IDC_MAX_ENUM: StdVideoH265ProfileIdc =
+        StdVideoH265ProfileIdc::STD_VIDEO_H265_PROFILE_IDC_INVALID;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum StdVideoH265ProfileIdc {
+    STD_VIDEO_H265_PROFILE_IDC_MAIN = 1,
+    STD_VIDEO_H265_PROFILE_IDC_MAIN_10 = 2,
+    STD_VIDEO_H265_PROFILE_IDC_MAIN_STILL_PICTURE = 3,
+    STD_VIDEO_H265_PROFILE_IDC_FORMAT_RANGE_EXTENSIONS = 4,
+    STD_VIDEO_H265_PROFILE_IDC_SCC_EXTENSIONS = 9,
+    STD_VIDEO_H265_PROFILE_IDC_INVALID = 2147483647,
+}
+impl StdVideoH265LevelIdc {
+    pub const STD_VIDEO_H265_LEVEL_IDC_MAX_ENUM: StdVideoH265LevelIdc =
+        StdVideoH265LevelIdc::STD_VIDEO_H265_LEVEL_IDC_INVALID;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum StdVideoH265LevelIdc {
+    STD_VIDEO_H265_LEVEL_IDC_1_0 = 0,
+    STD_VIDEO_H265_LEVEL_IDC_2_0 = 1,
+    STD_VIDEO_H265_LEVEL_IDC_2_1 = 2,
+    STD_VIDEO_H265_LEVEL_IDC_3_0 = 3,
+    STD_VIDEO_H265_LEVEL_IDC_3_1 = 4,
+    STD_VIDEO_H265_LEVEL_IDC_4_0 = 5,
+    STD_VIDEO_H265_LEVEL_IDC_4_1 = 6,
+    STD_VIDEO_H265_LEVEL_IDC_5_0 = 7,
+    STD_VIDEO_H265_LEVEL_IDC_5_1 = 8,
+    STD_VIDEO_H265_LEVEL_IDC_5_2 = 9,
+    STD_VIDEO_H265_LEVEL_IDC_6_0 = 10,
+    STD_VIDEO_H265_LEVEL_IDC_6_1 = 11,
+    STD_VIDEO_H265_LEVEL_IDC_6_2 = 12,
+    STD_VIDEO_H265_LEVEL_IDC_INVALID = 2147483647,
+}
+impl StdVideoH265SliceType {
+    pub const STD_VIDEO_H265_SLICE_TYPE_MAX_ENUM: StdVideoH265SliceType =
+        StdVideoH265SliceType::STD_VIDEO_H265_SLICE_TYPE_INVALID;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum StdVideoH265SliceType {
+    STD_VIDEO_H265_SLICE_TYPE_B = 0,
+    STD_VIDEO_H265_SLICE_TYPE_P = 1,
+    STD_VIDEO_H265_SLICE_TYPE_I = 2,
+    STD_VIDEO_H265_SLICE_TYPE_INVALID = 2147483647,
+}
+impl StdVideoH265PictureType {
+    pub const STD_VIDEO_H265_PICTURE_TYPE_MAX_ENUM: StdVideoH265PictureType =
+        StdVideoH265PictureType::STD_VIDEO_H265_PICTURE_TYPE_INVALID;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum StdVideoH265PictureType {
+    STD_VIDEO_H265_PICTURE_TYPE_P = 0,
+    STD_VIDEO_H265_PICTURE_TYPE_B = 1,
+    STD_VIDEO_H265_PICTURE_TYPE_I = 2,
+    STD_VIDEO_H265_PICTURE_TYPE_IDR = 3,
+    STD_VIDEO_H265_PICTURE_TYPE_INVALID = 2147483647,
+}
+impl StdVideoH265AspectRatioIdc {
+    pub const STD_VIDEO_H265_ASPECT_RATIO_IDC_MAX_ENUM: StdVideoH265AspectRatioIdc =
+        StdVideoH265AspectRatioIdc::STD_VIDEO_H265_ASPECT_RATIO_IDC_INVALID;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum StdVideoH265AspectRatioIdc {
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_UNSPECIFIED = 0,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_SQUARE = 1,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_12_11 = 2,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_10_11 = 3,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_16_11 = 4,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_40_33 = 5,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_24_11 = 6,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_20_11 = 7,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_32_11 = 8,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_80_33 = 9,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_18_11 = 10,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_15_11 = 11,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_64_33 = 12,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_160_99 = 13,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_4_3 = 14,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_3_2 = 15,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_2_1 = 16,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_EXTENDED_SAR = 255,
+    STD_VIDEO_H265_ASPECT_RATIO_IDC_INVALID = 2147483647,
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265DecPicBufMgr {
+    pub max_latency_increase_plus1: [u32; 7usize],
+    pub max_dec_pic_buffering_minus1: [u8; 7usize],
+    pub max_num_reorder_pics: [u8; 7usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265DecPicBufMgr() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265DecPicBufMgr> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265DecPicBufMgr>(),
+        44usize,
+        concat!("Size of: ", stringify!(StdVideoH265DecPicBufMgr))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265DecPicBufMgr>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265DecPicBufMgr))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).max_latency_increase_plus1) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265DecPicBufMgr),
+            "::",
+            stringify!(max_latency_increase_plus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).max_dec_pic_buffering_minus1) as usize - ptr as usize
+        },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265DecPicBufMgr),
+            "::",
+            stringify!(max_dec_pic_buffering_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).max_num_reorder_pics) as usize - ptr as usize },
+        35usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265DecPicBufMgr),
+            "::",
+            stringify!(max_num_reorder_pics)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265SubLayerHrdParameters {
+    pub bit_rate_value_minus1: [u32; 32usize],
+    pub cpb_size_value_minus1: [u32; 32usize],
+    pub cpb_size_du_value_minus1: [u32; 32usize],
+    pub bit_rate_du_value_minus1: [u32; 32usize],
+    pub cbr_flag: u32,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265SubLayerHrdParameters() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265SubLayerHrdParameters> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265SubLayerHrdParameters>(),
+        516usize,
+        concat!("Size of: ", stringify!(StdVideoH265SubLayerHrdParameters))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265SubLayerHrdParameters>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoH265SubLayerHrdParameters)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).bit_rate_value_minus1) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SubLayerHrdParameters),
+            "::",
+            stringify!(bit_rate_value_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cpb_size_value_minus1) as usize - ptr as usize },
+        128usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SubLayerHrdParameters),
+            "::",
+            stringify!(cpb_size_value_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cpb_size_du_value_minus1) as usize - ptr as usize },
+        256usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SubLayerHrdParameters),
+            "::",
+            stringify!(cpb_size_du_value_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).bit_rate_du_value_minus1) as usize - ptr as usize },
+        384usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SubLayerHrdParameters),
+            "::",
+            stringify!(bit_rate_du_value_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cbr_flag) as usize - ptr as usize },
+        512usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SubLayerHrdParameters),
+            "::",
+            stringify!(cbr_flag)
+        )
+    );
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265HrdFlags {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265HrdFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265HrdFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoH265HrdFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265HrdFlags>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265HrdFlags))
+    );
+}
+impl StdVideoH265HrdFlags {
+    #[inline]
+    pub fn nal_hrd_parameters_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_nal_hrd_parameters_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vcl_hrd_parameters_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vcl_hrd_parameters_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sub_pic_hrd_params_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sub_pic_hrd_params_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sub_pic_cpb_params_in_pic_timing_sei_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sub_pic_cpb_params_in_pic_timing_sei_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn fixed_pic_rate_general_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_fixed_pic_rate_general_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn fixed_pic_rate_within_cvs_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_fixed_pic_rate_within_cvs_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn low_delay_hrd_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 8u8) as u32) }
+    }
+    #[inline]
+    pub fn set_low_delay_hrd_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(20usize, 8u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        nal_hrd_parameters_present_flag: u32,
+        vcl_hrd_parameters_present_flag: u32,
+        sub_pic_hrd_params_present_flag: u32,
+        sub_pic_cpb_params_in_pic_timing_sei_flag: u32,
+        fixed_pic_rate_general_flag: u32,
+        fixed_pic_rate_within_cvs_flag: u32,
+        low_delay_hrd_flag: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let nal_hrd_parameters_present_flag: u32 =
+                unsafe { ::std::mem::transmute(nal_hrd_parameters_present_flag) };
+            nal_hrd_parameters_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let vcl_hrd_parameters_present_flag: u32 =
+                unsafe { ::std::mem::transmute(vcl_hrd_parameters_present_flag) };
+            vcl_hrd_parameters_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let sub_pic_hrd_params_present_flag: u32 =
+                unsafe { ::std::mem::transmute(sub_pic_hrd_params_present_flag) };
+            sub_pic_hrd_params_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let sub_pic_cpb_params_in_pic_timing_sei_flag: u32 =
+                unsafe { ::std::mem::transmute(sub_pic_cpb_params_in_pic_timing_sei_flag) };
+            sub_pic_cpb_params_in_pic_timing_sei_flag as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 8u8, {
+            let fixed_pic_rate_general_flag: u32 =
+                unsafe { ::std::mem::transmute(fixed_pic_rate_general_flag) };
+            fixed_pic_rate_general_flag as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 8u8, {
+            let fixed_pic_rate_within_cvs_flag: u32 =
+                unsafe { ::std::mem::transmute(fixed_pic_rate_within_cvs_flag) };
+            fixed_pic_rate_within_cvs_flag as u64
+        });
+        __bindgen_bitfield_unit.set(20usize, 8u8, {
+            let low_delay_hrd_flag: u32 = unsafe { ::std::mem::transmute(low_delay_hrd_flag) };
+            low_delay_hrd_flag as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265HrdParameters {
+    pub flags: StdVideoH265HrdFlags,
+    pub tick_divisor_minus2: u8,
+    pub du_cpb_removal_delay_increment_length_minus1: u8,
+    pub dpb_output_delay_du_length_minus1: u8,
+    pub bit_rate_scale: u8,
+    pub cpb_size_scale: u8,
+    pub cpb_size_du_scale: u8,
+    pub initial_cpb_removal_delay_length_minus1: u8,
+    pub au_cpb_removal_delay_length_minus1: u8,
+    pub dpb_output_delay_length_minus1: u8,
+    pub cpb_cnt_minus1: [u8; 7usize],
+    pub elemental_duration_in_tc_minus1: [u16; 7usize],
+    pub reserved: [u16; 3usize],
+    pub pSubLayerHrdParametersNal: *const StdVideoH265SubLayerHrdParameters,
+    pub pSubLayerHrdParametersVcl: *const StdVideoH265SubLayerHrdParameters,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265HrdParameters() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265HrdParameters> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265HrdParameters>(),
+        56usize,
+        concat!("Size of: ", stringify!(StdVideoH265HrdParameters))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265HrdParameters>(),
+        8usize,
+        concat!("Alignment of ", stringify!(StdVideoH265HrdParameters))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tick_divisor_minus2) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(tick_divisor_minus2)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).du_cpb_removal_delay_increment_length_minus1) as usize
+                - ptr as usize
+        },
+        5usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(du_cpb_removal_delay_increment_length_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).dpb_output_delay_du_length_minus1) as usize - ptr as usize
+        },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(dpb_output_delay_du_length_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).bit_rate_scale) as usize - ptr as usize },
+        7usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(bit_rate_scale)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cpb_size_scale) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(cpb_size_scale)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cpb_size_du_scale) as usize - ptr as usize },
+        9usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(cpb_size_du_scale)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).initial_cpb_removal_delay_length_minus1) as usize
+                - ptr as usize
+        },
+        10usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(initial_cpb_removal_delay_length_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).au_cpb_removal_delay_length_minus1) as usize - ptr as usize
+        },
+        11usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(au_cpb_removal_delay_length_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).dpb_output_delay_length_minus1) as usize - ptr as usize
+        },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(dpb_output_delay_length_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cpb_cnt_minus1) as usize - ptr as usize },
+        13usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(cpb_cnt_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).elemental_duration_in_tc_minus1) as usize - ptr as usize
+        },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(elemental_duration_in_tc_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize },
+        34usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(reserved)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pSubLayerHrdParametersNal) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(pSubLayerHrdParametersNal)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pSubLayerHrdParametersVcl) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265HrdParameters),
+            "::",
+            stringify!(pSubLayerHrdParametersVcl)
+        )
+    );
+}
+impl Default for StdVideoH265HrdParameters {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265VpsFlags {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    pub __bindgen_padding_0: [u8; 3usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265VpsFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265VpsFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoH265VpsFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265VpsFlags>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265VpsFlags))
+    );
+}
+impl StdVideoH265VpsFlags {
+    #[inline]
+    pub fn vps_temporal_id_nesting_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vps_temporal_id_nesting_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vps_sub_layer_ordering_info_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vps_sub_layer_ordering_info_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vps_timing_info_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vps_timing_info_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vps_poc_proportional_to_timing_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vps_poc_proportional_to_timing_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        vps_temporal_id_nesting_flag: u32,
+        vps_sub_layer_ordering_info_present_flag: u32,
+        vps_timing_info_present_flag: u32,
+        vps_poc_proportional_to_timing_flag: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let vps_temporal_id_nesting_flag: u32 =
+                unsafe { ::std::mem::transmute(vps_temporal_id_nesting_flag) };
+            vps_temporal_id_nesting_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let vps_sub_layer_ordering_info_present_flag: u32 =
+                unsafe { ::std::mem::transmute(vps_sub_layer_ordering_info_present_flag) };
+            vps_sub_layer_ordering_info_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let vps_timing_info_present_flag: u32 =
+                unsafe { ::std::mem::transmute(vps_timing_info_present_flag) };
+            vps_timing_info_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let vps_poc_proportional_to_timing_flag: u32 =
+                unsafe { ::std::mem::transmute(vps_poc_proportional_to_timing_flag) };
+            vps_poc_proportional_to_timing_flag as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265ProfileTierLevelFlags {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    pub __bindgen_padding_0: [u8; 3usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265ProfileTierLevelFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265ProfileTierLevelFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoH265ProfileTierLevelFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265ProfileTierLevelFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoH265ProfileTierLevelFlags)
+        )
+    );
+}
+impl StdVideoH265ProfileTierLevelFlags {
+    #[inline]
+    pub fn general_tier_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_general_tier_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn general_progressive_source_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_general_progressive_source_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn general_interlaced_source_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_general_interlaced_source_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn general_non_packed_constraint_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_general_non_packed_constraint_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn general_frame_only_constraint_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_general_frame_only_constraint_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        general_tier_flag: u32,
+        general_progressive_source_flag: u32,
+        general_interlaced_source_flag: u32,
+        general_non_packed_constraint_flag: u32,
+        general_frame_only_constraint_flag: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let general_tier_flag: u32 = unsafe { ::std::mem::transmute(general_tier_flag) };
+            general_tier_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let general_progressive_source_flag: u32 =
+                unsafe { ::std::mem::transmute(general_progressive_source_flag) };
+            general_progressive_source_flag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let general_interlaced_source_flag: u32 =
+                unsafe { ::std::mem::transmute(general_interlaced_source_flag) };
+            general_interlaced_source_flag as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let general_non_packed_constraint_flag: u32 =
+                unsafe { ::std::mem::transmute(general_non_packed_constraint_flag) };
+            general_non_packed_constraint_flag as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let general_frame_only_constraint_flag: u32 =
+                unsafe { ::std::mem::transmute(general_frame_only_constraint_flag) };
+            general_frame_only_constraint_flag as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265ProfileTierLevel {
+    pub flags: StdVideoH265ProfileTierLevelFlags,
+    pub general_profile_idc: StdVideoH265ProfileIdc,
+    pub general_level_idc: StdVideoH265LevelIdc,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265ProfileTierLevel() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265ProfileTierLevel> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265ProfileTierLevel>(),
+        12usize,
+        concat!("Size of: ", stringify!(StdVideoH265ProfileTierLevel))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265ProfileTierLevel>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265ProfileTierLevel))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ProfileTierLevel),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).general_profile_idc) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ProfileTierLevel),
+            "::",
+            stringify!(general_profile_idc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).general_level_idc) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ProfileTierLevel),
+            "::",
+            stringify!(general_level_idc)
+        )
+    );
+}
+impl Default for StdVideoH265ProfileTierLevel {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265VideoParameterSet {
+    pub flags: StdVideoH265VpsFlags,
+    pub vps_video_parameter_set_id: u8,
+    pub vps_max_sub_layers_minus1: u8,
+    pub reserved1: u8,
+    pub reserved2: u8,
+    pub vps_num_units_in_tick: u32,
+    pub vps_time_scale: u32,
+    pub vps_num_ticks_poc_diff_one_minus1: u32,
+    pub reserved3: u32,
+    pub pDecPicBufMgr: *const StdVideoH265DecPicBufMgr,
+    pub pHrdParameters: *const StdVideoH265HrdParameters,
+    pub pProfileTierLevel: *const StdVideoH265ProfileTierLevel,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265VideoParameterSet() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265VideoParameterSet> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265VideoParameterSet>(),
+        48usize,
+        concat!("Size of: ", stringify!(StdVideoH265VideoParameterSet))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265VideoParameterSet>(),
+        8usize,
+        concat!("Alignment of ", stringify!(StdVideoH265VideoParameterSet))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vps_video_parameter_set_id) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(vps_video_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vps_max_sub_layers_minus1) as usize - ptr as usize },
+        5usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(vps_max_sub_layers_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
+        7usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(reserved2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vps_num_units_in_tick) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(vps_num_units_in_tick)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vps_time_scale) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(vps_time_scale)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).vps_num_ticks_poc_diff_one_minus1) as usize - ptr as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(vps_num_ticks_poc_diff_one_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(reserved3)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pDecPicBufMgr) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(pDecPicBufMgr)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pHrdParameters) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(pHrdParameters)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pProfileTierLevel) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265VideoParameterSet),
+            "::",
+            stringify!(pProfileTierLevel)
+        )
+    );
+}
+impl Default for StdVideoH265VideoParameterSet {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265ScalingLists {
+    pub ScalingList4x4: [[u8; 16usize]; 6usize],
+    pub ScalingList8x8: [[u8; 64usize]; 6usize],
+    pub ScalingList16x16: [[u8; 64usize]; 6usize],
+    pub ScalingList32x32: [[u8; 64usize]; 2usize],
+    pub ScalingListDCCoef16x16: [u8; 6usize],
+    pub ScalingListDCCoef32x32: [u8; 2usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265ScalingLists() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265ScalingLists> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265ScalingLists>(),
+        1000usize,
+        concat!("Size of: ", stringify!(StdVideoH265ScalingLists))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265ScalingLists>(),
+        1usize,
+        concat!("Alignment of ", stringify!(StdVideoH265ScalingLists))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ScalingList4x4) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ScalingLists),
+            "::",
+            stringify!(ScalingList4x4)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ScalingList8x8) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ScalingLists),
+            "::",
+            stringify!(ScalingList8x8)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ScalingList16x16) as usize - ptr as usize },
+        480usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ScalingLists),
+            "::",
+            stringify!(ScalingList16x16)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ScalingList32x32) as usize - ptr as usize },
+        864usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ScalingLists),
+            "::",
+            stringify!(ScalingList32x32)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ScalingListDCCoef16x16) as usize - ptr as usize },
+        992usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ScalingLists),
+            "::",
+            stringify!(ScalingListDCCoef16x16)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ScalingListDCCoef32x32) as usize - ptr as usize },
+        998usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ScalingLists),
+            "::",
+            stringify!(ScalingListDCCoef32x32)
+        )
+    );
+}
+impl Default for StdVideoH265ScalingLists {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265SpsVuiFlags {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 3usize]>,
+    pub __bindgen_padding_0: u8,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265SpsVuiFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265SpsVuiFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoH265SpsVuiFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265SpsVuiFlags>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265SpsVuiFlags))
+    );
+}
+impl StdVideoH265SpsVuiFlags {
+    #[inline]
+    pub fn aspect_ratio_info_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_aspect_ratio_info_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn overscan_info_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_overscan_info_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn overscan_appropriate_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_overscan_appropriate_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn video_signal_type_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_video_signal_type_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn video_full_range_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_video_full_range_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn colour_description_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_colour_description_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn chroma_loc_info_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_chroma_loc_info_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn neutral_chroma_indication_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_neutral_chroma_indication_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn field_seq_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_field_seq_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn frame_field_info_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_frame_field_info_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn default_display_window_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_default_display_window_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vui_timing_info_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vui_timing_info_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(11usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vui_poc_proportional_to_timing_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vui_poc_proportional_to_timing_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vui_hrd_parameters_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(13usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vui_hrd_parameters_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(13usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn bitstream_restriction_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_bitstream_restriction_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(14usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn tiles_fixed_structure_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_tiles_fixed_structure_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(15usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn motion_vectors_over_pic_boundaries_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_motion_vectors_over_pic_boundaries_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn restricted_ref_pic_lists_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_restricted_ref_pic_lists_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(17usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        aspect_ratio_info_present_flag: u32,
+        overscan_info_present_flag: u32,
+        overscan_appropriate_flag: u32,
+        video_signal_type_present_flag: u32,
+        video_full_range_flag: u32,
+        colour_description_present_flag: u32,
+        chroma_loc_info_present_flag: u32,
+        neutral_chroma_indication_flag: u32,
+        field_seq_flag: u32,
+        frame_field_info_present_flag: u32,
+        default_display_window_flag: u32,
+        vui_timing_info_present_flag: u32,
+        vui_poc_proportional_to_timing_flag: u32,
+        vui_hrd_parameters_present_flag: u32,
+        bitstream_restriction_flag: u32,
+        tiles_fixed_structure_flag: u32,
+        motion_vectors_over_pic_boundaries_flag: u32,
+        restricted_ref_pic_lists_flag: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 3usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 3usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let aspect_ratio_info_present_flag: u32 =
+                unsafe { ::std::mem::transmute(aspect_ratio_info_present_flag) };
+            aspect_ratio_info_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let overscan_info_present_flag: u32 =
+                unsafe { ::std::mem::transmute(overscan_info_present_flag) };
+            overscan_info_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let overscan_appropriate_flag: u32 =
+                unsafe { ::std::mem::transmute(overscan_appropriate_flag) };
+            overscan_appropriate_flag as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let video_signal_type_present_flag: u32 =
+                unsafe { ::std::mem::transmute(video_signal_type_present_flag) };
+            video_signal_type_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let video_full_range_flag: u32 =
+                unsafe { ::std::mem::transmute(video_full_range_flag) };
+            video_full_range_flag as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let colour_description_present_flag: u32 =
+                unsafe { ::std::mem::transmute(colour_description_present_flag) };
+            colour_description_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let chroma_loc_info_present_flag: u32 =
+                unsafe { ::std::mem::transmute(chroma_loc_info_present_flag) };
+            chroma_loc_info_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let neutral_chroma_indication_flag: u32 =
+                unsafe { ::std::mem::transmute(neutral_chroma_indication_flag) };
+            neutral_chroma_indication_flag as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let field_seq_flag: u32 = unsafe { ::std::mem::transmute(field_seq_flag) };
+            field_seq_flag as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 1u8, {
+            let frame_field_info_present_flag: u32 =
+                unsafe { ::std::mem::transmute(frame_field_info_present_flag) };
+            frame_field_info_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 1u8, {
+            let default_display_window_flag: u32 =
+                unsafe { ::std::mem::transmute(default_display_window_flag) };
+            default_display_window_flag as u64
+        });
+        __bindgen_bitfield_unit.set(11usize, 1u8, {
+            let vui_timing_info_present_flag: u32 =
+                unsafe { ::std::mem::transmute(vui_timing_info_present_flag) };
+            vui_timing_info_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 1u8, {
+            let vui_poc_proportional_to_timing_flag: u32 =
+                unsafe { ::std::mem::transmute(vui_poc_proportional_to_timing_flag) };
+            vui_poc_proportional_to_timing_flag as u64
+        });
+        __bindgen_bitfield_unit.set(13usize, 1u8, {
+            let vui_hrd_parameters_present_flag: u32 =
+                unsafe { ::std::mem::transmute(vui_hrd_parameters_present_flag) };
+            vui_hrd_parameters_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(14usize, 1u8, {
+            let bitstream_restriction_flag: u32 =
+                unsafe { ::std::mem::transmute(bitstream_restriction_flag) };
+            bitstream_restriction_flag as u64
+        });
+        __bindgen_bitfield_unit.set(15usize, 1u8, {
+            let tiles_fixed_structure_flag: u32 =
+                unsafe { ::std::mem::transmute(tiles_fixed_structure_flag) };
+            tiles_fixed_structure_flag as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 1u8, {
+            let motion_vectors_over_pic_boundaries_flag: u32 =
+                unsafe { ::std::mem::transmute(motion_vectors_over_pic_boundaries_flag) };
+            motion_vectors_over_pic_boundaries_flag as u64
+        });
+        __bindgen_bitfield_unit.set(17usize, 1u8, {
+            let restricted_ref_pic_lists_flag: u32 =
+                unsafe { ::std::mem::transmute(restricted_ref_pic_lists_flag) };
+            restricted_ref_pic_lists_flag as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265SequenceParameterSetVui {
+    pub flags: StdVideoH265SpsVuiFlags,
+    pub aspect_ratio_idc: StdVideoH265AspectRatioIdc,
+    pub sar_width: u16,
+    pub sar_height: u16,
+    pub video_format: u8,
+    pub colour_primaries: u8,
+    pub transfer_characteristics: u8,
+    pub matrix_coeffs: u8,
+    pub chroma_sample_loc_type_top_field: u8,
+    pub chroma_sample_loc_type_bottom_field: u8,
+    pub reserved1: u8,
+    pub reserved2: u8,
+    pub def_disp_win_left_offset: u16,
+    pub def_disp_win_right_offset: u16,
+    pub def_disp_win_top_offset: u16,
+    pub def_disp_win_bottom_offset: u16,
+    pub vui_num_units_in_tick: u32,
+    pub vui_time_scale: u32,
+    pub vui_num_ticks_poc_diff_one_minus1: u32,
+    pub min_spatial_segmentation_idc: u16,
+    pub reserved3: u16,
+    pub max_bytes_per_pic_denom: u8,
+    pub max_bits_per_min_cu_denom: u8,
+    pub log2_max_mv_length_horizontal: u8,
+    pub log2_max_mv_length_vertical: u8,
+    pub pHrdParameters: *const StdVideoH265HrdParameters,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265SequenceParameterSetVui() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265SequenceParameterSetVui> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265SequenceParameterSetVui>(),
+        56usize,
+        concat!("Size of: ", stringify!(StdVideoH265SequenceParameterSetVui))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265SequenceParameterSetVui>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoH265SequenceParameterSetVui)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).aspect_ratio_idc) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(aspect_ratio_idc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sar_width) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(sar_width)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sar_height) as usize - ptr as usize },
+        10usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(sar_height)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).video_format) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(video_format)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).colour_primaries) as usize - ptr as usize },
+        13usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(colour_primaries)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).transfer_characteristics) as usize - ptr as usize },
+        14usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(transfer_characteristics)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).matrix_coeffs) as usize - ptr as usize },
+        15usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(matrix_coeffs)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).chroma_sample_loc_type_top_field) as usize - ptr as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(chroma_sample_loc_type_top_field)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).chroma_sample_loc_type_bottom_field) as usize - ptr as usize
+        },
+        17usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(chroma_sample_loc_type_bottom_field)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        18usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
+        19usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(reserved2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).def_disp_win_left_offset) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(def_disp_win_left_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).def_disp_win_right_offset) as usize - ptr as usize },
+        22usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(def_disp_win_right_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).def_disp_win_top_offset) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(def_disp_win_top_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).def_disp_win_bottom_offset) as usize - ptr as usize },
+        26usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(def_disp_win_bottom_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vui_num_units_in_tick) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(vui_num_units_in_tick)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vui_time_scale) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(vui_time_scale)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).vui_num_ticks_poc_diff_one_minus1) as usize - ptr as usize
+        },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(vui_num_ticks_poc_diff_one_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).min_spatial_segmentation_idc) as usize - ptr as usize
+        },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(min_spatial_segmentation_idc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize },
+        42usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(reserved3)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).max_bytes_per_pic_denom) as usize - ptr as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(max_bytes_per_pic_denom)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).max_bits_per_min_cu_denom) as usize - ptr as usize },
+        45usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(max_bits_per_min_cu_denom)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_max_mv_length_horizontal) as usize - ptr as usize
+        },
+        46usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(log2_max_mv_length_horizontal)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).log2_max_mv_length_vertical) as usize - ptr as usize },
+        47usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(log2_max_mv_length_vertical)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pHrdParameters) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSetVui),
+            "::",
+            stringify!(pHrdParameters)
+        )
+    );
+}
+impl Default for StdVideoH265SequenceParameterSetVui {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265PredictorPaletteEntries {
+    pub PredictorPaletteEntries: [[u16; 128usize]; 3usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265PredictorPaletteEntries() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265PredictorPaletteEntries> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265PredictorPaletteEntries>(),
+        768usize,
+        concat!("Size of: ", stringify!(StdVideoH265PredictorPaletteEntries))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265PredictorPaletteEntries>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoH265PredictorPaletteEntries)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).PredictorPaletteEntries) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PredictorPaletteEntries),
+            "::",
+            stringify!(PredictorPaletteEntries)
+        )
+    );
+}
+impl Default for StdVideoH265PredictorPaletteEntries {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265SpsFlags {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265SpsFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265SpsFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoH265SpsFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265SpsFlags>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265SpsFlags))
+    );
+}
+impl StdVideoH265SpsFlags {
+    #[inline]
+    pub fn sps_temporal_id_nesting_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_temporal_id_nesting_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn separate_colour_plane_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_separate_colour_plane_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn conformance_window_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_conformance_window_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sps_sub_layer_ordering_info_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_sub_layer_ordering_info_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn scaling_list_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_scaling_list_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sps_scaling_list_data_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_scaling_list_data_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn amp_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_amp_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sample_adaptive_offset_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sample_adaptive_offset_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pcm_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pcm_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pcm_loop_filter_disabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pcm_loop_filter_disabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn long_term_ref_pics_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_long_term_ref_pics_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sps_temporal_mvp_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_temporal_mvp_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(11usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn strong_intra_smoothing_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_strong_intra_smoothing_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn vui_parameters_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(13usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_vui_parameters_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(13usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sps_extension_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_extension_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(14usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sps_range_extension_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_range_extension_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(15usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn transform_skip_rotation_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_transform_skip_rotation_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn transform_skip_context_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_transform_skip_context_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(17usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn implicit_rdpcm_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(18usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_implicit_rdpcm_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(18usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn explicit_rdpcm_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(19usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_explicit_rdpcm_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(19usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn extended_precision_processing_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_extended_precision_processing_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(20usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn intra_smoothing_disabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(21usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_intra_smoothing_disabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(21usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn high_precision_offsets_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(22usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_high_precision_offsets_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(22usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn persistent_rice_adaptation_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(23usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_persistent_rice_adaptation_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(23usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cabac_bypass_alignment_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cabac_bypass_alignment_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sps_scc_extension_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(25usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_scc_extension_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(25usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sps_curr_pic_ref_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(26usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_curr_pic_ref_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(26usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn palette_mode_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(27usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_palette_mode_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(27usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sps_palette_predictor_initializers_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(28usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sps_palette_predictor_initializers_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(28usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn intra_boundary_filtering_disabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(29usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_intra_boundary_filtering_disabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(29usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        sps_temporal_id_nesting_flag: u32,
+        separate_colour_plane_flag: u32,
+        conformance_window_flag: u32,
+        sps_sub_layer_ordering_info_present_flag: u32,
+        scaling_list_enabled_flag: u32,
+        sps_scaling_list_data_present_flag: u32,
+        amp_enabled_flag: u32,
+        sample_adaptive_offset_enabled_flag: u32,
+        pcm_enabled_flag: u32,
+        pcm_loop_filter_disabled_flag: u32,
+        long_term_ref_pics_present_flag: u32,
+        sps_temporal_mvp_enabled_flag: u32,
+        strong_intra_smoothing_enabled_flag: u32,
+        vui_parameters_present_flag: u32,
+        sps_extension_present_flag: u32,
+        sps_range_extension_flag: u32,
+        transform_skip_rotation_enabled_flag: u32,
+        transform_skip_context_enabled_flag: u32,
+        implicit_rdpcm_enabled_flag: u32,
+        explicit_rdpcm_enabled_flag: u32,
+        extended_precision_processing_flag: u32,
+        intra_smoothing_disabled_flag: u32,
+        high_precision_offsets_enabled_flag: u32,
+        persistent_rice_adaptation_enabled_flag: u32,
+        cabac_bypass_alignment_enabled_flag: u32,
+        sps_scc_extension_flag: u32,
+        sps_curr_pic_ref_enabled_flag: u32,
+        palette_mode_enabled_flag: u32,
+        sps_palette_predictor_initializers_present_flag: u32,
+        intra_boundary_filtering_disabled_flag: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let sps_temporal_id_nesting_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_temporal_id_nesting_flag) };
+            sps_temporal_id_nesting_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let separate_colour_plane_flag: u32 =
+                unsafe { ::std::mem::transmute(separate_colour_plane_flag) };
+            separate_colour_plane_flag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let conformance_window_flag: u32 =
+                unsafe { ::std::mem::transmute(conformance_window_flag) };
+            conformance_window_flag as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let sps_sub_layer_ordering_info_present_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_sub_layer_ordering_info_present_flag) };
+            sps_sub_layer_ordering_info_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let scaling_list_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(scaling_list_enabled_flag) };
+            scaling_list_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let sps_scaling_list_data_present_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_scaling_list_data_present_flag) };
+            sps_scaling_list_data_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let amp_enabled_flag: u32 = unsafe { ::std::mem::transmute(amp_enabled_flag) };
+            amp_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let sample_adaptive_offset_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(sample_adaptive_offset_enabled_flag) };
+            sample_adaptive_offset_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let pcm_enabled_flag: u32 = unsafe { ::std::mem::transmute(pcm_enabled_flag) };
+            pcm_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 1u8, {
+            let pcm_loop_filter_disabled_flag: u32 =
+                unsafe { ::std::mem::transmute(pcm_loop_filter_disabled_flag) };
+            pcm_loop_filter_disabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 1u8, {
+            let long_term_ref_pics_present_flag: u32 =
+                unsafe { ::std::mem::transmute(long_term_ref_pics_present_flag) };
+            long_term_ref_pics_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(11usize, 1u8, {
+            let sps_temporal_mvp_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_temporal_mvp_enabled_flag) };
+            sps_temporal_mvp_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 1u8, {
+            let strong_intra_smoothing_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(strong_intra_smoothing_enabled_flag) };
+            strong_intra_smoothing_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(13usize, 1u8, {
+            let vui_parameters_present_flag: u32 =
+                unsafe { ::std::mem::transmute(vui_parameters_present_flag) };
+            vui_parameters_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(14usize, 1u8, {
+            let sps_extension_present_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_extension_present_flag) };
+            sps_extension_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(15usize, 1u8, {
+            let sps_range_extension_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_range_extension_flag) };
+            sps_range_extension_flag as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 1u8, {
+            let transform_skip_rotation_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(transform_skip_rotation_enabled_flag) };
+            transform_skip_rotation_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(17usize, 1u8, {
+            let transform_skip_context_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(transform_skip_context_enabled_flag) };
+            transform_skip_context_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(18usize, 1u8, {
+            let implicit_rdpcm_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(implicit_rdpcm_enabled_flag) };
+            implicit_rdpcm_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(19usize, 1u8, {
+            let explicit_rdpcm_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(explicit_rdpcm_enabled_flag) };
+            explicit_rdpcm_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(20usize, 1u8, {
+            let extended_precision_processing_flag: u32 =
+                unsafe { ::std::mem::transmute(extended_precision_processing_flag) };
+            extended_precision_processing_flag as u64
+        });
+        __bindgen_bitfield_unit.set(21usize, 1u8, {
+            let intra_smoothing_disabled_flag: u32 =
+                unsafe { ::std::mem::transmute(intra_smoothing_disabled_flag) };
+            intra_smoothing_disabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(22usize, 1u8, {
+            let high_precision_offsets_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(high_precision_offsets_enabled_flag) };
+            high_precision_offsets_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(23usize, 1u8, {
+            let persistent_rice_adaptation_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(persistent_rice_adaptation_enabled_flag) };
+            persistent_rice_adaptation_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 1u8, {
+            let cabac_bypass_alignment_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(cabac_bypass_alignment_enabled_flag) };
+            cabac_bypass_alignment_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(25usize, 1u8, {
+            let sps_scc_extension_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_scc_extension_flag) };
+            sps_scc_extension_flag as u64
+        });
+        __bindgen_bitfield_unit.set(26usize, 1u8, {
+            let sps_curr_pic_ref_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_curr_pic_ref_enabled_flag) };
+            sps_curr_pic_ref_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(27usize, 1u8, {
+            let palette_mode_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(palette_mode_enabled_flag) };
+            palette_mode_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(28usize, 1u8, {
+            let sps_palette_predictor_initializers_present_flag: u32 =
+                unsafe { ::std::mem::transmute(sps_palette_predictor_initializers_present_flag) };
+            sps_palette_predictor_initializers_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(29usize, 1u8, {
+            let intra_boundary_filtering_disabled_flag: u32 =
+                unsafe { ::std::mem::transmute(intra_boundary_filtering_disabled_flag) };
+            intra_boundary_filtering_disabled_flag as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265ShortTermRefPicSetFlags {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
+    pub __bindgen_padding_0: [u8; 3usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265ShortTermRefPicSetFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265ShortTermRefPicSetFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoH265ShortTermRefPicSetFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265ShortTermRefPicSetFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoH265ShortTermRefPicSetFlags)
+        )
+    );
+}
+impl StdVideoH265ShortTermRefPicSetFlags {
+    #[inline]
+    pub fn inter_ref_pic_set_prediction_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_inter_ref_pic_set_prediction_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn delta_rps_sign(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_delta_rps_sign(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        inter_ref_pic_set_prediction_flag: u32,
+        delta_rps_sign: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let inter_ref_pic_set_prediction_flag: u32 =
+                unsafe { ::std::mem::transmute(inter_ref_pic_set_prediction_flag) };
+            inter_ref_pic_set_prediction_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let delta_rps_sign: u32 = unsafe { ::std::mem::transmute(delta_rps_sign) };
+            delta_rps_sign as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265ShortTermRefPicSet {
+    pub flags: StdVideoH265ShortTermRefPicSetFlags,
+    pub delta_idx_minus1: u32,
+    pub use_delta_flag: u16,
+    pub abs_delta_rps_minus1: u16,
+    pub used_by_curr_pic_flag: u16,
+    pub used_by_curr_pic_s0_flag: u16,
+    pub used_by_curr_pic_s1_flag: u16,
+    pub reserved1: u16,
+    pub reserved2: u8,
+    pub reserved3: u8,
+    pub num_negative_pics: u8,
+    pub num_positive_pics: u8,
+    pub delta_poc_s0_minus1: [u16; 16usize],
+    pub delta_poc_s1_minus1: [u16; 16usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265ShortTermRefPicSet() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265ShortTermRefPicSet> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265ShortTermRefPicSet>(),
+        88usize,
+        concat!("Size of: ", stringify!(StdVideoH265ShortTermRefPicSet))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265ShortTermRefPicSet>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265ShortTermRefPicSet))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_idx_minus1) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(delta_idx_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).use_delta_flag) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(use_delta_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).abs_delta_rps_minus1) as usize - ptr as usize },
+        10usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(abs_delta_rps_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).used_by_curr_pic_flag) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(used_by_curr_pic_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).used_by_curr_pic_s0_flag) as usize - ptr as usize },
+        14usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(used_by_curr_pic_s0_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).used_by_curr_pic_s1_flag) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(used_by_curr_pic_s1_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        18usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(reserved2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize },
+        21usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(reserved3)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_negative_pics) as usize - ptr as usize },
+        22usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(num_negative_pics)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_positive_pics) as usize - ptr as usize },
+        23usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(num_positive_pics)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_poc_s0_minus1) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(delta_poc_s0_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_poc_s1_minus1) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265ShortTermRefPicSet),
+            "::",
+            stringify!(delta_poc_s1_minus1)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265LongTermRefPicsSps {
+    pub used_by_curr_pic_lt_sps_flag: u32,
+    pub lt_ref_pic_poc_lsb_sps: [u32; 32usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265LongTermRefPicsSps() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265LongTermRefPicsSps> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265LongTermRefPicsSps>(),
+        132usize,
+        concat!("Size of: ", stringify!(StdVideoH265LongTermRefPicsSps))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265LongTermRefPicsSps>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265LongTermRefPicsSps))
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).used_by_curr_pic_lt_sps_flag) as usize - ptr as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265LongTermRefPicsSps),
+            "::",
+            stringify!(used_by_curr_pic_lt_sps_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lt_ref_pic_poc_lsb_sps) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265LongTermRefPicsSps),
+            "::",
+            stringify!(lt_ref_pic_poc_lsb_sps)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265SequenceParameterSet {
+    pub flags: StdVideoH265SpsFlags,
+    pub chroma_format_idc: StdVideoH265ChromaFormatIdc,
+    pub pic_width_in_luma_samples: u32,
+    pub pic_height_in_luma_samples: u32,
+    pub sps_video_parameter_set_id: u8,
+    pub sps_max_sub_layers_minus1: u8,
+    pub sps_seq_parameter_set_id: u8,
+    pub bit_depth_luma_minus8: u8,
+    pub bit_depth_chroma_minus8: u8,
+    pub log2_max_pic_order_cnt_lsb_minus4: u8,
+    pub log2_min_luma_coding_block_size_minus3: u8,
+    pub log2_diff_max_min_luma_coding_block_size: u8,
+    pub log2_min_luma_transform_block_size_minus2: u8,
+    pub log2_diff_max_min_luma_transform_block_size: u8,
+    pub max_transform_hierarchy_depth_inter: u8,
+    pub max_transform_hierarchy_depth_intra: u8,
+    pub num_short_term_ref_pic_sets: u8,
+    pub num_long_term_ref_pics_sps: u8,
+    pub pcm_sample_bit_depth_luma_minus1: u8,
+    pub pcm_sample_bit_depth_chroma_minus1: u8,
+    pub log2_min_pcm_luma_coding_block_size_minus3: u8,
+    pub log2_diff_max_min_pcm_luma_coding_block_size: u8,
+    pub reserved1: u8,
+    pub reserved2: u8,
+    pub palette_max_size: u8,
+    pub delta_palette_max_predictor_size: u8,
+    pub motion_vector_resolution_control_idc: u8,
+    pub sps_num_palette_predictor_initializers_minus1: u8,
+    pub conf_win_left_offset: u32,
+    pub conf_win_right_offset: u32,
+    pub conf_win_top_offset: u32,
+    pub conf_win_bottom_offset: u32,
+    pub pProfileTierLevel: *const StdVideoH265ProfileTierLevel,
+    pub pDecPicBufMgr: *const StdVideoH265DecPicBufMgr,
+    pub pScalingLists: *const StdVideoH265ScalingLists,
+    pub pShortTermRefPicSet: *const StdVideoH265ShortTermRefPicSet,
+    pub pLongTermRefPicsSps: *const StdVideoH265LongTermRefPicsSps,
+    pub pSequenceParameterSetVui: *const StdVideoH265SequenceParameterSetVui,
+    pub pPredictorPaletteEntries: *const StdVideoH265PredictorPaletteEntries,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265SequenceParameterSet() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265SequenceParameterSet> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265SequenceParameterSet>(),
+        112usize,
+        concat!("Size of: ", stringify!(StdVideoH265SequenceParameterSet))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265SequenceParameterSet>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoH265SequenceParameterSet)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_format_idc) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(chroma_format_idc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pic_width_in_luma_samples) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pic_width_in_luma_samples)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pic_height_in_luma_samples) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pic_height_in_luma_samples)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sps_video_parameter_set_id) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(sps_video_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sps_max_sub_layers_minus1) as usize - ptr as usize },
+        17usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(sps_max_sub_layers_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sps_seq_parameter_set_id) as usize - ptr as usize },
+        18usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(sps_seq_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).bit_depth_luma_minus8) as usize - ptr as usize },
+        19usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(bit_depth_luma_minus8)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).bit_depth_chroma_minus8) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(bit_depth_chroma_minus8)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_max_pic_order_cnt_lsb_minus4) as usize - ptr as usize
+        },
+        21usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(log2_max_pic_order_cnt_lsb_minus4)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_min_luma_coding_block_size_minus3) as usize
+                - ptr as usize
+        },
+        22usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(log2_min_luma_coding_block_size_minus3)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_diff_max_min_luma_coding_block_size) as usize
+                - ptr as usize
+        },
+        23usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(log2_diff_max_min_luma_coding_block_size)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_min_luma_transform_block_size_minus2) as usize
+                - ptr as usize
+        },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(log2_min_luma_transform_block_size_minus2)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_diff_max_min_luma_transform_block_size) as usize
+                - ptr as usize
+        },
+        25usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(log2_diff_max_min_luma_transform_block_size)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).max_transform_hierarchy_depth_inter) as usize - ptr as usize
+        },
+        26usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(max_transform_hierarchy_depth_inter)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).max_transform_hierarchy_depth_intra) as usize - ptr as usize
+        },
+        27usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(max_transform_hierarchy_depth_intra)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_short_term_ref_pic_sets) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(num_short_term_ref_pic_sets)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_long_term_ref_pics_sps) as usize - ptr as usize },
+        29usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(num_long_term_ref_pics_sps)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).pcm_sample_bit_depth_luma_minus1) as usize - ptr as usize
+        },
+        30usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pcm_sample_bit_depth_luma_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).pcm_sample_bit_depth_chroma_minus1) as usize - ptr as usize
+        },
+        31usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pcm_sample_bit_depth_chroma_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_min_pcm_luma_coding_block_size_minus3) as usize
+                - ptr as usize
+        },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(log2_min_pcm_luma_coding_block_size_minus3)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_diff_max_min_pcm_luma_coding_block_size) as usize
+                - ptr as usize
+        },
+        33usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(log2_diff_max_min_pcm_luma_coding_block_size)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        34usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
+        35usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(reserved2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).palette_max_size) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(palette_max_size)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).delta_palette_max_predictor_size) as usize - ptr as usize
+        },
+        37usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(delta_palette_max_predictor_size)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).motion_vector_resolution_control_idc) as usize
+                - ptr as usize
+        },
+        38usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(motion_vector_resolution_control_idc)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).sps_num_palette_predictor_initializers_minus1) as usize
+                - ptr as usize
+        },
+        39usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(sps_num_palette_predictor_initializers_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).conf_win_left_offset) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(conf_win_left_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).conf_win_right_offset) as usize - ptr as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(conf_win_right_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).conf_win_top_offset) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(conf_win_top_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).conf_win_bottom_offset) as usize - ptr as usize },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(conf_win_bottom_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pProfileTierLevel) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pProfileTierLevel)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pDecPicBufMgr) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pDecPicBufMgr)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pScalingLists) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pScalingLists)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pShortTermRefPicSet) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pShortTermRefPicSet)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pLongTermRefPicsSps) as usize - ptr as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pLongTermRefPicsSps)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pSequenceParameterSetVui) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pSequenceParameterSetVui)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pPredictorPaletteEntries) as usize - ptr as usize },
+        104usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265SequenceParameterSet),
+            "::",
+            stringify!(pPredictorPaletteEntries)
+        )
+    );
+}
+impl Default for StdVideoH265SequenceParameterSet {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265PpsFlags {
+    pub _bitfield_align_1: [u8; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265PpsFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265PpsFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoH265PpsFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265PpsFlags>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoH265PpsFlags))
+    );
+}
+impl StdVideoH265PpsFlags {
+    #[inline]
+    pub fn dependent_slice_segments_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_dependent_slice_segments_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn output_flag_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_output_flag_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn sign_data_hiding_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_sign_data_hiding_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cabac_init_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cabac_init_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn constrained_intra_pred_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_constrained_intra_pred_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn transform_skip_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_transform_skip_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cu_qp_delta_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cu_qp_delta_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_slice_chroma_qp_offsets_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_slice_chroma_qp_offsets_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn weighted_pred_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_weighted_pred_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn weighted_bipred_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_weighted_bipred_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn transquant_bypass_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_transquant_bypass_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn tiles_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_tiles_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(11usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn entropy_coding_sync_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_entropy_coding_sync_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn uniform_spacing_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(13usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_uniform_spacing_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(13usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn loop_filter_across_tiles_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_loop_filter_across_tiles_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(14usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_loop_filter_across_slices_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_loop_filter_across_slices_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(15usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn deblocking_filter_control_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_deblocking_filter_control_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(16usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn deblocking_filter_override_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_deblocking_filter_override_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(17usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_deblocking_filter_disabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(18usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_deblocking_filter_disabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(18usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_scaling_list_data_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(19usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_scaling_list_data_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(19usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn lists_modification_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_lists_modification_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(20usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn slice_segment_header_extension_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(21usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_slice_segment_header_extension_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(21usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_extension_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(22usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_extension_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(22usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cross_component_prediction_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(23usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cross_component_prediction_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(23usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn chroma_qp_offset_list_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_chroma_qp_offset_list_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(24usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_curr_pic_ref_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(25usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_curr_pic_ref_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(25usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn residual_adaptive_colour_transform_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(26usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_residual_adaptive_colour_transform_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(26usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_slice_act_qp_offsets_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(27usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_slice_act_qp_offsets_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(27usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_palette_predictor_initializers_present_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(28usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_palette_predictor_initializers_present_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(28usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn monochrome_palette_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(29usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_monochrome_palette_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(29usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pps_range_extension_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(30usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pps_range_extension_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(30usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        dependent_slice_segments_enabled_flag: u32,
+        output_flag_present_flag: u32,
+        sign_data_hiding_enabled_flag: u32,
+        cabac_init_present_flag: u32,
+        constrained_intra_pred_flag: u32,
+        transform_skip_enabled_flag: u32,
+        cu_qp_delta_enabled_flag: u32,
+        pps_slice_chroma_qp_offsets_present_flag: u32,
+        weighted_pred_flag: u32,
+        weighted_bipred_flag: u32,
+        transquant_bypass_enabled_flag: u32,
+        tiles_enabled_flag: u32,
+        entropy_coding_sync_enabled_flag: u32,
+        uniform_spacing_flag: u32,
+        loop_filter_across_tiles_enabled_flag: u32,
+        pps_loop_filter_across_slices_enabled_flag: u32,
+        deblocking_filter_control_present_flag: u32,
+        deblocking_filter_override_enabled_flag: u32,
+        pps_deblocking_filter_disabled_flag: u32,
+        pps_scaling_list_data_present_flag: u32,
+        lists_modification_present_flag: u32,
+        slice_segment_header_extension_present_flag: u32,
+        pps_extension_present_flag: u32,
+        cross_component_prediction_enabled_flag: u32,
+        chroma_qp_offset_list_enabled_flag: u32,
+        pps_curr_pic_ref_enabled_flag: u32,
+        residual_adaptive_colour_transform_enabled_flag: u32,
+        pps_slice_act_qp_offsets_present_flag: u32,
+        pps_palette_predictor_initializers_present_flag: u32,
+        monochrome_palette_flag: u32,
+        pps_range_extension_flag: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let dependent_slice_segments_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(dependent_slice_segments_enabled_flag) };
+            dependent_slice_segments_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let output_flag_present_flag: u32 =
+                unsafe { ::std::mem::transmute(output_flag_present_flag) };
+            output_flag_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let sign_data_hiding_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(sign_data_hiding_enabled_flag) };
+            sign_data_hiding_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let cabac_init_present_flag: u32 =
+                unsafe { ::std::mem::transmute(cabac_init_present_flag) };
+            cabac_init_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let constrained_intra_pred_flag: u32 =
+                unsafe { ::std::mem::transmute(constrained_intra_pred_flag) };
+            constrained_intra_pred_flag as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let transform_skip_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(transform_skip_enabled_flag) };
+            transform_skip_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let cu_qp_delta_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(cu_qp_delta_enabled_flag) };
+            cu_qp_delta_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let pps_slice_chroma_qp_offsets_present_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_slice_chroma_qp_offsets_present_flag) };
+            pps_slice_chroma_qp_offsets_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let weighted_pred_flag: u32 = unsafe { ::std::mem::transmute(weighted_pred_flag) };
+            weighted_pred_flag as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 1u8, {
+            let weighted_bipred_flag: u32 = unsafe { ::std::mem::transmute(weighted_bipred_flag) };
+            weighted_bipred_flag as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 1u8, {
+            let transquant_bypass_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(transquant_bypass_enabled_flag) };
+            transquant_bypass_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(11usize, 1u8, {
+            let tiles_enabled_flag: u32 = unsafe { ::std::mem::transmute(tiles_enabled_flag) };
+            tiles_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 1u8, {
+            let entropy_coding_sync_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(entropy_coding_sync_enabled_flag) };
+            entropy_coding_sync_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(13usize, 1u8, {
+            let uniform_spacing_flag: u32 = unsafe { ::std::mem::transmute(uniform_spacing_flag) };
+            uniform_spacing_flag as u64
+        });
+        __bindgen_bitfield_unit.set(14usize, 1u8, {
+            let loop_filter_across_tiles_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(loop_filter_across_tiles_enabled_flag) };
+            loop_filter_across_tiles_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(15usize, 1u8, {
+            let pps_loop_filter_across_slices_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_loop_filter_across_slices_enabled_flag) };
+            pps_loop_filter_across_slices_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(16usize, 1u8, {
+            let deblocking_filter_control_present_flag: u32 =
+                unsafe { ::std::mem::transmute(deblocking_filter_control_present_flag) };
+            deblocking_filter_control_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(17usize, 1u8, {
+            let deblocking_filter_override_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(deblocking_filter_override_enabled_flag) };
+            deblocking_filter_override_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(18usize, 1u8, {
+            let pps_deblocking_filter_disabled_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_deblocking_filter_disabled_flag) };
+            pps_deblocking_filter_disabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(19usize, 1u8, {
+            let pps_scaling_list_data_present_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_scaling_list_data_present_flag) };
+            pps_scaling_list_data_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(20usize, 1u8, {
+            let lists_modification_present_flag: u32 =
+                unsafe { ::std::mem::transmute(lists_modification_present_flag) };
+            lists_modification_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(21usize, 1u8, {
+            let slice_segment_header_extension_present_flag: u32 =
+                unsafe { ::std::mem::transmute(slice_segment_header_extension_present_flag) };
+            slice_segment_header_extension_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(22usize, 1u8, {
+            let pps_extension_present_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_extension_present_flag) };
+            pps_extension_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(23usize, 1u8, {
+            let cross_component_prediction_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(cross_component_prediction_enabled_flag) };
+            cross_component_prediction_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(24usize, 1u8, {
+            let chroma_qp_offset_list_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(chroma_qp_offset_list_enabled_flag) };
+            chroma_qp_offset_list_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(25usize, 1u8, {
+            let pps_curr_pic_ref_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_curr_pic_ref_enabled_flag) };
+            pps_curr_pic_ref_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(26usize, 1u8, {
+            let residual_adaptive_colour_transform_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(residual_adaptive_colour_transform_enabled_flag) };
+            residual_adaptive_colour_transform_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(27usize, 1u8, {
+            let pps_slice_act_qp_offsets_present_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_slice_act_qp_offsets_present_flag) };
+            pps_slice_act_qp_offsets_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(28usize, 1u8, {
+            let pps_palette_predictor_initializers_present_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_palette_predictor_initializers_present_flag) };
+            pps_palette_predictor_initializers_present_flag as u64
+        });
+        __bindgen_bitfield_unit.set(29usize, 1u8, {
+            let monochrome_palette_flag: u32 =
+                unsafe { ::std::mem::transmute(monochrome_palette_flag) };
+            monochrome_palette_flag as u64
+        });
+        __bindgen_bitfield_unit.set(30usize, 1u8, {
+            let pps_range_extension_flag: u32 =
+                unsafe { ::std::mem::transmute(pps_range_extension_flag) };
+            pps_range_extension_flag as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoH265PictureParameterSet {
+    pub flags: StdVideoH265PpsFlags,
+    pub pps_pic_parameter_set_id: u8,
+    pub pps_seq_parameter_set_id: u8,
+    pub sps_video_parameter_set_id: u8,
+    pub num_extra_slice_header_bits: u8,
+    pub num_ref_idx_l0_default_active_minus1: u8,
+    pub num_ref_idx_l1_default_active_minus1: u8,
+    pub init_qp_minus26: i8,
+    pub diff_cu_qp_delta_depth: u8,
+    pub pps_cb_qp_offset: i8,
+    pub pps_cr_qp_offset: i8,
+    pub pps_beta_offset_div2: i8,
+    pub pps_tc_offset_div2: i8,
+    pub log2_parallel_merge_level_minus2: u8,
+    pub log2_max_transform_skip_block_size_minus2: u8,
+    pub diff_cu_chroma_qp_offset_depth: u8,
+    pub chroma_qp_offset_list_len_minus1: u8,
+    pub cb_qp_offset_list: [i8; 6usize],
+    pub cr_qp_offset_list: [i8; 6usize],
+    pub log2_sao_offset_scale_luma: u8,
+    pub log2_sao_offset_scale_chroma: u8,
+    pub pps_act_y_qp_offset_plus5: i8,
+    pub pps_act_cb_qp_offset_plus5: i8,
+    pub pps_act_cr_qp_offset_plus3: i8,
+    pub pps_num_palette_predictor_initializers: u8,
+    pub luma_bit_depth_entry_minus8: u8,
+    pub chroma_bit_depth_entry_minus8: u8,
+    pub num_tile_columns_minus1: u8,
+    pub num_tile_rows_minus1: u8,
+    pub reserved1: u8,
+    pub reserved2: u8,
+    pub column_width_minus1: [u16; 19usize],
+    pub row_height_minus1: [u16; 21usize],
+    pub reserved3: u32,
+    pub pScalingLists: *const StdVideoH265ScalingLists,
+    pub pPredictorPaletteEntries: *const StdVideoH265PredictorPaletteEntries,
+}
+#[test]
+fn bindgen_test_layout_StdVideoH265PictureParameterSet() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265PictureParameterSet> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoH265PictureParameterSet>(),
+        144usize,
+        concat!("Size of: ", stringify!(StdVideoH265PictureParameterSet))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoH265PictureParameterSet>(),
+        8usize,
+        concat!("Alignment of ", stringify!(StdVideoH265PictureParameterSet))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_pic_parameter_set_id) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_pic_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_seq_parameter_set_id) as usize - ptr as usize },
+        5usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_seq_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sps_video_parameter_set_id) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(sps_video_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_extra_slice_header_bits) as usize - ptr as usize },
+        7usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(num_extra_slice_header_bits)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).num_ref_idx_l0_default_active_minus1) as usize
+                - ptr as usize
+        },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(num_ref_idx_l0_default_active_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).num_ref_idx_l1_default_active_minus1) as usize
+                - ptr as usize
+        },
+        9usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(num_ref_idx_l1_default_active_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).init_qp_minus26) as usize - ptr as usize },
+        10usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(init_qp_minus26)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).diff_cu_qp_delta_depth) as usize - ptr as usize },
+        11usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(diff_cu_qp_delta_depth)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_cb_qp_offset) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_cb_qp_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_cr_qp_offset) as usize - ptr as usize },
+        13usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_cr_qp_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_beta_offset_div2) as usize - ptr as usize },
+        14usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_beta_offset_div2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_tc_offset_div2) as usize - ptr as usize },
+        15usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_tc_offset_div2)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_parallel_merge_level_minus2) as usize - ptr as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(log2_parallel_merge_level_minus2)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_max_transform_skip_block_size_minus2) as usize
+                - ptr as usize
+        },
+        17usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(log2_max_transform_skip_block_size_minus2)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).diff_cu_chroma_qp_offset_depth) as usize - ptr as usize
+        },
+        18usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(diff_cu_chroma_qp_offset_depth)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).chroma_qp_offset_list_len_minus1) as usize - ptr as usize
+        },
+        19usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(chroma_qp_offset_list_len_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cb_qp_offset_list) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(cb_qp_offset_list)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cr_qp_offset_list) as usize - ptr as usize },
+        26usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(cr_qp_offset_list)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).log2_sao_offset_scale_luma) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(log2_sao_offset_scale_luma)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).log2_sao_offset_scale_chroma) as usize - ptr as usize
+        },
+        33usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(log2_sao_offset_scale_chroma)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_act_y_qp_offset_plus5) as usize - ptr as usize },
+        34usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_act_y_qp_offset_plus5)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_act_cb_qp_offset_plus5) as usize - ptr as usize },
+        35usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_act_cb_qp_offset_plus5)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_act_cr_qp_offset_plus3) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_act_cr_qp_offset_plus3)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).pps_num_palette_predictor_initializers) as usize
+                - ptr as usize
+        },
+        37usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pps_num_palette_predictor_initializers)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_bit_depth_entry_minus8) as usize - ptr as usize },
+        38usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(luma_bit_depth_entry_minus8)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).chroma_bit_depth_entry_minus8) as usize - ptr as usize
+        },
+        39usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(chroma_bit_depth_entry_minus8)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_tile_columns_minus1) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(num_tile_columns_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_tile_rows_minus1) as usize - ptr as usize },
+        41usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(num_tile_rows_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        42usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
+        43usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(reserved2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).column_width_minus1) as usize - ptr as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(column_width_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).row_height_minus1) as usize - ptr as usize },
+        82usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(row_height_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize },
+        124usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(reserved3)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pScalingLists) as usize - ptr as usize },
+        128usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pScalingLists)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pPredictorPaletteEntries) as usize - ptr as usize },
+        136usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoH265PictureParameterSet),
+            "::",
+            stringify!(pPredictorPaletteEntries)
+        )
+    );
+}
+impl Default for StdVideoH265PictureParameterSet {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265WeightTableFlags {
+    pub luma_weight_l0_flag: u16,
+    pub chroma_weight_l0_flag: u16,
+    pub luma_weight_l1_flag: u16,
+    pub chroma_weight_l1_flag: u16,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265WeightTableFlags() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH265WeightTableFlags> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265WeightTableFlags>(),
+        8usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH265WeightTableFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265WeightTableFlags>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH265WeightTableFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_weight_l0_flag) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTableFlags),
+            "::",
+            stringify!(luma_weight_l0_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_weight_l0_flag) as usize - ptr as usize },
+        2usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTableFlags),
+            "::",
+            stringify!(chroma_weight_l0_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_weight_l1_flag) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTableFlags),
+            "::",
+            stringify!(luma_weight_l1_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).chroma_weight_l1_flag) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTableFlags),
+            "::",
+            stringify!(chroma_weight_l1_flag)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265WeightTable {
+    pub flags: StdVideoEncodeH265WeightTableFlags,
+    pub luma_log2_weight_denom: u8,
+    pub delta_chroma_log2_weight_denom: i8,
+    pub delta_luma_weight_l0: [i8; 15usize],
+    pub luma_offset_l0: [i8; 15usize],
+    pub delta_chroma_weight_l0: [[i8; 2usize]; 15usize],
+    pub delta_chroma_offset_l0: [[i8; 2usize]; 15usize],
+    pub delta_luma_weight_l1: [i8; 15usize],
+    pub luma_offset_l1: [i8; 15usize],
+    pub delta_chroma_weight_l1: [[i8; 2usize]; 15usize],
+    pub delta_chroma_offset_l1: [[i8; 2usize]; 15usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265WeightTable() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH265WeightTable> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265WeightTable>(),
+        190usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH265WeightTable))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265WeightTable>(),
+        2usize,
+        concat!("Alignment of ", stringify!(StdVideoEncodeH265WeightTable))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_log2_weight_denom) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(luma_log2_weight_denom)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).delta_chroma_log2_weight_denom) as usize - ptr as usize
+        },
+        9usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(delta_chroma_log2_weight_denom)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_luma_weight_l0) as usize - ptr as usize },
+        10usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(delta_luma_weight_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_offset_l0) as usize - ptr as usize },
+        25usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(luma_offset_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_chroma_weight_l0) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(delta_chroma_weight_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_chroma_offset_l0) as usize - ptr as usize },
+        70usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(delta_chroma_offset_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_luma_weight_l1) as usize - ptr as usize },
+        100usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(delta_luma_weight_l1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).luma_offset_l1) as usize - ptr as usize },
+        115usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(luma_offset_l1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_chroma_weight_l1) as usize - ptr as usize },
+        130usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(delta_chroma_weight_l1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_chroma_offset_l1) as usize - ptr as usize },
+        160usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265WeightTable),
+            "::",
+            stringify!(delta_chroma_offset_l1)
+        )
+    );
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265SliceSegmentHeaderFlags {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265SliceSegmentHeaderFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265SliceSegmentHeaderFlags>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeaderFlags)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265SliceSegmentHeaderFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeaderFlags)
+        )
+    );
+}
+impl StdVideoEncodeH265SliceSegmentHeaderFlags {
+    #[inline]
+    pub fn first_slice_segment_in_pic_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_first_slice_segment_in_pic_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn dependent_slice_segment_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_dependent_slice_segment_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn slice_sao_luma_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_slice_sao_luma_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn slice_sao_chroma_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_slice_sao_chroma_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn num_ref_idx_active_override_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_num_ref_idx_active_override_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn mvd_l1_zero_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_mvd_l1_zero_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cabac_init_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cabac_init_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cu_chroma_qp_offset_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cu_chroma_qp_offset_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn deblocking_filter_override_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_deblocking_filter_override_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn slice_deblocking_filter_disabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_slice_deblocking_filter_disabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn collocated_from_l0_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_collocated_from_l0_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(10usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn slice_loop_filter_across_slices_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_slice_loop_filter_across_slices_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(11usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 20u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(12usize, 20u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        first_slice_segment_in_pic_flag: u32,
+        dependent_slice_segment_flag: u32,
+        slice_sao_luma_flag: u32,
+        slice_sao_chroma_flag: u32,
+        num_ref_idx_active_override_flag: u32,
+        mvd_l1_zero_flag: u32,
+        cabac_init_flag: u32,
+        cu_chroma_qp_offset_enabled_flag: u32,
+        deblocking_filter_override_flag: u32,
+        slice_deblocking_filter_disabled_flag: u32,
+        collocated_from_l0_flag: u32,
+        slice_loop_filter_across_slices_enabled_flag: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let first_slice_segment_in_pic_flag: u32 =
+                unsafe { ::std::mem::transmute(first_slice_segment_in_pic_flag) };
+            first_slice_segment_in_pic_flag as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let dependent_slice_segment_flag: u32 =
+                unsafe { ::std::mem::transmute(dependent_slice_segment_flag) };
+            dependent_slice_segment_flag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let slice_sao_luma_flag: u32 = unsafe { ::std::mem::transmute(slice_sao_luma_flag) };
+            slice_sao_luma_flag as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let slice_sao_chroma_flag: u32 =
+                unsafe { ::std::mem::transmute(slice_sao_chroma_flag) };
+            slice_sao_chroma_flag as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let num_ref_idx_active_override_flag: u32 =
+                unsafe { ::std::mem::transmute(num_ref_idx_active_override_flag) };
+            num_ref_idx_active_override_flag as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let mvd_l1_zero_flag: u32 = unsafe { ::std::mem::transmute(mvd_l1_zero_flag) };
+            mvd_l1_zero_flag as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let cabac_init_flag: u32 = unsafe { ::std::mem::transmute(cabac_init_flag) };
+            cabac_init_flag as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let cu_chroma_qp_offset_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(cu_chroma_qp_offset_enabled_flag) };
+            cu_chroma_qp_offset_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let deblocking_filter_override_flag: u32 =
+                unsafe { ::std::mem::transmute(deblocking_filter_override_flag) };
+            deblocking_filter_override_flag as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 1u8, {
+            let slice_deblocking_filter_disabled_flag: u32 =
+                unsafe { ::std::mem::transmute(slice_deblocking_filter_disabled_flag) };
+            slice_deblocking_filter_disabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(10usize, 1u8, {
+            let collocated_from_l0_flag: u32 =
+                unsafe { ::std::mem::transmute(collocated_from_l0_flag) };
+            collocated_from_l0_flag as u64
+        });
+        __bindgen_bitfield_unit.set(11usize, 1u8, {
+            let slice_loop_filter_across_slices_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(slice_loop_filter_across_slices_enabled_flag) };
+            slice_loop_filter_across_slices_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(12usize, 20u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265SliceSegmentHeader {
+    pub flags: StdVideoEncodeH265SliceSegmentHeaderFlags,
+    pub slice_type: StdVideoH265SliceType,
+    pub slice_segment_address: u32,
+    pub collocated_ref_idx: u8,
+    pub MaxNumMergeCand: u8,
+    pub slice_cb_qp_offset: i8,
+    pub slice_cr_qp_offset: i8,
+    pub slice_beta_offset_div2: i8,
+    pub slice_tc_offset_div2: i8,
+    pub slice_act_y_qp_offset: i8,
+    pub slice_act_cb_qp_offset: i8,
+    pub slice_act_cr_qp_offset: i8,
+    pub slice_qp_delta: i8,
+    pub reserved1: u16,
+    pub pWeightTable: *const StdVideoEncodeH265WeightTable,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265SliceSegmentHeader() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH265SliceSegmentHeader> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265SliceSegmentHeader>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265SliceSegmentHeader>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_type) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_type)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_segment_address) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_segment_address)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).collocated_ref_idx) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(collocated_ref_idx)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).MaxNumMergeCand) as usize - ptr as usize },
+        13usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(MaxNumMergeCand)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_cb_qp_offset) as usize - ptr as usize },
+        14usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_cb_qp_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_cr_qp_offset) as usize - ptr as usize },
+        15usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_cr_qp_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_beta_offset_div2) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_beta_offset_div2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_tc_offset_div2) as usize - ptr as usize },
+        17usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_tc_offset_div2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_act_y_qp_offset) as usize - ptr as usize },
+        18usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_act_y_qp_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_act_cb_qp_offset) as usize - ptr as usize },
+        19usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_act_cb_qp_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_act_cr_qp_offset) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_act_cr_qp_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).slice_qp_delta) as usize - ptr as usize },
+        21usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(slice_qp_delta)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        22usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pWeightTable) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265SliceSegmentHeader),
+            "::",
+            stringify!(pWeightTable)
+        )
+    );
+}
+impl Default for StdVideoEncodeH265SliceSegmentHeader {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265ReferenceListsInfoFlags {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265ReferenceListsInfoFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265ReferenceListsInfoFlags>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfoFlags)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265ReferenceListsInfoFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfoFlags)
+        )
+    );
+}
+impl StdVideoEncodeH265ReferenceListsInfoFlags {
+    #[inline]
+    pub fn ref_pic_list_modification_flag_l0(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ref_pic_list_modification_flag_l0(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn ref_pic_list_modification_flag_l1(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_ref_pic_list_modification_flag_l1(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 30u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 30u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        ref_pic_list_modification_flag_l0: u32,
+        ref_pic_list_modification_flag_l1: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let ref_pic_list_modification_flag_l0: u32 =
+                unsafe { ::std::mem::transmute(ref_pic_list_modification_flag_l0) };
+            ref_pic_list_modification_flag_l0 as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let ref_pic_list_modification_flag_l1: u32 =
+                unsafe { ::std::mem::transmute(ref_pic_list_modification_flag_l1) };
+            ref_pic_list_modification_flag_l1 as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 30u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265ReferenceListsInfo {
+    pub flags: StdVideoEncodeH265ReferenceListsInfoFlags,
+    pub num_ref_idx_l0_active_minus1: u8,
+    pub num_ref_idx_l1_active_minus1: u8,
+    pub RefPicList0: [u8; 15usize],
+    pub RefPicList1: [u8; 15usize],
+    pub list_entry_l0: [u8; 15usize],
+    pub list_entry_l1: [u8; 15usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265ReferenceListsInfo() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH265ReferenceListsInfo> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265ReferenceListsInfo>(),
+        68usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265ReferenceListsInfo>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).num_ref_idx_l0_active_minus1) as usize - ptr as usize
+        },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo),
+            "::",
+            stringify!(num_ref_idx_l0_active_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).num_ref_idx_l1_active_minus1) as usize - ptr as usize
+        },
+        5usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo),
+            "::",
+            stringify!(num_ref_idx_l1_active_minus1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).RefPicList0) as usize - ptr as usize },
+        6usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo),
+            "::",
+            stringify!(RefPicList0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).RefPicList1) as usize - ptr as usize },
+        21usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo),
+            "::",
+            stringify!(RefPicList1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).list_entry_l0) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo),
+            "::",
+            stringify!(list_entry_l0)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).list_entry_l1) as usize - ptr as usize },
+        51usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceListsInfo),
+            "::",
+            stringify!(list_entry_l1)
+        )
+    );
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265PictureInfoFlags {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265PictureInfoFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265PictureInfoFlags>(),
+        4usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH265PictureInfoFlags))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265PictureInfoFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH265PictureInfoFlags)
+        )
+    );
+}
+impl StdVideoEncodeH265PictureInfoFlags {
+    #[inline]
+    pub fn is_reference(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_is_reference(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn IrapPicFlag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_IrapPicFlag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn used_for_long_term_reference(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_used_for_long_term_reference(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn discardable_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_discardable_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(3usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn cross_layer_bla_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_cross_layer_bla_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(4usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn pic_output_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_pic_output_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(5usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn no_output_of_prior_pics_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_no_output_of_prior_pics_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(6usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn short_term_ref_pic_set_sps_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_short_term_ref_pic_set_sps_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(7usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn slice_temporal_mvp_enabled_flag(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_slice_temporal_mvp_enabled_flag(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(8usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 23u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(9usize, 23u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        is_reference: u32,
+        IrapPicFlag: u32,
+        used_for_long_term_reference: u32,
+        discardable_flag: u32,
+        cross_layer_bla_flag: u32,
+        pic_output_flag: u32,
+        no_output_of_prior_pics_flag: u32,
+        short_term_ref_pic_set_sps_flag: u32,
+        slice_temporal_mvp_enabled_flag: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let is_reference: u32 = unsafe { ::std::mem::transmute(is_reference) };
+            is_reference as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let IrapPicFlag: u32 = unsafe { ::std::mem::transmute(IrapPicFlag) };
+            IrapPicFlag as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 1u8, {
+            let used_for_long_term_reference: u32 =
+                unsafe { ::std::mem::transmute(used_for_long_term_reference) };
+            used_for_long_term_reference as u64
+        });
+        __bindgen_bitfield_unit.set(3usize, 1u8, {
+            let discardable_flag: u32 = unsafe { ::std::mem::transmute(discardable_flag) };
+            discardable_flag as u64
+        });
+        __bindgen_bitfield_unit.set(4usize, 1u8, {
+            let cross_layer_bla_flag: u32 = unsafe { ::std::mem::transmute(cross_layer_bla_flag) };
+            cross_layer_bla_flag as u64
+        });
+        __bindgen_bitfield_unit.set(5usize, 1u8, {
+            let pic_output_flag: u32 = unsafe { ::std::mem::transmute(pic_output_flag) };
+            pic_output_flag as u64
+        });
+        __bindgen_bitfield_unit.set(6usize, 1u8, {
+            let no_output_of_prior_pics_flag: u32 =
+                unsafe { ::std::mem::transmute(no_output_of_prior_pics_flag) };
+            no_output_of_prior_pics_flag as u64
+        });
+        __bindgen_bitfield_unit.set(7usize, 1u8, {
+            let short_term_ref_pic_set_sps_flag: u32 =
+                unsafe { ::std::mem::transmute(short_term_ref_pic_set_sps_flag) };
+            short_term_ref_pic_set_sps_flag as u64
+        });
+        __bindgen_bitfield_unit.set(8usize, 1u8, {
+            let slice_temporal_mvp_enabled_flag: u32 =
+                unsafe { ::std::mem::transmute(slice_temporal_mvp_enabled_flag) };
+            slice_temporal_mvp_enabled_flag as u64
+        });
+        __bindgen_bitfield_unit.set(9usize, 23u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265LongTermRefPics {
+    pub num_long_term_sps: u8,
+    pub num_long_term_pics: u8,
+    pub lt_idx_sps: [u8; 32usize],
+    pub poc_lsb_lt: [u8; 16usize],
+    pub used_by_curr_pic_lt_flag: u16,
+    pub delta_poc_msb_present_flag: [u8; 48usize],
+    pub delta_poc_msb_cycle_lt: [u8; 48usize],
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265LongTermRefPics() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH265LongTermRefPics> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265LongTermRefPics>(),
+        148usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH265LongTermRefPics))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265LongTermRefPics>(),
+        2usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH265LongTermRefPics)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_long_term_sps) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265LongTermRefPics),
+            "::",
+            stringify!(num_long_term_sps)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_long_term_pics) as usize - ptr as usize },
+        1usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265LongTermRefPics),
+            "::",
+            stringify!(num_long_term_pics)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).lt_idx_sps) as usize - ptr as usize },
+        2usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265LongTermRefPics),
+            "::",
+            stringify!(lt_idx_sps)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).poc_lsb_lt) as usize - ptr as usize },
+        34usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265LongTermRefPics),
+            "::",
+            stringify!(poc_lsb_lt)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).used_by_curr_pic_lt_flag) as usize - ptr as usize },
+        50usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265LongTermRefPics),
+            "::",
+            stringify!(used_by_curr_pic_lt_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_poc_msb_present_flag) as usize - ptr as usize },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265LongTermRefPics),
+            "::",
+            stringify!(delta_poc_msb_present_flag)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).delta_poc_msb_cycle_lt) as usize - ptr as usize },
+        100usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265LongTermRefPics),
+            "::",
+            stringify!(delta_poc_msb_cycle_lt)
+        )
+    );
+}
+impl Default for StdVideoEncodeH265LongTermRefPics {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265PictureInfo {
+    pub flags: StdVideoEncodeH265PictureInfoFlags,
+    pub pic_type: StdVideoH265PictureType,
+    pub sps_video_parameter_set_id: u8,
+    pub pps_seq_parameter_set_id: u8,
+    pub pps_pic_parameter_set_id: u8,
+    pub short_term_ref_pic_set_idx: u8,
+    pub PicOrderCntVal: i32,
+    pub TemporalId: u8,
+    pub reserved1: [u8; 7usize],
+    pub pRefLists: *const StdVideoEncodeH265ReferenceListsInfo,
+    pub pShortTermRefPicSet: *const StdVideoH265ShortTermRefPicSet,
+    pub pLongTermRefPics: *const StdVideoEncodeH265LongTermRefPics,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265PictureInfo() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH265PictureInfo> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265PictureInfo>(),
+        48usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH265PictureInfo))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265PictureInfo>(),
+        8usize,
+        concat!("Alignment of ", stringify!(StdVideoEncodeH265PictureInfo))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pic_type) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(pic_type)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sps_video_parameter_set_id) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(sps_video_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_seq_parameter_set_id) as usize - ptr as usize },
+        9usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(pps_seq_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pps_pic_parameter_set_id) as usize - ptr as usize },
+        10usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(pps_pic_parameter_set_id)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).short_term_ref_pic_set_idx) as usize - ptr as usize },
+        11usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(short_term_ref_pic_set_idx)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).PicOrderCntVal) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(PicOrderCntVal)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).TemporalId) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(TemporalId)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
+        17usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(reserved1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pRefLists) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(pRefLists)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pShortTermRefPicSet) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(pShortTermRefPicSet)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pLongTermRefPics) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265PictureInfo),
+            "::",
+            stringify!(pLongTermRefPics)
+        )
+    );
+}
+impl Default for StdVideoEncodeH265PictureInfo {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[repr(align(4))]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265ReferenceInfoFlags {
+    pub _bitfield_align_1: [u32; 0],
+    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265ReferenceInfoFlags() {
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265ReferenceInfoFlags>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(StdVideoEncodeH265ReferenceInfoFlags)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265ReferenceInfoFlags>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(StdVideoEncodeH265ReferenceInfoFlags)
+        )
+    );
+}
+impl StdVideoEncodeH265ReferenceInfoFlags {
+    #[inline]
+    pub fn used_for_long_term_reference(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_used_for_long_term_reference(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(0usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn unused_for_reference(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
+    }
+    #[inline]
+    pub fn set_unused_for_reference(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(1usize, 1u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn reserved(&self) -> u32 {
+        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 30u8) as u32) }
+    }
+    #[inline]
+    pub fn set_reserved(&mut self, val: u32) {
+        unsafe {
+            let val: u32 = ::std::mem::transmute(val);
+            self._bitfield_1.set(2usize, 30u8, val as u64)
+        }
+    }
+    #[inline]
+    pub fn new_bitfield_1(
+        used_for_long_term_reference: u32,
+        unused_for_reference: u32,
+        reserved: u32,
+    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
+        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
+        __bindgen_bitfield_unit.set(0usize, 1u8, {
+            let used_for_long_term_reference: u32 =
+                unsafe { ::std::mem::transmute(used_for_long_term_reference) };
+            used_for_long_term_reference as u64
+        });
+        __bindgen_bitfield_unit.set(1usize, 1u8, {
+            let unused_for_reference: u32 = unsafe { ::std::mem::transmute(unused_for_reference) };
+            unused_for_reference as u64
+        });
+        __bindgen_bitfield_unit.set(2usize, 30u8, {
+            let reserved: u32 = unsafe { ::std::mem::transmute(reserved) };
+            reserved as u64
+        });
+        __bindgen_bitfield_unit
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct StdVideoEncodeH265ReferenceInfo {
+    pub flags: StdVideoEncodeH265ReferenceInfoFlags,
+    pub pic_type: StdVideoH265PictureType,
+    pub PicOrderCntVal: i32,
+    pub TemporalId: u8,
+}
+#[test]
+fn bindgen_test_layout_StdVideoEncodeH265ReferenceInfo() {
+    const UNINIT: ::std::mem::MaybeUninit<StdVideoEncodeH265ReferenceInfo> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<StdVideoEncodeH265ReferenceInfo>(),
+        16usize,
+        concat!("Size of: ", stringify!(StdVideoEncodeH265ReferenceInfo))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<StdVideoEncodeH265ReferenceInfo>(),
+        4usize,
+        concat!("Alignment of ", stringify!(StdVideoEncodeH265ReferenceInfo))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceInfo),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pic_type) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceInfo),
+            "::",
+            stringify!(pic_type)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).PicOrderCntVal) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceInfo),
+            "::",
+            stringify!(PicOrderCntVal)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).TemporalId) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(StdVideoEncodeH265ReferenceInfo),
+            "::",
+            stringify!(TemporalId)
+        )
+    );
+}
+impl Default for StdVideoEncodeH265ReferenceInfo {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeH265CapabilityFlagBitsKHR {
+    VK_VIDEO_ENCODE_H265_CAPABILITY_HRD_COMPLIANCE_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_PREDICTION_WEIGHT_TABLE_GENERATED_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_ROW_UNALIGNED_SLICE_SEGMENT_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_DIFFERENT_SLICE_SEGMENT_TYPE_BIT_KHR = 8,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_B_FRAME_IN_L0_LIST_BIT_KHR = 16,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_B_FRAME_IN_L1_LIST_BIT_KHR = 32,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_PER_PICTURE_TYPE_MIN_MAX_QP_BIT_KHR = 64,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_PER_SLICE_SEGMENT_CONSTANT_QP_BIT_KHR = 128,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_MULTIPLE_TILES_PER_SLICE_SEGMENT_BIT_KHR = 256,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_MULTIPLE_SLICE_SEGMENTS_PER_TILE_BIT_KHR = 512,
+    VK_VIDEO_ENCODE_H265_CAPABILITY_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeH265CapabilityFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeH265StdFlagBitsKHR {
+    VK_VIDEO_ENCODE_H265_STD_SEPARATE_COLOR_PLANE_FLAG_SET_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_H265_STD_SAMPLE_ADAPTIVE_OFFSET_ENABLED_FLAG_SET_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_H265_STD_SCALING_LIST_DATA_PRESENT_FLAG_SET_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_H265_STD_PCM_ENABLED_FLAG_SET_BIT_KHR = 8,
+    VK_VIDEO_ENCODE_H265_STD_SPS_TEMPORAL_MVP_ENABLED_FLAG_SET_BIT_KHR = 16,
+    VK_VIDEO_ENCODE_H265_STD_INIT_QP_MINUS26_BIT_KHR = 32,
+    VK_VIDEO_ENCODE_H265_STD_WEIGHTED_PRED_FLAG_SET_BIT_KHR = 64,
+    VK_VIDEO_ENCODE_H265_STD_WEIGHTED_BIPRED_FLAG_SET_BIT_KHR = 128,
+    VK_VIDEO_ENCODE_H265_STD_LOG2_PARALLEL_MERGE_LEVEL_MINUS2_BIT_KHR = 256,
+    VK_VIDEO_ENCODE_H265_STD_SIGN_DATA_HIDING_ENABLED_FLAG_SET_BIT_KHR = 512,
+    VK_VIDEO_ENCODE_H265_STD_TRANSFORM_SKIP_ENABLED_FLAG_SET_BIT_KHR = 1024,
+    VK_VIDEO_ENCODE_H265_STD_TRANSFORM_SKIP_ENABLED_FLAG_UNSET_BIT_KHR = 2048,
+    VK_VIDEO_ENCODE_H265_STD_PPS_SLICE_CHROMA_QP_OFFSETS_PRESENT_FLAG_SET_BIT_KHR = 4096,
+    VK_VIDEO_ENCODE_H265_STD_TRANSQUANT_BYPASS_ENABLED_FLAG_SET_BIT_KHR = 8192,
+    VK_VIDEO_ENCODE_H265_STD_CONSTRAINED_INTRA_PRED_FLAG_SET_BIT_KHR = 16384,
+    VK_VIDEO_ENCODE_H265_STD_ENTROPY_CODING_SYNC_ENABLED_FLAG_SET_BIT_KHR = 32768,
+    VK_VIDEO_ENCODE_H265_STD_DEBLOCKING_FILTER_OVERRIDE_ENABLED_FLAG_SET_BIT_KHR = 65536,
+    VK_VIDEO_ENCODE_H265_STD_DEPENDENT_SLICE_SEGMENTS_ENABLED_FLAG_SET_BIT_KHR = 131072,
+    VK_VIDEO_ENCODE_H265_STD_DEPENDENT_SLICE_SEGMENT_FLAG_SET_BIT_KHR = 262144,
+    VK_VIDEO_ENCODE_H265_STD_SLICE_QP_DELTA_BIT_KHR = 524288,
+    VK_VIDEO_ENCODE_H265_STD_DIFFERENT_SLICE_QP_DELTA_BIT_KHR = 1048576,
+    VK_VIDEO_ENCODE_H265_STD_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeH265StdFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeH265CtbSizeFlagBitsKHR {
+    VK_VIDEO_ENCODE_H265_CTB_SIZE_16_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_H265_CTB_SIZE_32_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_H265_CTB_SIZE_64_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_H265_CTB_SIZE_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeH265CtbSizeFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeH265TransformBlockSizeFlagBitsKHR {
+    VK_VIDEO_ENCODE_H265_TRANSFORM_BLOCK_SIZE_4_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_H265_TRANSFORM_BLOCK_SIZE_8_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_H265_TRANSFORM_BLOCK_SIZE_16_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_H265_TRANSFORM_BLOCK_SIZE_32_BIT_KHR = 8,
+    VK_VIDEO_ENCODE_H265_TRANSFORM_BLOCK_SIZE_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeH265TransformBlockSizeFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeH265RateControlFlagBitsKHR {
+    VK_VIDEO_ENCODE_H265_RATE_CONTROL_ATTEMPT_HRD_COMPLIANCE_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_H265_RATE_CONTROL_REGULAR_GOP_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_H265_RATE_CONTROL_REFERENCE_PATTERN_FLAT_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_H265_RATE_CONTROL_REFERENCE_PATTERN_DYADIC_BIT_KHR = 8,
+    VK_VIDEO_ENCODE_H265_RATE_CONTROL_TEMPORAL_SUB_LAYER_PATTERN_DYADIC_BIT_KHR = 16,
+    VK_VIDEO_ENCODE_H265_RATE_CONTROL_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeH265RateControlFlagsKHR = VkFlags;
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265CapabilitiesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub flags: VkVideoEncodeH265CapabilityFlagsKHR,
+    pub maxLevelIdc: StdVideoH265LevelIdc,
+    pub maxSliceSegmentCount: u32,
+    pub maxTiles: VkExtent2D,
+    pub ctbSizes: VkVideoEncodeH265CtbSizeFlagsKHR,
+    pub transformBlockSizes: VkVideoEncodeH265TransformBlockSizeFlagsKHR,
+    pub maxPPictureL0ReferenceCount: u32,
+    pub maxBPictureL0ReferenceCount: u32,
+    pub maxL1ReferenceCount: u32,
+    pub maxSubLayerCount: u32,
+    pub expectDyadicTemporalSubLayerPattern: VkBool32,
+    pub minQp: i32,
+    pub maxQp: i32,
+    pub prefersGopRemainingFrames: VkBool32,
+    pub requiresGopRemainingFrames: VkBool32,
+    pub stdSyntaxFlags: VkVideoEncodeH265StdFlagsKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265CapabilitiesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265CapabilitiesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265CapabilitiesKHR>(),
+        88usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH265CapabilitiesKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265CapabilitiesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxLevelIdc) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(maxLevelIdc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxSliceSegmentCount) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(maxSliceSegmentCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxTiles) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(maxTiles)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ctbSizes) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(ctbSizes)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).transformBlockSizes) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(transformBlockSizes)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxPPictureL0ReferenceCount) as usize - ptr as usize },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(maxPPictureL0ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxBPictureL0ReferenceCount) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(maxBPictureL0ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxL1ReferenceCount) as usize - ptr as usize },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(maxL1ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxSubLayerCount) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(maxSubLayerCount)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).expectDyadicTemporalSubLayerPattern) as usize - ptr as usize
+        },
+        60usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(expectDyadicTemporalSubLayerPattern)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).minQp) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(minQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxQp) as usize - ptr as usize },
+        68usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(maxQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).prefersGopRemainingFrames) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(prefersGopRemainingFrames)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).requiresGopRemainingFrames) as usize - ptr as usize },
+        76usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(requiresGopRemainingFrames)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdSyntaxFlags) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265CapabilitiesKHR),
+            "::",
+            stringify!(stdSyntaxFlags)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265CapabilitiesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265SessionCreateInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub useMaxLevelIdc: VkBool32,
+    pub maxLevelIdc: StdVideoH265LevelIdc,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265SessionCreateInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265SessionCreateInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265SessionCreateInfoKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265SessionCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265SessionCreateInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265SessionCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionCreateInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionCreateInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useMaxLevelIdc) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionCreateInfoKHR),
+            "::",
+            stringify!(useMaxLevelIdc)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxLevelIdc) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionCreateInfoKHR),
+            "::",
+            stringify!(maxLevelIdc)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265SessionCreateInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265QpKHR {
+    pub qpI: i32,
+    pub qpP: i32,
+    pub qpB: i32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265QpKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265QpKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265QpKHR>(),
+        12usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH265QpKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265QpKHR>(),
+        4usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH265QpKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).qpI) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QpKHR),
+            "::",
+            stringify!(qpI)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).qpP) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QpKHR),
+            "::",
+            stringify!(qpP)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).qpB) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QpKHR),
+            "::",
+            stringify!(qpB)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265QualityLevelPropertiesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub preferredRateControlFlags: VkVideoEncodeH265RateControlFlagsKHR,
+    pub preferredGopFrameCount: u32,
+    pub preferredIdrPeriod: u32,
+    pub preferredConsecutiveBFrameCount: u32,
+    pub preferredSubLayerCount: u32,
+    pub preferredConstantQp: VkVideoEncodeH265QpKHR,
+    pub preferredMaxL0ReferenceCount: u32,
+    pub preferredMaxL1ReferenceCount: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265QualityLevelPropertiesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265QualityLevelPropertiesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265QualityLevelPropertiesKHR>(),
+        56usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265QualityLevelPropertiesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredRateControlFlags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredRateControlFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredGopFrameCount) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredGopFrameCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredIdrPeriod) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredIdrPeriod)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).preferredConsecutiveBFrameCount) as usize - ptr as usize
+        },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredConsecutiveBFrameCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredSubLayerCount) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredSubLayerCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredConstantQp) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredConstantQp)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).preferredMaxL0ReferenceCount) as usize - ptr as usize
+        },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredMaxL0ReferenceCount)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).preferredMaxL1ReferenceCount) as usize - ptr as usize
+        },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265QualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredMaxL1ReferenceCount)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265QualityLevelPropertiesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265SessionParametersAddInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stdVPSCount: u32,
+    pub pStdVPSs: *const StdVideoH265VideoParameterSet,
+    pub stdSPSCount: u32,
+    pub pStdSPSs: *const StdVideoH265SequenceParameterSet,
+    pub stdPPSCount: u32,
+    pub pStdPPSs: *const StdVideoH265PictureParameterSet,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265SessionParametersAddInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265SessionParametersAddInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265SessionParametersAddInfoKHR>(),
+        64usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265SessionParametersAddInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdVPSCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR),
+            "::",
+            stringify!(stdVPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdVPSs) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR),
+            "::",
+            stringify!(pStdVPSs)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdSPSCount) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR),
+            "::",
+            stringify!(stdSPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdSPSs) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR),
+            "::",
+            stringify!(pStdSPSs)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdPPSCount) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR),
+            "::",
+            stringify!(stdPPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdPPSs) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersAddInfoKHR),
+            "::",
+            stringify!(pStdPPSs)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265SessionParametersAddInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265SessionParametersCreateInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub maxStdVPSCount: u32,
+    pub maxStdSPSCount: u32,
+    pub maxStdPPSCount: u32,
+    pub pParametersAddInfo: *const VkVideoEncodeH265SessionParametersAddInfoKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265SessionParametersCreateInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265SessionParametersCreateInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265SessionParametersCreateInfoKHR>(),
+        40usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265SessionParametersCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265SessionParametersCreateInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265SessionParametersCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxStdVPSCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(maxStdVPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxStdSPSCount) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(maxStdSPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxStdPPSCount) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(maxStdPPSCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pParametersAddInfo) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersCreateInfoKHR),
+            "::",
+            stringify!(pParametersAddInfo)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265SessionParametersCreateInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265SessionParametersGetInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub writeStdVPS: VkBool32,
+    pub writeStdSPS: VkBool32,
+    pub writeStdPPS: VkBool32,
+    pub stdVPSId: u32,
+    pub stdSPSId: u32,
+    pub stdPPSId: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265SessionParametersGetInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265SessionParametersGetInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265SessionParametersGetInfoKHR>(),
+        40usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265SessionParametersGetInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).writeStdVPS) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR),
+            "::",
+            stringify!(writeStdVPS)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).writeStdSPS) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR),
+            "::",
+            stringify!(writeStdSPS)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).writeStdPPS) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR),
+            "::",
+            stringify!(writeStdPPS)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdVPSId) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR),
+            "::",
+            stringify!(stdVPSId)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdSPSId) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR),
+            "::",
+            stringify!(stdSPSId)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdPPSId) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersGetInfoKHR),
+            "::",
+            stringify!(stdPPSId)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265SessionParametersGetInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265SessionParametersFeedbackInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub hasStdVPSOverrides: VkBool32,
+    pub hasStdSPSOverrides: VkBool32,
+    pub hasStdPPSOverrides: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265SessionParametersFeedbackInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265SessionParametersFeedbackInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265SessionParametersFeedbackInfoKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265SessionParametersFeedbackInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265SessionParametersFeedbackInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265SessionParametersFeedbackInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).hasStdVPSOverrides) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(hasStdVPSOverrides)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).hasStdSPSOverrides) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(hasStdSPSOverrides)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).hasStdPPSOverrides) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265SessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(hasStdPPSOverrides)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265SessionParametersFeedbackInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265NaluSliceSegmentInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub constantQp: i32,
+    pub pStdSliceSegmentHeader: *const StdVideoEncodeH265SliceSegmentHeader,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265NaluSliceSegmentInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265NaluSliceSegmentInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265NaluSliceSegmentInfoKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265NaluSliceSegmentInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265NaluSliceSegmentInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265NaluSliceSegmentInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265NaluSliceSegmentInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265NaluSliceSegmentInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).constantQp) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265NaluSliceSegmentInfoKHR),
+            "::",
+            stringify!(constantQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdSliceSegmentHeader) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265NaluSliceSegmentInfoKHR),
+            "::",
+            stringify!(pStdSliceSegmentHeader)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265NaluSliceSegmentInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265PictureInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub naluSliceSegmentEntryCount: u32,
+    pub pNaluSliceSegmentEntries: *const VkVideoEncodeH265NaluSliceSegmentInfoKHR,
+    pub pStdPictureInfo: *const StdVideoEncodeH265PictureInfo,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265PictureInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265PictureInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265PictureInfoKHR>(),
+        40usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH265PictureInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265PictureInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH265PictureInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265PictureInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265PictureInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).naluSliceSegmentEntryCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265PictureInfoKHR),
+            "::",
+            stringify!(naluSliceSegmentEntryCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNaluSliceSegmentEntries) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265PictureInfoKHR),
+            "::",
+            stringify!(pNaluSliceSegmentEntries)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdPictureInfo) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265PictureInfoKHR),
+            "::",
+            stringify!(pStdPictureInfo)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265PictureInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265DpbSlotInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub pStdReferenceInfo: *const StdVideoEncodeH265ReferenceInfo,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265DpbSlotInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265DpbSlotInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265DpbSlotInfoKHR>(),
+        24usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH265DpbSlotInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265DpbSlotInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH265DpbSlotInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265DpbSlotInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265DpbSlotInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStdReferenceInfo) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265DpbSlotInfoKHR),
+            "::",
+            stringify!(pStdReferenceInfo)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265DpbSlotInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265ProfileInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stdProfileIdc: StdVideoH265ProfileIdc,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265ProfileInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265ProfileInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265ProfileInfoKHR>(),
+        24usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH265ProfileInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265ProfileInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH265ProfileInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265ProfileInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265ProfileInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stdProfileIdc) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265ProfileInfoKHR),
+            "::",
+            stringify!(stdProfileIdc)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265ProfileInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265RateControlInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub flags: VkVideoEncodeH265RateControlFlagsKHR,
+    pub gopFrameCount: u32,
+    pub idrPeriod: u32,
+    pub consecutiveBFrameCount: u32,
+    pub subLayerCount: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265RateControlInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265RateControlInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265RateControlInfoKHR>(),
+        40usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH265RateControlInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265RateControlInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265RateControlInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlInfoKHR),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gopFrameCount) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlInfoKHR),
+            "::",
+            stringify!(gopFrameCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).idrPeriod) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlInfoKHR),
+            "::",
+            stringify!(idrPeriod)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).consecutiveBFrameCount) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlInfoKHR),
+            "::",
+            stringify!(consecutiveBFrameCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).subLayerCount) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlInfoKHR),
+            "::",
+            stringify!(subLayerCount)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265RateControlInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265FrameSizeKHR {
+    pub frameISize: u32,
+    pub framePSize: u32,
+    pub frameBSize: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265FrameSizeKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265FrameSizeKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265FrameSizeKHR>(),
+        12usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeH265FrameSizeKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265FrameSizeKHR>(),
+        4usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeH265FrameSizeKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frameISize) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265FrameSizeKHR),
+            "::",
+            stringify!(frameISize)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).framePSize) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265FrameSizeKHR),
+            "::",
+            stringify!(framePSize)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frameBSize) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265FrameSizeKHR),
+            "::",
+            stringify!(frameBSize)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265RateControlLayerInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub useMinQp: VkBool32,
+    pub minQp: VkVideoEncodeH265QpKHR,
+    pub useMaxQp: VkBool32,
+    pub maxQp: VkVideoEncodeH265QpKHR,
+    pub useMaxFrameSize: VkBool32,
+    pub maxFrameSize: VkVideoEncodeH265FrameSizeKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265RateControlLayerInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265RateControlLayerInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265RateControlLayerInfoKHR>(),
+        64usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265RateControlLayerInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useMinQp) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR),
+            "::",
+            stringify!(useMinQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).minQp) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR),
+            "::",
+            stringify!(minQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useMaxQp) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR),
+            "::",
+            stringify!(useMaxQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxQp) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR),
+            "::",
+            stringify!(maxQp)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useMaxFrameSize) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR),
+            "::",
+            stringify!(useMaxFrameSize)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxFrameSize) as usize - ptr as usize },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265RateControlLayerInfoKHR),
+            "::",
+            stringify!(maxFrameSize)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265RateControlLayerInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeH265GopRemainingFrameInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub useGopRemainingFrames: VkBool32,
+    pub gopRemainingI: u32,
+    pub gopRemainingP: u32,
+    pub gopRemainingB: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeH265GopRemainingFrameInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeH265GopRemainingFrameInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeH265GopRemainingFrameInfoKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeH265GopRemainingFrameInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeH265GopRemainingFrameInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeH265GopRemainingFrameInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).useGopRemainingFrames) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(useGopRemainingFrames)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gopRemainingI) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(gopRemainingI)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gopRemainingP) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(gopRemainingP)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).gopRemainingB) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeH265GopRemainingFrameInfoKHR),
+            "::",
+            stringify!(gopRemainingB)
+        )
+    );
+}
+impl Default for VkVideoEncodeH265GopRemainingFrameInfoKHR {
     fn default() -> Self {
         let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
         unsafe {
@@ -48735,4146 +59076,6 @@ impl Default for VkPhysicalDeviceShaderClockFeaturesKHR {
         }
     }
 }
-impl StdVideoH265ChromaFormatIdc {
-    pub const STD_VIDEO_H265_CHROMA_FORMAT_IDC_MAX_ENUM: StdVideoH265ChromaFormatIdc =
-        StdVideoH265ChromaFormatIdc::STD_VIDEO_H265_CHROMA_FORMAT_IDC_INVALID;
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub enum StdVideoH265ChromaFormatIdc {
-    STD_VIDEO_H265_CHROMA_FORMAT_IDC_MONOCHROME = 0,
-    STD_VIDEO_H265_CHROMA_FORMAT_IDC_420 = 1,
-    STD_VIDEO_H265_CHROMA_FORMAT_IDC_422 = 2,
-    STD_VIDEO_H265_CHROMA_FORMAT_IDC_444 = 3,
-    STD_VIDEO_H265_CHROMA_FORMAT_IDC_INVALID = 2147483647,
-}
-impl StdVideoH265ProfileIdc {
-    pub const STD_VIDEO_H265_PROFILE_IDC_MAX_ENUM: StdVideoH265ProfileIdc =
-        StdVideoH265ProfileIdc::STD_VIDEO_H265_PROFILE_IDC_INVALID;
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub enum StdVideoH265ProfileIdc {
-    STD_VIDEO_H265_PROFILE_IDC_MAIN = 1,
-    STD_VIDEO_H265_PROFILE_IDC_MAIN_10 = 2,
-    STD_VIDEO_H265_PROFILE_IDC_MAIN_STILL_PICTURE = 3,
-    STD_VIDEO_H265_PROFILE_IDC_FORMAT_RANGE_EXTENSIONS = 4,
-    STD_VIDEO_H265_PROFILE_IDC_SCC_EXTENSIONS = 9,
-    STD_VIDEO_H265_PROFILE_IDC_INVALID = 2147483647,
-}
-impl StdVideoH265LevelIdc {
-    pub const STD_VIDEO_H265_LEVEL_IDC_MAX_ENUM: StdVideoH265LevelIdc =
-        StdVideoH265LevelIdc::STD_VIDEO_H265_LEVEL_IDC_INVALID;
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub enum StdVideoH265LevelIdc {
-    STD_VIDEO_H265_LEVEL_IDC_1_0 = 0,
-    STD_VIDEO_H265_LEVEL_IDC_2_0 = 1,
-    STD_VIDEO_H265_LEVEL_IDC_2_1 = 2,
-    STD_VIDEO_H265_LEVEL_IDC_3_0 = 3,
-    STD_VIDEO_H265_LEVEL_IDC_3_1 = 4,
-    STD_VIDEO_H265_LEVEL_IDC_4_0 = 5,
-    STD_VIDEO_H265_LEVEL_IDC_4_1 = 6,
-    STD_VIDEO_H265_LEVEL_IDC_5_0 = 7,
-    STD_VIDEO_H265_LEVEL_IDC_5_1 = 8,
-    STD_VIDEO_H265_LEVEL_IDC_5_2 = 9,
-    STD_VIDEO_H265_LEVEL_IDC_6_0 = 10,
-    STD_VIDEO_H265_LEVEL_IDC_6_1 = 11,
-    STD_VIDEO_H265_LEVEL_IDC_6_2 = 12,
-    STD_VIDEO_H265_LEVEL_IDC_INVALID = 2147483647,
-}
-impl StdVideoH265SliceType {
-    pub const STD_VIDEO_H265_SLICE_TYPE_MAX_ENUM: StdVideoH265SliceType =
-        StdVideoH265SliceType::STD_VIDEO_H265_SLICE_TYPE_INVALID;
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub enum StdVideoH265SliceType {
-    STD_VIDEO_H265_SLICE_TYPE_B = 0,
-    STD_VIDEO_H265_SLICE_TYPE_P = 1,
-    STD_VIDEO_H265_SLICE_TYPE_I = 2,
-    STD_VIDEO_H265_SLICE_TYPE_INVALID = 2147483647,
-}
-impl StdVideoH265PictureType {
-    pub const STD_VIDEO_H265_PICTURE_TYPE_MAX_ENUM: StdVideoH265PictureType =
-        StdVideoH265PictureType::STD_VIDEO_H265_PICTURE_TYPE_INVALID;
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub enum StdVideoH265PictureType {
-    STD_VIDEO_H265_PICTURE_TYPE_P = 0,
-    STD_VIDEO_H265_PICTURE_TYPE_B = 1,
-    STD_VIDEO_H265_PICTURE_TYPE_I = 2,
-    STD_VIDEO_H265_PICTURE_TYPE_IDR = 3,
-    STD_VIDEO_H265_PICTURE_TYPE_INVALID = 2147483647,
-}
-impl StdVideoH265AspectRatioIdc {
-    pub const STD_VIDEO_H265_ASPECT_RATIO_IDC_MAX_ENUM: StdVideoH265AspectRatioIdc =
-        StdVideoH265AspectRatioIdc::STD_VIDEO_H265_ASPECT_RATIO_IDC_INVALID;
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub enum StdVideoH265AspectRatioIdc {
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_UNSPECIFIED = 0,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_SQUARE = 1,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_12_11 = 2,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_10_11 = 3,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_16_11 = 4,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_40_33 = 5,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_24_11 = 6,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_20_11 = 7,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_32_11 = 8,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_80_33 = 9,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_18_11 = 10,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_15_11 = 11,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_64_33 = 12,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_160_99 = 13,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_4_3 = 14,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_3_2 = 15,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_2_1 = 16,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_EXTENDED_SAR = 255,
-    STD_VIDEO_H265_ASPECT_RATIO_IDC_INVALID = 2147483647,
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265DecPicBufMgr {
-    pub max_latency_increase_plus1: [u32; 7usize],
-    pub max_dec_pic_buffering_minus1: [u8; 7usize],
-    pub max_num_reorder_pics: [u8; 7usize],
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265DecPicBufMgr() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265DecPicBufMgr> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265DecPicBufMgr>(),
-        44usize,
-        concat!("Size of: ", stringify!(StdVideoH265DecPicBufMgr))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265DecPicBufMgr>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265DecPicBufMgr))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).max_latency_increase_plus1) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265DecPicBufMgr),
-            "::",
-            stringify!(max_latency_increase_plus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).max_dec_pic_buffering_minus1) as usize - ptr as usize
-        },
-        28usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265DecPicBufMgr),
-            "::",
-            stringify!(max_dec_pic_buffering_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).max_num_reorder_pics) as usize - ptr as usize },
-        35usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265DecPicBufMgr),
-            "::",
-            stringify!(max_num_reorder_pics)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265SubLayerHrdParameters {
-    pub bit_rate_value_minus1: [u32; 32usize],
-    pub cpb_size_value_minus1: [u32; 32usize],
-    pub cpb_size_du_value_minus1: [u32; 32usize],
-    pub bit_rate_du_value_minus1: [u32; 32usize],
-    pub cbr_flag: u32,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265SubLayerHrdParameters() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265SubLayerHrdParameters> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265SubLayerHrdParameters>(),
-        516usize,
-        concat!("Size of: ", stringify!(StdVideoH265SubLayerHrdParameters))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265SubLayerHrdParameters>(),
-        4usize,
-        concat!(
-            "Alignment of ",
-            stringify!(StdVideoH265SubLayerHrdParameters)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).bit_rate_value_minus1) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SubLayerHrdParameters),
-            "::",
-            stringify!(bit_rate_value_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cpb_size_value_minus1) as usize - ptr as usize },
-        128usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SubLayerHrdParameters),
-            "::",
-            stringify!(cpb_size_value_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cpb_size_du_value_minus1) as usize - ptr as usize },
-        256usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SubLayerHrdParameters),
-            "::",
-            stringify!(cpb_size_du_value_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).bit_rate_du_value_minus1) as usize - ptr as usize },
-        384usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SubLayerHrdParameters),
-            "::",
-            stringify!(bit_rate_du_value_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cbr_flag) as usize - ptr as usize },
-        512usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SubLayerHrdParameters),
-            "::",
-            stringify!(cbr_flag)
-        )
-    );
-}
-#[repr(C)]
-#[repr(align(4))]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265HrdFlags {
-    pub _bitfield_align_1: [u8; 0],
-    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265HrdFlags() {
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265HrdFlags>(),
-        4usize,
-        concat!("Size of: ", stringify!(StdVideoH265HrdFlags))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265HrdFlags>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265HrdFlags))
-    );
-}
-impl StdVideoH265HrdFlags {
-    #[inline]
-    pub fn nal_hrd_parameters_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_nal_hrd_parameters_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(0usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn vcl_hrd_parameters_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vcl_hrd_parameters_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(1usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sub_pic_hrd_params_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sub_pic_hrd_params_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(2usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sub_pic_cpb_params_in_pic_timing_sei_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sub_pic_cpb_params_in_pic_timing_sei_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(3usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn fixed_pic_rate_general_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 8u8) as u32) }
-    }
-    #[inline]
-    pub fn set_fixed_pic_rate_general_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(4usize, 8u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn fixed_pic_rate_within_cvs_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 8u8) as u32) }
-    }
-    #[inline]
-    pub fn set_fixed_pic_rate_within_cvs_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(12usize, 8u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn low_delay_hrd_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 8u8) as u32) }
-    }
-    #[inline]
-    pub fn set_low_delay_hrd_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(20usize, 8u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn new_bitfield_1(
-        nal_hrd_parameters_present_flag: u32,
-        vcl_hrd_parameters_present_flag: u32,
-        sub_pic_hrd_params_present_flag: u32,
-        sub_pic_cpb_params_in_pic_timing_sei_flag: u32,
-        fixed_pic_rate_general_flag: u32,
-        fixed_pic_rate_within_cvs_flag: u32,
-        low_delay_hrd_flag: u32,
-    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
-        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
-        __bindgen_bitfield_unit.set(0usize, 1u8, {
-            let nal_hrd_parameters_present_flag: u32 =
-                unsafe { ::std::mem::transmute(nal_hrd_parameters_present_flag) };
-            nal_hrd_parameters_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(1usize, 1u8, {
-            let vcl_hrd_parameters_present_flag: u32 =
-                unsafe { ::std::mem::transmute(vcl_hrd_parameters_present_flag) };
-            vcl_hrd_parameters_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(2usize, 1u8, {
-            let sub_pic_hrd_params_present_flag: u32 =
-                unsafe { ::std::mem::transmute(sub_pic_hrd_params_present_flag) };
-            sub_pic_hrd_params_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(3usize, 1u8, {
-            let sub_pic_cpb_params_in_pic_timing_sei_flag: u32 =
-                unsafe { ::std::mem::transmute(sub_pic_cpb_params_in_pic_timing_sei_flag) };
-            sub_pic_cpb_params_in_pic_timing_sei_flag as u64
-        });
-        __bindgen_bitfield_unit.set(4usize, 8u8, {
-            let fixed_pic_rate_general_flag: u32 =
-                unsafe { ::std::mem::transmute(fixed_pic_rate_general_flag) };
-            fixed_pic_rate_general_flag as u64
-        });
-        __bindgen_bitfield_unit.set(12usize, 8u8, {
-            let fixed_pic_rate_within_cvs_flag: u32 =
-                unsafe { ::std::mem::transmute(fixed_pic_rate_within_cvs_flag) };
-            fixed_pic_rate_within_cvs_flag as u64
-        });
-        __bindgen_bitfield_unit.set(20usize, 8u8, {
-            let low_delay_hrd_flag: u32 = unsafe { ::std::mem::transmute(low_delay_hrd_flag) };
-            low_delay_hrd_flag as u64
-        });
-        __bindgen_bitfield_unit
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265HrdParameters {
-    pub flags: StdVideoH265HrdFlags,
-    pub tick_divisor_minus2: u8,
-    pub du_cpb_removal_delay_increment_length_minus1: u8,
-    pub dpb_output_delay_du_length_minus1: u8,
-    pub bit_rate_scale: u8,
-    pub cpb_size_scale: u8,
-    pub cpb_size_du_scale: u8,
-    pub initial_cpb_removal_delay_length_minus1: u8,
-    pub au_cpb_removal_delay_length_minus1: u8,
-    pub dpb_output_delay_length_minus1: u8,
-    pub cpb_cnt_minus1: [u8; 7usize],
-    pub elemental_duration_in_tc_minus1: [u16; 7usize],
-    pub reserved: [u16; 3usize],
-    pub pSubLayerHrdParametersNal: *const StdVideoH265SubLayerHrdParameters,
-    pub pSubLayerHrdParametersVcl: *const StdVideoH265SubLayerHrdParameters,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265HrdParameters() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265HrdParameters> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265HrdParameters>(),
-        56usize,
-        concat!("Size of: ", stringify!(StdVideoH265HrdParameters))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265HrdParameters>(),
-        8usize,
-        concat!("Alignment of ", stringify!(StdVideoH265HrdParameters))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).tick_divisor_minus2) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(tick_divisor_minus2)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).du_cpb_removal_delay_increment_length_minus1) as usize
-                - ptr as usize
-        },
-        5usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(du_cpb_removal_delay_increment_length_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).dpb_output_delay_du_length_minus1) as usize - ptr as usize
-        },
-        6usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(dpb_output_delay_du_length_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).bit_rate_scale) as usize - ptr as usize },
-        7usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(bit_rate_scale)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cpb_size_scale) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(cpb_size_scale)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cpb_size_du_scale) as usize - ptr as usize },
-        9usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(cpb_size_du_scale)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).initial_cpb_removal_delay_length_minus1) as usize
-                - ptr as usize
-        },
-        10usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(initial_cpb_removal_delay_length_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).au_cpb_removal_delay_length_minus1) as usize - ptr as usize
-        },
-        11usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(au_cpb_removal_delay_length_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).dpb_output_delay_length_minus1) as usize - ptr as usize
-        },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(dpb_output_delay_length_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cpb_cnt_minus1) as usize - ptr as usize },
-        13usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(cpb_cnt_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).elemental_duration_in_tc_minus1) as usize - ptr as usize
-        },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(elemental_duration_in_tc_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize },
-        34usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(reserved)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pSubLayerHrdParametersNal) as usize - ptr as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(pSubLayerHrdParametersNal)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pSubLayerHrdParametersVcl) as usize - ptr as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265HrdParameters),
-            "::",
-            stringify!(pSubLayerHrdParametersVcl)
-        )
-    );
-}
-impl Default for StdVideoH265HrdParameters {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
-#[repr(C)]
-#[repr(align(4))]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265VpsFlags {
-    pub _bitfield_align_1: [u8; 0],
-    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
-    pub __bindgen_padding_0: [u8; 3usize],
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265VpsFlags() {
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265VpsFlags>(),
-        4usize,
-        concat!("Size of: ", stringify!(StdVideoH265VpsFlags))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265VpsFlags>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265VpsFlags))
-    );
-}
-impl StdVideoH265VpsFlags {
-    #[inline]
-    pub fn vps_temporal_id_nesting_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vps_temporal_id_nesting_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(0usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn vps_sub_layer_ordering_info_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vps_sub_layer_ordering_info_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(1usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn vps_timing_info_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vps_timing_info_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(2usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn vps_poc_proportional_to_timing_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vps_poc_proportional_to_timing_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(3usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn new_bitfield_1(
-        vps_temporal_id_nesting_flag: u32,
-        vps_sub_layer_ordering_info_present_flag: u32,
-        vps_timing_info_present_flag: u32,
-        vps_poc_proportional_to_timing_flag: u32,
-    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
-        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
-        __bindgen_bitfield_unit.set(0usize, 1u8, {
-            let vps_temporal_id_nesting_flag: u32 =
-                unsafe { ::std::mem::transmute(vps_temporal_id_nesting_flag) };
-            vps_temporal_id_nesting_flag as u64
-        });
-        __bindgen_bitfield_unit.set(1usize, 1u8, {
-            let vps_sub_layer_ordering_info_present_flag: u32 =
-                unsafe { ::std::mem::transmute(vps_sub_layer_ordering_info_present_flag) };
-            vps_sub_layer_ordering_info_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(2usize, 1u8, {
-            let vps_timing_info_present_flag: u32 =
-                unsafe { ::std::mem::transmute(vps_timing_info_present_flag) };
-            vps_timing_info_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(3usize, 1u8, {
-            let vps_poc_proportional_to_timing_flag: u32 =
-                unsafe { ::std::mem::transmute(vps_poc_proportional_to_timing_flag) };
-            vps_poc_proportional_to_timing_flag as u64
-        });
-        __bindgen_bitfield_unit
-    }
-}
-#[repr(C)]
-#[repr(align(4))]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265ProfileTierLevelFlags {
-    pub _bitfield_align_1: [u8; 0],
-    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
-    pub __bindgen_padding_0: [u8; 3usize],
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265ProfileTierLevelFlags() {
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265ProfileTierLevelFlags>(),
-        4usize,
-        concat!("Size of: ", stringify!(StdVideoH265ProfileTierLevelFlags))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265ProfileTierLevelFlags>(),
-        4usize,
-        concat!(
-            "Alignment of ",
-            stringify!(StdVideoH265ProfileTierLevelFlags)
-        )
-    );
-}
-impl StdVideoH265ProfileTierLevelFlags {
-    #[inline]
-    pub fn general_tier_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_general_tier_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(0usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn general_progressive_source_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_general_progressive_source_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(1usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn general_interlaced_source_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_general_interlaced_source_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(2usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn general_non_packed_constraint_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_general_non_packed_constraint_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(3usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn general_frame_only_constraint_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_general_frame_only_constraint_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(4usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn new_bitfield_1(
-        general_tier_flag: u32,
-        general_progressive_source_flag: u32,
-        general_interlaced_source_flag: u32,
-        general_non_packed_constraint_flag: u32,
-        general_frame_only_constraint_flag: u32,
-    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
-        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
-        __bindgen_bitfield_unit.set(0usize, 1u8, {
-            let general_tier_flag: u32 = unsafe { ::std::mem::transmute(general_tier_flag) };
-            general_tier_flag as u64
-        });
-        __bindgen_bitfield_unit.set(1usize, 1u8, {
-            let general_progressive_source_flag: u32 =
-                unsafe { ::std::mem::transmute(general_progressive_source_flag) };
-            general_progressive_source_flag as u64
-        });
-        __bindgen_bitfield_unit.set(2usize, 1u8, {
-            let general_interlaced_source_flag: u32 =
-                unsafe { ::std::mem::transmute(general_interlaced_source_flag) };
-            general_interlaced_source_flag as u64
-        });
-        __bindgen_bitfield_unit.set(3usize, 1u8, {
-            let general_non_packed_constraint_flag: u32 =
-                unsafe { ::std::mem::transmute(general_non_packed_constraint_flag) };
-            general_non_packed_constraint_flag as u64
-        });
-        __bindgen_bitfield_unit.set(4usize, 1u8, {
-            let general_frame_only_constraint_flag: u32 =
-                unsafe { ::std::mem::transmute(general_frame_only_constraint_flag) };
-            general_frame_only_constraint_flag as u64
-        });
-        __bindgen_bitfield_unit
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265ProfileTierLevel {
-    pub flags: StdVideoH265ProfileTierLevelFlags,
-    pub general_profile_idc: StdVideoH265ProfileIdc,
-    pub general_level_idc: StdVideoH265LevelIdc,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265ProfileTierLevel() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265ProfileTierLevel> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265ProfileTierLevel>(),
-        12usize,
-        concat!("Size of: ", stringify!(StdVideoH265ProfileTierLevel))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265ProfileTierLevel>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265ProfileTierLevel))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ProfileTierLevel),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).general_profile_idc) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ProfileTierLevel),
-            "::",
-            stringify!(general_profile_idc)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).general_level_idc) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ProfileTierLevel),
-            "::",
-            stringify!(general_level_idc)
-        )
-    );
-}
-impl Default for StdVideoH265ProfileTierLevel {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265VideoParameterSet {
-    pub flags: StdVideoH265VpsFlags,
-    pub vps_video_parameter_set_id: u8,
-    pub vps_max_sub_layers_minus1: u8,
-    pub reserved1: u8,
-    pub reserved2: u8,
-    pub vps_num_units_in_tick: u32,
-    pub vps_time_scale: u32,
-    pub vps_num_ticks_poc_diff_one_minus1: u32,
-    pub reserved3: u32,
-    pub pDecPicBufMgr: *const StdVideoH265DecPicBufMgr,
-    pub pHrdParameters: *const StdVideoH265HrdParameters,
-    pub pProfileTierLevel: *const StdVideoH265ProfileTierLevel,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265VideoParameterSet() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265VideoParameterSet> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265VideoParameterSet>(),
-        48usize,
-        concat!("Size of: ", stringify!(StdVideoH265VideoParameterSet))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265VideoParameterSet>(),
-        8usize,
-        concat!("Alignment of ", stringify!(StdVideoH265VideoParameterSet))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).vps_video_parameter_set_id) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(vps_video_parameter_set_id)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).vps_max_sub_layers_minus1) as usize - ptr as usize },
-        5usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(vps_max_sub_layers_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
-        6usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(reserved1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
-        7usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(reserved2)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).vps_num_units_in_tick) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(vps_num_units_in_tick)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).vps_time_scale) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(vps_time_scale)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).vps_num_ticks_poc_diff_one_minus1) as usize - ptr as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(vps_num_ticks_poc_diff_one_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(reserved3)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pDecPicBufMgr) as usize - ptr as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(pDecPicBufMgr)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pHrdParameters) as usize - ptr as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(pHrdParameters)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pProfileTierLevel) as usize - ptr as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265VideoParameterSet),
-            "::",
-            stringify!(pProfileTierLevel)
-        )
-    );
-}
-impl Default for StdVideoH265VideoParameterSet {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265ScalingLists {
-    pub ScalingList4x4: [[u8; 16usize]; 6usize],
-    pub ScalingList8x8: [[u8; 64usize]; 6usize],
-    pub ScalingList16x16: [[u8; 64usize]; 6usize],
-    pub ScalingList32x32: [[u8; 64usize]; 2usize],
-    pub ScalingListDCCoef16x16: [u8; 6usize],
-    pub ScalingListDCCoef32x32: [u8; 2usize],
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265ScalingLists() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265ScalingLists> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265ScalingLists>(),
-        1000usize,
-        concat!("Size of: ", stringify!(StdVideoH265ScalingLists))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265ScalingLists>(),
-        1usize,
-        concat!("Alignment of ", stringify!(StdVideoH265ScalingLists))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).ScalingList4x4) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ScalingLists),
-            "::",
-            stringify!(ScalingList4x4)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).ScalingList8x8) as usize - ptr as usize },
-        96usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ScalingLists),
-            "::",
-            stringify!(ScalingList8x8)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).ScalingList16x16) as usize - ptr as usize },
-        480usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ScalingLists),
-            "::",
-            stringify!(ScalingList16x16)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).ScalingList32x32) as usize - ptr as usize },
-        864usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ScalingLists),
-            "::",
-            stringify!(ScalingList32x32)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).ScalingListDCCoef16x16) as usize - ptr as usize },
-        992usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ScalingLists),
-            "::",
-            stringify!(ScalingListDCCoef16x16)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).ScalingListDCCoef32x32) as usize - ptr as usize },
-        998usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ScalingLists),
-            "::",
-            stringify!(ScalingListDCCoef32x32)
-        )
-    );
-}
-impl Default for StdVideoH265ScalingLists {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
-#[repr(C)]
-#[repr(align(4))]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265SpsVuiFlags {
-    pub _bitfield_align_1: [u8; 0],
-    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 3usize]>,
-    pub __bindgen_padding_0: u8,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265SpsVuiFlags() {
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265SpsVuiFlags>(),
-        4usize,
-        concat!("Size of: ", stringify!(StdVideoH265SpsVuiFlags))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265SpsVuiFlags>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265SpsVuiFlags))
-    );
-}
-impl StdVideoH265SpsVuiFlags {
-    #[inline]
-    pub fn aspect_ratio_info_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_aspect_ratio_info_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(0usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn overscan_info_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_overscan_info_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(1usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn overscan_appropriate_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_overscan_appropriate_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(2usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn video_signal_type_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_video_signal_type_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(3usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn video_full_range_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_video_full_range_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(4usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn colour_description_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_colour_description_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(5usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn chroma_loc_info_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_chroma_loc_info_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(6usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn neutral_chroma_indication_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_neutral_chroma_indication_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(7usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn field_seq_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_field_seq_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(8usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn frame_field_info_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_frame_field_info_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(9usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn default_display_window_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_default_display_window_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(10usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn vui_timing_info_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vui_timing_info_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(11usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn vui_poc_proportional_to_timing_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vui_poc_proportional_to_timing_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(12usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn vui_hrd_parameters_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(13usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vui_hrd_parameters_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(13usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn bitstream_restriction_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_bitstream_restriction_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(14usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn tiles_fixed_structure_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_tiles_fixed_structure_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(15usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn motion_vectors_over_pic_boundaries_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_motion_vectors_over_pic_boundaries_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(16usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn restricted_ref_pic_lists_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_restricted_ref_pic_lists_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(17usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn new_bitfield_1(
-        aspect_ratio_info_present_flag: u32,
-        overscan_info_present_flag: u32,
-        overscan_appropriate_flag: u32,
-        video_signal_type_present_flag: u32,
-        video_full_range_flag: u32,
-        colour_description_present_flag: u32,
-        chroma_loc_info_present_flag: u32,
-        neutral_chroma_indication_flag: u32,
-        field_seq_flag: u32,
-        frame_field_info_present_flag: u32,
-        default_display_window_flag: u32,
-        vui_timing_info_present_flag: u32,
-        vui_poc_proportional_to_timing_flag: u32,
-        vui_hrd_parameters_present_flag: u32,
-        bitstream_restriction_flag: u32,
-        tiles_fixed_structure_flag: u32,
-        motion_vectors_over_pic_boundaries_flag: u32,
-        restricted_ref_pic_lists_flag: u32,
-    ) -> __BindgenBitfieldUnit<[u8; 3usize]> {
-        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 3usize]> = Default::default();
-        __bindgen_bitfield_unit.set(0usize, 1u8, {
-            let aspect_ratio_info_present_flag: u32 =
-                unsafe { ::std::mem::transmute(aspect_ratio_info_present_flag) };
-            aspect_ratio_info_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(1usize, 1u8, {
-            let overscan_info_present_flag: u32 =
-                unsafe { ::std::mem::transmute(overscan_info_present_flag) };
-            overscan_info_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(2usize, 1u8, {
-            let overscan_appropriate_flag: u32 =
-                unsafe { ::std::mem::transmute(overscan_appropriate_flag) };
-            overscan_appropriate_flag as u64
-        });
-        __bindgen_bitfield_unit.set(3usize, 1u8, {
-            let video_signal_type_present_flag: u32 =
-                unsafe { ::std::mem::transmute(video_signal_type_present_flag) };
-            video_signal_type_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(4usize, 1u8, {
-            let video_full_range_flag: u32 =
-                unsafe { ::std::mem::transmute(video_full_range_flag) };
-            video_full_range_flag as u64
-        });
-        __bindgen_bitfield_unit.set(5usize, 1u8, {
-            let colour_description_present_flag: u32 =
-                unsafe { ::std::mem::transmute(colour_description_present_flag) };
-            colour_description_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(6usize, 1u8, {
-            let chroma_loc_info_present_flag: u32 =
-                unsafe { ::std::mem::transmute(chroma_loc_info_present_flag) };
-            chroma_loc_info_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(7usize, 1u8, {
-            let neutral_chroma_indication_flag: u32 =
-                unsafe { ::std::mem::transmute(neutral_chroma_indication_flag) };
-            neutral_chroma_indication_flag as u64
-        });
-        __bindgen_bitfield_unit.set(8usize, 1u8, {
-            let field_seq_flag: u32 = unsafe { ::std::mem::transmute(field_seq_flag) };
-            field_seq_flag as u64
-        });
-        __bindgen_bitfield_unit.set(9usize, 1u8, {
-            let frame_field_info_present_flag: u32 =
-                unsafe { ::std::mem::transmute(frame_field_info_present_flag) };
-            frame_field_info_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(10usize, 1u8, {
-            let default_display_window_flag: u32 =
-                unsafe { ::std::mem::transmute(default_display_window_flag) };
-            default_display_window_flag as u64
-        });
-        __bindgen_bitfield_unit.set(11usize, 1u8, {
-            let vui_timing_info_present_flag: u32 =
-                unsafe { ::std::mem::transmute(vui_timing_info_present_flag) };
-            vui_timing_info_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(12usize, 1u8, {
-            let vui_poc_proportional_to_timing_flag: u32 =
-                unsafe { ::std::mem::transmute(vui_poc_proportional_to_timing_flag) };
-            vui_poc_proportional_to_timing_flag as u64
-        });
-        __bindgen_bitfield_unit.set(13usize, 1u8, {
-            let vui_hrd_parameters_present_flag: u32 =
-                unsafe { ::std::mem::transmute(vui_hrd_parameters_present_flag) };
-            vui_hrd_parameters_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(14usize, 1u8, {
-            let bitstream_restriction_flag: u32 =
-                unsafe { ::std::mem::transmute(bitstream_restriction_flag) };
-            bitstream_restriction_flag as u64
-        });
-        __bindgen_bitfield_unit.set(15usize, 1u8, {
-            let tiles_fixed_structure_flag: u32 =
-                unsafe { ::std::mem::transmute(tiles_fixed_structure_flag) };
-            tiles_fixed_structure_flag as u64
-        });
-        __bindgen_bitfield_unit.set(16usize, 1u8, {
-            let motion_vectors_over_pic_boundaries_flag: u32 =
-                unsafe { ::std::mem::transmute(motion_vectors_over_pic_boundaries_flag) };
-            motion_vectors_over_pic_boundaries_flag as u64
-        });
-        __bindgen_bitfield_unit.set(17usize, 1u8, {
-            let restricted_ref_pic_lists_flag: u32 =
-                unsafe { ::std::mem::transmute(restricted_ref_pic_lists_flag) };
-            restricted_ref_pic_lists_flag as u64
-        });
-        __bindgen_bitfield_unit
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265SequenceParameterSetVui {
-    pub flags: StdVideoH265SpsVuiFlags,
-    pub aspect_ratio_idc: StdVideoH265AspectRatioIdc,
-    pub sar_width: u16,
-    pub sar_height: u16,
-    pub video_format: u8,
-    pub colour_primaries: u8,
-    pub transfer_characteristics: u8,
-    pub matrix_coeffs: u8,
-    pub chroma_sample_loc_type_top_field: u8,
-    pub chroma_sample_loc_type_bottom_field: u8,
-    pub reserved1: u8,
-    pub reserved2: u8,
-    pub def_disp_win_left_offset: u16,
-    pub def_disp_win_right_offset: u16,
-    pub def_disp_win_top_offset: u16,
-    pub def_disp_win_bottom_offset: u16,
-    pub vui_num_units_in_tick: u32,
-    pub vui_time_scale: u32,
-    pub vui_num_ticks_poc_diff_one_minus1: u32,
-    pub min_spatial_segmentation_idc: u16,
-    pub reserved3: u16,
-    pub max_bytes_per_pic_denom: u8,
-    pub max_bits_per_min_cu_denom: u8,
-    pub log2_max_mv_length_horizontal: u8,
-    pub log2_max_mv_length_vertical: u8,
-    pub pHrdParameters: *const StdVideoH265HrdParameters,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265SequenceParameterSetVui() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265SequenceParameterSetVui> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265SequenceParameterSetVui>(),
-        56usize,
-        concat!("Size of: ", stringify!(StdVideoH265SequenceParameterSetVui))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265SequenceParameterSetVui>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(StdVideoH265SequenceParameterSetVui)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).aspect_ratio_idc) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(aspect_ratio_idc)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sar_width) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(sar_width)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sar_height) as usize - ptr as usize },
-        10usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(sar_height)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).video_format) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(video_format)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).colour_primaries) as usize - ptr as usize },
-        13usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(colour_primaries)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).transfer_characteristics) as usize - ptr as usize },
-        14usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(transfer_characteristics)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).matrix_coeffs) as usize - ptr as usize },
-        15usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(matrix_coeffs)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).chroma_sample_loc_type_top_field) as usize - ptr as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(chroma_sample_loc_type_top_field)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).chroma_sample_loc_type_bottom_field) as usize - ptr as usize
-        },
-        17usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(chroma_sample_loc_type_bottom_field)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
-        18usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(reserved1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
-        19usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(reserved2)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).def_disp_win_left_offset) as usize - ptr as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(def_disp_win_left_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).def_disp_win_right_offset) as usize - ptr as usize },
-        22usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(def_disp_win_right_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).def_disp_win_top_offset) as usize - ptr as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(def_disp_win_top_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).def_disp_win_bottom_offset) as usize - ptr as usize },
-        26usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(def_disp_win_bottom_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).vui_num_units_in_tick) as usize - ptr as usize },
-        28usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(vui_num_units_in_tick)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).vui_time_scale) as usize - ptr as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(vui_time_scale)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).vui_num_ticks_poc_diff_one_minus1) as usize - ptr as usize
-        },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(vui_num_ticks_poc_diff_one_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).min_spatial_segmentation_idc) as usize - ptr as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(min_spatial_segmentation_idc)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize },
-        42usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(reserved3)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).max_bytes_per_pic_denom) as usize - ptr as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(max_bytes_per_pic_denom)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).max_bits_per_min_cu_denom) as usize - ptr as usize },
-        45usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(max_bits_per_min_cu_denom)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_max_mv_length_horizontal) as usize - ptr as usize
-        },
-        46usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(log2_max_mv_length_horizontal)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).log2_max_mv_length_vertical) as usize - ptr as usize },
-        47usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(log2_max_mv_length_vertical)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pHrdParameters) as usize - ptr as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSetVui),
-            "::",
-            stringify!(pHrdParameters)
-        )
-    );
-}
-impl Default for StdVideoH265SequenceParameterSetVui {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265PredictorPaletteEntries {
-    pub PredictorPaletteEntries: [[u16; 128usize]; 3usize],
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265PredictorPaletteEntries() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265PredictorPaletteEntries> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265PredictorPaletteEntries>(),
-        768usize,
-        concat!("Size of: ", stringify!(StdVideoH265PredictorPaletteEntries))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265PredictorPaletteEntries>(),
-        2usize,
-        concat!(
-            "Alignment of ",
-            stringify!(StdVideoH265PredictorPaletteEntries)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).PredictorPaletteEntries) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PredictorPaletteEntries),
-            "::",
-            stringify!(PredictorPaletteEntries)
-        )
-    );
-}
-impl Default for StdVideoH265PredictorPaletteEntries {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
-#[repr(C)]
-#[repr(align(4))]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265SpsFlags {
-    pub _bitfield_align_1: [u8; 0],
-    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265SpsFlags() {
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265SpsFlags>(),
-        4usize,
-        concat!("Size of: ", stringify!(StdVideoH265SpsFlags))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265SpsFlags>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265SpsFlags))
-    );
-}
-impl StdVideoH265SpsFlags {
-    #[inline]
-    pub fn sps_temporal_id_nesting_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_temporal_id_nesting_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(0usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn separate_colour_plane_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_separate_colour_plane_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(1usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn conformance_window_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_conformance_window_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(2usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sps_sub_layer_ordering_info_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_sub_layer_ordering_info_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(3usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn scaling_list_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_scaling_list_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(4usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sps_scaling_list_data_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_scaling_list_data_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(5usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn amp_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_amp_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(6usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sample_adaptive_offset_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sample_adaptive_offset_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(7usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pcm_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pcm_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(8usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pcm_loop_filter_disabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pcm_loop_filter_disabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(9usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn long_term_ref_pics_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_long_term_ref_pics_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(10usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sps_temporal_mvp_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_temporal_mvp_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(11usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn strong_intra_smoothing_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_strong_intra_smoothing_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(12usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn vui_parameters_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(13usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_vui_parameters_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(13usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sps_extension_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_extension_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(14usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sps_range_extension_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_range_extension_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(15usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn transform_skip_rotation_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_transform_skip_rotation_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(16usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn transform_skip_context_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_transform_skip_context_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(17usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn implicit_rdpcm_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(18usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_implicit_rdpcm_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(18usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn explicit_rdpcm_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(19usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_explicit_rdpcm_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(19usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn extended_precision_processing_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_extended_precision_processing_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(20usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn intra_smoothing_disabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(21usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_intra_smoothing_disabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(21usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn high_precision_offsets_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(22usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_high_precision_offsets_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(22usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn persistent_rice_adaptation_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(23usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_persistent_rice_adaptation_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(23usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn cabac_bypass_alignment_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_cabac_bypass_alignment_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(24usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sps_scc_extension_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(25usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_scc_extension_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(25usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sps_curr_pic_ref_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(26usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_curr_pic_ref_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(26usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn palette_mode_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(27usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_palette_mode_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(27usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sps_palette_predictor_initializers_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(28usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sps_palette_predictor_initializers_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(28usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn intra_boundary_filtering_disabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(29usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_intra_boundary_filtering_disabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(29usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn new_bitfield_1(
-        sps_temporal_id_nesting_flag: u32,
-        separate_colour_plane_flag: u32,
-        conformance_window_flag: u32,
-        sps_sub_layer_ordering_info_present_flag: u32,
-        scaling_list_enabled_flag: u32,
-        sps_scaling_list_data_present_flag: u32,
-        amp_enabled_flag: u32,
-        sample_adaptive_offset_enabled_flag: u32,
-        pcm_enabled_flag: u32,
-        pcm_loop_filter_disabled_flag: u32,
-        long_term_ref_pics_present_flag: u32,
-        sps_temporal_mvp_enabled_flag: u32,
-        strong_intra_smoothing_enabled_flag: u32,
-        vui_parameters_present_flag: u32,
-        sps_extension_present_flag: u32,
-        sps_range_extension_flag: u32,
-        transform_skip_rotation_enabled_flag: u32,
-        transform_skip_context_enabled_flag: u32,
-        implicit_rdpcm_enabled_flag: u32,
-        explicit_rdpcm_enabled_flag: u32,
-        extended_precision_processing_flag: u32,
-        intra_smoothing_disabled_flag: u32,
-        high_precision_offsets_enabled_flag: u32,
-        persistent_rice_adaptation_enabled_flag: u32,
-        cabac_bypass_alignment_enabled_flag: u32,
-        sps_scc_extension_flag: u32,
-        sps_curr_pic_ref_enabled_flag: u32,
-        palette_mode_enabled_flag: u32,
-        sps_palette_predictor_initializers_present_flag: u32,
-        intra_boundary_filtering_disabled_flag: u32,
-    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
-        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
-        __bindgen_bitfield_unit.set(0usize, 1u8, {
-            let sps_temporal_id_nesting_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_temporal_id_nesting_flag) };
-            sps_temporal_id_nesting_flag as u64
-        });
-        __bindgen_bitfield_unit.set(1usize, 1u8, {
-            let separate_colour_plane_flag: u32 =
-                unsafe { ::std::mem::transmute(separate_colour_plane_flag) };
-            separate_colour_plane_flag as u64
-        });
-        __bindgen_bitfield_unit.set(2usize, 1u8, {
-            let conformance_window_flag: u32 =
-                unsafe { ::std::mem::transmute(conformance_window_flag) };
-            conformance_window_flag as u64
-        });
-        __bindgen_bitfield_unit.set(3usize, 1u8, {
-            let sps_sub_layer_ordering_info_present_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_sub_layer_ordering_info_present_flag) };
-            sps_sub_layer_ordering_info_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(4usize, 1u8, {
-            let scaling_list_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(scaling_list_enabled_flag) };
-            scaling_list_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(5usize, 1u8, {
-            let sps_scaling_list_data_present_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_scaling_list_data_present_flag) };
-            sps_scaling_list_data_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(6usize, 1u8, {
-            let amp_enabled_flag: u32 = unsafe { ::std::mem::transmute(amp_enabled_flag) };
-            amp_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(7usize, 1u8, {
-            let sample_adaptive_offset_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(sample_adaptive_offset_enabled_flag) };
-            sample_adaptive_offset_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(8usize, 1u8, {
-            let pcm_enabled_flag: u32 = unsafe { ::std::mem::transmute(pcm_enabled_flag) };
-            pcm_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(9usize, 1u8, {
-            let pcm_loop_filter_disabled_flag: u32 =
-                unsafe { ::std::mem::transmute(pcm_loop_filter_disabled_flag) };
-            pcm_loop_filter_disabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(10usize, 1u8, {
-            let long_term_ref_pics_present_flag: u32 =
-                unsafe { ::std::mem::transmute(long_term_ref_pics_present_flag) };
-            long_term_ref_pics_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(11usize, 1u8, {
-            let sps_temporal_mvp_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_temporal_mvp_enabled_flag) };
-            sps_temporal_mvp_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(12usize, 1u8, {
-            let strong_intra_smoothing_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(strong_intra_smoothing_enabled_flag) };
-            strong_intra_smoothing_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(13usize, 1u8, {
-            let vui_parameters_present_flag: u32 =
-                unsafe { ::std::mem::transmute(vui_parameters_present_flag) };
-            vui_parameters_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(14usize, 1u8, {
-            let sps_extension_present_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_extension_present_flag) };
-            sps_extension_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(15usize, 1u8, {
-            let sps_range_extension_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_range_extension_flag) };
-            sps_range_extension_flag as u64
-        });
-        __bindgen_bitfield_unit.set(16usize, 1u8, {
-            let transform_skip_rotation_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(transform_skip_rotation_enabled_flag) };
-            transform_skip_rotation_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(17usize, 1u8, {
-            let transform_skip_context_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(transform_skip_context_enabled_flag) };
-            transform_skip_context_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(18usize, 1u8, {
-            let implicit_rdpcm_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(implicit_rdpcm_enabled_flag) };
-            implicit_rdpcm_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(19usize, 1u8, {
-            let explicit_rdpcm_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(explicit_rdpcm_enabled_flag) };
-            explicit_rdpcm_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(20usize, 1u8, {
-            let extended_precision_processing_flag: u32 =
-                unsafe { ::std::mem::transmute(extended_precision_processing_flag) };
-            extended_precision_processing_flag as u64
-        });
-        __bindgen_bitfield_unit.set(21usize, 1u8, {
-            let intra_smoothing_disabled_flag: u32 =
-                unsafe { ::std::mem::transmute(intra_smoothing_disabled_flag) };
-            intra_smoothing_disabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(22usize, 1u8, {
-            let high_precision_offsets_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(high_precision_offsets_enabled_flag) };
-            high_precision_offsets_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(23usize, 1u8, {
-            let persistent_rice_adaptation_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(persistent_rice_adaptation_enabled_flag) };
-            persistent_rice_adaptation_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(24usize, 1u8, {
-            let cabac_bypass_alignment_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(cabac_bypass_alignment_enabled_flag) };
-            cabac_bypass_alignment_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(25usize, 1u8, {
-            let sps_scc_extension_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_scc_extension_flag) };
-            sps_scc_extension_flag as u64
-        });
-        __bindgen_bitfield_unit.set(26usize, 1u8, {
-            let sps_curr_pic_ref_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_curr_pic_ref_enabled_flag) };
-            sps_curr_pic_ref_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(27usize, 1u8, {
-            let palette_mode_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(palette_mode_enabled_flag) };
-            palette_mode_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(28usize, 1u8, {
-            let sps_palette_predictor_initializers_present_flag: u32 =
-                unsafe { ::std::mem::transmute(sps_palette_predictor_initializers_present_flag) };
-            sps_palette_predictor_initializers_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(29usize, 1u8, {
-            let intra_boundary_filtering_disabled_flag: u32 =
-                unsafe { ::std::mem::transmute(intra_boundary_filtering_disabled_flag) };
-            intra_boundary_filtering_disabled_flag as u64
-        });
-        __bindgen_bitfield_unit
-    }
-}
-#[repr(C)]
-#[repr(align(4))]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265ShortTermRefPicSetFlags {
-    pub _bitfield_align_1: [u8; 0],
-    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 1usize]>,
-    pub __bindgen_padding_0: [u8; 3usize],
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265ShortTermRefPicSetFlags() {
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265ShortTermRefPicSetFlags>(),
-        4usize,
-        concat!("Size of: ", stringify!(StdVideoH265ShortTermRefPicSetFlags))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265ShortTermRefPicSetFlags>(),
-        4usize,
-        concat!(
-            "Alignment of ",
-            stringify!(StdVideoH265ShortTermRefPicSetFlags)
-        )
-    );
-}
-impl StdVideoH265ShortTermRefPicSetFlags {
-    #[inline]
-    pub fn inter_ref_pic_set_prediction_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_inter_ref_pic_set_prediction_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(0usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn delta_rps_sign(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_delta_rps_sign(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(1usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn new_bitfield_1(
-        inter_ref_pic_set_prediction_flag: u32,
-        delta_rps_sign: u32,
-    ) -> __BindgenBitfieldUnit<[u8; 1usize]> {
-        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 1usize]> = Default::default();
-        __bindgen_bitfield_unit.set(0usize, 1u8, {
-            let inter_ref_pic_set_prediction_flag: u32 =
-                unsafe { ::std::mem::transmute(inter_ref_pic_set_prediction_flag) };
-            inter_ref_pic_set_prediction_flag as u64
-        });
-        __bindgen_bitfield_unit.set(1usize, 1u8, {
-            let delta_rps_sign: u32 = unsafe { ::std::mem::transmute(delta_rps_sign) };
-            delta_rps_sign as u64
-        });
-        __bindgen_bitfield_unit
-    }
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265ShortTermRefPicSet {
-    pub flags: StdVideoH265ShortTermRefPicSetFlags,
-    pub delta_idx_minus1: u32,
-    pub use_delta_flag: u16,
-    pub abs_delta_rps_minus1: u16,
-    pub used_by_curr_pic_flag: u16,
-    pub used_by_curr_pic_s0_flag: u16,
-    pub used_by_curr_pic_s1_flag: u16,
-    pub reserved1: u16,
-    pub reserved2: u8,
-    pub reserved3: u8,
-    pub num_negative_pics: u8,
-    pub num_positive_pics: u8,
-    pub delta_poc_s0_minus1: [u16; 16usize],
-    pub delta_poc_s1_minus1: [u16; 16usize],
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265ShortTermRefPicSet() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265ShortTermRefPicSet> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265ShortTermRefPicSet>(),
-        88usize,
-        concat!("Size of: ", stringify!(StdVideoH265ShortTermRefPicSet))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265ShortTermRefPicSet>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265ShortTermRefPicSet))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).delta_idx_minus1) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(delta_idx_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).use_delta_flag) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(use_delta_flag)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).abs_delta_rps_minus1) as usize - ptr as usize },
-        10usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(abs_delta_rps_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).used_by_curr_pic_flag) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(used_by_curr_pic_flag)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).used_by_curr_pic_s0_flag) as usize - ptr as usize },
-        14usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(used_by_curr_pic_s0_flag)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).used_by_curr_pic_s1_flag) as usize - ptr as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(used_by_curr_pic_s1_flag)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
-        18usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(reserved1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(reserved2)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize },
-        21usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(reserved3)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).num_negative_pics) as usize - ptr as usize },
-        22usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(num_negative_pics)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).num_positive_pics) as usize - ptr as usize },
-        23usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(num_positive_pics)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).delta_poc_s0_minus1) as usize - ptr as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(delta_poc_s0_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).delta_poc_s1_minus1) as usize - ptr as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265ShortTermRefPicSet),
-            "::",
-            stringify!(delta_poc_s1_minus1)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265LongTermRefPicsSps {
-    pub used_by_curr_pic_lt_sps_flag: u32,
-    pub lt_ref_pic_poc_lsb_sps: [u32; 32usize],
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265LongTermRefPicsSps() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265LongTermRefPicsSps> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265LongTermRefPicsSps>(),
-        132usize,
-        concat!("Size of: ", stringify!(StdVideoH265LongTermRefPicsSps))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265LongTermRefPicsSps>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265LongTermRefPicsSps))
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).used_by_curr_pic_lt_sps_flag) as usize - ptr as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265LongTermRefPicsSps),
-            "::",
-            stringify!(used_by_curr_pic_lt_sps_flag)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).lt_ref_pic_poc_lsb_sps) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265LongTermRefPicsSps),
-            "::",
-            stringify!(lt_ref_pic_poc_lsb_sps)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265SequenceParameterSet {
-    pub flags: StdVideoH265SpsFlags,
-    pub chroma_format_idc: StdVideoH265ChromaFormatIdc,
-    pub pic_width_in_luma_samples: u32,
-    pub pic_height_in_luma_samples: u32,
-    pub sps_video_parameter_set_id: u8,
-    pub sps_max_sub_layers_minus1: u8,
-    pub sps_seq_parameter_set_id: u8,
-    pub bit_depth_luma_minus8: u8,
-    pub bit_depth_chroma_minus8: u8,
-    pub log2_max_pic_order_cnt_lsb_minus4: u8,
-    pub log2_min_luma_coding_block_size_minus3: u8,
-    pub log2_diff_max_min_luma_coding_block_size: u8,
-    pub log2_min_luma_transform_block_size_minus2: u8,
-    pub log2_diff_max_min_luma_transform_block_size: u8,
-    pub max_transform_hierarchy_depth_inter: u8,
-    pub max_transform_hierarchy_depth_intra: u8,
-    pub num_short_term_ref_pic_sets: u8,
-    pub num_long_term_ref_pics_sps: u8,
-    pub pcm_sample_bit_depth_luma_minus1: u8,
-    pub pcm_sample_bit_depth_chroma_minus1: u8,
-    pub log2_min_pcm_luma_coding_block_size_minus3: u8,
-    pub log2_diff_max_min_pcm_luma_coding_block_size: u8,
-    pub reserved1: u8,
-    pub reserved2: u8,
-    pub palette_max_size: u8,
-    pub delta_palette_max_predictor_size: u8,
-    pub motion_vector_resolution_control_idc: u8,
-    pub sps_num_palette_predictor_initializers_minus1: u8,
-    pub conf_win_left_offset: u32,
-    pub conf_win_right_offset: u32,
-    pub conf_win_top_offset: u32,
-    pub conf_win_bottom_offset: u32,
-    pub pProfileTierLevel: *const StdVideoH265ProfileTierLevel,
-    pub pDecPicBufMgr: *const StdVideoH265DecPicBufMgr,
-    pub pScalingLists: *const StdVideoH265ScalingLists,
-    pub pShortTermRefPicSet: *const StdVideoH265ShortTermRefPicSet,
-    pub pLongTermRefPicsSps: *const StdVideoH265LongTermRefPicsSps,
-    pub pSequenceParameterSetVui: *const StdVideoH265SequenceParameterSetVui,
-    pub pPredictorPaletteEntries: *const StdVideoH265PredictorPaletteEntries,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265SequenceParameterSet() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265SequenceParameterSet> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265SequenceParameterSet>(),
-        112usize,
-        concat!("Size of: ", stringify!(StdVideoH265SequenceParameterSet))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265SequenceParameterSet>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(StdVideoH265SequenceParameterSet)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).chroma_format_idc) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(chroma_format_idc)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pic_width_in_luma_samples) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pic_width_in_luma_samples)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pic_height_in_luma_samples) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pic_height_in_luma_samples)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sps_video_parameter_set_id) as usize - ptr as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(sps_video_parameter_set_id)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sps_max_sub_layers_minus1) as usize - ptr as usize },
-        17usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(sps_max_sub_layers_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sps_seq_parameter_set_id) as usize - ptr as usize },
-        18usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(sps_seq_parameter_set_id)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).bit_depth_luma_minus8) as usize - ptr as usize },
-        19usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(bit_depth_luma_minus8)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).bit_depth_chroma_minus8) as usize - ptr as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(bit_depth_chroma_minus8)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_max_pic_order_cnt_lsb_minus4) as usize - ptr as usize
-        },
-        21usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(log2_max_pic_order_cnt_lsb_minus4)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_min_luma_coding_block_size_minus3) as usize
-                - ptr as usize
-        },
-        22usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(log2_min_luma_coding_block_size_minus3)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_diff_max_min_luma_coding_block_size) as usize
-                - ptr as usize
-        },
-        23usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(log2_diff_max_min_luma_coding_block_size)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_min_luma_transform_block_size_minus2) as usize
-                - ptr as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(log2_min_luma_transform_block_size_minus2)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_diff_max_min_luma_transform_block_size) as usize
-                - ptr as usize
-        },
-        25usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(log2_diff_max_min_luma_transform_block_size)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).max_transform_hierarchy_depth_inter) as usize - ptr as usize
-        },
-        26usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(max_transform_hierarchy_depth_inter)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).max_transform_hierarchy_depth_intra) as usize - ptr as usize
-        },
-        27usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(max_transform_hierarchy_depth_intra)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).num_short_term_ref_pic_sets) as usize - ptr as usize },
-        28usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(num_short_term_ref_pic_sets)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).num_long_term_ref_pics_sps) as usize - ptr as usize },
-        29usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(num_long_term_ref_pics_sps)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).pcm_sample_bit_depth_luma_minus1) as usize - ptr as usize
-        },
-        30usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pcm_sample_bit_depth_luma_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).pcm_sample_bit_depth_chroma_minus1) as usize - ptr as usize
-        },
-        31usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pcm_sample_bit_depth_chroma_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_min_pcm_luma_coding_block_size_minus3) as usize
-                - ptr as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(log2_min_pcm_luma_coding_block_size_minus3)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_diff_max_min_pcm_luma_coding_block_size) as usize
-                - ptr as usize
-        },
-        33usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(log2_diff_max_min_pcm_luma_coding_block_size)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
-        34usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(reserved1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
-        35usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(reserved2)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).palette_max_size) as usize - ptr as usize },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(palette_max_size)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).delta_palette_max_predictor_size) as usize - ptr as usize
-        },
-        37usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(delta_palette_max_predictor_size)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).motion_vector_resolution_control_idc) as usize
-                - ptr as usize
-        },
-        38usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(motion_vector_resolution_control_idc)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).sps_num_palette_predictor_initializers_minus1) as usize
-                - ptr as usize
-        },
-        39usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(sps_num_palette_predictor_initializers_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).conf_win_left_offset) as usize - ptr as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(conf_win_left_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).conf_win_right_offset) as usize - ptr as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(conf_win_right_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).conf_win_top_offset) as usize - ptr as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(conf_win_top_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).conf_win_bottom_offset) as usize - ptr as usize },
-        52usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(conf_win_bottom_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pProfileTierLevel) as usize - ptr as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pProfileTierLevel)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pDecPicBufMgr) as usize - ptr as usize },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pDecPicBufMgr)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pScalingLists) as usize - ptr as usize },
-        72usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pScalingLists)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pShortTermRefPicSet) as usize - ptr as usize },
-        80usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pShortTermRefPicSet)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pLongTermRefPicsSps) as usize - ptr as usize },
-        88usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pLongTermRefPicsSps)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pSequenceParameterSetVui) as usize - ptr as usize },
-        96usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pSequenceParameterSetVui)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pPredictorPaletteEntries) as usize - ptr as usize },
-        104usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265SequenceParameterSet),
-            "::",
-            stringify!(pPredictorPaletteEntries)
-        )
-    );
-}
-impl Default for StdVideoH265SequenceParameterSet {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
-#[repr(C)]
-#[repr(align(4))]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265PpsFlags {
-    pub _bitfield_align_1: [u8; 0],
-    pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize]>,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265PpsFlags() {
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265PpsFlags>(),
-        4usize,
-        concat!("Size of: ", stringify!(StdVideoH265PpsFlags))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265PpsFlags>(),
-        4usize,
-        concat!("Alignment of ", stringify!(StdVideoH265PpsFlags))
-    );
-}
-impl StdVideoH265PpsFlags {
-    #[inline]
-    pub fn dependent_slice_segments_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_dependent_slice_segments_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(0usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn output_flag_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(1usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_output_flag_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(1usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn sign_data_hiding_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(2usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_sign_data_hiding_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(2usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn cabac_init_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(3usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_cabac_init_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(3usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn constrained_intra_pred_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(4usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_constrained_intra_pred_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(4usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn transform_skip_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(5usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_transform_skip_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(5usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn cu_qp_delta_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(6usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_cu_qp_delta_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(6usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_slice_chroma_qp_offsets_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(7usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_slice_chroma_qp_offsets_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(7usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn weighted_pred_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(8usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_weighted_pred_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(8usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn weighted_bipred_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(9usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_weighted_bipred_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(9usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn transquant_bypass_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(10usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_transquant_bypass_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(10usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn tiles_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(11usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_tiles_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(11usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn entropy_coding_sync_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(12usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_entropy_coding_sync_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(12usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn uniform_spacing_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(13usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_uniform_spacing_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(13usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn loop_filter_across_tiles_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(14usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_loop_filter_across_tiles_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(14usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_loop_filter_across_slices_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(15usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_loop_filter_across_slices_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(15usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn deblocking_filter_control_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(16usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_deblocking_filter_control_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(16usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn deblocking_filter_override_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(17usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_deblocking_filter_override_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(17usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_deblocking_filter_disabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(18usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_deblocking_filter_disabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(18usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_scaling_list_data_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(19usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_scaling_list_data_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(19usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn lists_modification_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(20usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_lists_modification_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(20usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn slice_segment_header_extension_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(21usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_slice_segment_header_extension_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(21usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_extension_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(22usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_extension_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(22usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn cross_component_prediction_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(23usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_cross_component_prediction_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(23usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn chroma_qp_offset_list_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(24usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_chroma_qp_offset_list_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(24usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_curr_pic_ref_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(25usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_curr_pic_ref_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(25usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn residual_adaptive_colour_transform_enabled_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(26usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_residual_adaptive_colour_transform_enabled_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(26usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_slice_act_qp_offsets_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(27usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_slice_act_qp_offsets_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(27usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_palette_predictor_initializers_present_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(28usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_palette_predictor_initializers_present_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(28usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn monochrome_palette_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(29usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_monochrome_palette_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(29usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn pps_range_extension_flag(&self) -> u32 {
-        unsafe { ::std::mem::transmute(self._bitfield_1.get(30usize, 1u8) as u32) }
-    }
-    #[inline]
-    pub fn set_pps_range_extension_flag(&mut self, val: u32) {
-        unsafe {
-            let val: u32 = ::std::mem::transmute(val);
-            self._bitfield_1.set(30usize, 1u8, val as u64)
-        }
-    }
-    #[inline]
-    pub fn new_bitfield_1(
-        dependent_slice_segments_enabled_flag: u32,
-        output_flag_present_flag: u32,
-        sign_data_hiding_enabled_flag: u32,
-        cabac_init_present_flag: u32,
-        constrained_intra_pred_flag: u32,
-        transform_skip_enabled_flag: u32,
-        cu_qp_delta_enabled_flag: u32,
-        pps_slice_chroma_qp_offsets_present_flag: u32,
-        weighted_pred_flag: u32,
-        weighted_bipred_flag: u32,
-        transquant_bypass_enabled_flag: u32,
-        tiles_enabled_flag: u32,
-        entropy_coding_sync_enabled_flag: u32,
-        uniform_spacing_flag: u32,
-        loop_filter_across_tiles_enabled_flag: u32,
-        pps_loop_filter_across_slices_enabled_flag: u32,
-        deblocking_filter_control_present_flag: u32,
-        deblocking_filter_override_enabled_flag: u32,
-        pps_deblocking_filter_disabled_flag: u32,
-        pps_scaling_list_data_present_flag: u32,
-        lists_modification_present_flag: u32,
-        slice_segment_header_extension_present_flag: u32,
-        pps_extension_present_flag: u32,
-        cross_component_prediction_enabled_flag: u32,
-        chroma_qp_offset_list_enabled_flag: u32,
-        pps_curr_pic_ref_enabled_flag: u32,
-        residual_adaptive_colour_transform_enabled_flag: u32,
-        pps_slice_act_qp_offsets_present_flag: u32,
-        pps_palette_predictor_initializers_present_flag: u32,
-        monochrome_palette_flag: u32,
-        pps_range_extension_flag: u32,
-    ) -> __BindgenBitfieldUnit<[u8; 4usize]> {
-        let mut __bindgen_bitfield_unit: __BindgenBitfieldUnit<[u8; 4usize]> = Default::default();
-        __bindgen_bitfield_unit.set(0usize, 1u8, {
-            let dependent_slice_segments_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(dependent_slice_segments_enabled_flag) };
-            dependent_slice_segments_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(1usize, 1u8, {
-            let output_flag_present_flag: u32 =
-                unsafe { ::std::mem::transmute(output_flag_present_flag) };
-            output_flag_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(2usize, 1u8, {
-            let sign_data_hiding_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(sign_data_hiding_enabled_flag) };
-            sign_data_hiding_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(3usize, 1u8, {
-            let cabac_init_present_flag: u32 =
-                unsafe { ::std::mem::transmute(cabac_init_present_flag) };
-            cabac_init_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(4usize, 1u8, {
-            let constrained_intra_pred_flag: u32 =
-                unsafe { ::std::mem::transmute(constrained_intra_pred_flag) };
-            constrained_intra_pred_flag as u64
-        });
-        __bindgen_bitfield_unit.set(5usize, 1u8, {
-            let transform_skip_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(transform_skip_enabled_flag) };
-            transform_skip_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(6usize, 1u8, {
-            let cu_qp_delta_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(cu_qp_delta_enabled_flag) };
-            cu_qp_delta_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(7usize, 1u8, {
-            let pps_slice_chroma_qp_offsets_present_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_slice_chroma_qp_offsets_present_flag) };
-            pps_slice_chroma_qp_offsets_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(8usize, 1u8, {
-            let weighted_pred_flag: u32 = unsafe { ::std::mem::transmute(weighted_pred_flag) };
-            weighted_pred_flag as u64
-        });
-        __bindgen_bitfield_unit.set(9usize, 1u8, {
-            let weighted_bipred_flag: u32 = unsafe { ::std::mem::transmute(weighted_bipred_flag) };
-            weighted_bipred_flag as u64
-        });
-        __bindgen_bitfield_unit.set(10usize, 1u8, {
-            let transquant_bypass_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(transquant_bypass_enabled_flag) };
-            transquant_bypass_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(11usize, 1u8, {
-            let tiles_enabled_flag: u32 = unsafe { ::std::mem::transmute(tiles_enabled_flag) };
-            tiles_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(12usize, 1u8, {
-            let entropy_coding_sync_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(entropy_coding_sync_enabled_flag) };
-            entropy_coding_sync_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(13usize, 1u8, {
-            let uniform_spacing_flag: u32 = unsafe { ::std::mem::transmute(uniform_spacing_flag) };
-            uniform_spacing_flag as u64
-        });
-        __bindgen_bitfield_unit.set(14usize, 1u8, {
-            let loop_filter_across_tiles_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(loop_filter_across_tiles_enabled_flag) };
-            loop_filter_across_tiles_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(15usize, 1u8, {
-            let pps_loop_filter_across_slices_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_loop_filter_across_slices_enabled_flag) };
-            pps_loop_filter_across_slices_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(16usize, 1u8, {
-            let deblocking_filter_control_present_flag: u32 =
-                unsafe { ::std::mem::transmute(deblocking_filter_control_present_flag) };
-            deblocking_filter_control_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(17usize, 1u8, {
-            let deblocking_filter_override_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(deblocking_filter_override_enabled_flag) };
-            deblocking_filter_override_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(18usize, 1u8, {
-            let pps_deblocking_filter_disabled_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_deblocking_filter_disabled_flag) };
-            pps_deblocking_filter_disabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(19usize, 1u8, {
-            let pps_scaling_list_data_present_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_scaling_list_data_present_flag) };
-            pps_scaling_list_data_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(20usize, 1u8, {
-            let lists_modification_present_flag: u32 =
-                unsafe { ::std::mem::transmute(lists_modification_present_flag) };
-            lists_modification_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(21usize, 1u8, {
-            let slice_segment_header_extension_present_flag: u32 =
-                unsafe { ::std::mem::transmute(slice_segment_header_extension_present_flag) };
-            slice_segment_header_extension_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(22usize, 1u8, {
-            let pps_extension_present_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_extension_present_flag) };
-            pps_extension_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(23usize, 1u8, {
-            let cross_component_prediction_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(cross_component_prediction_enabled_flag) };
-            cross_component_prediction_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(24usize, 1u8, {
-            let chroma_qp_offset_list_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(chroma_qp_offset_list_enabled_flag) };
-            chroma_qp_offset_list_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(25usize, 1u8, {
-            let pps_curr_pic_ref_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_curr_pic_ref_enabled_flag) };
-            pps_curr_pic_ref_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(26usize, 1u8, {
-            let residual_adaptive_colour_transform_enabled_flag: u32 =
-                unsafe { ::std::mem::transmute(residual_adaptive_colour_transform_enabled_flag) };
-            residual_adaptive_colour_transform_enabled_flag as u64
-        });
-        __bindgen_bitfield_unit.set(27usize, 1u8, {
-            let pps_slice_act_qp_offsets_present_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_slice_act_qp_offsets_present_flag) };
-            pps_slice_act_qp_offsets_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(28usize, 1u8, {
-            let pps_palette_predictor_initializers_present_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_palette_predictor_initializers_present_flag) };
-            pps_palette_predictor_initializers_present_flag as u64
-        });
-        __bindgen_bitfield_unit.set(29usize, 1u8, {
-            let monochrome_palette_flag: u32 =
-                unsafe { ::std::mem::transmute(monochrome_palette_flag) };
-            monochrome_palette_flag as u64
-        });
-        __bindgen_bitfield_unit.set(30usize, 1u8, {
-            let pps_range_extension_flag: u32 =
-                unsafe { ::std::mem::transmute(pps_range_extension_flag) };
-            pps_range_extension_flag as u64
-        });
-        __bindgen_bitfield_unit
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct StdVideoH265PictureParameterSet {
-    pub flags: StdVideoH265PpsFlags,
-    pub pps_pic_parameter_set_id: u8,
-    pub pps_seq_parameter_set_id: u8,
-    pub sps_video_parameter_set_id: u8,
-    pub num_extra_slice_header_bits: u8,
-    pub num_ref_idx_l0_default_active_minus1: u8,
-    pub num_ref_idx_l1_default_active_minus1: u8,
-    pub init_qp_minus26: i8,
-    pub diff_cu_qp_delta_depth: u8,
-    pub pps_cb_qp_offset: i8,
-    pub pps_cr_qp_offset: i8,
-    pub pps_beta_offset_div2: i8,
-    pub pps_tc_offset_div2: i8,
-    pub log2_parallel_merge_level_minus2: u8,
-    pub log2_max_transform_skip_block_size_minus2: u8,
-    pub diff_cu_chroma_qp_offset_depth: u8,
-    pub chroma_qp_offset_list_len_minus1: u8,
-    pub cb_qp_offset_list: [i8; 6usize],
-    pub cr_qp_offset_list: [i8; 6usize],
-    pub log2_sao_offset_scale_luma: u8,
-    pub log2_sao_offset_scale_chroma: u8,
-    pub pps_act_y_qp_offset_plus5: i8,
-    pub pps_act_cb_qp_offset_plus5: i8,
-    pub pps_act_cr_qp_offset_plus3: i8,
-    pub pps_num_palette_predictor_initializers: u8,
-    pub luma_bit_depth_entry_minus8: u8,
-    pub chroma_bit_depth_entry_minus8: u8,
-    pub num_tile_columns_minus1: u8,
-    pub num_tile_rows_minus1: u8,
-    pub reserved1: u8,
-    pub reserved2: u8,
-    pub column_width_minus1: [u16; 19usize],
-    pub row_height_minus1: [u16; 21usize],
-    pub reserved3: u32,
-    pub pScalingLists: *const StdVideoH265ScalingLists,
-    pub pPredictorPaletteEntries: *const StdVideoH265PredictorPaletteEntries,
-}
-#[test]
-fn bindgen_test_layout_StdVideoH265PictureParameterSet() {
-    const UNINIT: ::std::mem::MaybeUninit<StdVideoH265PictureParameterSet> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<StdVideoH265PictureParameterSet>(),
-        144usize,
-        concat!("Size of: ", stringify!(StdVideoH265PictureParameterSet))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<StdVideoH265PictureParameterSet>(),
-        8usize,
-        concat!("Alignment of ", stringify!(StdVideoH265PictureParameterSet))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_pic_parameter_set_id) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_pic_parameter_set_id)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_seq_parameter_set_id) as usize - ptr as usize },
-        5usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_seq_parameter_set_id)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sps_video_parameter_set_id) as usize - ptr as usize },
-        6usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(sps_video_parameter_set_id)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).num_extra_slice_header_bits) as usize - ptr as usize },
-        7usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(num_extra_slice_header_bits)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).num_ref_idx_l0_default_active_minus1) as usize
-                - ptr as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(num_ref_idx_l0_default_active_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).num_ref_idx_l1_default_active_minus1) as usize
-                - ptr as usize
-        },
-        9usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(num_ref_idx_l1_default_active_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).init_qp_minus26) as usize - ptr as usize },
-        10usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(init_qp_minus26)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).diff_cu_qp_delta_depth) as usize - ptr as usize },
-        11usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(diff_cu_qp_delta_depth)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_cb_qp_offset) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_cb_qp_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_cr_qp_offset) as usize - ptr as usize },
-        13usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_cr_qp_offset)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_beta_offset_div2) as usize - ptr as usize },
-        14usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_beta_offset_div2)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_tc_offset_div2) as usize - ptr as usize },
-        15usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_tc_offset_div2)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_parallel_merge_level_minus2) as usize - ptr as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(log2_parallel_merge_level_minus2)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_max_transform_skip_block_size_minus2) as usize
-                - ptr as usize
-        },
-        17usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(log2_max_transform_skip_block_size_minus2)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).diff_cu_chroma_qp_offset_depth) as usize - ptr as usize
-        },
-        18usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(diff_cu_chroma_qp_offset_depth)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).chroma_qp_offset_list_len_minus1) as usize - ptr as usize
-        },
-        19usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(chroma_qp_offset_list_len_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cb_qp_offset_list) as usize - ptr as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(cb_qp_offset_list)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cr_qp_offset_list) as usize - ptr as usize },
-        26usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(cr_qp_offset_list)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).log2_sao_offset_scale_luma) as usize - ptr as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(log2_sao_offset_scale_luma)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).log2_sao_offset_scale_chroma) as usize - ptr as usize
-        },
-        33usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(log2_sao_offset_scale_chroma)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_act_y_qp_offset_plus5) as usize - ptr as usize },
-        34usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_act_y_qp_offset_plus5)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_act_cb_qp_offset_plus5) as usize - ptr as usize },
-        35usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_act_cb_qp_offset_plus5)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pps_act_cr_qp_offset_plus3) as usize - ptr as usize },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_act_cr_qp_offset_plus3)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).pps_num_palette_predictor_initializers) as usize
-                - ptr as usize
-        },
-        37usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pps_num_palette_predictor_initializers)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).luma_bit_depth_entry_minus8) as usize - ptr as usize },
-        38usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(luma_bit_depth_entry_minus8)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).chroma_bit_depth_entry_minus8) as usize - ptr as usize
-        },
-        39usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(chroma_bit_depth_entry_minus8)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).num_tile_columns_minus1) as usize - ptr as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(num_tile_columns_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).num_tile_rows_minus1) as usize - ptr as usize },
-        41usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(num_tile_rows_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved1) as usize - ptr as usize },
-        42usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(reserved1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved2) as usize - ptr as usize },
-        43usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(reserved2)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).column_width_minus1) as usize - ptr as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(column_width_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).row_height_minus1) as usize - ptr as usize },
-        82usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(row_height_minus1)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).reserved3) as usize - ptr as usize },
-        124usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(reserved3)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pScalingLists) as usize - ptr as usize },
-        128usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pScalingLists)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pPredictorPaletteEntries) as usize - ptr as usize },
-        136usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(StdVideoH265PictureParameterSet),
-            "::",
-            stringify!(pPredictorPaletteEntries)
-        )
-    );
-}
-impl Default for StdVideoH265PictureParameterSet {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
 #[repr(C)]
 #[repr(align(4))]
 #[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
@@ -55997,6 +62198,1126 @@ impl Default for VkPhysicalDevicePresentIdFeaturesKHR {
         }
     }
 }
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeTuningModeKHR {
+    VK_VIDEO_ENCODE_TUNING_MODE_DEFAULT_KHR = 0,
+    VK_VIDEO_ENCODE_TUNING_MODE_HIGH_QUALITY_KHR = 1,
+    VK_VIDEO_ENCODE_TUNING_MODE_LOW_LATENCY_KHR = 2,
+    VK_VIDEO_ENCODE_TUNING_MODE_ULTRA_LOW_LATENCY_KHR = 3,
+    VK_VIDEO_ENCODE_TUNING_MODE_LOSSLESS_KHR = 4,
+    VK_VIDEO_ENCODE_TUNING_MODE_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeCapabilityFlagBitsKHR {
+    VK_VIDEO_ENCODE_CAPABILITY_PRECEDING_EXTERNALLY_ENCODED_BYTES_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_CAPABILITY_INSUFFICIENT_BITSTREAM_BUFFER_RANGE_DETECTION_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_CAPABILITY_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeCapabilityFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeRateControlModeFlagBitsKHR {
+    VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DEFAULT_KHR = 0,
+    VK_VIDEO_ENCODE_RATE_CONTROL_MODE_DISABLED_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_RATE_CONTROL_MODE_CBR_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_RATE_CONTROL_MODE_VBR_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_RATE_CONTROL_MODE_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeRateControlModeFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeFeedbackFlagBitsKHR {
+    VK_VIDEO_ENCODE_FEEDBACK_BITSTREAM_BUFFER_OFFSET_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_FEEDBACK_BITSTREAM_BYTES_WRITTEN_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_FEEDBACK_BITSTREAM_HAS_OVERRIDES_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_FEEDBACK_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeFeedbackFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeUsageFlagBitsKHR {
+    VK_VIDEO_ENCODE_USAGE_DEFAULT_KHR = 0,
+    VK_VIDEO_ENCODE_USAGE_TRANSCODING_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_USAGE_STREAMING_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_USAGE_RECORDING_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_USAGE_CONFERENCING_BIT_KHR = 8,
+    VK_VIDEO_ENCODE_USAGE_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeUsageFlagsKHR = VkFlags;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkVideoEncodeContentFlagBitsKHR {
+    VK_VIDEO_ENCODE_CONTENT_DEFAULT_KHR = 0,
+    VK_VIDEO_ENCODE_CONTENT_CAMERA_BIT_KHR = 1,
+    VK_VIDEO_ENCODE_CONTENT_DESKTOP_BIT_KHR = 2,
+    VK_VIDEO_ENCODE_CONTENT_RENDERED_BIT_KHR = 4,
+    VK_VIDEO_ENCODE_CONTENT_FLAG_BITS_MAX_ENUM_KHR = 2147483647,
+}
+pub type VkVideoEncodeContentFlagsKHR = VkFlags;
+pub type VkVideoEncodeRateControlFlagsKHR = VkFlags;
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub flags: VkVideoEncodeFlagsKHR,
+    pub dstBuffer: VkBuffer,
+    pub dstBufferOffset: VkDeviceSize,
+    pub dstBufferRange: VkDeviceSize,
+    pub srcPictureResource: VkVideoPictureResourceInfoKHR,
+    pub pSetupReferenceSlot: *const VkVideoReferenceSlotInfoKHR,
+    pub referenceSlotCount: u32,
+    pub pReferenceSlots: *const VkVideoReferenceSlotInfoKHR,
+    pub precedingExternallyEncodedBytes: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeInfoKHR> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeInfoKHR>(),
+        128usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).dstBuffer) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(dstBuffer)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).dstBufferOffset) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(dstBufferOffset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).dstBufferRange) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(dstBufferRange)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).srcPictureResource) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(srcPictureResource)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pSetupReferenceSlot) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(pSetupReferenceSlot)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).referenceSlotCount) as usize - ptr as usize },
+        104usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(referenceSlotCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pReferenceSlots) as usize - ptr as usize },
+        112usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(pReferenceSlots)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).precedingExternallyEncodedBytes) as usize - ptr as usize
+        },
+        120usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeInfoKHR),
+            "::",
+            stringify!(precedingExternallyEncodedBytes)
+        )
+    );
+}
+impl Default for VkVideoEncodeInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeCapabilitiesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub flags: VkVideoEncodeCapabilityFlagsKHR,
+    pub rateControlModes: VkVideoEncodeRateControlModeFlagsKHR,
+    pub maxRateControlLayers: u32,
+    pub maxBitrate: u64,
+    pub maxQualityLevels: u32,
+    pub encodeInputPictureGranularity: VkExtent2D,
+    pub supportedEncodeFeedbackFlags: VkVideoEncodeFeedbackFlagsKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeCapabilitiesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeCapabilitiesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeCapabilitiesKHR>(),
+        56usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeCapabilitiesKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeCapabilitiesKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeCapabilitiesKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).rateControlModes) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(rateControlModes)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxRateControlLayers) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(maxRateControlLayers)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxBitrate) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(maxBitrate)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxQualityLevels) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(maxQualityLevels)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).encodeInputPictureGranularity) as usize - ptr as usize
+        },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(encodeInputPictureGranularity)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).supportedEncodeFeedbackFlags) as usize - ptr as usize
+        },
+        52usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeCapabilitiesKHR),
+            "::",
+            stringify!(supportedEncodeFeedbackFlags)
+        )
+    );
+}
+impl Default for VkVideoEncodeCapabilitiesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkQueryPoolVideoEncodeFeedbackCreateInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub encodeFeedbackFlags: VkVideoEncodeFeedbackFlagsKHR,
+}
+#[test]
+fn bindgen_test_layout_VkQueryPoolVideoEncodeFeedbackCreateInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkQueryPoolVideoEncodeFeedbackCreateInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkQueryPoolVideoEncodeFeedbackCreateInfoKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkQueryPoolVideoEncodeFeedbackCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkQueryPoolVideoEncodeFeedbackCreateInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkQueryPoolVideoEncodeFeedbackCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkQueryPoolVideoEncodeFeedbackCreateInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkQueryPoolVideoEncodeFeedbackCreateInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).encodeFeedbackFlags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkQueryPoolVideoEncodeFeedbackCreateInfoKHR),
+            "::",
+            stringify!(encodeFeedbackFlags)
+        )
+    );
+}
+impl Default for VkQueryPoolVideoEncodeFeedbackCreateInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeUsageInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub videoUsageHints: VkVideoEncodeUsageFlagsKHR,
+    pub videoContentHints: VkVideoEncodeContentFlagsKHR,
+    pub tuningMode: VkVideoEncodeTuningModeKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeUsageInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeUsageInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeUsageInfoKHR>(),
+        32usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeUsageInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeUsageInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeUsageInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeUsageInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeUsageInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).videoUsageHints) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeUsageInfoKHR),
+            "::",
+            stringify!(videoUsageHints)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).videoContentHints) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeUsageInfoKHR),
+            "::",
+            stringify!(videoContentHints)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).tuningMode) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeUsageInfoKHR),
+            "::",
+            stringify!(tuningMode)
+        )
+    );
+}
+impl Default for VkVideoEncodeUsageInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeRateControlLayerInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub averageBitrate: u64,
+    pub maxBitrate: u64,
+    pub frameRateNumerator: u32,
+    pub frameRateDenominator: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeRateControlLayerInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeRateControlLayerInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeRateControlLayerInfoKHR>(),
+        40usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeRateControlLayerInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeRateControlLayerInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeRateControlLayerInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlLayerInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlLayerInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).averageBitrate) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlLayerInfoKHR),
+            "::",
+            stringify!(averageBitrate)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxBitrate) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlLayerInfoKHR),
+            "::",
+            stringify!(maxBitrate)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frameRateNumerator) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlLayerInfoKHR),
+            "::",
+            stringify!(frameRateNumerator)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frameRateDenominator) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlLayerInfoKHR),
+            "::",
+            stringify!(frameRateDenominator)
+        )
+    );
+}
+impl Default for VkVideoEncodeRateControlLayerInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeRateControlInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub flags: VkVideoEncodeRateControlFlagsKHR,
+    pub rateControlMode: VkVideoEncodeRateControlModeFlagBitsKHR,
+    pub layerCount: u32,
+    pub pLayers: *const VkVideoEncodeRateControlLayerInfoKHR,
+    pub virtualBufferSizeInMs: u32,
+    pub initialVirtualBufferSizeInMs: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeRateControlInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeRateControlInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeRateControlInfoKHR>(),
+        48usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeRateControlInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeRateControlInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoEncodeRateControlInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlInfoKHR),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).rateControlMode) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlInfoKHR),
+            "::",
+            stringify!(rateControlMode)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).layerCount) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlInfoKHR),
+            "::",
+            stringify!(layerCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pLayers) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlInfoKHR),
+            "::",
+            stringify!(pLayers)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).virtualBufferSizeInMs) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlInfoKHR),
+            "::",
+            stringify!(virtualBufferSizeInMs)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).initialVirtualBufferSizeInMs) as usize - ptr as usize
+        },
+        44usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeRateControlInfoKHR),
+            "::",
+            stringify!(initialVirtualBufferSizeInMs)
+        )
+    );
+}
+impl Default for VkVideoEncodeRateControlInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub pVideoProfile: *const VkVideoProfileInfoKHR,
+    pub qualityLevel: u32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVideoProfile) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR),
+            "::",
+            stringify!(pVideoProfile)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).qualityLevel) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR),
+            "::",
+            stringify!(qualityLevel)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeQualityLevelPropertiesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub preferredRateControlMode: VkVideoEncodeRateControlModeFlagBitsKHR,
+    pub preferredRateControlLayerCount: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeQualityLevelPropertiesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeQualityLevelPropertiesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeQualityLevelPropertiesKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeQualityLevelPropertiesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeQualityLevelPropertiesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeQualityLevelPropertiesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeQualityLevelPropertiesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeQualityLevelPropertiesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferredRateControlMode) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeQualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredRateControlMode)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).preferredRateControlLayerCount) as usize - ptr as usize
+        },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeQualityLevelPropertiesKHR),
+            "::",
+            stringify!(preferredRateControlLayerCount)
+        )
+    );
+}
+impl Default for VkVideoEncodeQualityLevelPropertiesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeQualityLevelInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub qualityLevel: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeQualityLevelInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeQualityLevelInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeQualityLevelInfoKHR>(),
+        24usize,
+        concat!("Size of: ", stringify!(VkVideoEncodeQualityLevelInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeQualityLevelInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeQualityLevelInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeQualityLevelInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeQualityLevelInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).qualityLevel) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeQualityLevelInfoKHR),
+            "::",
+            stringify!(qualityLevel)
+        )
+    );
+}
+impl Default for VkVideoEncodeQualityLevelInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeSessionParametersGetInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub videoSessionParameters: VkVideoSessionParametersKHR,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeSessionParametersGetInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeSessionParametersGetInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeSessionParametersGetInfoKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeSessionParametersGetInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeSessionParametersGetInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeSessionParametersGetInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeSessionParametersGetInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeSessionParametersGetInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).videoSessionParameters) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeSessionParametersGetInfoKHR),
+            "::",
+            stringify!(videoSessionParameters)
+        )
+    );
+}
+impl Default for VkVideoEncodeSessionParametersGetInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoEncodeSessionParametersFeedbackInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub hasOverrides: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoEncodeSessionParametersFeedbackInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoEncodeSessionParametersFeedbackInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoEncodeSessionParametersFeedbackInfoKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVideoEncodeSessionParametersFeedbackInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoEncodeSessionParametersFeedbackInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVideoEncodeSessionParametersFeedbackInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeSessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeSessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).hasOverrides) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoEncodeSessionParametersFeedbackInfoKHR),
+            "::",
+            stringify!(hasOverrides)
+        )
+    );
+}
+impl Default for VkVideoEncodeSessionParametersFeedbackInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+pub type PFN_vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        physicalDevice: VkPhysicalDevice,
+        pQualityLevelInfo: *const VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR,
+        pQualityLevelProperties: *mut VkVideoEncodeQualityLevelPropertiesKHR,
+    ) -> VkResult,
+>;
+pub type PFN_vkGetEncodedVideoSessionParametersKHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        device: VkDevice,
+        pVideoSessionParametersInfo: *const VkVideoEncodeSessionParametersGetInfoKHR,
+        pFeedbackInfo: *mut VkVideoEncodeSessionParametersFeedbackInfoKHR,
+        pDataSize: *mut usize,
+        pData: *mut ::std::os::raw::c_void,
+    ) -> VkResult,
+>;
+pub type PFN_vkCmdEncodeVideoKHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pEncodeInfo: *const VkVideoEncodeInfoKHR,
+    ),
+>;
+extern "system" {
+    pub fn vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR(
+        physicalDevice: VkPhysicalDevice,
+        pQualityLevelInfo: *const VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR,
+        pQualityLevelProperties: *mut VkVideoEncodeQualityLevelPropertiesKHR,
+    ) -> VkResult;
+}
+extern "system" {
+    pub fn vkGetEncodedVideoSessionParametersKHR(
+        device: VkDevice,
+        pVideoSessionParametersInfo: *const VkVideoEncodeSessionParametersGetInfoKHR,
+        pFeedbackInfo: *mut VkVideoEncodeSessionParametersFeedbackInfoKHR,
+        pDataSize: *mut usize,
+        pData: *mut ::std::os::raw::c_void,
+    ) -> VkResult;
+}
+extern "system" {
+    pub fn vkCmdEncodeVideoKHR(
+        commandBuffer: VkCommandBuffer,
+        pEncodeInfo: *const VkVideoEncodeInfoKHR,
+    );
+}
 pub type VkPipelineStageFlags2KHR = VkPipelineStageFlags2;
 pub type VkPipelineStageFlagBits2KHR = VkPipelineStageFlagBits2;
 pub type VkAccessFlags2KHR = VkAccessFlags2;
@@ -58264,6 +65585,1516 @@ extern "system" {
     ) -> VkResult;
 }
 #[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceVideoMaintenance1FeaturesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub videoMaintenance1: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceVideoMaintenance1FeaturesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceVideoMaintenance1FeaturesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceVideoMaintenance1FeaturesKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceVideoMaintenance1FeaturesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceVideoMaintenance1FeaturesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceVideoMaintenance1FeaturesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVideoMaintenance1FeaturesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVideoMaintenance1FeaturesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).videoMaintenance1) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVideoMaintenance1FeaturesKHR),
+            "::",
+            stringify!(videoMaintenance1)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceVideoMaintenance1FeaturesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVideoInlineQueryInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub queryPool: VkQueryPool,
+    pub firstQuery: u32,
+    pub queryCount: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVideoInlineQueryInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVideoInlineQueryInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVideoInlineQueryInfoKHR>(),
+        32usize,
+        concat!("Size of: ", stringify!(VkVideoInlineQueryInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVideoInlineQueryInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkVideoInlineQueryInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoInlineQueryInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoInlineQueryInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).queryPool) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoInlineQueryInfoKHR),
+            "::",
+            stringify!(queryPool)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).firstQuery) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoInlineQueryInfoKHR),
+            "::",
+            stringify!(firstQuery)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).queryCount) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVideoInlineQueryInfoKHR),
+            "::",
+            stringify!(queryCount)
+        )
+    );
+}
+impl Default for VkVideoInlineQueryInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub maxVertexAttribDivisor: u32,
+    pub supportsNonZeroFirstInstance: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxVertexAttribDivisor) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR),
+            "::",
+            stringify!(maxVertexAttribDivisor)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).supportsNonZeroFirstInstance) as usize - ptr as usize
+        },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR),
+            "::",
+            stringify!(supportsNonZeroFirstInstance)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceVertexAttributeDivisorPropertiesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkVertexInputBindingDivisorDescriptionKHR {
+    pub binding: u32,
+    pub divisor: u32,
+}
+#[test]
+fn bindgen_test_layout_VkVertexInputBindingDivisorDescriptionKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkVertexInputBindingDivisorDescriptionKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkVertexInputBindingDivisorDescriptionKHR>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkVertexInputBindingDivisorDescriptionKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkVertexInputBindingDivisorDescriptionKHR>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkVertexInputBindingDivisorDescriptionKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).binding) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVertexInputBindingDivisorDescriptionKHR),
+            "::",
+            stringify!(binding)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).divisor) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkVertexInputBindingDivisorDescriptionKHR),
+            "::",
+            stringify!(divisor)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPipelineVertexInputDivisorStateCreateInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub vertexBindingDivisorCount: u32,
+    pub pVertexBindingDivisors: *const VkVertexInputBindingDivisorDescriptionKHR,
+}
+#[test]
+fn bindgen_test_layout_VkPipelineVertexInputDivisorStateCreateInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPipelineVertexInputDivisorStateCreateInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPipelineVertexInputDivisorStateCreateInfoKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPipelineVertexInputDivisorStateCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPipelineVertexInputDivisorStateCreateInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPipelineVertexInputDivisorStateCreateInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPipelineVertexInputDivisorStateCreateInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPipelineVertexInputDivisorStateCreateInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vertexBindingDivisorCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPipelineVertexInputDivisorStateCreateInfoKHR),
+            "::",
+            stringify!(vertexBindingDivisorCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVertexBindingDivisors) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPipelineVertexInputDivisorStateCreateInfoKHR),
+            "::",
+            stringify!(pVertexBindingDivisors)
+        )
+    );
+}
+impl Default for VkPipelineVertexInputDivisorStateCreateInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub vertexAttributeInstanceRateDivisor: VkBool32,
+    pub vertexAttributeInstanceRateZeroDivisor: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).vertexAttributeInstanceRateDivisor) as usize - ptr as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR),
+            "::",
+            stringify!(vertexAttributeInstanceRateDivisor)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).vertexAttributeInstanceRateZeroDivisor) as usize
+                - ptr as usize
+        },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR),
+            "::",
+            stringify!(vertexAttributeInstanceRateZeroDivisor)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+impl VkTimeDomainKHR {
+    pub const VK_TIME_DOMAIN_DEVICE_EXT: VkTimeDomainKHR =
+        VkTimeDomainKHR::VK_TIME_DOMAIN_DEVICE_KHR;
+}
+impl VkTimeDomainKHR {
+    pub const VK_TIME_DOMAIN_CLOCK_MONOTONIC_EXT: VkTimeDomainKHR =
+        VkTimeDomainKHR::VK_TIME_DOMAIN_CLOCK_MONOTONIC_KHR;
+}
+impl VkTimeDomainKHR {
+    pub const VK_TIME_DOMAIN_CLOCK_MONOTONIC_RAW_EXT: VkTimeDomainKHR =
+        VkTimeDomainKHR::VK_TIME_DOMAIN_CLOCK_MONOTONIC_RAW_KHR;
+}
+impl VkTimeDomainKHR {
+    pub const VK_TIME_DOMAIN_QUERY_PERFORMANCE_COUNTER_EXT: VkTimeDomainKHR =
+        VkTimeDomainKHR::VK_TIME_DOMAIN_QUERY_PERFORMANCE_COUNTER_KHR;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkTimeDomainKHR {
+    VK_TIME_DOMAIN_DEVICE_KHR = 0,
+    VK_TIME_DOMAIN_CLOCK_MONOTONIC_KHR = 1,
+    VK_TIME_DOMAIN_CLOCK_MONOTONIC_RAW_KHR = 2,
+    VK_TIME_DOMAIN_QUERY_PERFORMANCE_COUNTER_KHR = 3,
+    VK_TIME_DOMAIN_MAX_ENUM_KHR = 2147483647,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkCalibratedTimestampInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub timeDomain: VkTimeDomainKHR,
+}
+#[test]
+fn bindgen_test_layout_VkCalibratedTimestampInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkCalibratedTimestampInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkCalibratedTimestampInfoKHR>(),
+        24usize,
+        concat!("Size of: ", stringify!(VkCalibratedTimestampInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkCalibratedTimestampInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkCalibratedTimestampInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkCalibratedTimestampInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkCalibratedTimestampInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).timeDomain) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkCalibratedTimestampInfoKHR),
+            "::",
+            stringify!(timeDomain)
+        )
+    );
+}
+impl Default for VkCalibratedTimestampInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+pub type PFN_vkGetPhysicalDeviceCalibrateableTimeDomainsKHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        physicalDevice: VkPhysicalDevice,
+        pTimeDomainCount: *mut u32,
+        pTimeDomains: *mut VkTimeDomainKHR,
+    ) -> VkResult,
+>;
+pub type PFN_vkGetCalibratedTimestampsKHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        device: VkDevice,
+        timestampCount: u32,
+        pTimestampInfos: *const VkCalibratedTimestampInfoKHR,
+        pTimestamps: *mut u64,
+        pMaxDeviation: *mut u64,
+    ) -> VkResult,
+>;
+extern "system" {
+    pub fn vkGetPhysicalDeviceCalibrateableTimeDomainsKHR(
+        physicalDevice: VkPhysicalDevice,
+        pTimeDomainCount: *mut u32,
+        pTimeDomains: *mut VkTimeDomainKHR,
+    ) -> VkResult;
+}
+extern "system" {
+    pub fn vkGetCalibratedTimestampsKHR(
+        device: VkDevice,
+        timestampCount: u32,
+        pTimestampInfos: *const VkCalibratedTimestampInfoKHR,
+        pTimestamps: *mut u64,
+        pMaxDeviation: *mut u64,
+    ) -> VkResult;
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceMaintenance6FeaturesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub maintenance6: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceMaintenance6FeaturesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceMaintenance6FeaturesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceMaintenance6FeaturesKHR>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceMaintenance6FeaturesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceMaintenance6FeaturesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceMaintenance6FeaturesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceMaintenance6FeaturesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceMaintenance6FeaturesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maintenance6) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceMaintenance6FeaturesKHR),
+            "::",
+            stringify!(maintenance6)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceMaintenance6FeaturesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceMaintenance6PropertiesKHR {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub blockTexelViewCompatibleMultipleLayers: VkBool32,
+    pub maxCombinedImageSamplerDescriptorCount: u32,
+    pub fragmentShadingRateClampCombinerInputs: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceMaintenance6PropertiesKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceMaintenance6PropertiesKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceMaintenance6PropertiesKHR>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceMaintenance6PropertiesKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceMaintenance6PropertiesKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceMaintenance6PropertiesKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceMaintenance6PropertiesKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceMaintenance6PropertiesKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).blockTexelViewCompatibleMultipleLayers) as usize
+                - ptr as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceMaintenance6PropertiesKHR),
+            "::",
+            stringify!(blockTexelViewCompatibleMultipleLayers)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).maxCombinedImageSamplerDescriptorCount) as usize
+                - ptr as usize
+        },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceMaintenance6PropertiesKHR),
+            "::",
+            stringify!(maxCombinedImageSamplerDescriptorCount)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).fragmentShadingRateClampCombinerInputs) as usize
+                - ptr as usize
+        },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceMaintenance6PropertiesKHR),
+            "::",
+            stringify!(fragmentShadingRateClampCombinerInputs)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceMaintenance6PropertiesKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkBindMemoryStatusKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub pResult: *mut VkResult,
+}
+#[test]
+fn bindgen_test_layout_VkBindMemoryStatusKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkBindMemoryStatusKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkBindMemoryStatusKHR>(),
+        24usize,
+        concat!("Size of: ", stringify!(VkBindMemoryStatusKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkBindMemoryStatusKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkBindMemoryStatusKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindMemoryStatusKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindMemoryStatusKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pResult) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindMemoryStatusKHR),
+            "::",
+            stringify!(pResult)
+        )
+    );
+}
+impl Default for VkBindMemoryStatusKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkBindDescriptorSetsInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stageFlags: VkShaderStageFlags,
+    pub layout: VkPipelineLayout,
+    pub firstSet: u32,
+    pub descriptorSetCount: u32,
+    pub pDescriptorSets: *const VkDescriptorSet,
+    pub dynamicOffsetCount: u32,
+    pub pDynamicOffsets: *const u32,
+}
+#[test]
+fn bindgen_test_layout_VkBindDescriptorSetsInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkBindDescriptorSetsInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkBindDescriptorSetsInfoKHR>(),
+        64usize,
+        concat!("Size of: ", stringify!(VkBindDescriptorSetsInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkBindDescriptorSetsInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkBindDescriptorSetsInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stageFlags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(stageFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).layout) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(layout)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).firstSet) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(firstSet)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).descriptorSetCount) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(descriptorSetCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pDescriptorSets) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(pDescriptorSets)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).dynamicOffsetCount) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(dynamicOffsetCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pDynamicOffsets) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorSetsInfoKHR),
+            "::",
+            stringify!(pDynamicOffsets)
+        )
+    );
+}
+impl Default for VkBindDescriptorSetsInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPushConstantsInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub layout: VkPipelineLayout,
+    pub stageFlags: VkShaderStageFlags,
+    pub offset: u32,
+    pub size: u32,
+    pub pValues: *const ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout_VkPushConstantsInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPushConstantsInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPushConstantsInfoKHR>(),
+        48usize,
+        concat!("Size of: ", stringify!(VkPushConstantsInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPushConstantsInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkPushConstantsInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushConstantsInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushConstantsInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).layout) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushConstantsInfoKHR),
+            "::",
+            stringify!(layout)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stageFlags) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushConstantsInfoKHR),
+            "::",
+            stringify!(stageFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).offset) as usize - ptr as usize },
+        28usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushConstantsInfoKHR),
+            "::",
+            stringify!(offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).size) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushConstantsInfoKHR),
+            "::",
+            stringify!(size)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pValues) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushConstantsInfoKHR),
+            "::",
+            stringify!(pValues)
+        )
+    );
+}
+impl Default for VkPushConstantsInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPushDescriptorSetInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stageFlags: VkShaderStageFlags,
+    pub layout: VkPipelineLayout,
+    pub set: u32,
+    pub descriptorWriteCount: u32,
+    pub pDescriptorWrites: *const VkWriteDescriptorSet,
+}
+#[test]
+fn bindgen_test_layout_VkPushDescriptorSetInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPushDescriptorSetInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPushDescriptorSetInfoKHR>(),
+        48usize,
+        concat!("Size of: ", stringify!(VkPushDescriptorSetInfoKHR))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPushDescriptorSetInfoKHR>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkPushDescriptorSetInfoKHR))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stageFlags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetInfoKHR),
+            "::",
+            stringify!(stageFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).layout) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetInfoKHR),
+            "::",
+            stringify!(layout)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).set) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetInfoKHR),
+            "::",
+            stringify!(set)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).descriptorWriteCount) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetInfoKHR),
+            "::",
+            stringify!(descriptorWriteCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pDescriptorWrites) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetInfoKHR),
+            "::",
+            stringify!(pDescriptorWrites)
+        )
+    );
+}
+impl Default for VkPushDescriptorSetInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPushDescriptorSetWithTemplateInfoKHR {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub descriptorUpdateTemplate: VkDescriptorUpdateTemplate,
+    pub layout: VkPipelineLayout,
+    pub set: u32,
+    pub pData: *const ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout_VkPushDescriptorSetWithTemplateInfoKHR() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPushDescriptorSetWithTemplateInfoKHR> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPushDescriptorSetWithTemplateInfoKHR>(),
+        48usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPushDescriptorSetWithTemplateInfoKHR)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPushDescriptorSetWithTemplateInfoKHR>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPushDescriptorSetWithTemplateInfoKHR)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetWithTemplateInfoKHR),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetWithTemplateInfoKHR),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).descriptorUpdateTemplate) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetWithTemplateInfoKHR),
+            "::",
+            stringify!(descriptorUpdateTemplate)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).layout) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetWithTemplateInfoKHR),
+            "::",
+            stringify!(layout)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).set) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetWithTemplateInfoKHR),
+            "::",
+            stringify!(set)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pData) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPushDescriptorSetWithTemplateInfoKHR),
+            "::",
+            stringify!(pData)
+        )
+    );
+}
+impl Default for VkPushDescriptorSetWithTemplateInfoKHR {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkSetDescriptorBufferOffsetsInfoEXT {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stageFlags: VkShaderStageFlags,
+    pub layout: VkPipelineLayout,
+    pub firstSet: u32,
+    pub setCount: u32,
+    pub pBufferIndices: *const u32,
+    pub pOffsets: *const VkDeviceSize,
+}
+#[test]
+fn bindgen_test_layout_VkSetDescriptorBufferOffsetsInfoEXT() {
+    const UNINIT: ::std::mem::MaybeUninit<VkSetDescriptorBufferOffsetsInfoEXT> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkSetDescriptorBufferOffsetsInfoEXT>(),
+        56usize,
+        concat!("Size of: ", stringify!(VkSetDescriptorBufferOffsetsInfoEXT))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkSetDescriptorBufferOffsetsInfoEXT>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stageFlags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT),
+            "::",
+            stringify!(stageFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).layout) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT),
+            "::",
+            stringify!(layout)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).firstSet) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT),
+            "::",
+            stringify!(firstSet)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).setCount) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT),
+            "::",
+            stringify!(setCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pBufferIndices) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT),
+            "::",
+            stringify!(pBufferIndices)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pOffsets) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkSetDescriptorBufferOffsetsInfoEXT),
+            "::",
+            stringify!(pOffsets)
+        )
+    );
+}
+impl Default for VkSetDescriptorBufferOffsetsInfoEXT {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkBindDescriptorBufferEmbeddedSamplersInfoEXT {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stageFlags: VkShaderStageFlags,
+    pub layout: VkPipelineLayout,
+    pub set: u32,
+}
+#[test]
+fn bindgen_test_layout_VkBindDescriptorBufferEmbeddedSamplersInfoEXT() {
+    const UNINIT: ::std::mem::MaybeUninit<VkBindDescriptorBufferEmbeddedSamplersInfoEXT> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkBindDescriptorBufferEmbeddedSamplersInfoEXT>(),
+        40usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkBindDescriptorBufferEmbeddedSamplersInfoEXT)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkBindDescriptorBufferEmbeddedSamplersInfoEXT>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkBindDescriptorBufferEmbeddedSamplersInfoEXT)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorBufferEmbeddedSamplersInfoEXT),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorBufferEmbeddedSamplersInfoEXT),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stageFlags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorBufferEmbeddedSamplersInfoEXT),
+            "::",
+            stringify!(stageFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).layout) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorBufferEmbeddedSamplersInfoEXT),
+            "::",
+            stringify!(layout)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).set) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkBindDescriptorBufferEmbeddedSamplersInfoEXT),
+            "::",
+            stringify!(set)
+        )
+    );
+}
+impl Default for VkBindDescriptorBufferEmbeddedSamplersInfoEXT {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+pub type PFN_vkCmdBindDescriptorSets2KHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pBindDescriptorSetsInfo: *const VkBindDescriptorSetsInfoKHR,
+    ),
+>;
+pub type PFN_vkCmdPushConstants2KHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pPushConstantsInfo: *const VkPushConstantsInfoKHR,
+    ),
+>;
+pub type PFN_vkCmdPushDescriptorSet2KHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pPushDescriptorSetInfo: *const VkPushDescriptorSetInfoKHR,
+    ),
+>;
+pub type PFN_vkCmdPushDescriptorSetWithTemplate2KHR = ::std::option::Option<
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pPushDescriptorSetWithTemplateInfo: *const VkPushDescriptorSetWithTemplateInfoKHR,
+    ),
+>;
+pub type PFN_vkCmdSetDescriptorBufferOffsets2EXT = ::std::option::Option<
+    unsafe extern "system" fn(
+        commandBuffer: VkCommandBuffer,
+        pSetDescriptorBufferOffsetsInfo: *const VkSetDescriptorBufferOffsetsInfoEXT,
+    ),
+>;
+pub type PFN_vkCmdBindDescriptorBufferEmbeddedSamplers2EXT = :: std :: option :: Option < unsafe extern "system" fn (commandBuffer : VkCommandBuffer , pBindDescriptorBufferEmbeddedSamplersInfo : * const VkBindDescriptorBufferEmbeddedSamplersInfoEXT) > ;
+extern "system" {
+    pub fn vkCmdBindDescriptorSets2KHR(
+        commandBuffer: VkCommandBuffer,
+        pBindDescriptorSetsInfo: *const VkBindDescriptorSetsInfoKHR,
+    );
+}
+extern "system" {
+    pub fn vkCmdPushConstants2KHR(
+        commandBuffer: VkCommandBuffer,
+        pPushConstantsInfo: *const VkPushConstantsInfoKHR,
+    );
+}
+extern "system" {
+    pub fn vkCmdPushDescriptorSet2KHR(
+        commandBuffer: VkCommandBuffer,
+        pPushDescriptorSetInfo: *const VkPushDescriptorSetInfoKHR,
+    );
+}
+extern "system" {
+    pub fn vkCmdPushDescriptorSetWithTemplate2KHR(
+        commandBuffer: VkCommandBuffer,
+        pPushDescriptorSetWithTemplateInfo: *const VkPushDescriptorSetWithTemplateInfoKHR,
+    );
+}
+extern "system" {
+    pub fn vkCmdSetDescriptorBufferOffsets2EXT(
+        commandBuffer: VkCommandBuffer,
+        pSetDescriptorBufferOffsetsInfo: *const VkSetDescriptorBufferOffsetsInfoEXT,
+    );
+}
+extern "system" {
+    pub fn vkCmdBindDescriptorBufferEmbeddedSamplers2EXT(
+        commandBuffer: VkCommandBuffer,
+        pBindDescriptorBufferEmbeddedSamplersInfo : * const VkBindDescriptorBufferEmbeddedSamplersInfoEXT,
+    );
+}
+#[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct VkDebugReportCallbackEXT_T {
     _unused: [u8; 0],
@@ -58328,8 +67159,8 @@ pub enum VkDebugReportObjectTypeEXT {
     VK_DEBUG_REPORT_OBJECT_TYPE_CU_FUNCTION_NVX_EXT = 1000029001,
     VK_DEBUG_REPORT_OBJECT_TYPE_ACCELERATION_STRUCTURE_KHR_EXT = 1000150000,
     VK_DEBUG_REPORT_OBJECT_TYPE_ACCELERATION_STRUCTURE_NV_EXT = 1000165000,
-    VK_DEBUG_REPORT_OBJECT_TYPE_CUDA_MODULE_NV = 1000307000,
-    VK_DEBUG_REPORT_OBJECT_TYPE_CUDA_FUNCTION_NV = 1000307001,
+    VK_DEBUG_REPORT_OBJECT_TYPE_CUDA_MODULE_NV_EXT = 1000307000,
+    VK_DEBUG_REPORT_OBJECT_TYPE_CUDA_FUNCTION_NV_EXT = 1000307001,
     VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_COLLECTION_FUCHSIA_EXT = 1000366000,
     VK_DEBUG_REPORT_OBJECT_TYPE_MAX_ENUM_EXT = 2147483647,
 }
@@ -69598,89 +78429,20 @@ impl Default for VkPipelineCompilerControlCreateInfoAMD {
         }
     }
 }
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub enum VkTimeDomainEXT {
-    VK_TIME_DOMAIN_DEVICE_EXT = 0,
-    VK_TIME_DOMAIN_CLOCK_MONOTONIC_EXT = 1,
-    VK_TIME_DOMAIN_CLOCK_MONOTONIC_RAW_EXT = 2,
-    VK_TIME_DOMAIN_QUERY_PERFORMANCE_COUNTER_EXT = 3,
-    VK_TIME_DOMAIN_MAX_ENUM_EXT = 2147483647,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct VkCalibratedTimestampInfoEXT {
-    pub sType: VkStructureType,
-    pub pNext: *const ::std::os::raw::c_void,
-    pub timeDomain: VkTimeDomainEXT,
-}
-#[test]
-fn bindgen_test_layout_VkCalibratedTimestampInfoEXT() {
-    const UNINIT: ::std::mem::MaybeUninit<VkCalibratedTimestampInfoEXT> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<VkCalibratedTimestampInfoEXT>(),
-        24usize,
-        concat!("Size of: ", stringify!(VkCalibratedTimestampInfoEXT))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<VkCalibratedTimestampInfoEXT>(),
-        8usize,
-        concat!("Alignment of ", stringify!(VkCalibratedTimestampInfoEXT))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkCalibratedTimestampInfoEXT),
-            "::",
-            stringify!(sType)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkCalibratedTimestampInfoEXT),
-            "::",
-            stringify!(pNext)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).timeDomain) as usize - ptr as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkCalibratedTimestampInfoEXT),
-            "::",
-            stringify!(timeDomain)
-        )
-    );
-}
-impl Default for VkCalibratedTimestampInfoEXT {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
+pub use self::VkTimeDomainKHR as VkTimeDomainEXT;
+pub type VkCalibratedTimestampInfoEXT = VkCalibratedTimestampInfoKHR;
 pub type PFN_vkGetPhysicalDeviceCalibrateableTimeDomainsEXT = ::std::option::Option<
     unsafe extern "system" fn(
         physicalDevice: VkPhysicalDevice,
         pTimeDomainCount: *mut u32,
-        pTimeDomains: *mut VkTimeDomainEXT,
+        pTimeDomains: *mut VkTimeDomainKHR,
     ) -> VkResult,
 >;
 pub type PFN_vkGetCalibratedTimestampsEXT = ::std::option::Option<
     unsafe extern "system" fn(
         device: VkDevice,
         timestampCount: u32,
-        pTimestampInfos: *const VkCalibratedTimestampInfoEXT,
+        pTimestampInfos: *const VkCalibratedTimestampInfoKHR,
         pTimestamps: *mut u64,
         pMaxDeviation: *mut u64,
     ) -> VkResult,
@@ -69689,14 +78451,14 @@ extern "system" {
     pub fn vkGetPhysicalDeviceCalibrateableTimeDomainsEXT(
         physicalDevice: VkPhysicalDevice,
         pTimeDomainCount: *mut u32,
-        pTimeDomains: *mut VkTimeDomainEXT,
+        pTimeDomains: *mut VkTimeDomainKHR,
     ) -> VkResult;
 }
 extern "system" {
     pub fn vkGetCalibratedTimestampsEXT(
         device: VkDevice,
         timestampCount: u32,
-        pTimestampInfos: *const VkCalibratedTimestampInfoEXT,
+        pTimestampInfos: *const VkCalibratedTimestampInfoKHR,
         pTimestamps: *mut u64,
         pMaxDeviation: *mut u64,
     ) -> VkResult;
@@ -70056,217 +78818,11 @@ impl Default for VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT {
         }
     }
 }
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct VkVertexInputBindingDivisorDescriptionEXT {
-    pub binding: u32,
-    pub divisor: u32,
-}
-#[test]
-fn bindgen_test_layout_VkVertexInputBindingDivisorDescriptionEXT() {
-    const UNINIT: ::std::mem::MaybeUninit<VkVertexInputBindingDivisorDescriptionEXT> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<VkVertexInputBindingDivisorDescriptionEXT>(),
-        8usize,
-        concat!(
-            "Size of: ",
-            stringify!(VkVertexInputBindingDivisorDescriptionEXT)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<VkVertexInputBindingDivisorDescriptionEXT>(),
-        4usize,
-        concat!(
-            "Alignment of ",
-            stringify!(VkVertexInputBindingDivisorDescriptionEXT)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).binding) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkVertexInputBindingDivisorDescriptionEXT),
-            "::",
-            stringify!(binding)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).divisor) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkVertexInputBindingDivisorDescriptionEXT),
-            "::",
-            stringify!(divisor)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct VkPipelineVertexInputDivisorStateCreateInfoEXT {
-    pub sType: VkStructureType,
-    pub pNext: *const ::std::os::raw::c_void,
-    pub vertexBindingDivisorCount: u32,
-    pub pVertexBindingDivisors: *const VkVertexInputBindingDivisorDescriptionEXT,
-}
-#[test]
-fn bindgen_test_layout_VkPipelineVertexInputDivisorStateCreateInfoEXT() {
-    const UNINIT: ::std::mem::MaybeUninit<VkPipelineVertexInputDivisorStateCreateInfoEXT> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<VkPipelineVertexInputDivisorStateCreateInfoEXT>(),
-        32usize,
-        concat!(
-            "Size of: ",
-            stringify!(VkPipelineVertexInputDivisorStateCreateInfoEXT)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<VkPipelineVertexInputDivisorStateCreateInfoEXT>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(VkPipelineVertexInputDivisorStateCreateInfoEXT)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkPipelineVertexInputDivisorStateCreateInfoEXT),
-            "::",
-            stringify!(sType)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkPipelineVertexInputDivisorStateCreateInfoEXT),
-            "::",
-            stringify!(pNext)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).vertexBindingDivisorCount) as usize - ptr as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkPipelineVertexInputDivisorStateCreateInfoEXT),
-            "::",
-            stringify!(vertexBindingDivisorCount)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pVertexBindingDivisors) as usize - ptr as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkPipelineVertexInputDivisorStateCreateInfoEXT),
-            "::",
-            stringify!(pVertexBindingDivisors)
-        )
-    );
-}
-impl Default for VkPipelineVertexInputDivisorStateCreateInfoEXT {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT {
-    pub sType: VkStructureType,
-    pub pNext: *mut ::std::os::raw::c_void,
-    pub vertexAttributeInstanceRateDivisor: VkBool32,
-    pub vertexAttributeInstanceRateZeroDivisor: VkBool32,
-}
-#[test]
-fn bindgen_test_layout_VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT() {
-    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT>(),
-        24usize,
-        concat!(
-            "Size of: ",
-            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT),
-            "::",
-            stringify!(sType)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT),
-            "::",
-            stringify!(pNext)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).vertexAttributeInstanceRateDivisor) as usize - ptr as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT),
-            "::",
-            stringify!(vertexAttributeInstanceRateDivisor)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            ::std::ptr::addr_of!((*ptr).vertexAttributeInstanceRateZeroDivisor) as usize
-                - ptr as usize
-        },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT),
-            "::",
-            stringify!(vertexAttributeInstanceRateZeroDivisor)
-        )
-    );
-}
-impl Default for VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT {
-    fn default() -> Self {
-        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
-        unsafe {
-            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
-            s.assume_init()
-        }
-    }
-}
+pub type VkVertexInputBindingDivisorDescriptionEXT = VkVertexInputBindingDivisorDescriptionKHR;
+pub type VkPipelineVertexInputDivisorStateCreateInfoEXT =
+    VkPipelineVertexInputDivisorStateCreateInfoKHR;
+pub type VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT =
+    VkPhysicalDeviceVertexAttributeDivisorFeaturesKHR;
 pub use self::VkPipelineCreationFeedbackFlagBits as VkPipelineCreationFeedbackFlagBitsEXT;
 pub type VkPipelineCreationFeedbackFlagsEXT = VkPipelineCreationFeedbackFlags;
 pub type VkPipelineCreationFeedbackCreateInfoEXT = VkPipelineCreationFeedbackCreateInfo;
@@ -90419,6 +98975,74 @@ impl Default for VkPhysicalDeviceClusterCullingShaderPropertiesHUAWEI {
         }
     }
 }
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub clusterShadingRate: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).clusterShadingRate) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI),
+            "::",
+            stringify!(clusterShadingRate)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceClusterCullingShaderVrsFeaturesHUAWEI {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
 pub type PFN_vkCmdDrawClusterHUAWEI = ::std::option::Option<
     unsafe extern "system" fn(
         commandBuffer: VkCommandBuffer,
@@ -90772,12 +99396,9 @@ impl Default for VkPhysicalDeviceShaderCorePropertiesARM {
     }
 }
 pub type VkPhysicalDeviceSchedulingControlsFlagsARM = VkFlags64;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub enum VkPhysicalDeviceSchedulingControlsFlagBitsARM {
-    VK_PHYSICAL_DEVICE_SCHEDULING_CONTROLS_SHADER_CORE_COUNT_ARM = 1,
-    VK_PHYSICAL_DEVICE_SCHEDULING_CONTROLS_FLAG_BITS_MAX_ENUM_ARM = 2147483647,
-}
+pub type VkPhysicalDeviceSchedulingControlsFlagBitsARM = VkFlags64;
+pub const VK_PHYSICAL_DEVICE_SCHEDULING_CONTROLS_SHADER_CORE_COUNT_ARM:
+    VkPhysicalDeviceSchedulingControlsFlagBitsARM = 1;
 #[repr(C)]
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct VkDeviceQueueShaderCoreControlCreateInfoARM {
@@ -91505,6 +100126,361 @@ fn bindgen_test_layout_VkPhysicalDeviceNonSeamlessCubeMapFeaturesEXT() {
     );
 }
 impl Default for VkPhysicalDeviceNonSeamlessCubeMapFeaturesEXT {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceRenderPassStripedFeaturesARM {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub renderPassStriped: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceRenderPassStripedFeaturesARM() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceRenderPassStripedFeaturesARM> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceRenderPassStripedFeaturesARM>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedFeaturesARM)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceRenderPassStripedFeaturesARM>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceRenderPassStripedFeaturesARM)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedFeaturesARM),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedFeaturesARM),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).renderPassStriped) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedFeaturesARM),
+            "::",
+            stringify!(renderPassStriped)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceRenderPassStripedFeaturesARM {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDeviceRenderPassStripedPropertiesARM {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub renderPassStripeGranularity: VkExtent2D,
+    pub maxRenderPassStripes: u32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDeviceRenderPassStripedPropertiesARM() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDeviceRenderPassStripedPropertiesARM> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDeviceRenderPassStripedPropertiesARM>(),
+        32usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedPropertiesARM)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDeviceRenderPassStripedPropertiesARM>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDeviceRenderPassStripedPropertiesARM)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedPropertiesARM),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedPropertiesARM),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).renderPassStripeGranularity) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedPropertiesARM),
+            "::",
+            stringify!(renderPassStripeGranularity)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).maxRenderPassStripes) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDeviceRenderPassStripedPropertiesARM),
+            "::",
+            stringify!(maxRenderPassStripes)
+        )
+    );
+}
+impl Default for VkPhysicalDeviceRenderPassStripedPropertiesARM {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkRenderPassStripeInfoARM {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stripeArea: VkRect2D,
+}
+#[test]
+fn bindgen_test_layout_VkRenderPassStripeInfoARM() {
+    const UNINIT: ::std::mem::MaybeUninit<VkRenderPassStripeInfoARM> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkRenderPassStripeInfoARM>(),
+        32usize,
+        concat!("Size of: ", stringify!(VkRenderPassStripeInfoARM))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkRenderPassStripeInfoARM>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkRenderPassStripeInfoARM))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeInfoARM),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeInfoARM),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stripeArea) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeInfoARM),
+            "::",
+            stringify!(stripeArea)
+        )
+    );
+}
+impl Default for VkRenderPassStripeInfoARM {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkRenderPassStripeBeginInfoARM {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stripeInfoCount: u32,
+    pub pStripeInfos: *const VkRenderPassStripeInfoARM,
+}
+#[test]
+fn bindgen_test_layout_VkRenderPassStripeBeginInfoARM() {
+    const UNINIT: ::std::mem::MaybeUninit<VkRenderPassStripeBeginInfoARM> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkRenderPassStripeBeginInfoARM>(),
+        32usize,
+        concat!("Size of: ", stringify!(VkRenderPassStripeBeginInfoARM))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkRenderPassStripeBeginInfoARM>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkRenderPassStripeBeginInfoARM))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeBeginInfoARM),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeBeginInfoARM),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stripeInfoCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeBeginInfoARM),
+            "::",
+            stringify!(stripeInfoCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStripeInfos) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeBeginInfoARM),
+            "::",
+            stringify!(pStripeInfos)
+        )
+    );
+}
+impl Default for VkRenderPassStripeBeginInfoARM {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkRenderPassStripeSubmitInfoARM {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub stripeSemaphoreInfoCount: u32,
+    pub pStripeSemaphoreInfos: *const VkSemaphoreSubmitInfo,
+}
+#[test]
+fn bindgen_test_layout_VkRenderPassStripeSubmitInfoARM() {
+    const UNINIT: ::std::mem::MaybeUninit<VkRenderPassStripeSubmitInfoARM> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkRenderPassStripeSubmitInfoARM>(),
+        32usize,
+        concat!("Size of: ", stringify!(VkRenderPassStripeSubmitInfoARM))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkRenderPassStripeSubmitInfoARM>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkRenderPassStripeSubmitInfoARM))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeSubmitInfoARM),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeSubmitInfoARM),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).stripeSemaphoreInfoCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeSubmitInfoARM),
+            "::",
+            stringify!(stripeSemaphoreInfoCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pStripeSemaphoreInfos) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkRenderPassStripeSubmitInfoARM),
+            "::",
+            stringify!(pStripeSemaphoreInfos)
+        )
+    );
+}
+impl Default for VkRenderPassStripeSubmitInfoARM {
     fn default() -> Self {
         let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
         unsafe {
@@ -97353,6 +106329,175 @@ impl Default for VkPhysicalDeviceExtendedSparseAddressSpacePropertiesNV {
         }
     }
 }
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum VkLayerSettingTypeEXT {
+    VK_LAYER_SETTING_TYPE_BOOL32_EXT = 0,
+    VK_LAYER_SETTING_TYPE_INT32_EXT = 1,
+    VK_LAYER_SETTING_TYPE_INT64_EXT = 2,
+    VK_LAYER_SETTING_TYPE_UINT32_EXT = 3,
+    VK_LAYER_SETTING_TYPE_UINT64_EXT = 4,
+    VK_LAYER_SETTING_TYPE_FLOAT32_EXT = 5,
+    VK_LAYER_SETTING_TYPE_FLOAT64_EXT = 6,
+    VK_LAYER_SETTING_TYPE_STRING_EXT = 7,
+    VK_LAYER_SETTING_TYPE_MAX_ENUM_EXT = 2147483647,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkLayerSettingEXT {
+    pub pLayerName: *const ::std::os::raw::c_char,
+    pub pSettingName: *const ::std::os::raw::c_char,
+    pub type_: VkLayerSettingTypeEXT,
+    pub valueCount: u32,
+    pub pValues: *const ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout_VkLayerSettingEXT() {
+    const UNINIT: ::std::mem::MaybeUninit<VkLayerSettingEXT> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkLayerSettingEXT>(),
+        32usize,
+        concat!("Size of: ", stringify!(VkLayerSettingEXT))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkLayerSettingEXT>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkLayerSettingEXT))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pLayerName) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingEXT),
+            "::",
+            stringify!(pLayerName)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pSettingName) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingEXT),
+            "::",
+            stringify!(pSettingName)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).type_) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingEXT),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).valueCount) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingEXT),
+            "::",
+            stringify!(valueCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pValues) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingEXT),
+            "::",
+            stringify!(pValues)
+        )
+    );
+}
+impl Default for VkLayerSettingEXT {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkLayerSettingsCreateInfoEXT {
+    pub sType: VkStructureType,
+    pub pNext: *const ::std::os::raw::c_void,
+    pub settingCount: u32,
+    pub pSettings: *const VkLayerSettingEXT,
+}
+#[test]
+fn bindgen_test_layout_VkLayerSettingsCreateInfoEXT() {
+    const UNINIT: ::std::mem::MaybeUninit<VkLayerSettingsCreateInfoEXT> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkLayerSettingsCreateInfoEXT>(),
+        32usize,
+        concat!("Size of: ", stringify!(VkLayerSettingsCreateInfoEXT))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkLayerSettingsCreateInfoEXT>(),
+        8usize,
+        concat!("Alignment of ", stringify!(VkLayerSettingsCreateInfoEXT))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingsCreateInfoEXT),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingsCreateInfoEXT),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).settingCount) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingsCreateInfoEXT),
+            "::",
+            stringify!(settingCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pSettings) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkLayerSettingsCreateInfoEXT),
+            "::",
+            stringify!(pSettings)
+        )
+    );
+}
+impl Default for VkLayerSettingsCreateInfoEXT {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
 #[repr(C)]
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct VkPhysicalDeviceShaderCoreBuiltinsFeaturesARM {
@@ -98113,6 +107258,7 @@ impl Default for VkLatencyTimingsFrameReportNV {
 pub struct VkGetLatencyMarkerInfoNV {
     pub sType: VkStructureType,
     pub pNext: *const ::std::os::raw::c_void,
+    pub timingCount: u32,
     pub pTimings: *mut VkLatencyTimingsFrameReportNV,
 }
 #[test]
@@ -98122,7 +107268,7 @@ fn bindgen_test_layout_VkGetLatencyMarkerInfoNV() {
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::std::mem::size_of::<VkGetLatencyMarkerInfoNV>(),
-        24usize,
+        32usize,
         concat!("Size of: ", stringify!(VkGetLatencyMarkerInfoNV))
     );
     assert_eq!(
@@ -98151,8 +107297,18 @@ fn bindgen_test_layout_VkGetLatencyMarkerInfoNV() {
         )
     );
     assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).pTimings) as usize - ptr as usize },
+        unsafe { ::std::ptr::addr_of!((*ptr).timingCount) as usize - ptr as usize },
         16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkGetLatencyMarkerInfoNV),
+            "::",
+            stringify!(timingCount)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pTimings) as usize - ptr as usize },
+        24usize,
         concat!(
             "Offset of field: ",
             stringify!(VkGetLatencyMarkerInfoNV),
@@ -98454,7 +107610,6 @@ pub type PFN_vkGetLatencyTimingsNV = ::std::option::Option<
     unsafe extern "system" fn(
         device: VkDevice,
         swapchain: VkSwapchainKHR,
-        pTimingCount: *mut u32,
         pLatencyMarkerInfo: *mut VkGetLatencyMarkerInfoNV,
     ),
 >;
@@ -98486,7 +107641,6 @@ extern "system" {
     pub fn vkGetLatencyTimingsNV(
         device: VkDevice,
         swapchain: VkSwapchainKHR,
-        pTimingCount: *mut u32,
         pLatencyMarkerInfo: *mut VkGetLatencyMarkerInfoNV,
     );
 }
@@ -98635,6 +107789,85 @@ fn bindgen_test_layout_VkMultiviewPerViewRenderAreasRenderPassBeginInfoQCOM() {
     );
 }
 impl Default for VkMultiviewPerViewRenderAreasRenderPassBeginInfoQCOM {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct VkPhysicalDevicePerStageDescriptorSetFeaturesNV {
+    pub sType: VkStructureType,
+    pub pNext: *mut ::std::os::raw::c_void,
+    pub perStageDescriptorSet: VkBool32,
+    pub dynamicPipelineLayout: VkBool32,
+}
+#[test]
+fn bindgen_test_layout_VkPhysicalDevicePerStageDescriptorSetFeaturesNV() {
+    const UNINIT: ::std::mem::MaybeUninit<VkPhysicalDevicePerStageDescriptorSetFeaturesNV> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<VkPhysicalDevicePerStageDescriptorSetFeaturesNV>(),
+        24usize,
+        concat!(
+            "Size of: ",
+            stringify!(VkPhysicalDevicePerStageDescriptorSetFeaturesNV)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<VkPhysicalDevicePerStageDescriptorSetFeaturesNV>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(VkPhysicalDevicePerStageDescriptorSetFeaturesNV)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).sType) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDevicePerStageDescriptorSetFeaturesNV),
+            "::",
+            stringify!(sType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pNext) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDevicePerStageDescriptorSetFeaturesNV),
+            "::",
+            stringify!(pNext)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).perStageDescriptorSet) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDevicePerStageDescriptorSetFeaturesNV),
+            "::",
+            stringify!(perStageDescriptorSet)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).dynamicPipelineLayout) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(VkPhysicalDevicePerStageDescriptorSetFeaturesNV),
+            "::",
+            stringify!(dynamicPipelineLayout)
+        )
+    );
+}
+impl Default for VkPhysicalDevicePerStageDescriptorSetFeaturesNV {
     fn default() -> Self {
         let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
         unsafe {

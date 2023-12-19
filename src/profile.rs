@@ -11,9 +11,9 @@ pub struct VideoProfile<'a> {
     profile: vk::VideoProfileInfoKHR<'a>,
     encode_usage: vk::VideoEncodeUsageInfoKHR<'a>,
     decode_usage: vk::VideoDecodeUsageInfoKHR<'a>,
-    h264_encode_profile: vk::VideoEncodeH264ProfileInfoEXT<'a>,
+    h264_encode_profile: vk::VideoEncodeH264ProfileInfoKHR<'a>,
     h264_decode_profile: vk::VideoDecodeH264ProfileInfoKHR<'a>,
-    h265_encode_profile: vk::VideoEncodeH265ProfileInfoEXT<'a>,
+    h265_encode_profile: vk::VideoEncodeH265ProfileInfoKHR<'a>,
     h265_decode_profile: vk::VideoDecodeH265ProfileInfoKHR<'a>,
     _marker: PhantomPinned, // self-referential pointers in this struct. Don't move in memory!
 }
@@ -25,8 +25,8 @@ impl VideoProfile<'_> {
 
         rtn.profile = vk::VideoProfileInfoKHR::default()
             .video_codec_operation(match (is_encode, codec) {
-                (true, Codec::H264) => vk::VideoCodecOperationFlagsKHR::ENCODE_H264_EXT,
-                (true, Codec::H265) => vk::VideoCodecOperationFlagsKHR::ENCODE_H265_EXT,
+                (true, Codec::H264) => vk::VideoCodecOperationFlagsKHR::ENCODE_H264,
+                (true, Codec::H265) => vk::VideoCodecOperationFlagsKHR::ENCODE_H265,
                 (true, Codec::AV1) => todo!(),
                 (false, Codec::H264) => vk::VideoCodecOperationFlagsKHR::DECODE_H264,
                 (false, Codec::H265) => vk::VideoCodecOperationFlagsKHR::DECODE_H265,
@@ -42,9 +42,9 @@ impl VideoProfile<'_> {
             .tuning_mode(vk::VideoEncodeTuningModeKHR::HIGH_QUALITY);
         rtn.decode_usage = vk::VideoDecodeUsageInfoKHR::default()
             .video_usage_hints(vk::VideoDecodeUsageFlagsKHR::STREAMING);
-        rtn.h264_encode_profile = vk::VideoEncodeH264ProfileInfoEXT::default()
+        rtn.h264_encode_profile = vk::VideoEncodeH264ProfileInfoKHR::default()
             .std_profile_idc(vk::native::StdVideoH264ProfileIdc_STD_VIDEO_H264_PROFILE_IDC_MAIN);
-        rtn.h265_encode_profile = vk::VideoEncodeH265ProfileInfoEXT::default();
+        rtn.h265_encode_profile = vk::VideoEncodeH265ProfileInfoKHR::default();
         rtn.h264_decode_profile = vk::VideoDecodeH264ProfileInfoKHR::default()
             .std_profile_idc(vk::native::StdVideoH264ProfileIdc_STD_VIDEO_H264_PROFILE_IDC_MAIN);
         rtn.h265_decode_profile = vk::VideoDecodeH265ProfileInfoKHR::default();

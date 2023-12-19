@@ -123,10 +123,10 @@ pub fn make_h264_video_session_parameters(
         second_chroma_qp_index_offset: 0,
         pScalingLists: null(),
     }];
-    let add_info = vk::VideoEncodeH264SessionParametersAddInfoEXT::default()
+    let add_info = vk::VideoEncodeH264SessionParametersAddInfoKHR::default()
         .std_sp_ss(&sps)
         .std_pp_ss(&pps);
-    let mut codec_info = vk::VideoEncodeH264SessionParametersCreateInfoEXT::default()
+    let mut codec_info = vk::VideoEncodeH264SessionParametersCreateInfoKHR::default()
         .max_std_sps_count(sps.len() as u32)
         .max_std_pps_count(pps.len() as u32)
         .parameters_add_info(&add_info);
@@ -150,7 +150,7 @@ pub fn make_h264_video_session_parameters(
     if let (Some(mut output_file), Ok(video_session_parameters)) =
         (output_file, video_session_parameters)
     {
-        let mut h264_info = vk::VideoEncodeH264SessionParametersGetInfoEXT::default()
+        let mut h264_info = vk::VideoEncodeH264SessionParametersGetInfoKHR::default()
             .write_std_sps(true)
             .write_std_pps(true)
             .std_sps_id(0)
@@ -158,7 +158,7 @@ pub fn make_h264_video_session_parameters(
         let mut info = vk::VideoEncodeSessionParametersGetInfoKHR::default()
             .video_session_parameters(video_session_parameters);
         info = info.push_next(&mut h264_info);
-        let mut h264_feedback = vk::VideoEncodeH264SessionParametersFeedbackInfoEXT::default();
+        let mut h264_feedback = vk::VideoEncodeH264SessionParametersFeedbackInfoKHR::default();
         let feedback = vk::VideoEncodeSessionParametersFeedbackInfoKHR::default();
         let mut feedback = feedback.push_next(&mut h264_feedback);
         let mut size = 0usize;
@@ -186,7 +186,7 @@ pub fn make_h264_video_session_parameters(
             };
         }
         let h264_feedback = unsafe {
-            (feedback.p_next as *const vk::VideoEncodeH264SessionParametersFeedbackInfoEXT).as_ref()
+            (feedback.p_next as *const vk::VideoEncodeH264SessionParametersFeedbackInfoKHR).as_ref()
         };
         if res == vk::Result::SUCCESS {
             info!("Received driver feedback: {size} bytes, {feedback:?} {h264_feedback:?}");
@@ -441,11 +441,11 @@ pub fn make_h265_video_session_parameters(
         pScalingLists: null(),
         pPredictorPaletteEntries: null(),
     }];
-    let add_info = vk::VideoEncodeH265SessionParametersAddInfoEXT::default()
+    let add_info = vk::VideoEncodeH265SessionParametersAddInfoKHR::default()
         .std_vp_ss(&vps)
         .std_sp_ss(&sps)
         .std_pp_ss(&pps);
-    let mut codec_info = vk::VideoEncodeH265SessionParametersCreateInfoEXT::default()
+    let mut codec_info = vk::VideoEncodeH265SessionParametersCreateInfoKHR::default()
         .max_std_vps_count(vps.len() as u32)
         .max_std_sps_count(sps.len() as u32)
         .max_std_pps_count(pps.len() as u32)
@@ -470,7 +470,7 @@ pub fn make_h265_video_session_parameters(
     if let (Some(mut output_file), Ok(video_session_parameters)) =
         (output_file, video_session_parameters)
     {
-        let mut h265_info = vk::VideoEncodeH265SessionParametersGetInfoEXT::default()
+        let mut h265_info = vk::VideoEncodeH265SessionParametersGetInfoKHR::default()
             .write_std_vps(true)
             .write_std_sps(true)
             .write_std_pps(true)
@@ -480,7 +480,7 @@ pub fn make_h265_video_session_parameters(
         let mut info = vk::VideoEncodeSessionParametersGetInfoKHR::default()
             .video_session_parameters(video_session_parameters);
         info = info.push_next(&mut h265_info);
-        let mut h265_feedback = vk::VideoEncodeH265SessionParametersFeedbackInfoEXT::default();
+        let mut h265_feedback = vk::VideoEncodeH265SessionParametersFeedbackInfoKHR::default();
         let feedback = vk::VideoEncodeSessionParametersFeedbackInfoKHR::default();
         let mut feedback = feedback.push_next(&mut h265_feedback);
         let mut size = 0usize;
@@ -508,7 +508,7 @@ pub fn make_h265_video_session_parameters(
             };
         }
         let h265_feedback = unsafe {
-            (feedback.p_next as *const vk::VideoEncodeH265SessionParametersFeedbackInfoEXT).as_ref()
+            (feedback.p_next as *const vk::VideoEncodeH265SessionParametersFeedbackInfoKHR).as_ref()
         };
         if res == vk::Result::SUCCESS {
             info!("Received driver feedback: {size} bytes, {feedback:?} {h265_feedback:?}");
