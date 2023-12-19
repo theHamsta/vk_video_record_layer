@@ -9,7 +9,6 @@ mod settings;
 mod shader;
 mod state;
 mod video_session;
-mod vk_beta;
 mod vk_layer;
 mod vulkan_utils;
 
