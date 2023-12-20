@@ -162,7 +162,7 @@ impl SwapChainData<'_> {
                     self.output_file.as_mut(),
                 );
                 if let Err(err) = err {
-                    error!("Failed to encode frame {}: {err}", self.frame_index);
+                    error!("Failed to encode frame {}: {err:?}", self.frame_index);
                 } else {
                     self.frame_index += 1;
                 }
@@ -291,13 +291,16 @@ pub unsafe fn record_vk_create_swapchain(
                 p_allocator,
             );
             let swapchain_format = create_info.image_format;
+            let num_dpb_images = 1;
+            let num_inflight_images = 10;
             let mut dpb = encode_session.as_ref().map_err(|e| *e).and_then(|s| {
                 Dpb::new(
                     device,
                     &extensions,
                     video_format,
                     create_info.image_extent,
-                    16,
+                    num_dpb_images,
+                    num_inflight_images,
                     create_info.min_image_count,
                     p_allocator.as_ref(),
                     *get_state().encode_queue_family_idx.read().unwrap(),
@@ -485,8 +488,8 @@ fn create_video_session<'video_session>(
         .max_coded_extent(max_coded_extent)
         .picture_format(vk::Format::G8_B8R8_2PLANE_420_UNORM)
         .reference_picture_format(vk::Format::G8_B8R8_2PLANE_420_UNORM)
-        .max_dpb_slots(16)
-        .max_active_reference_pictures(8)
+        .max_dpb_slots(8)
+        .max_active_reference_pictures(0)
         .std_header_version(&header_version)
         .video_profile(profile.profile());
 

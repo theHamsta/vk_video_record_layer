@@ -113,7 +113,6 @@ impl BitstreamBufferRing {
         profile_info: &mut vk::VideoProfileInfoKHR,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
-        dbg!(&count);
         let mut rtn = Self {
             buffers: Vec::with_capacity(count),
             host_buffers: Vec::with_capacity(count),
@@ -207,19 +206,17 @@ impl BitstreamBufferRing {
         let host = &self.host_buffers[self.current];
         let semaphores = [self.semaphore];
         let values = [self.buffer_generation[self.current]];
-        dbg!(&self.buffer_generation);
-        dbg!(&values);
         let info = vk::SemaphoreWaitInfo::default()
             .values(&values)
             .semaphores(&semaphores);
         unsafe {
             device.wait_semaphores(&info, timeout).map_err(|e| {
-                let actual_value = device.get_semaphore_counter_value(self.semaphore);
+            let actual_value = device.get_semaphore_counter_value(self.semaphore);
                 warn!(
                     "Failed to wait for encode timeline semaphore in bitstream buffer for value {}. Current value {actual_value:?}",
                     values[0]
                 );
-                e
+            e
             })?;
         }
 
@@ -265,7 +262,7 @@ impl BitstreamBufferRing {
                 unsafe {
                     let data = device.map_memory(
                         host.memory(),
-                        result.offset.into(),
+                        0, //result.offset.into(),
                         size,
                         vk::MemoryMapFlags::default(),
                     );
@@ -276,6 +273,8 @@ impl BitstreamBufferRing {
                     }
                     device.unmap_memory(host.memory());
                 }
+            } else {
+                warn!("Failed with query: {result:?}")
             }
         }
 

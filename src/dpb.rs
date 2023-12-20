@@ -5,7 +5,7 @@ use crate::{
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;
-use log::{debug, error};
+use log::{debug, error, trace};
 use std::{
     collections::HashMap,
     io::Write,
@@ -25,6 +25,8 @@ use crate::{
 pub struct Dpb {
     extent: vk::Extent2D,
     coded_extent: vk::Extent2D,
+    dpb_images: Vec<vk::Image>,
+    dpb_views: Vec<vk::ImageView>,
     images: Vec<vk::Image>,
     views: Vec<vk::ImageView>,
     y_views: Vec<vk::ImageView>,
@@ -139,7 +141,8 @@ impl Dpb {
         extensions: &Extensions,
         video_format: vk::Format,
         extent: vk::Extent2D,
-        num_images: u32,
+        num_dpb_images: u32,
+        num_inflight_images: u32,
         max_input_image_views: u32,
         allocator: Option<&vk::AllocationCallbacks>,
         encode_family_index: u32,
@@ -150,6 +153,8 @@ impl Dpb {
     ) -> VkResult<Self> {
         unsafe {
             let mut images = Vec::new();
+            let mut dpb_images = Vec::new();
+            let mut dpb_views = Vec::new();
             let mut memory = Vec::new();
             let mut views = Vec::new();
             let mut y_views = Vec::new();
@@ -233,7 +238,7 @@ impl Dpb {
                     layer_count: 1,
                 });
 
-            for i in 0..num_images {
+            for i in 0..(num_inflight_images + num_dpb_images) {
                 let image = device.create_image(&info, allocator);
                 let Ok(image) = image.map_err(|e| {
                     error!("Failed to create image for DPB: {e}");
@@ -241,7 +246,11 @@ impl Dpb {
                 }) else {
                     break;
                 };
-                images.push(image);
+                if i < num_inflight_images {
+                    images.push(image);
+                } else {
+                    dpb_images.push(image);
+                }
 
                 #[cfg(debug_assertions)]
                 name_object(device, extensions, image, &format!("DPB image {}", i));
@@ -280,10 +289,14 @@ impl Dpb {
                 }) else {
                     break;
                 };
-                views.push(view);
-
-                #[cfg(debug_assertions)]
-                name_object(device, extensions, view, &format!("DPB view {i}"));
+                if i < num_inflight_images {
+                    views.push(view);
+                    #[cfg(debug_assertions)]
+                    name_object(device, extensions, view, &format!("DPB view {i}"));
+                } else {
+                    dpb_views.push(view);
+                    continue;
+                }
 
                 y_view_info.image = image;
                 let view = device.create_image_view(&y_view_info, allocator);
@@ -341,7 +354,7 @@ impl Dpb {
                 allocator,
             );
 
-            let num_pools = max_input_image_views * num_images;
+            let num_pools = max_input_image_views * num_inflight_images;
             let pool_sizes = vec![
                 vk::DescriptorPoolSize::default()
                     .ty(vk::DescriptorType::STORAGE_IMAGE)
@@ -422,6 +435,8 @@ impl Dpb {
                 frame_index: 0,
                 extent,
                 coded_extent,
+                dpb_images,
+                dpb_views,
                 images,
                 views,
                 y_views,
@@ -659,11 +674,12 @@ impl Dpb {
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
             device.cmd_pipeline_barrier2(cmd, &info);
 
-            let image_type = if video_session.needs_reset() {
-                PictureType::Idr
-            } else {
-                PictureType::I
-            };
+            let image_type = PictureType::Idr;
+            //if video_session.needs_reset() {
+                //PictureType::Idr
+            //} else {
+                //PictureType::I
+            //};
 
             let info = vk::VideoBeginCodingInfoKHR::default()
                 .video_session(video_session.session())
@@ -776,17 +792,25 @@ impl Dpb {
                 .nalu_slice_segment_entries(h265_nalus)
                 .std_picture_info(&h265_pic);
 
+            let setup_pic_res = vk::VideoPictureResourceInfoKHR::default()
+                .coded_extent(self.coded_extent())
+                .image_view_binding(self.dpb_views[0]);
+            let ref_slot_info = vk::VideoReferenceSlotInfoKHR::default()
+                .slot_index(0)
+                .picture_resource(&setup_pic_res);
             let mut info = vk::VideoEncodeInfoKHR::default()
                 .dst_buffer(buffer.device.buffer())
                 .dst_buffer_range(buffer.device.size())
-                .src_picture_resource(pic);
+                .src_picture_resource(pic)
+                .setup_reference_slot(&ref_slot_info);
+
             match video_session.codec() {
                 Codec::H264 => info = info.push_next(&mut h264_info),
                 Codec::H265 => info = info.push_next(&mut h265_info),
                 Codec::AV1 => todo!(),
             };
-            device.cmd_end_query(cmd, buffer.query_pool, buffer.slot);
             (video_encode_queue_fn.cmd_encode_video_khr)(cmd, &info);
+            device.cmd_end_query(cmd, buffer.query_pool, buffer.slot);
 
             let info = vk::VideoEndCodingInfoKHR::default();
             (video_queue_fn.cmd_end_video_coding_khr)(cmd, &info);
@@ -809,8 +833,10 @@ impl Dpb {
                 .regions(&copies);
             device.cmd_copy_buffer2(cmd, &info);
             device.end_command_buffer(cmd)?;
+            debug!("ende cmd buffer");
         }
 
+        trace!("Recorded encode command buffer");
         Ok(cmd)
     }
 
@@ -833,8 +859,12 @@ impl Dpb {
             let buffer = self
                 .bitstream_buffers
                 .as_mut()
-                .map_err(|e| *e)?
-                .next(device, 100, output)?;
+                .map_err(|e| {
+                    error!("failed to acquire bitstream_buffers");
+                    *e
+                })?
+                .next(device, 100, output)
+                .map_err(|err| anyhow!("Failed to next: {err}"))?;
 
             let encode_cmd =
                 self.record_encode_cmd_buffer(device, extensions, &buffer, video_session)?;
@@ -892,7 +922,13 @@ impl Dpb {
             for view in self.uv_views.drain(..) {
                 device.destroy_image_view(view, allocator);
             }
+            for view in self.dpb_views.drain(..) {
+                device.destroy_image_view(view, allocator);
+            }
             for image in self.images.drain(..) {
+                device.destroy_image(image, allocator);
+            }
+            for image in self.dpb_images.drain(..) {
                 device.destroy_image(image, allocator);
             }
             for memory in self.memory.drain(..) {
