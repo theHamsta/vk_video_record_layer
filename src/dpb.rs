@@ -205,7 +205,7 @@ impl Dpb {
                 .initial_layout(vk::ImageLayout::UNDEFINED);
             let profiles = [*video_session.profile().profile()];
             let mut profile_list = vk::VideoProfileListInfoKHR::default().profiles(&profiles);
-            let info = info.push_next(&mut profile_list);
+            let mut info = info.push_next(&mut profile_list);
 
             let mut view_info = vk::ImageViewCreateInfo::default()
                 .view_type(vk::ImageViewType::TYPE_2D)
@@ -239,6 +239,9 @@ impl Dpb {
                 });
 
             for i in 0..(num_inflight_images + num_dpb_images) {
+                if i >= num_inflight_images {
+                    info.usage = vk::ImageUsageFlags::VIDEO_ENCODE_DPB_KHR;
+                }
                 let image = device.create_image(&info, allocator);
                 let Ok(image) = image.map_err(|e| {
                     error!("Failed to create image for DPB: {e}");
@@ -671,14 +674,36 @@ impl Dpb {
                         .layer_count(1),
                 )
                 .image(image)];
+            //if self.frame_index == 0 {
+            //barriers.push(
+            //vk::ImageMemoryBarrier2::default()
+            //.src_stage_mask(vk::PipelineStageFlags2::NONE)
+            //.dst_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
+            //.src_access_mask(vk::AccessFlags2::NONE)
+            //.dst_access_mask(vk::AccessFlags2::VIDEO_ENCODE_WRITE_KHR)
+            //.old_layout(vk::ImageLayout::UNDEFINED)
+            //.new_layout(vk::ImageLayout::VIDEO_ENCODE_DPB_KHR)
+            //.src_queue_family_index(self.encode_family_index)
+            //.dst_queue_family_index(self.encode_family_index)
+            //.subresource_range(
+            //vk::ImageSubresourceRange::default()
+            //.aspect_mask(vk::ImageAspectFlags::COLOR)
+            //.base_mip_level(0)
+            //.level_count(1)
+            //.base_array_layer(0)
+            //.layer_count(1),
+            //)
+            //.image(image),
+            //)
+            //}
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
             device.cmd_pipeline_barrier2(cmd, &info);
 
             let image_type = PictureType::Idr;
             //if video_session.needs_reset() {
-                //PictureType::Idr
+            //PictureType::Idr
             //} else {
-                //PictureType::I
+            //PictureType::I
             //};
 
             let info = vk::VideoBeginCodingInfoKHR::default()
