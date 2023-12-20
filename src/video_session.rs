@@ -136,7 +136,12 @@ impl SwapChainData<'_> {
         if let (Ok(views), Ok(dpb), Ok(encode_session)) =
             (&self.image_views, &mut self.dpb, &mut self.encode_session)
         {
-            assert_eq!(present_info.wait_semaphore_count, 1);
+            if present_info.wait_semaphore_count != 1 {
+                warn!(
+                    "Queue present has not a single wait semaphore, but instead {}",
+                    present_info.wait_semaphore_count
+                )
+            }
             let wait_semaphore_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(unsafe {
                     *present_info
