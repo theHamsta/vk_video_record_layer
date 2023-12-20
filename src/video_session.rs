@@ -18,6 +18,7 @@ use crate::settings::Codec;
 
 use crate::state::{get_state, Extensions};
 
+#[cfg(debug_assertions)]
 use crate::vulkan_utils::name_object;
 
 pub struct VideoSession<'a> {
@@ -220,24 +221,24 @@ pub unsafe fn record_vk_create_swapchain(
                     images
                         .iter()
                         .enumerate()
-                        .map(|(i, &image)| {
+                        .map(|(_i, &image)| {
                             #[cfg(debug_assertions)]
                             name_object(
                                 device,
                                 &extensions,
                                 image,
-                                &format!("Swapchain image {i}"),
+                                &format!("Swapchain image {_i}"),
                             );
                             view_info.image = image;
                             let view = device.create_image_view(&view_info, allocator);
 
+                            #[cfg(debug_assertions)]
                             let _ = view.map(|view| {
-                                #[cfg(debug_assertions)]
                                 name_object(
                                     device,
                                     &extensions,
                                     view,
-                                    &format!("Swapchain image view {i}"),
+                                    &format!("Swapchain image view {_i}"),
                                 )
                             });
                             view

@@ -1,9 +1,12 @@
-use std::{ffi::CString, mem::transmute};
+use std::mem::transmute;
 
+#[cfg(debug_assertions)]
 use crate::state::Extensions;
 use ash::vk;
+#[cfg(debug_assertions)]
 use log::warn;
 
+#[cfg(debug_assertions)]
 pub fn name_object<Object>(
     device: &ash::Device,
     extensions: &Extensions,
@@ -12,7 +15,7 @@ pub fn name_object<Object>(
 ) where
     Object: vk::Handle + Copy,
 {
-    let name = CString::new(name).unwrap();
+    let name = std::ffi::CString::new(name).unwrap();
     let handle = object.as_raw();
     let info = vk::DebugUtilsObjectNameInfoEXT::default()
         .object_handle(object)

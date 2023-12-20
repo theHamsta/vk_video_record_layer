@@ -1,7 +1,6 @@
-use crate::{
-    shader::ComputePipelineDescriptor,
-    vulkan_utils::{find_memorytype_index, name_object},
-};
+use crate::{shader::ComputePipelineDescriptor, vulkan_utils::find_memorytype_index};
+#[cfg(debug_assertions)]
+use crate::vulkan_utils::name_object;
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;

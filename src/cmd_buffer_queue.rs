@@ -1,7 +1,9 @@
 use ash::{prelude::VkResult, vk};
 use log::error;
 
-use crate::{state::Extensions, vulkan_utils::name_object};
+use crate::state::Extensions;
+#[cfg(debug_assertions)]
+use crate::vulkan_utils::name_object;
 
 pub struct CommandBuffer {
     pub cmd: vk::CommandBuffer,
@@ -19,11 +21,11 @@ pub struct CommandBufferQueue {
 impl CommandBufferQueue {
     pub fn new(
         device: &ash::Device,
-        extensions: &Extensions,
+        _extensions: &Extensions,
         queue_family_index: u32,
         queue_length: u32,
         timeout: u64,
-        debug_name: &str,
+        _debug_name: &str,
         allocator: Option<&vk::AllocationCallbacks>,
     ) -> VkResult<Self> {
         let mut rtn = Self {
@@ -50,7 +52,7 @@ impl CommandBufferQueue {
             rtn.pool = pool;
 
             #[cfg(debug_assertions)]
-            name_object(device, extensions, pool, debug_name);
+            name_object(device, _extensions, pool, _debug_name);
 
             let info = vk::CommandBufferAllocateInfo::default()
                 .command_pool(pool)
@@ -63,13 +65,13 @@ impl CommandBufferQueue {
             })?;
             rtn.cmds = cmds;
 
-            for i in 0..queue_length {
+            for _i in 0..queue_length {
                 #[cfg(debug_assertions)]
                 name_object(
                     device,
-                    extensions,
-                    rtn.cmds[i as usize],
-                    &format!("{debug_name} {i}"),
+                    _extensions,
+                    rtn.cmds[_i as usize],
+                    &format!("{_debug_name} {_i}"),
                 );
 
                 let info = vk::FenceCreateInfo::default().flags(vk::FenceCreateFlags::SIGNALED);
