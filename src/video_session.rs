@@ -136,6 +136,7 @@ impl SwapChainData<'_> {
         if let (Ok(views), Ok(dpb), Ok(encode_session)) =
             (&self.image_views, &mut self.dpb, &mut self.encode_session)
         {
+            assert_eq!(present_info.wait_semaphore_count, 1);
             let wait_semaphore_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(unsafe {
                     *present_info
@@ -143,6 +144,7 @@ impl SwapChainData<'_> {
                         .as_ref()
                         .unwrap_or(&vk::Semaphore::null())
                 })
+                .value(1)
                 .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
             let semaphore = self.semaphores[swapchain_index];
             if let Ok(semaphore) = semaphore {
@@ -292,7 +294,7 @@ pub unsafe fn record_vk_create_swapchain(
                 p_allocator,
             );
             let swapchain_format = create_info.image_format;
-            let num_dpb_images = 1;
+            let num_dpb_images = 10;
             let num_inflight_images = 10;
             let mut dpb = encode_session.as_ref().map_err(|e| *e).and_then(|s| {
                 Dpb::new(

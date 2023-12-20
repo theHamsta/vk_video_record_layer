@@ -1,6 +1,6 @@
-use crate::{shader::ComputePipelineDescriptor, vulkan_utils::find_memorytype_index};
 #[cfg(debug_assertions)]
 use crate::vulkan_utils::name_object;
+use crate::{shader::ComputePipelineDescriptor, vulkan_utils::find_memorytype_index};
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;
@@ -414,7 +414,7 @@ impl Dpb {
 
             let indices = [encode_family_index];
             let buffer_info = vk::BufferCreateInfo::default()
-                .size(50000)
+                .size(5_000_000)
                 .usage(
                     vk::BufferUsageFlags::VIDEO_ENCODE_DST_KHR | vk::BufferUsageFlags::TRANSFER_SRC,
                 )
@@ -819,7 +819,7 @@ impl Dpb {
 
             let setup_pic_res = vk::VideoPictureResourceInfoKHR::default()
                 .coded_extent(self.coded_extent())
-                .image_view_binding(self.dpb_views[0]);
+                .image_view_binding(self.dpb_views[self.next_image as usize]);
             let ref_slot_info = vk::VideoReferenceSlotInfoKHR::default()
                 .slot_index(0)
                 .picture_resource(&setup_pic_res);
@@ -873,7 +873,7 @@ impl Dpb {
         image_view: vk::ImageView,
         compute_queue: vk::Queue,
         encode_queue: vk::Queue,
-        _wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
+        wait_semaphore_infos: &[vk::SemaphoreSubmitInfo],
         signal_semaphore_compute: &[vk::SemaphoreSubmitInfo],
         output: Option<&mut impl Write>,
     ) -> anyhow::Result<()> {
@@ -905,16 +905,22 @@ impl Dpb {
             .collect_vec();
             let info = vk::SubmitInfo2::default()
                 .command_buffer_infos(&cmd_infos)
-                //.wait_semaphore_infos(_wait_semaphore_infos)
+                .wait_semaphore_infos(wait_semaphore_infos)
                 .signal_semaphore_infos(&signal_infos);
             device
                 .queue_submit2(compute_queue, &[info], vk::Fence::null())
                 .map_err(|err| anyhow!("Failed to submit to compute queue: {err}"))?;
 
-            let wait_infos = [vk::SemaphoreSubmitInfo::default()
-                .semaphore(self.compute_semaphore)
-                .value(self.frame_index + 1)
-                .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
+            let wait_infos = [
+                vk::SemaphoreSubmitInfo::default()
+                    .semaphore(self.compute_semaphore)
+                    .value(self.frame_index + 1)
+                    .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS),
+                vk::SemaphoreSubmitInfo::default()
+                    .semaphore(self.encode_semaphore)
+                    .value(self.frame_index)
+                    .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS),
+            ];
             let signal_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(self.encode_semaphore)
                 .value(self.frame_index + 1)

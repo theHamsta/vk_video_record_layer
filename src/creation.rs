@@ -192,6 +192,8 @@ pub extern "system" fn record_vk_create_device(
                     error!("Device doesn't support compute");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 };
+                info!("Using compute queue family idx {compute_idx}");
+
                 let Some(graphics_idx) = queue_props.iter().position(|prop| {
                     prop.queue_family_properties
                         .queue_flags
@@ -200,6 +202,8 @@ pub extern "system" fn record_vk_create_device(
                     error!("Device doesn't support graphics");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 };
+
+                info!("Using graphics queue family idx {graphics_idx}");
                 let Some(encode_idx) = queue_props.iter().position(|prop| {
                     prop.queue_family_properties
                         .queue_flags
@@ -212,6 +216,8 @@ pub extern "system" fn record_vk_create_device(
                     error!("Device doesn't support encode");
                     return vk::Result::ERROR_INITIALIZATION_FAILED;
                 };
+
+                info!("Using encode queue family idx {encode_idx}");
                 let Some(decode_idx) = queue_props.iter().position(|prop| {
                     prop.queue_family_properties
                         .queue_flags
