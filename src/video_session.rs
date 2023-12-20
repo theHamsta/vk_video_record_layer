@@ -519,7 +519,7 @@ fn create_video_session<'video_session>(
 
     if let Err(err) = res {
         error!(
-            "Failed to create {} video session: {err}",
+            "Failed to create {} video session: {err:?}",
             if is_encode { "encode" } else { "decode" }
         );
     } else {
