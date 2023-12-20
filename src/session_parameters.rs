@@ -400,7 +400,7 @@ pub fn make_h265_video_session_parameters(
     let flags = MaybeUninit::zeroed();
     let mut flags: vk::native::StdVideoH265PpsFlags = unsafe { flags.assume_init() };
     flags.set_transform_skip_enabled_flag(1);
-    flags.set_cu_qp_delta_enabled_flag(1);
+    //flags.set_cu_qp_delta_enabled_flag(1);
     flags.set_loop_filter_across_tiles_enabled_flag(1);
     flags.set_deblocking_filter_control_present_flag(1);
     let pps = vec![vk::native::StdVideoH265PictureParameterSet {

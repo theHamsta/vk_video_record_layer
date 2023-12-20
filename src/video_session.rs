@@ -464,7 +464,7 @@ fn create_video_session<'video_session>(
 
     let header_version = match (is_encode, state.settings.codec) {
         (true, Codec::H264) => vk::ExtensionProperties::default()
-            .extension_name(c"VK_STD_vulkan_video_codec_h264_encode") //vk::KhrVideoEncodeH264Fn::NAME)
+            .extension_name(c"VK_STD_vulkan_video_codec_h264_encode")
             .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (true, Codec::H265) => vk::ExtensionProperties::default()
@@ -477,7 +477,7 @@ fn create_video_session<'video_session>(
             .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (false, Codec::H265) => vk::ExtensionProperties::default()
-            .extension_name(c"VK_STD_vulkan_video_codec_h264_decode")
+            .extension_name(c"VK_STD_vulkan_video_codec_h265_decode")
             .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (false, Codec::AV1) => todo!(),
