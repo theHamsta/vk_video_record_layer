@@ -8,7 +8,7 @@ use log::{debug, error, trace};
 use std::{
     collections::HashMap,
     io::Write,
-    mem::{transmute, MaybeUninit},
+    mem::{transmute, zeroed, MaybeUninit},
     ptr::null,
 };
 
@@ -47,6 +47,7 @@ pub struct Dpb {
     encode_semaphore: vk::Semaphore,
     bitstream_buffers: VkResult<BitstreamBufferRing>,
     frame_index: u64,
+    gop_size: u64,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -54,7 +55,6 @@ enum PictureType {
     Idr,
     #[allow(dead_code)]
     I,
-    #[allow(dead_code)]
     P,
     #[allow(dead_code)]
     B,
@@ -150,6 +150,7 @@ impl Dpb {
         compute_family_index: u32,
         video_session: &VideoSession,
         physical_memory_props: &vk::PhysicalDeviceMemoryProperties,
+        gop_size: u64,
     ) -> VkResult<Self> {
         unsafe {
             let mut images = Vec::new();
@@ -458,6 +459,7 @@ impl Dpb {
                 compute_semaphore,
                 encode_semaphore,
                 bitstream_buffers,
+                gop_size,
                 sets: Default::default(),
             };
 
@@ -674,7 +676,7 @@ impl Dpb {
                         .layer_count(1),
                 )
                 .image(image)];
-            if self.frame_index == 0 {
+            if self.frame_index < self.dpb_views.len() as u64 {
                 barriers.push(
                     vk::ImageMemoryBarrier2::default()
                         .src_stage_mask(vk::PipelineStageFlags2::NONE)
@@ -699,12 +701,13 @@ impl Dpb {
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
             device.cmd_pipeline_barrier2(cmd, &info);
 
-            let image_type = PictureType::Idr;
-            //if video_session.needs_reset() {
-            //PictureType::Idr
-            //} else {
-            //PictureType::I
-            //};
+            let image_type = if video_session.needs_reset() || self.frame_index % self.gop_size == 0
+            {
+                PictureType::Idr
+            } else {
+                PictureType::P
+            };
+            dbg!(self.frame_index);
 
             let info = vk::VideoBeginCodingInfoKHR::default()
                 .video_session(video_session.session())
@@ -738,24 +741,45 @@ impl Dpb {
             let flags = MaybeUninit::zeroed();
             let mut flags: vk::native::StdVideoEncodeH264PictureInfoFlags = flags.assume_init();
             flags.set_IdrPicFlag(image_type.is_idr() as u32);
+            let mut ref_lists = vk::native::StdVideoEncodeH264ReferenceListsInfo {
+                flags: zeroed(), // set reorder flags
+                num_ref_idx_l0_active_minus1: 0,
+                num_ref_idx_l1_active_minus1: 0,
+                RefPicList0: [0; 32],
+                RefPicList1: [0; 32],
+                refList0ModOpCount: 0,
+                refList1ModOpCount: 0,
+                refPicMarkingOpCount: 0,
+                reserved1: Default::default(),
+                pRefList0ModOperations: null(),
+                pRefList1ModOperations: null(),
+                pRefPicMarkingOperations: null(),
+            };
+            if image_type.is_p() {
+                ref_lists.RefPicList0[0] =
+                    (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
+                ref_lists.RefPicList0[1] =
+                    (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
+            }
+            flags.set_is_reference(1);
             let h264_pic = vk::native::StdVideoEncodeH264PictureInfo {
                 flags,
                 seq_parameter_set_id: 0,
                 pic_parameter_set_id: 0,
                 reserved1: [0; 3],
-                frame_num: 0,
-                PicOrderCnt: 0,
+                frame_num: (self.frame_index % self.gop_size) as u32,
+                PicOrderCnt: 2 * (self.frame_index % self.gop_size) as i32,
                 idr_pic_id: 0,
                 temporal_id: 0,
                 primary_pic_type: image_type.as_h264_picture_type(),
-                pRefLists: std::ptr::null(),
+                pRefLists: &ref_lists,
             };
             let flags = MaybeUninit::zeroed();
             let flags = flags.assume_init();
             let h264_header = vk::native::StdVideoEncodeH264SliceHeader {
                 flags,
                 first_mb_in_slice: 0,
-                slice_type: image_type.as_h264_slice_type(),
+                slice_type: dbg!(image_type.as_h264_slice_type()),
                 cabac_init_idc: 0,
                 disable_deblocking_filter_idc: 0,
                 slice_alpha_c0_offset_div2: 0,
@@ -781,7 +805,7 @@ impl Dpb {
                 pps_seq_parameter_set_id: 0,
                 pps_pic_parameter_set_id: 0,
                 short_term_ref_pic_set_idx: 0,
-                PicOrderCntVal: 0,
+                PicOrderCntVal: (self.frame_index % self.gop_size) as i32,
                 TemporalId: 0,
                 pShortTermRefPicSet: null(),
                 pLongTermRefPics: null(),
@@ -817,16 +841,54 @@ impl Dpb {
                 .nalu_slice_segment_entries(h265_nalus)
                 .std_picture_info(&h265_pic);
 
+            let mut reference_slots = Vec::new();
+            let real_h264_setup_info = vk::native::StdVideoEncodeH264ReferenceInfo {
+                flags: zeroed(),
+                FrameNum: if self.frame_index % self.gop_size != 0 {
+                    (self.frame_index % self.gop_size) as u32 - 1
+                } else {
+                    0
+                },
+                primary_pic_type: vk::native::StdVideoH264PictureType_STD_VIDEO_H264_PICTURE_TYPE_P,
+                PicOrderCnt: 2 * if self.frame_index % self.gop_size != 0 {
+                    (self.frame_index % self.gop_size) as i32 - 1
+                } else {
+                    0
+                },
+                long_term_pic_num: 0,
+                long_term_frame_idx: 0,
+                temporal_id: 0,
+            };
+            let mut h264_reference_info = vk::VideoEncodeH264DpbSlotInfoKHR::default()
+                .std_reference_info(&real_h264_setup_info);
+            let ref_pic_res = vk::VideoPictureResourceInfoKHR::default()
+                .coded_extent(self.coded_extent())
+                .image_view_binding(
+                    self.dpb_views[((self.frame_index + self.dpb_views.len() as u64 - 1)
+                        % self.dpb_views.len() as u64) as usize],
+                );
+            if image_type.is_p() {
+                let slot_index =
+                    (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32);
+                let info = vk::VideoReferenceSlotInfoKHR::default()
+                    .slot_index(slot_index)
+                    .picture_resource(&ref_pic_res);
+                let info = info.push_next(&mut h264_reference_info);
+                reference_slots.push(info);
+            }
             let setup_pic_res = vk::VideoPictureResourceInfoKHR::default()
                 .coded_extent(self.coded_extent())
-                .image_view_binding(self.dpb_views[self.next_image as usize]);
+                .image_view_binding(
+                    self.dpb_views[self.frame_index as usize % self.dpb_views.len()],
+                );
             let ref_slot_info = vk::VideoReferenceSlotInfoKHR::default()
-                .slot_index(0)
+                .slot_index((self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32))
                 .picture_resource(&setup_pic_res);
             let mut info = vk::VideoEncodeInfoKHR::default()
                 .dst_buffer(buffer.device.buffer())
                 .dst_buffer_range(buffer.device.size())
                 .src_picture_resource(pic)
+                .reference_slots(&reference_slots)
                 .setup_reference_slot(&ref_slot_info);
 
             match video_session.codec() {

@@ -299,8 +299,9 @@ pub unsafe fn record_vk_create_swapchain(
                 p_allocator,
             );
             let swapchain_format = create_info.image_format;
-            let num_dpb_images = 10;
+            let num_dpb_images = 2;
             let num_inflight_images = 10;
+            let gop_size = 16;
             let mut dpb = encode_session.as_ref().map_err(|e| *e).and_then(|s| {
                 Dpb::new(
                     device,
@@ -316,6 +317,7 @@ pub unsafe fn record_vk_create_swapchain(
                     *get_state().compute_queue_family_idx.read().unwrap(),
                     s,
                     &physical_memory_props,
+                    gop_size,
                 )
             });
             let present_family_idx = *get_state().graphics_queue_family_idx.read().unwrap();
@@ -497,8 +499,8 @@ fn create_video_session<'video_session>(
         .max_coded_extent(max_coded_extent)
         .picture_format(vk::Format::G8_B8R8_2PLANE_420_UNORM)
         .reference_picture_format(vk::Format::G8_B8R8_2PLANE_420_UNORM)
-        .max_dpb_slots(8)
-        .max_active_reference_pictures(0)
+        .max_dpb_slots(2)
+        .max_active_reference_pictures(1)
         .std_header_version(&header_version)
         .video_profile(profile.profile());
 
