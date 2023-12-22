@@ -89,7 +89,7 @@ pub fn make_h264_video_session_parameters(
         offset_for_top_to_bottom_field: 0,
         log2_max_pic_order_cnt_lsb_minus4: 8 - 4, // pic order count 0-255
         num_ref_frames_in_pic_order_cnt_cycle: 0,
-        max_num_ref_frames: 0,
+        max_num_ref_frames: 1,
         reserved1: 0,
         pic_width_in_mbs_minus1: (extent.width + 15) / 16 - 1, //extent.width.div_ceil(16) - 1, // with unstable feature int_roundings
         pic_height_in_map_units_minus1: (extent.height + 15) / 16 - 1,
@@ -373,7 +373,7 @@ pub fn make_h265_video_session_parameters(
         log2_diff_max_min_luma_transform_block_size: 3,
         max_transform_hierarchy_depth_inter: 3,
         max_transform_hierarchy_depth_intra: 3,
-        num_short_term_ref_pic_sets: 1,
+        num_short_term_ref_pic_sets: 0,
         num_long_term_ref_pics_sps: 0,
         pcm_sample_bit_depth_luma_minus1: 0,
         pcm_sample_bit_depth_chroma_minus1: 0,
@@ -409,8 +409,8 @@ pub fn make_h265_video_session_parameters(
         pps_seq_parameter_set_id: 0,
         sps_video_parameter_set_id: 0,
         num_extra_slice_header_bits: 0,
-        num_ref_idx_l0_default_active_minus1: 1,
-        num_ref_idx_l1_default_active_minus1: 1,
+        num_ref_idx_l0_default_active_minus1: 0,
+        num_ref_idx_l1_default_active_minus1: 0,
         init_qp_minus26: 0,
         diff_cu_qp_delta_depth: 0,
         pps_cb_qp_offset: 0,
