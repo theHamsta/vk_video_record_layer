@@ -1,5 +1,6 @@
 use chrono::offset::Utc;
 use chrono::DateTime;
+use std::ffi::CStr;
 use std::fs::File;
 use std::mem::transmute;
 use std::ptr::null_mut;
@@ -474,20 +475,32 @@ fn create_video_session<'video_session>(
 
     let header_version = match (is_encode, state.settings.codec) {
         (true, Codec::H264) => vk::ExtensionProperties::default()
-            .extension_name(c"VK_STD_vulkan_video_codec_h264_encode")
+            .extension_name(
+                CStr::from_bytes_until_nul(b"VK_STD_vulkan_video_codec_h264_encode\0").unwrap(),
+            )
+            //.extension_name(c"VK_STD_vulkan_video_codec_h264_encode")
             .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (true, Codec::H265) => vk::ExtensionProperties::default()
-            .extension_name(c"VK_STD_vulkan_video_codec_h265_encode")
+            .extension_name(
+                CStr::from_bytes_until_nul(b"VK_STD_vulkan_video_codec_h265_encode\0").unwrap(),
+            )
+            //.extension_name(c"VK_STD_vulkan_video_codec_h265_encode".into())
             .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (true, Codec::AV1) => todo!(),
         (false, Codec::H264) => vk::ExtensionProperties::default()
-            .extension_name(c"VK_STD_vulkan_video_codec_h264_decode")
+            //.extension_name(c"VK_STD_vulkan_video_codec_h264_decode")
+            .extension_name(
+                CStr::from_bytes_until_nul(b"VK_STD_vulkan_video_codec_h264_decode\0").unwrap(),
+            )
             .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (false, Codec::H265) => vk::ExtensionProperties::default()
-            .extension_name(c"VK_STD_vulkan_video_codec_h265_decode")
+            //.extension_name(c"VK_STD_vulkan_video_codec_h265_decode")
+            .extension_name(
+                CStr::from_bytes_until_nul(b"VK_STD_vulkan_video_codec_h265_decode\0").unwrap(),
+            )
             .unwrap()
             .spec_version(vk::make_api_version(0, 1, 0, 0)),
         (false, Codec::AV1) => todo!(),
