@@ -741,6 +741,7 @@ impl Dpb {
             let flags = MaybeUninit::zeroed();
             let mut flags: vk::native::StdVideoEncodeH264PictureInfoFlags = flags.assume_init();
             flags.set_IdrPicFlag(image_type.is_idr() as u32);
+            flags.set_is_reference(1);
             let mut ref_lists = vk::native::StdVideoEncodeH264ReferenceListsInfo {
                 flags: zeroed(), // set reorder flags
                 num_ref_idx_l0_active_minus1: 0,
@@ -761,7 +762,6 @@ impl Dpb {
                 ref_lists.RefPicList0[1] =
                     (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
             }
-            flags.set_is_reference(1);
             let h264_pic = vk::native::StdVideoEncodeH264PictureInfo {
                 flags,
                 seq_parameter_set_id: 0,
@@ -809,10 +809,10 @@ impl Dpb {
                 ref_lists.RefPicList0[1] =
                     (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
             }
-            let flags = MaybeUninit::zeroed();
-            let flags: vk::native::StdVideoEncodeH265PictureInfoFlags = flags.assume_init();
+            let mut flags: vk::native::StdVideoH265ShortTermRefPicSetFlags = zeroed();
+            flags.set_inter_ref_pic_set_prediction_flag(1);
             let short_term_ref_pic_set = vk::native::StdVideoH265ShortTermRefPicSet {
-                flags: zeroed(),
+                flags,
                 delta_idx_minus1: 0,
                 use_delta_flag: 0,
                 abs_delta_rps_minus1: 0,
@@ -822,11 +822,16 @@ impl Dpb {
                 reserved1: Default::default(),
                 reserved2: Default::default(),
                 reserved3: Default::default(),
-                num_negative_pics: 0,
+                num_negative_pics: if self.frame_index % self.gop_size == 0 {
+                    0
+                } else {
+                    1
+                },
                 num_positive_pics: 0,
                 delta_poc_s0_minus1: [0; 16],
                 delta_poc_s1_minus1: [0; 16],
             };
+
             let long_term_ref_pics = vk::native::StdVideoEncodeH265LongTermRefPics {
                 num_long_term_sps: 0,
                 num_long_term_pics: 0,
@@ -836,6 +841,14 @@ impl Dpb {
                 delta_poc_msb_present_flag: [0; 48],
                 delta_poc_msb_cycle_lt: [0; 48],
             };
+            let flags = MaybeUninit::zeroed();
+            let mut flags: vk::native::StdVideoEncodeH265PictureInfoFlags = flags.assume_init();
+            if image_type.is_p() {
+                flags.set_short_term_ref_pic_set_sps_flag(1);
+            }
+            if self.frame_index != self.gop_size - 1 {
+                flags.set_is_reference(1);
+            }
             let h265_pic = vk::native::StdVideoEncodeH265PictureInfo {
                 flags,
                 reserved1: Default::default(),
@@ -844,11 +857,11 @@ impl Dpb {
                 sps_video_parameter_set_id: 0,
                 pps_seq_parameter_set_id: 0,
                 pps_pic_parameter_set_id: 0,
-                short_term_ref_pic_set_idx: 0,
+                short_term_ref_pic_set_idx: 0, // which short term RPS to use (sps with short_term_ref_pic_set_sps_flag or set here if flag not set)
                 PicOrderCntVal: (self.frame_index % self.gop_size) as i32,
                 TemporalId: 0,
-                pShortTermRefPicSet: &short_term_ref_pic_set,
-                pLongTermRefPics: &long_term_ref_pics,
+                pShortTermRefPicSet: null(),
+                pLongTermRefPics: null(),
             };
             let flags = MaybeUninit::zeroed();
             let mut flags: vk::native::StdVideoEncodeH265SliceSegmentHeaderFlags =
@@ -867,7 +880,7 @@ impl Dpb {
                 pWeightTable: null(),
                 slice_segment_address: 0,
                 collocated_ref_idx: 0,
-                MaxNumMergeCand: 0,
+                MaxNumMergeCand: 5,
                 slice_cb_qp_offset: 0,
                 slice_cr_qp_offset: 0,
                 slice_tc_offset_div2: 0,
@@ -901,8 +914,10 @@ impl Dpb {
             };
             let mut h264_reference_info = vk::VideoEncodeH264DpbSlotInfoKHR::default()
                 .std_reference_info(&real_h264_setup_info);
+            let mut flags: vk::native::StdVideoEncodeH265ReferenceInfoFlags = zeroed();
+            //flags.set_unused_for_reference(1);
             let real_h265_setup_info = vk::native::StdVideoEncodeH265ReferenceInfo {
-                flags: zeroed(),
+                flags,
                 pic_type: vk::native::StdVideoH265PictureType_STD_VIDEO_H265_PICTURE_TYPE_P,
                 PicOrderCntVal: if self.frame_index % self.gop_size != 0 {
                     (self.frame_index % self.gop_size) as i32 - 1

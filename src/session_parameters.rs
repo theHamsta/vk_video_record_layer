@@ -7,34 +7,6 @@ use std::io::Write;
 use std::mem::{transmute, MaybeUninit};
 use std::ptr::{null, null_mut};
 
-// TODO: handle vui with valid pointers
-//pub enum CodecParameters {
-//H264Parameters {
-//sps: vk::native::StdVideoH264SequenceParameterSet,
-//pps: vk::native::StdVideoH264PictureParameterSet,
-//},
-//H265Parameters {
-//sps: vk::native::StdVideoH265SequenceParameterSet,
-//pps: vk::native::StdVideoH265PictureParameterSet,
-//vps: vk::native::StdVideoH265VideoParameterSet,
-//},
-//}
-
-//pub struct VideoSessionParameters {
-//parameters: vk::VideoSessionParametersKHR,
-//codec_parameters: CodecParameters,
-//}
-
-//impl VideoSessionParameters {
-//pub fn parameters(&self) -> vk::VideoSessionParametersKHR {
-//self.parameters
-//}
-
-//pub fn codec_parameters(&self) -> &CodecParameters {
-//&self.codec_parameters
-//}
-//}
-
 pub fn make_h264_video_session_parameters(
     device: &ash::Device,
     video_queue_fn: &vk::KhrVideoQueueFn,
@@ -281,11 +253,12 @@ pub fn make_h265_video_session_parameters(
     let flags = MaybeUninit::zeroed();
     let mut flags: vk::native::StdVideoH265VpsFlags = unsafe { flags.assume_init() };
     flags.set_vps_temporal_id_nesting_flag(1);
-    let dec_pic_buf_mgr = vk::native::StdVideoH265DecPicBufMgr {
+    let mut dec_pic_buf_mgr = vk::native::StdVideoH265DecPicBufMgr {
         max_latency_increase_plus1: Default::default(),
         max_dec_pic_buffering_minus1: Default::default(),
         max_num_reorder_pics: Default::default(),
     };
+    dec_pic_buf_mgr.max_dec_pic_buffering_minus1[0] = 1;
     let sub_layer_hdr_parameters = vk::native::StdVideoH265SubLayerHrdParameters {
         bit_rate_value_minus1: Default::default(),
         cpb_size_value_minus1: Default::default(),
@@ -329,20 +302,20 @@ pub fn make_h265_video_session_parameters(
         pProfileTierLevel: &profile_tier_level,
     }];
 
-    let flags: vk::native::StdVideoH265ShortTermRefPicSetFlags =
+    let mut flags: vk::native::StdVideoH265ShortTermRefPicSetFlags =
         unsafe { MaybeUninit::zeroed().assume_init() };
-    let short_term_ref_pics_set = vk::native::StdVideoH265ShortTermRefPicSet {
+    let  short_term_ref_pics_set = vk::native::StdVideoH265ShortTermRefPicSet {
         flags,
         delta_idx_minus1: 0,
         use_delta_flag: 0,
         abs_delta_rps_minus1: 0,
         used_by_curr_pic_flag: 0,
-        used_by_curr_pic_s0_flag: 0,
+        used_by_curr_pic_s0_flag: 1,
         used_by_curr_pic_s1_flag: 0,
         reserved1: 0,
         reserved2: 0,
         reserved3: 0,
-        num_negative_pics: 0,
+        num_negative_pics: 1,
         num_positive_pics: 0,
         delta_poc_s0_minus1: Default::default(),
         delta_poc_s1_minus1: Default::default(),
@@ -373,7 +346,7 @@ pub fn make_h265_video_session_parameters(
         log2_diff_max_min_luma_transform_block_size: 3,
         max_transform_hierarchy_depth_inter: 3,
         max_transform_hierarchy_depth_intra: 3,
-        num_short_term_ref_pic_sets: 0,
+        num_short_term_ref_pic_sets: 1,
         num_long_term_ref_pics_sps: 0,
         pcm_sample_bit_depth_luma_minus1: 0,
         pcm_sample_bit_depth_chroma_minus1: 0,
@@ -401,6 +374,7 @@ pub fn make_h265_video_session_parameters(
     let mut flags: vk::native::StdVideoH265PpsFlags = unsafe { flags.assume_init() };
     flags.set_transform_skip_enabled_flag(1);
     //flags.set_cu_qp_delta_enabled_flag(1);
+    //flags.set_pps_curr_pic_ref_enabled_flag(1);
     flags.set_loop_filter_across_tiles_enabled_flag(1);
     flags.set_deblocking_filter_control_present_flag(1);
     let pps = vec![vk::native::StdVideoH265PictureParameterSet {
