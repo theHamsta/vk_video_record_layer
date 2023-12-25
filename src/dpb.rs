@@ -811,36 +811,6 @@ impl Dpb {
             }
             let mut flags: vk::native::StdVideoH265ShortTermRefPicSetFlags = zeroed();
             flags.set_inter_ref_pic_set_prediction_flag(1);
-            let short_term_ref_pic_set = vk::native::StdVideoH265ShortTermRefPicSet {
-                flags,
-                delta_idx_minus1: 0,
-                use_delta_flag: 0,
-                abs_delta_rps_minus1: 0,
-                used_by_curr_pic_flag: 0,
-                used_by_curr_pic_s0_flag: 0,
-                used_by_curr_pic_s1_flag: 0,
-                reserved1: Default::default(),
-                reserved2: Default::default(),
-                reserved3: Default::default(),
-                num_negative_pics: if self.frame_index % self.gop_size == 0 {
-                    0
-                } else {
-                    1
-                },
-                num_positive_pics: 0,
-                delta_poc_s0_minus1: [0; 16],
-                delta_poc_s1_minus1: [0; 16],
-            };
-
-            let long_term_ref_pics = vk::native::StdVideoEncodeH265LongTermRefPics {
-                num_long_term_sps: 0,
-                num_long_term_pics: 0,
-                lt_idx_sps: [0; 32],
-                poc_lsb_lt: [0; 16],
-                used_by_curr_pic_lt_flag: 0,
-                delta_poc_msb_present_flag: [0; 48],
-                delta_poc_msb_cycle_lt: [0; 48],
-            };
             let flags = MaybeUninit::zeroed();
             let mut flags: vk::native::StdVideoEncodeH265PictureInfoFlags = flags.assume_init();
             if image_type.is_p() {
