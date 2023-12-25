@@ -676,28 +676,29 @@ impl Dpb {
                         .layer_count(1),
                 )
                 .image(image)];
-            if self.frame_index < self.dpb_views.len() as u64 {
-                barriers.push(
-                    vk::ImageMemoryBarrier2::default()
-                        .src_stage_mask(vk::PipelineStageFlags2::NONE)
-                        .dst_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
-                        .src_access_mask(vk::AccessFlags2::NONE)
-                        .dst_access_mask(vk::AccessFlags2::VIDEO_ENCODE_WRITE_KHR)
-                        .old_layout(vk::ImageLayout::UNDEFINED)
-                        .new_layout(vk::ImageLayout::VIDEO_ENCODE_DPB_KHR)
-                        .src_queue_family_index(self.encode_family_index)
-                        .dst_queue_family_index(self.encode_family_index)
-                        .subresource_range(
-                            vk::ImageSubresourceRange::default()
-                                .aspect_mask(vk::ImageAspectFlags::COLOR)
-                                .base_mip_level(0)
-                                .level_count(1)
-                                .base_array_layer(0)
-                                .layer_count(1),
-                        )
-                        .image(self.dpb_images[0]),
-                )
-            }
+            //TODO:
+            //if self.frame_index < self.dpb_views.len() as u64 {
+                //barriers.push(
+                    //vk::ImageMemoryBarrier2::default()
+                        //.src_stage_mask(vk::PipelineStageFlags2::NONE)
+                        //.dst_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
+                        //.src_access_mask(vk::AccessFlags2::NONE)
+                        //.dst_access_mask(vk::AccessFlags2::VIDEO_ENCODE_WRITE_KHR)
+                        //.old_layout(vk::ImageLayout::UNDEFINED)
+                        //.new_layout(vk::ImageLayout::VIDEO_ENCODE_DPB_KHR)
+                        //.src_queue_family_index(self.encode_family_index)
+                        //.dst_queue_family_index(self.encode_family_index)
+                        //.subresource_range(
+                            //vk::ImageSubresourceRange::default()
+                                //.aspect_mask(vk::ImageAspectFlags::COLOR)
+                                //.base_mip_level(0)
+                                //.level_count(1)
+                                //.base_array_layer(0)
+                                //.layer_count(1),
+                        //)
+                        //.image(self.dpb_images[0]),
+                //)
+            //}
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
             device.cmd_pipeline_barrier2(cmd, &info);
 
