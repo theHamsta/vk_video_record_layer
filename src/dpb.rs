@@ -708,7 +708,6 @@ impl Dpb {
             } else {
                 PictureType::P
             };
-            dbg!(self.frame_index);
 
             let info = vk::VideoBeginCodingInfoKHR::default()
                 .video_session(video_session.session())
@@ -780,7 +779,7 @@ impl Dpb {
             let h264_header = vk::native::StdVideoEncodeH264SliceHeader {
                 flags,
                 first_mb_in_slice: 0,
-                slice_type: dbg!(image_type.as_h264_slice_type()),
+                slice_type: image_type.as_h264_slice_type(),
                 cabac_init_idc: 0,
                 disable_deblocking_filter_idc: 0,
                 slice_alpha_c0_offset_div2: 0,
