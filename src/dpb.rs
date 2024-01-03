@@ -658,7 +658,7 @@ impl Dpb {
 
             let image = self.images[self.next_image as usize];
             let image_view = self.views[self.next_image as usize];
-            let mut barriers = vec![vk::ImageMemoryBarrier2::default()
+            let barriers = vec![vk::ImageMemoryBarrier2::default()
                 .src_stage_mask(vk::PipelineStageFlags2::COMPUTE_SHADER)
                 .dst_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
                 .src_access_mask(vk::AccessFlags2::SHADER_WRITE)
@@ -678,26 +678,26 @@ impl Dpb {
                 .image(image)];
             //TODO:
             //if self.frame_index < self.dpb_views.len() as u64 {
-                //barriers.push(
-                    //vk::ImageMemoryBarrier2::default()
-                        //.src_stage_mask(vk::PipelineStageFlags2::NONE)
-                        //.dst_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
-                        //.src_access_mask(vk::AccessFlags2::NONE)
-                        //.dst_access_mask(vk::AccessFlags2::VIDEO_ENCODE_WRITE_KHR)
-                        //.old_layout(vk::ImageLayout::UNDEFINED)
-                        //.new_layout(vk::ImageLayout::VIDEO_ENCODE_DPB_KHR)
-                        //.src_queue_family_index(self.encode_family_index)
-                        //.dst_queue_family_index(self.encode_family_index)
-                        //.subresource_range(
-                            //vk::ImageSubresourceRange::default()
-                                //.aspect_mask(vk::ImageAspectFlags::COLOR)
-                                //.base_mip_level(0)
-                                //.level_count(1)
-                                //.base_array_layer(0)
-                                //.layer_count(1),
-                        //)
-                        //.image(self.dpb_images[0]),
-                //)
+            //barriers.push(
+            //vk::ImageMemoryBarrier2::default()
+            //.src_stage_mask(vk::PipelineStageFlags2::NONE)
+            //.dst_stage_mask(vk::PipelineStageFlags2::VIDEO_ENCODE_KHR)
+            //.src_access_mask(vk::AccessFlags2::NONE)
+            //.dst_access_mask(vk::AccessFlags2::VIDEO_ENCODE_WRITE_KHR)
+            //.old_layout(vk::ImageLayout::UNDEFINED)
+            //.new_layout(vk::ImageLayout::VIDEO_ENCODE_DPB_KHR)
+            //.src_queue_family_index(self.encode_family_index)
+            //.dst_queue_family_index(self.encode_family_index)
+            //.subresource_range(
+            //vk::ImageSubresourceRange::default()
+            //.aspect_mask(vk::ImageAspectFlags::COLOR)
+            //.base_mip_level(0)
+            //.level_count(1)
+            //.base_array_layer(0)
+            //.layer_count(1),
+            //)
+            //.image(self.dpb_images[0]),
+            //)
             //}
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
             device.cmd_pipeline_barrier2(cmd, &info);
@@ -719,15 +719,62 @@ impl Dpb {
             (video_queue_fn.cmd_begin_video_coding_khr)(cmd, &info);
 
             if video_session.needs_reset() {
-                let info = vk::VideoCodingControlInfoKHR::default()
-                    .flags(vk::VideoCodingControlFlagsKHR::RESET);
+                let mut info = vk::VideoCodingControlInfoKHR::default().flags(
+                    vk::VideoCodingControlFlagsKHR::ENCODE_RATE_CONTROL
+                        | vk::VideoCodingControlFlagsKHR::ENCODE_QUALITY_LEVEL
+                        | vk::VideoCodingControlFlagsKHR::RESET,
+                );
+                let mut encode_control_h264 = vk::VideoEncodeH264RateControlInfoKHR::default()
+                    .flags(vk::VideoEncodeH264RateControlFlagsKHR::REGULAR_GOP)
+                    .consecutive_b_frame_count(0)
+                    .temporal_layer_count(1)
+                    .gop_frame_count(self.gop_size as u32)
+                    .idr_period(self.gop_size as u32);
+                let mut encode_control_h265 = vk::VideoEncodeH265RateControlInfoKHR::default()
+                    .flags(vk::VideoEncodeH265RateControlFlagsKHR::REGULAR_GOP)
+                    .consecutive_b_frame_count(0)
+                    .sub_layer_count(1)
+                    .gop_frame_count(self.gop_size as u32)
+                    .idr_period(self.gop_size as u32);
+                let layers = [vk::VideoEncodeRateControlLayerInfoKHR::default()
+                    .average_bitrate(8 * 1024 * 1024)
+                    .max_bitrate(10 * 1024 * 1024)
+                    .frame_rate_numerator(60)
+                    .frame_rate_denominator(1)];
+                let mut h264_layers = [vk::VideoEncodeH264RateControlLayerInfoKHR::default()];
+                let mut h265_layers = [vk::VideoEncodeH265RateControlLayerInfoKHR::default()];
+
+                let layers: Vec<_> = match video_session.codec() {
+                    Codec::H264 => layers
+                        .iter()
+                        .zip(h264_layers.iter_mut())
+                        .map(|(l, l2)| l.push_next(l2))
+                        .collect(),
+                    Codec::H265 => layers
+                        .iter()
+                        .zip(h265_layers.iter_mut())
+                        .map(|(l, l2)| l.push_next(l2))
+                        .collect(),
+                    Codec::AV1 => todo!(),
+                };
+                let mut encode_control = vk::VideoEncodeRateControlInfoKHR::default()
+                    .rate_control_mode(vk::VideoEncodeRateControlModeFlagsKHR::CBR)
+                    .virtual_buffer_size_in_ms(1_000)
+                    .initial_virtual_buffer_size_in_ms(0)
+                    .layers(&layers);
+
+                let mut quality = vk::VideoEncodeQualityLevelInfoKHR::default().quality_level(1);
+                info = info.push_next(&mut encode_control);
+                info = info.push_next(&mut quality);
+                info = match video_session.codec() {
+                    Codec::H264 => info.push_next(&mut encode_control_h264),
+                    Codec::H265 => info.push_next(&mut encode_control_h265),
+                    Codec::AV1 => todo!(),
+                };
                 (video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
                 video_session.set_needs_reset(false);
-                // TODO: rate control
-                //let mut rate_control = vk::VideoEncodeRateControlInfoKHR::default();
-                //let info = vk::VideoCodingControlInfoKHR::default().push_next(&mut rate_control);
-                //(video_queue_fn.cmd_control_video_coding_khr)(cmd, &info);
             }
+
             device.cmd_begin_query(
                 cmd,
                 buffer.query_pool,
@@ -884,7 +931,7 @@ impl Dpb {
             };
             let mut h264_reference_info = vk::VideoEncodeH264DpbSlotInfoKHR::default()
                 .std_reference_info(&real_h264_setup_info);
-            let mut flags: vk::native::StdVideoEncodeH265ReferenceInfoFlags = zeroed();
+            let flags: vk::native::StdVideoEncodeH265ReferenceInfoFlags = zeroed();
             //flags.set_unused_for_reference(1);
             let real_h265_setup_info = vk::native::StdVideoEncodeH265ReferenceInfo {
                 flags,

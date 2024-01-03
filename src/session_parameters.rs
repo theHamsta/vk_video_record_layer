@@ -1,4 +1,5 @@
-use crate::bitstream::{write_h264_pps, write_h264_sps};
+use crate::bitstream::write_h264_pps;
+use crate::bitstream::write_h264_sps;
 use ash::prelude::VkResult;
 use ash::vk;
 use log::{error, info, warn};
@@ -302,9 +303,9 @@ pub fn make_h265_video_session_parameters(
         pProfileTierLevel: &profile_tier_level,
     }];
 
-    let mut flags: vk::native::StdVideoH265ShortTermRefPicSetFlags =
+    let flags: vk::native::StdVideoH265ShortTermRefPicSetFlags =
         unsafe { MaybeUninit::zeroed().assume_init() };
-    let  short_term_ref_pics_set = vk::native::StdVideoH265ShortTermRefPicSet {
+    let short_term_ref_pics_set = vk::native::StdVideoH265ShortTermRefPicSet {
         flags,
         delta_idx_minus1: 0,
         use_delta_flag: 0,
@@ -326,6 +327,14 @@ pub fn make_h265_video_session_parameters(
     };
     let mut flags: vk::native::StdVideoH265SpsFlags =
         unsafe { MaybeUninit::zeroed().assume_init() };
+    let scaling_lists = vk::native::StdVideoH265ScalingLists {
+        ScalingList4x4: [[0u8; 16]; 6],
+        ScalingList8x8: [[0u8; 64]; 6],
+        ScalingList16x16: [[0u8; 64]; 6],
+        ScalingList32x32: [[0u8; 64]; 2],
+        ScalingListDCCoef16x16: [0u8; 6],
+        ScalingListDCCoef32x32: [0u8; 2],
+    };
     flags.set_amp_enabled_flag(1);
     flags.set_sample_adaptive_offset_enabled_flag(1);
     let sps = vec![vk::native::StdVideoH265SequenceParameterSet {
@@ -364,7 +373,7 @@ pub fn make_h265_video_session_parameters(
         conf_win_bottom_offset: (32 - coded_extent.height % 32) / 2,
         pProfileTierLevel: &profile_tier_level,
         pDecPicBufMgr: &dec_pic_buf_mgr,
-        pScalingLists: null(),
+        pScalingLists: &scaling_lists,
         pShortTermRefPicSet: &short_term_ref_pics_set,
         pLongTermRefPicsSps: &long_term_ref_pics_sps,
         pSequenceParameterSetVui: null(),
@@ -377,6 +386,7 @@ pub fn make_h265_video_session_parameters(
     //flags.set_pps_curr_pic_ref_enabled_flag(1);
     flags.set_loop_filter_across_tiles_enabled_flag(1);
     flags.set_deblocking_filter_control_present_flag(1);
+    flags.set_pps_scaling_list_data_present_flag(0);
     let pps = vec![vk::native::StdVideoH265PictureParameterSet {
         flags,
         pps_pic_parameter_set_id: 0,
