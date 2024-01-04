@@ -46,7 +46,7 @@ pub extern "system" fn record_vk_create_instance(
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
                 let create_info = *p_create_info.as_mut().unwrap();
                 let app_info = (*(*p_create_info).p_application_info)
-                    .api_version(vk::make_api_version(0, 1, 3, 271));
+                    .api_version(vk::make_api_version(0, 1, 3, 274));
 
                 *state.application_name.write().unwrap() = if app_info.p_application_name.is_null()
                 {
