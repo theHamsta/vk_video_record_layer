@@ -44,9 +44,14 @@ pub extern "system" fn record_vk_create_instance(
                 };
 
                 layer_info.u.pLayerInfo = (*layer_info.u.pLayerInfo).pNext.cast();
+                if p_create_info.is_null() || (*p_create_info).p_application_info.is_null() {
+                    return vk::Result::ERROR_INITIALIZATION_FAILED;
+                }
                 let create_info = *p_create_info.as_mut().unwrap();
-                let app_info = (*(*p_create_info).p_application_info)
-                    .api_version(vk::make_api_version(0, 1, 3, 274));
+                let app_info = (*(*p_create_info).p_application_info).api_version(
+                    vk::make_api_version(0, 1, 3, 274)
+                        .max((*(*p_create_info).p_application_info).api_version),
+                );
 
                 *state.application_name.write().unwrap() = if app_info.p_application_name.is_null()
                 {
