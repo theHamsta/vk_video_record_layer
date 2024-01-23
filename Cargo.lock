@@ -329,21 +329,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-<<<<<<< HEAD
-version = "1.0.76"
-||||||| parent of 74bd750 (Cargo update)
-version = "1.0.70"
-=======
 version = "1.0.78"
->>>>>>> 74bd750 (Cargo update)
 source = "registry+https://github.com/rust-lang/crates.io-index"
-<<<<<<< HEAD
-checksum = "95fc56cda0b5c3325f5fbbd7ff9fda9e02bb00bb3dac51252d2f1bfa1cb8cc8c"
-||||||| parent of 74bd750 (Cargo update)
-checksum = "39278fbbf5fb4f646ce651690877f89d1c5811a3d4acb27700c1cb3cdb78fd3b"
-=======
 checksum = "e2422ad645d89c99f8f3e6b88a9fdeca7fabeac836b1002371c4367c8f984aae"
->>>>>>> 74bd750 (Cargo update)
 dependencies = [
  "unicode-ident",
 ]
