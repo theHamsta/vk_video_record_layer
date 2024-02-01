@@ -508,6 +508,7 @@ fn create_video_session<'video_session>(
 
     let profile = VideoProfile::new(video_format, state.settings.codec, is_encode)?;
     let info = vk::VideoSessionCreateInfoKHR::default()
+        .flags(unsafe { transmute(2) }) // VK_VIDEO_SESSION_CREATE_ALLOW_ENCODE_PARAMETER_OPTIMIZATIONS_BIT_KHR
         .queue_family_index(queue_family_idx)
         .max_coded_extent(max_coded_extent)
         .picture_format(vk::Format::G8_B8R8_2PLANE_420_UNORM)
