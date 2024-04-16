@@ -1,3 +1,4 @@
+use ash::khr;
 use chrono::offset::Utc;
 use chrono::DateTime;
 use std::ffi::CStr;
@@ -51,7 +52,7 @@ impl VideoSession<'_> {
     fn destroy(
         &mut self,
         device: &ash::Device,
-        video_queue_fn: &vk::KhrVideoQueueFn,
+        video_queue_fn: &khr::video_queue::DeviceFn,
         allocator: Option<&vk::AllocationCallbacks>,
     ) {
         unsafe {
@@ -100,7 +101,7 @@ impl SwapChainData<'_> {
     pub fn destroy(
         &mut self,
         device: &ash::Device,
-        video_queue_fn: &vk::KhrVideoQueueFn,
+        video_queue_fn: &khr::video_queue::DeviceFn,
         allocator: Option<&vk::AllocationCallbacks>,
     ) {
         if let Ok(views) = self.image_views.as_mut() {
@@ -377,7 +378,7 @@ pub unsafe fn record_vk_create_swapchain(
 
 fn get_swapchain_images(
     device: &ash::Device,
-    swapchain_fn: &vk::KhrSwapchainFn,
+    swapchain_fn: &khr::swapchain::DeviceFn,
     swapchain: vk::SwapchainKHR,
 ) -> VkResult<Vec<vk::Image>> {
     unsafe {

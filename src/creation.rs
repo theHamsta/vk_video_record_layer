@@ -5,6 +5,9 @@ use crate::state::get_state;
 use crate::vk_layer;
 use crate::vk_layer::VkLayerFunction;
 use crate::vulkan_utils::ptr_chain_get_next;
+#[cfg(debug_assertions)]
+use ash::ext;
+use ash::khr;
 use log::{debug, error, info};
 use std::collections::HashSet;
 use std::{ffi::CStr, mem::transmute};
@@ -65,7 +68,7 @@ pub extern "system" fn record_vk_create_instance(
                 };
                 let mut extensions = vec![
                     #[cfg(debug_assertions)]
-                    ash::extensions::ext::DebugUtils::NAME.as_ptr(),
+                    ash::ext::debug_utils::NAME.as_ptr(),
                 ];
                 for i in 0..create_info.enabled_extension_count {
                     debug!(
@@ -84,7 +87,7 @@ pub extern "system" fn record_vk_create_instance(
                 let res = real_create_instance(&create_info, p_allocator, p_instance);
                 if res == vk::Result::SUCCESS {
                     *state.instance.write().unwrap() = Some(ash::Instance::load(
-                        &vk::StaticFn {
+                        &ash::StaticFn {
                             get_instance_proc_addr: transmute(get_instance_proc_addr),
                         },
                         p_instance.as_ref().copied().unwrap(),
@@ -144,13 +147,13 @@ pub extern "system" fn record_vk_create_device(
                 let real_create_device: vk::PFN_vkCreateDevice = transmute(real_create_device);
 
                 const REQUIRED_EXTENSIONS: [&CStr; 7] = [
-                    vk::KhrVideoQueueFn::NAME,
-                    vk::KhrVideoDecodeQueueFn::NAME,
-                    vk::KhrVideoEncodeQueueFn::NAME,
-                    vk::KhrVideoDecodeH264Fn::NAME,
-                    vk::KhrVideoDecodeH265Fn::NAME,
-                    vk::KhrVideoEncodeH264Fn::NAME,
-                    vk::KhrVideoEncodeH265Fn::NAME,
+                    ash::khr::video_queue::NAME,
+                    ash::khr::video_decode_queue::NAME,
+                    ash::khr::video_encode_queue::NAME,
+                    ash::khr::video_decode_h264::NAME,
+                    ash::khr::video_decode_h265::NAME,
+                    ash::khr::video_encode_h264::NAME,
+                    ash::khr::video_encode_h265::NAME,
                 ];
 
                 let mut create_info = *p_create_info.cast_mut().as_mut().unwrap();
@@ -317,7 +320,7 @@ pub extern "system" fn record_vk_create_device(
                     let device = *p_device;
 
                     let device = ash::Device::load(
-                        &vk::InstanceFnV1_0 {
+                        &ash::InstanceFnV1_0 {
                             get_device_proc_addr: transmute(get_device_proc_addr),
                             destroy_instance: transmute(1u64), // Rust function pointer must be
                             // non-null :shrug:
@@ -344,7 +347,7 @@ pub extern "system" fn record_vk_create_device(
                     *state.physical_device.write().unwrap() = Some(physical_device);
 
                     // Load extensions
-                    let swapchain_fn = vk::KhrSwapchainFn::load(|name| {
+                    let swapchain_fn = ash::khr::swapchain::DeviceFn::load(|name| {
                         transmute((get_device_proc_addr.unwrap())(
                             device.handle(),
                             name.as_ptr() as *const _,
@@ -353,7 +356,7 @@ pub extern "system" fn record_vk_create_device(
                     let mut extensions = state.extensions.write().unwrap();
                     extensions.set_swapchain_fn(Some(swapchain_fn));
 
-                    let video_queue_fn = vk::KhrVideoQueueFn::load(|name| {
+                    let video_queue_fn = ash::khr::video_queue::DeviceFn::load(|name| {
                         transmute((get_device_proc_addr.unwrap())(
                             device.handle(),
                             name.as_ptr() as *const _,
@@ -361,7 +364,7 @@ pub extern "system" fn record_vk_create_device(
                     });
                     extensions.set_video_queue_fn(Some(video_queue_fn));
 
-                    let video_encode_queue_fn = vk::KhrVideoEncodeQueueFn::load(|name| {
+                    let video_encode_queue_fn = khr::video_encode_queue::DeviceFn::load(|name| {
                         transmute((get_device_proc_addr.unwrap())(
                             device.handle(),
                             name.as_ptr() as *const _,
@@ -371,7 +374,7 @@ pub extern "system" fn record_vk_create_device(
 
                     #[cfg(debug_assertions)]
                     {
-                        let debug_utils_fn = vk::ExtDebugUtilsFn::load(|name| {
+                        let debug_utils_fn = ext::debug_utils::DeviceFn::load(|name| {
                             transmute((get_instance_proc_addr.unwrap())(
                                 transmute(instance.handle()),
                                 name.as_ptr() as *const _,

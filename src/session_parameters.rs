@@ -1,5 +1,6 @@
 use crate::bitstream::write_h264_pps;
 use crate::bitstream::write_h264_sps;
+use ash::khr;
 use ash::prelude::VkResult;
 use ash::vk;
 use log::{error, info, warn};
@@ -10,8 +11,8 @@ use std::ptr::{null, null_mut};
 
 pub fn make_h264_video_session_parameters(
     device: &ash::Device,
-    video_queue_fn: &vk::KhrVideoQueueFn,
-    encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
+    video_queue_fn: &khr::video_queue::DeviceFn,
+    encode_queue_fn: &khr::video_encode_queue::DeviceFn,
     video_session: vk::VideoSessionKHR,
     format: vk::Format,
     extent: vk::Extent2D,
@@ -199,8 +200,8 @@ pub fn make_h264_video_session_parameters(
 
 pub fn make_h265_video_session_parameters(
     device: &ash::Device,
-    video_queue_fn: &vk::KhrVideoQueueFn,
-    encode_queue_fn: &vk::KhrVideoEncodeQueueFn,
+    video_queue_fn: &khr::video_queue::DeviceFn,
+    encode_queue_fn: &khr::video_encode_queue::DeviceFn,
     video_session: vk::VideoSessionKHR,
     format: vk::Format,
     coded_extent: vk::Extent2D,

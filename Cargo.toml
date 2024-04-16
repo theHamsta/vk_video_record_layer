@@ -11,8 +11,8 @@ bench = false
 
 [dependencies]
 anyhow = "1.0.71"
-ash = { git = "https://github.com/ash-rs/ash/", branch = "update" }
-#ash = { git = "https://github.com/ash-rs/ash/", branch = "master" }
+#ash = { git = "https://github.com/ash-rs/ash/", branch = "update" }
+ash = "0.38.0"
 bitstream-io = "2.2.0"
 chrono = "0.4.26"
 dirs = "5.0.0"
