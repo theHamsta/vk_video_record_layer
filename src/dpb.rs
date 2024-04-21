@@ -52,11 +52,11 @@ pub struct Dpb {
     bitstream_buffers: VkResult<BitstreamBufferRing>,
     frame_index: u64,
     gop_size: u64,
-    nvpro_gop: VkVideoGopStructure,
+    nvpro_gop: Option<VkVideoGopStructure>,
 }
 
 #[derive(Debug, Copy, Clone)]
-enum PictureType {
+pub enum PictureType {
     Idr,
     #[allow(dead_code)]
     I,
@@ -139,6 +139,14 @@ impl PictureType {
     }
 }
 
+pub struct GopOptions {
+    pub use_nvpro: bool,
+    pub gop_size: u64,
+    pub idr_period: u64,
+    pub max_consecutive_b_frames: u64,
+    pub last_frame_type: PictureType,
+}
+
 impl Dpb {
     pub fn new(
         // src_queue_family_index
@@ -155,7 +163,7 @@ impl Dpb {
         compute_family_index: u32,
         video_session: &VideoSession,
         physical_memory_props: &vk::PhysicalDeviceMemoryProperties,
-        gop_size: u64,
+        gop_options: GopOptions,
     ) -> VkResult<Self> {
         unsafe {
             let mut images = Vec::new();
@@ -439,13 +447,31 @@ impl Dpb {
             );
             let coded_extent = vk::Extent2D { width, height };
 
-            let nvpro_gop = VkVideoGopStructure::new(
-                16,
-                16,
-                2,
-                1,
-                crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_P,
-            );
+            let nvpro_gop = gop_options.use_nvpro.then(|| {
+                VkVideoGopStructure::new(
+                    gop_options.gop_size.try_into().unwrap_or(16),
+                    gop_options.idr_period.try_into().unwrap_or(16),
+                    gop_options
+                        .max_consecutive_b_frames
+                        .try_into()
+                        .unwrap_or(16),
+                    1,
+                    match gop_options.last_frame_type {
+                        PictureType::Idr => {
+                            crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_IDR
+                        }
+                        PictureType::I => {
+                            crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_I
+                        }
+                        PictureType::P => {
+                            crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_P
+                        }
+                        PictureType::B => {
+                            crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_B
+                        }
+                    },
+                )
+            });
             let mut rtn = Self {
                 next_image: 0,
                 frame_index: 0,
@@ -471,7 +497,7 @@ impl Dpb {
                 compute_semaphore,
                 encode_semaphore,
                 bitstream_buffers,
-                gop_size,
+                gop_size: gop_options.gop_size,
                 sets: Default::default(),
                 nvpro_gop,
             };

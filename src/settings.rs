@@ -3,6 +3,8 @@ use std::{fmt::Display, path::PathBuf};
 use log::{debug, error, info};
 use regex::Regex;
 
+use crate::dpb::PictureType;
+
 #[derive(Debug, Eq, PartialEq, Default, Copy, Clone)]
 pub enum Codec {
     #[default]
@@ -10,11 +12,31 @@ pub enum Codec {
     H265,
     AV1,
 }
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Clone)]
 pub struct Settings {
     pub codec: Codec,
     pub output_folder: PathBuf,
+    pub use_nvpro: bool,
+    pub gop_size: u64,
+    pub idr_period: u64,
+    pub max_consecutive_b_frames: u64,
+    pub last_frame_type: PictureType,
 }
+
+impl Default for Settings {
+    fn default() -> Self {
+        Settings {
+            codec: Codec::default(),
+            output_folder: "".into(),
+            use_nvpro: false,
+            gop_size: 16,
+            idr_period: 16,
+            max_consecutive_b_frames: 0,
+            last_frame_type: PictureType::P,
+        }
+    }
+}
+
 impl Settings {
     pub(crate) fn new_from_env() -> Self {
         let mut settings = Settings::default();
@@ -34,6 +56,13 @@ impl Settings {
                         match &cap[1] {
                             "video_output_folder" => settings.output_folder = cap[2].into(),
                             "codec" => settings.codec = cap[2].into(),
+                            "use_nvpro" => settings.use_nvpro = cap[2].parse().unwrap_or(false),
+                            "gop_size" => settings.gop_size = cap[2].parse().unwrap_or(16),
+                            "idr_period" => settings.gop_size = cap[2].parse().unwrap_or(16),
+                            "last_frame_type" => settings.last_frame_type = cap[2].into(),
+                            "max_consecutive_b_frames" => {
+                                settings.max_consecutive_b_frames = cap[2].parse().unwrap_or(16)
+                            }
                             _ => error!("Could not parse unknown key {}", &cap[1]),
                         }
                     }
@@ -69,6 +98,28 @@ where
                     Codec::default()
                 );
                 Codec::default()
+            }
+        }
+    }
+}
+
+impl<T> From<T> for PictureType
+where
+    T: AsRef<str> + Display,
+{
+    fn from(value: T) -> Self {
+        match value.as_ref() {
+            "I" => PictureType::I,
+            "IDR" => PictureType::Idr,
+            "P" => PictureType::P,
+            "B" => PictureType::B,
+            _ => {
+                error!(
+                    "Could not parse value \"{}\" for VK_VIDEO_RECORD_CODEC! Falling back to {:?}",
+                    value,
+                    PictureType::P
+                );
+                PictureType::P
             }
         }
     }

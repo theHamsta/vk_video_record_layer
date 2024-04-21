@@ -11,7 +11,7 @@ use ash::prelude::VkResult;
 use ash::vk;
 use log::{debug, error, info, trace, warn};
 
-use crate::dpb::Dpb;
+use crate::dpb::{Dpb, GopOptions};
 use crate::profile::VideoProfile;
 use crate::session_parameters::{
     make_h264_video_session_parameters, make_h265_video_session_parameters,
@@ -303,7 +303,6 @@ pub unsafe fn record_vk_create_swapchain(
             let swapchain_format = create_info.image_format;
             let num_dpb_images = 2;
             let num_inflight_images = 10;
-            let gop_size = 16;
             let mut dpb = encode_session.as_ref().map_err(|e| *e).and_then(|s| {
                 Dpb::new(
                     device,
@@ -319,7 +318,13 @@ pub unsafe fn record_vk_create_swapchain(
                     *get_state().compute_queue_family_idx.read().unwrap(),
                     s,
                     &physical_memory_props,
-                    gop_size,
+                    GopOptions {
+                        use_nvpro: get_state().settings.use_nvpro,
+                        gop_size: get_state().settings.gop_size,
+                        idr_period: get_state().settings.idr_period,
+                        max_consecutive_b_frames: get_state().settings.max_consecutive_b_frames,
+                        last_frame_type: get_state().settings.last_frame_type,
+                    },
                 )
             });
             let present_family_idx = *get_state().graphics_queue_family_idx.read().unwrap();
