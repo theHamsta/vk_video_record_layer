@@ -3,6 +3,7 @@ mod buffer_queue;
 mod cmd_buffer_queue;
 mod creation;
 mod dpb;
+mod gop_gen;
 mod profile;
 mod session_parameters;
 mod settings;

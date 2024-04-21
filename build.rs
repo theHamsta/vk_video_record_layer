@@ -74,5 +74,13 @@ pub fn main() -> anyhow::Result<()> {
         }
     }
 
+    println!("cargo:rerun-if-changed=src/VkVideoGopStructure.cpp");
+    println!("cargo:rerun-if-changed=src/VkVideoGopStructure.h");
+    cc::Build::new()
+        .file("src/VkVideoGopStructure.cpp")
+        .cpp(true)
+        .include("src")
+        .compile("vkvideogop");
+
     Ok(())
 }

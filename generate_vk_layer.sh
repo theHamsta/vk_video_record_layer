@@ -18,6 +18,17 @@ bindgen \
 
   sed -i 's/extern "C"/extern "system"/g' src/vk_layer.rs
 
-echo "#![allow(warnings)]" > src/vk_beta.rs
+echo "#![allow(warnings)]" > src/gop_gen.rs
+
+bindgen \
+  --default-enum-style=rust \
+  --with-derive-default \
+  --with-derive-eq \
+  --with-derive-hash \
+  --with-derive-ord \
+  --allowlist-type VkVideoGopStructure \
+  src/VkVideoGopStructure.h \
+  -- -x c++ \
+  >> src/gop_gen.rs
 
 cargo fmt

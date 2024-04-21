@@ -66,6 +66,135 @@
 						}
 					],
 					"default": "H264"
+				},
+				{
+					"key": "use_nvpro",
+					"env": "VK_VIDEO_RECORD_CODEC",
+					"label": "Use NVPRO GOP structure",
+					"description": "",
+					"type": "BOOL",
+					"default": true,
+					"settings": [
+						{
+							"key": "gop_frame_count",
+							"label": "GOP frame count",
+							"description": "",
+							"type": "INT",
+							"default": 16,
+							"range": {
+								"min": 1,
+								"max": 255
+							},
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "use_nvpro",
+										"value": true
+									}
+								]
+							}
+						},
+						{
+							"key": "idr_period",
+							"label": "IDR period",
+							"description": "",
+							"type": "INT",
+							"default": 16,
+							"range": {
+								"min": 1,
+								"max": 255
+							},
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "use_nvpro",
+										"value": true
+									}
+								]
+							}
+						},
+						{
+							"key": "consecutive_b_frames",
+							"label": "Consecutive B frames",
+							"description": "",
+							"type": "INT",
+							"default": 2,
+							"range": {
+								"min": 0,
+								"max": 255
+							},
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "use_nvpro",
+										"value": true
+									}
+								]
+							}
+						},
+						{
+							"key": "temporal_layer_count",
+							"label": "Temporal layer count",
+							"description": "",
+							"type": "INT",
+							"default": 1,
+							"range": {
+								"min": 1,
+								"max": 1
+							},
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "use_nvpro",
+										"value": true
+									}
+								]
+							}
+						}
+						,
+						{
+							"key": "last_frame_type",
+							"label": "Last frame type",
+							"description": "",
+							"type": "ENUM",
+							"flags": [
+								{
+									"key": "I",
+									"label": "I",
+									"description": "I"
+								},
+								{
+									"key": "IDR",
+									"label": "IDR",
+									"description": "IDR"
+								},
+								{
+									"key": "P",
+									"label": "P",
+									"description": "P"
+								},
+								{
+									"key": "B",
+									"label": "B",
+									"description": "B"
+								}
+							],
+							"default": "P",
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "use_nvpro",
+										"value": true
+									}
+								]
+							}
+						}
+					]
 				}
 			]
 		}

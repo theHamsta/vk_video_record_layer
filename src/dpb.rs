@@ -1,6 +1,9 @@
 #[cfg(debug_assertions)]
 use crate::vulkan_utils::name_object;
-use crate::{shader::ComputePipelineDescriptor, vulkan_utils::find_memorytype_index};
+use crate::{
+    gop_gen::VkVideoGopStructure, shader::ComputePipelineDescriptor,
+    vulkan_utils::find_memorytype_index,
+};
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use itertools::Itertools;
@@ -11,6 +14,7 @@ use std::{
     mem::{transmute, zeroed, MaybeUninit},
     ptr::null,
 };
+//use crate::gop::ffi::VkVideoGopStructure;
 
 use crate::{
     buffer_queue::{BitstreamBufferRing, BufferPair},
@@ -48,6 +52,7 @@ pub struct Dpb {
     bitstream_buffers: VkResult<BitstreamBufferRing>,
     frame_index: u64,
     gop_size: u64,
+    nvpro_gop: VkVideoGopStructure,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -434,6 +439,13 @@ impl Dpb {
             );
             let coded_extent = vk::Extent2D { width, height };
 
+            let nvpro_gop = VkVideoGopStructure::new(
+                16,
+                16,
+                2,
+                1,
+                crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_P,
+            );
             let mut rtn = Self {
                 next_image: 0,
                 frame_index: 0,
@@ -461,6 +473,7 @@ impl Dpb {
                 bitstream_buffers,
                 gop_size,
                 sets: Default::default(),
+                nvpro_gop,
             };
 
             if res == vk::Result::SUCCESS {
