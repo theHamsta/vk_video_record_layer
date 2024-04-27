@@ -138,7 +138,7 @@
 							"label": "Average bitrate",
 							"description": "",
 							"type": "INT",
-							"default": 83886080,
+							"default": 8388608,
 							"dependence": {
 								"mode": "ALL",
 								"settings": [
