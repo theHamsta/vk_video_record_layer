@@ -14,7 +14,6 @@ use std::{
     mem::{transmute, zeroed, MaybeUninit},
     ptr::null,
 };
-//use crate::gop::ffi::VkVideoGopStructure;
 
 use crate::{
     buffer_queue::{BitstreamBufferRing, BufferPair},
@@ -24,6 +23,45 @@ use crate::{
     state::Extensions,
     video_session::VideoSession,
 };
+
+pub struct CbrOptions {
+    pub max_bitrate: u64,
+    pub average_bitrate: u64,
+    pub frame_rate_numerator: u32,
+    pub frame_rate_denominator: u32,
+}
+
+#[non_exhaustive]
+pub enum RateControlKind {
+    Cbr(CbrOptions),
+}
+
+impl RateControlKind {
+    pub fn as_cbr(&self) -> Option<&CbrOptions> {
+        #[allow(irrefutable_let_patterns)]
+        if let Self::Cbr(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    /// Returns `true` if the rate control kind is [`Cbr`].
+    ///
+    /// [`Cbr`]: RateControlKind::Cbr
+    #[must_use]
+    #[allow(dead_code)]
+    pub fn is_cbr(&self) -> bool {
+        matches!(self, Self::Cbr(..))
+    }
+}
+
+pub struct RateControlOptions {
+    pub kind: RateControlKind,
+    pub virtual_buffer_size_in_ms: u32,
+    pub initial_virtual_buffer_size_in_ms: u32,
+    pub quality_level: u32,
+}
 
 pub struct Dpb {
     extent: vk::Extent2D,
@@ -53,6 +91,7 @@ pub struct Dpb {
     frame_index: u64,
     gop_size: u64,
     nvpro_gop: Option<VkVideoGopStructure>,
+    rate_control_options: RateControlOptions,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -164,6 +203,7 @@ impl Dpb {
         video_session: &VideoSession,
         physical_memory_props: &vk::PhysicalDeviceMemoryProperties,
         gop_options: GopOptions,
+        rate_control_options: RateControlOptions,
     ) -> VkResult<Self> {
         unsafe {
             let mut images = Vec::new();
@@ -500,6 +540,7 @@ impl Dpb {
                 gop_size: gop_options.gop_size,
                 sets: Default::default(),
                 nvpro_gop,
+                rate_control_options,
             };
 
             if res == vk::Result::SUCCESS {
@@ -763,23 +804,60 @@ impl Dpb {
                         | vk::VideoCodingControlFlagsKHR::ENCODE_QUALITY_LEVEL
                         | vk::VideoCodingControlFlagsKHR::RESET,
                 );
+                let consecutive_b_frame_count = self
+                    .nvpro_gop
+                    .as_ref()
+                    .map(|gop| gop.m_consecutiveBFrameCount as u32)
+                    .unwrap_or(0u32);
+                debug_assert_eq!(
+                    self.nvpro_gop
+                        .as_ref()
+                        .map(|gop| gop.m_temporalLayerCount)
+                        .unwrap_or(1),
+                    1
+                );
+
                 let mut encode_control_h264 = vk::VideoEncodeH264RateControlInfoKHR::default()
                     .flags(vk::VideoEncodeH264RateControlFlagsKHR::REGULAR_GOP)
-                    .consecutive_b_frame_count(0)
+                    .consecutive_b_frame_count(consecutive_b_frame_count)
                     .temporal_layer_count(1)
                     .gop_frame_count(self.gop_size as u32)
                     .idr_period(self.gop_size as u32);
                 let mut encode_control_h265 = vk::VideoEncodeH265RateControlInfoKHR::default()
                     .flags(vk::VideoEncodeH265RateControlFlagsKHR::REGULAR_GOP)
-                    .consecutive_b_frame_count(0)
+                    .consecutive_b_frame_count(consecutive_b_frame_count)
                     .sub_layer_count(1)
                     .gop_frame_count(self.gop_size as u32)
                     .idr_period(self.gop_size as u32);
+                let average_bitrate = self
+                    .rate_control_options
+                    .kind
+                    .as_cbr()
+                    .map(|cbr| cbr.average_bitrate)
+                    .unwrap_or(0);
+                let max_bitrate = self
+                    .rate_control_options
+                    .kind
+                    .as_cbr()
+                    .map(|cbr| cbr.max_bitrate)
+                    .unwrap_or(0);
                 let layers = [vk::VideoEncodeRateControlLayerInfoKHR::default()
-                    .average_bitrate(8 * 1024 * 1024)
-                    .max_bitrate(10 * 1024 * 1024)
-                    .frame_rate_numerator(60)
-                    .frame_rate_denominator(1)];
+                    .average_bitrate(average_bitrate)
+                    .max_bitrate(max_bitrate)
+                    .frame_rate_numerator(
+                        self.rate_control_options
+                            .kind
+                            .as_cbr()
+                            .map(|cbr| cbr.frame_rate_numerator)
+                            .unwrap_or(60),
+                    )
+                    .frame_rate_denominator(
+                        self.rate_control_options
+                            .kind
+                            .as_cbr()
+                            .map(|cbr| cbr.frame_rate_denominator)
+                            .unwrap_or(1),
+                    )];
                 let mut h264_layers = [vk::VideoEncodeH264RateControlLayerInfoKHR::default()];
                 let mut h265_layers = [vk::VideoEncodeH265RateControlLayerInfoKHR::default()];
 
@@ -798,11 +876,14 @@ impl Dpb {
                 };
                 let mut encode_control = vk::VideoEncodeRateControlInfoKHR::default()
                     .rate_control_mode(vk::VideoEncodeRateControlModeFlagsKHR::CBR)
-                    .virtual_buffer_size_in_ms(1_000)
-                    .initial_virtual_buffer_size_in_ms(0)
+                    .virtual_buffer_size_in_ms(self.rate_control_options.virtual_buffer_size_in_ms)
+                    .initial_virtual_buffer_size_in_ms(
+                        self.rate_control_options.initial_virtual_buffer_size_in_ms,
+                    )
                     .layers(&layers);
 
-                let mut quality = vk::VideoEncodeQualityLevelInfoKHR::default().quality_level(1);
+                let mut quality = vk::VideoEncodeQualityLevelInfoKHR::default()
+                    .quality_level(self.rate_control_options.quality_level);
                 info = info.push_next(&mut encode_control);
                 info = info.push_next(&mut quality);
                 info = match video_session.codec() {

@@ -12,6 +12,13 @@ pub enum Codec {
     H265,
     AV1,
 }
+
+#[derive(Debug, Eq, PartialEq, Default, Copy, Clone)]
+pub enum RateControlMode {
+    #[default]
+    Cbr,
+}
+
 #[derive(Debug, Clone)]
 pub struct Settings {
     pub codec: Codec,
@@ -21,6 +28,14 @@ pub struct Settings {
     pub idr_period: u64,
     pub max_consecutive_b_frames: u64,
     pub last_frame_type: PictureType,
+    pub max_bitrate: u64,
+    pub average_bitrate: u64,
+    pub rate_control_mode: RateControlMode,
+    pub frame_rate_numerator: u32,
+    pub frame_rate_denominator: u32,
+    pub vbv_size_in_ms: u32,
+    pub initial_vbv_size_in_ms: u32,
+    pub quality_level: u32,
 }
 
 impl Default for Settings {
@@ -33,6 +48,14 @@ impl Default for Settings {
             idr_period: 16,
             max_consecutive_b_frames: 0,
             last_frame_type: PictureType::P,
+            initial_vbv_size_in_ms: 0,
+            vbv_size_in_ms: 1000,
+            max_bitrate: 10 * 1024 * 1024,
+            average_bitrate: 8 * 1024 * 1024,
+            rate_control_mode: RateControlMode::Cbr,
+            frame_rate_numerator: 60,
+            frame_rate_denominator: 1,
+            quality_level: 1,
         }
     }
 }
@@ -56,6 +79,7 @@ impl Settings {
                         match &cap[1] {
                             "video_output_folder" => settings.output_folder = cap[2].into(),
                             "codec" => settings.codec = cap[2].into(),
+                            "rate_control_mode" => settings.rate_control_mode = cap[2].into(),
                             "use_nvpro" => settings.use_nvpro = cap[2].parse().unwrap_or(false),
                             "gop_size" => settings.gop_size = cap[2].parse().unwrap_or(16),
                             "idr_period" => settings.gop_size = cap[2].parse().unwrap_or(16),
@@ -63,6 +87,26 @@ impl Settings {
                             "max_consecutive_b_frames" => {
                                 settings.max_consecutive_b_frames = cap[2].parse().unwrap_or(16)
                             }
+                            "frame_rate_numerator" => {
+                                settings.frame_rate_numerator = cap[2].parse().unwrap_or(60)
+                            }
+                            "frame_rate_denominator" => {
+                                settings.frame_rate_denominator = cap[2].parse().unwrap_or(1)
+                            }
+                            "average_bitrate" => {
+                                settings.average_bitrate = cap[2].parse().unwrap_or(8 * 1024 * 1024)
+                            }
+                            "max_bitrate" => {
+                                settings.max_bitrate = cap[2].parse().unwrap_or(8 * 1024 * 1024)
+                            }
+                            "vbv_size_in_ms" => {
+                                settings.vbv_size_in_ms = cap[2].parse().unwrap_or(8 * 1024 * 1024)
+                            }
+                            "initial_vbv_size_in_ms" => {
+                                settings.initial_vbv_size_in_ms =
+                                    cap[2].parse().unwrap_or(8 * 1024 * 1024)
+                            }
+                            "quality_level" => settings.quality_level = cap[2].parse().unwrap_or(1),
                             _ => error!("Could not parse unknown key {}", &cap[1]),
                         }
                     }
@@ -98,6 +142,25 @@ where
                     Codec::default()
                 );
                 Codec::default()
+            }
+        }
+    }
+}
+
+impl<T> From<T> for RateControlMode
+where
+    T: AsRef<str> + Display,
+{
+    fn from(value: T) -> Self {
+        match value.as_ref() {
+            "CBR" => RateControlMode::Cbr,
+            _ => {
+                error!(
+                    "Could not parse value \"{}\" for rate control mode! Falling back to {:?}",
+                    value,
+                    RateControlMode::default()
+                );
+                RateControlMode::default()
             }
         }
     }

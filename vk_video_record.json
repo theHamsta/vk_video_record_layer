@@ -68,6 +68,138 @@
 					"default": "H264"
 				},
 				{
+					"key": "rate_control_mode",
+					"label": "Rate control mode",
+					"description": "",
+					"type": "ENUM",
+					"flags": [
+						{
+							"key": "CBR",
+							"label": "CBR",
+							"description": "Constant bitrate"
+						}
+					],
+					"default": "CBR",
+					"settings": [
+						{
+							"key": "quality_level",
+							"label": "Quality level",
+							"description": "",
+							"type": "INT",
+							"default": 1,
+							"range": {
+								"min": 0,
+								"max": 7
+							},
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "rate_control_mode",
+										"value": "CBR"
+									}
+								]
+							}
+						},
+						{
+							"key": "vbv_size_in_ms",
+							"label": "Virtual buffer size in ms",
+							"description": "",
+							"type": "INT",
+							"default": 1000,
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "rate_control_mode",
+										"value": "CBR"
+									}
+								]
+							}
+						},
+						{
+							"key": "initial_vbv_size_in_ms",
+							"label": "Initial virtual buffer size in ms",
+							"description": "",
+							"type": "INT",
+							"default": 0,
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "rate_control_mode",
+										"value": "CBR"
+									}
+								]
+							}
+						},
+						{
+							"key": "average_bitrate",
+							"label": "Average bitrate",
+							"description": "",
+							"type": "INT",
+							"default": 83886080,
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "rate_control_mode",
+										"value": "CBR"
+									}
+								]
+							}
+						},
+						{
+							"key": "max_bitrate",
+							"label": "Maximum bitrate",
+							"description": "",
+							"type": "INT",
+							"default": 10485760,
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "rate_control_mode",
+										"value": "CBR"
+									}
+								]
+							}
+						},
+						{
+							"key": "framerate_numerator",
+							"label": "Frame rate numerator",
+							"description": "",
+							"type": "INT",
+							"default": 60,
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "rate_control_mode",
+										"value": "CBR"
+									}
+								]
+							}
+						},
+						{
+							"key": "framerate_denominator",
+							"label": "Frame rate denominator",
+							"description": "",
+							"type": "INT",
+							"default": 1,
+							"dependence": {
+								"mode": "ALL",
+								"settings": [
+									{
+										"key": "rate_control_mode",
+										"value": "CBR"
+									}
+								]
+							}
+						}
+					]
+				},
+				{
 					"key": "use_nvpro",
 					"env": "VK_VIDEO_RECORD_CODEC",
 					"label": "Use NVPRO GOP structure",
@@ -76,7 +208,7 @@
 					"default": true,
 					"settings": [
 						{
-							"key": "gop_frame_count",
+							"key": "gop_size",
 							"label": "GOP frame count",
 							"description": "",
 							"type": "INT",
@@ -116,8 +248,8 @@
 							}
 						},
 						{
-							"key": "consecutive_b_frames",
-							"label": "Consecutive B frames",
+							"key": "max_consecutive_b_frames",
+							"label": "Max consecutive B frames",
 							"description": "",
 							"type": "INT",
 							"default": 2,

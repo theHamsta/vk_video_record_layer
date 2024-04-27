@@ -11,7 +11,7 @@ use ash::prelude::VkResult;
 use ash::vk;
 use log::{debug, error, info, trace, warn};
 
-use crate::dpb::{Dpb, GopOptions};
+use crate::dpb::{CbrOptions, Dpb, GopOptions, RateControlKind, RateControlOptions};
 use crate::profile::VideoProfile;
 use crate::session_parameters::{
     make_h264_video_session_parameters, make_h265_video_session_parameters,
@@ -324,6 +324,21 @@ pub unsafe fn record_vk_create_swapchain(
                         idr_period: get_state().settings.idr_period,
                         max_consecutive_b_frames: get_state().settings.max_consecutive_b_frames,
                         last_frame_type: get_state().settings.last_frame_type,
+                    },
+                    RateControlOptions {
+                        kind: RateControlKind::Cbr(CbrOptions {
+                            max_bitrate: get_state().settings.max_bitrate,
+                            average_bitrate: get_state().settings.average_bitrate,
+                            frame_rate_numerator: get_state().settings.frame_rate_numerator,
+                            frame_rate_denominator: get_state().settings.frame_rate_denominator,
+                        }),
+                        virtual_buffer_size_in_ms: get_state().settings.vbv_size_in_ms,
+                        initial_virtual_buffer_size_in_ms: get_state()
+                            .settings
+                            .initial_vbv_size_in_ms,
+                        quality_level: get_state()
+                            .settings
+                            .quality_level,
                     },
                 )
             });
