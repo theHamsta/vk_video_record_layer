@@ -114,40 +114,11 @@ public:
 
 
     uint8_t GetPositionInGOP(uint8_t& positionInGopInDisplayOrder, FrameType& frameType,
-                             bool firstFrame = false, bool lastFrame = false) const {
+                             bool firstFrame = false, bool lastFrame = false) const;
+    uint8_t GetFrameDecodeOrderPosition(uint64_t frameNumInDisplayOrder, bool useGopFrameCountPeriod = false) const;
+    uint64_t GetFrameInDecodeOrder(uint64_t frameNumInDisplayOrder) const;
 
-        frameType = GetFrameType(positionInGopInDisplayOrder, firstFrame, lastFrame);
-        if (frameType >= FRAME_TYPE_IDR) {
-            positionInGopInDisplayOrder = 1; // next frame
-            return 0;
-        }
-
-        uint8_t currentPositionInGop = positionInGopInDisplayOrder++;
-
-        return currentPositionInGop % m_idrPeriod;
-    }
-
-    uint8_t GetFrameDecodeOrderPosition(uint64_t frameNumInDisplayOrder, bool useGopFrameCountPeriod = false) const {
-
-        uint8_t positionInGopInDecodeOrder = m_decodeOrderMap[frameNumInDisplayOrder % m_gopFrameCount].decodeOrder;
-        if (useGopFrameCountPeriod) {
-            return positionInGopInDecodeOrder;
-        }
-        uint8_t gopIndex = uint8_t(frameNumInDisplayOrder / m_idrPeriod);
-        uint8_t baseDecodeOrder = gopIndex * m_idrPeriod;
-        return baseDecodeOrder + positionInGopInDecodeOrder;
-    }
-
-    uint64_t GetFrameInDecodeOrder(uint64_t frameNumInDisplayOrder) const {
-            uint8_t positionInGOP = GetFrameDecodeOrderPosition(frameNumInDisplayOrder);
-            uint64_t gopIndex = frameNumInDisplayOrder / m_gopFrameCount;
-            uint64_t baseDecodeOrder = gopIndex * m_gopFrameCount;
-            return baseDecodeOrder + positionInGOP;
-    }
-
-    bool IsFrameReference(uint64_t frameNumInDisplayOrder) const {
-        return (m_decodeOrderMap[frameNumInDisplayOrder % m_gopFrameCount].isReference == 1);
-    }
+    bool IsFrameReference(uint64_t frameNumInDisplayOrder) const;
 
     virtual void DumpFrameGopStructure(uint64_t frameNumInInputOrder,
                                        bool firstFrame = false, bool lastFrame = false) const;
@@ -168,10 +139,10 @@ private:
     std::vector<GopEntry> m_decodeOrderMap;
 };
 
-	//auto new_gop_structure(int8_t gopFrameCount ,
-                        //int8_t idrPeriod ,
-                        //int8_t consecutiveBFrameCount ,
-                        //int8_t temporalLayerCount ,
-                        //VkVideoGopStructure::FrameType lastFrameType) -> std::unique_ptr<VkVideoGopStructure> {
-//}
+auto VkVideoGopStructure_new(int8_t gopFrameCount ,
+                             int8_t idrPeriod ,
+                             int8_t consecutiveBFrameCount ,
+                             int8_t temporalLayerCount ,
+                             VkVideoGopStructure::FrameType lastFrameType) -> VkVideoGopStructure*;
+auto VkVideoGopStructure_destroy(VkVideoGopStructure* gop_struct) -> void;
 #endif /* _VKVIDEOENCODER_VKVIDEOGOPSTRUCTURE_H_ */

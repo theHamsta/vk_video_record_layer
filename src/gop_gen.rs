@@ -1552,6 +1552,20 @@ extern "C" {
     #[link_name = "\u{1}_ZN19VkVideoGopStructure21ComputeDecodeOrderMapEv"]
     pub fn VkVideoGopStructure_ComputeDecodeOrderMap(this: *mut ::std::os::raw::c_void);
 }
+extern "C" {
+    #[link_name = "\u{1}_Z23VkVideoGopStructure_newaaaaN19VkVideoGopStructure9FrameTypeE"]
+    pub fn VkVideoGopStructure_new(
+        gopFrameCount: i8,
+        idrPeriod: i8,
+        consecutiveBFrameCount: i8,
+        temporalLayerCount: i8,
+        lastFrameType: VkVideoGopStructure_FrameType,
+    ) -> *mut VkVideoGopStructure;
+}
+extern "C" {
+    #[link_name = "\u{1}_Z27VkVideoGopStructure_destroyP19VkVideoGopStructure"]
+    pub fn VkVideoGopStructure_destroy(gop_struct: *mut VkVideoGopStructure);
+}
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct _bindgen_ty_2 {

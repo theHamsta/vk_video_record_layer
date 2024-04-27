@@ -1,7 +1,10 @@
 #[cfg(debug_assertions)]
 use crate::vulkan_utils::name_object;
 use crate::{
-    gop_gen::{VkVideoGopStructure, VkVideoGopStructure_GetFrameType},
+    gop_gen::{
+        VkVideoGopStructure, VkVideoGopStructure_GetFrameType, VkVideoGopStructure_destroy,
+        VkVideoGopStructure_new,
+    },
     shader::ComputePipelineDescriptor,
     vulkan_utils::find_memorytype_index,
 };
@@ -48,6 +51,15 @@ impl RateControlKind {
         }
     }
 
+    pub fn as_cbr_mut(&mut self) -> Option<&mut CbrOptions> {
+        #[allow(irrefutable_let_patterns)]
+        if let Self::Cbr(v) = self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
     /// Returns `true` if the rate control kind is [`Cbr`].
     ///
     /// [`Cbr`]: RateControlKind::Cbr
@@ -65,7 +77,7 @@ pub struct RateControlOptions {
     pub quality_level: u32,
 }
 
-pub struct Dpb {
+pub struct Dpb<'dpb> {
     extent: vk::Extent2D,
     coded_extent: vk::Extent2D,
     dpb_images: Vec<vk::Image>,
@@ -92,7 +104,7 @@ pub struct Dpb {
     bitstream_buffers: VkResult<BitstreamBufferRing>,
     frame_index: u64,
     gop_size: u64,
-    nvpro_gop: Option<VkVideoGopStructure>,
+    nvpro_gop: Option<&'dpb mut VkVideoGopStructure>,
     rate_control_options: RateControlOptions,
 }
 
@@ -188,7 +200,7 @@ pub struct GopOptions {
     pub last_frame_type: PictureType,
 }
 
-impl Dpb {
+impl Dpb<'_> {
     pub fn new(
         // src_queue_family_index
         device: &ash::Device,
@@ -497,7 +509,7 @@ impl Dpb {
             let coded_extent = vk::Extent2D { width, height };
 
             let nvpro_gop = gop_options.use_nvpro.then(|| {
-                let mut rtn = VkVideoGopStructure::new(
+                let rtn = VkVideoGopStructure_new(
                     gop_options.gop_size.try_into().unwrap_or(16),
                     gop_options.idr_period.try_into().unwrap_or(16),
                     gop_options
@@ -521,6 +533,9 @@ impl Dpb {
                     },
                 );
 
+                let rtn = rtn
+                    .as_mut()
+                    .expect("Failed to allocate VkVideoGopStructure");
                 rtn.Init();
                 rtn
             });
@@ -794,11 +809,11 @@ impl Dpb {
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
             device.cmd_pipeline_barrier2(cmd, &info);
 
-            let image_type = if let Some(gop) = &mut self.nvpro_gop {
+            let image_type = if let Some(gop) = self.nvpro_gop.as_mut() {
                 let first_frame = self.frame_index == 0;
                 let last_frame = false;
                 let pic_type = VkVideoGopStructure_GetFrameType(
-                    gop as *mut VkVideoGopStructure as *mut c_void,
+                    *gop as *mut VkVideoGopStructure as *mut c_void,
                     self.frame_index,
                     first_frame,
                     last_frame,
@@ -1297,6 +1312,9 @@ impl Dpb {
             }
             device.destroy_semaphore(self.compute_semaphore, allocator);
             device.destroy_semaphore(self.encode_semaphore, allocator);
+            if let Some(gop) = self.nvpro_gop.as_mut() {
+                VkVideoGopStructure_destroy(*gop as *mut VkVideoGopStructure);
+            }
         }
     }
     // TODO: DropBomb?

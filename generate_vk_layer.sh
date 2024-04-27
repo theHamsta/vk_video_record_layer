@@ -28,6 +28,8 @@ bindgen \
   --with-derive-ord \
   --generate-inline-functions \
   --allowlist-type VkVideoGopStructure \
+  --allowlist-function VkVideoGopStructure_new \
+  --allowlist-function VkVideoGopStructure_destroy \
   src/VkVideoGopStructure.h \
   -- -x c++ -fkeep-inline-functions \
   >> src/gop_gen.rs

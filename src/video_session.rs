@@ -84,7 +84,7 @@ impl VideoSession<'_> {
 }
 
 struct SwapChainData<'a> {
-    dpb: VkResult<Dpb>,
+    dpb: VkResult<Dpb<'a>>,
     _video_max_extent: vk::Extent2D,
     _swapchain_format: vk::Format,
     //swapchain_color_space: vk::ColorSpace,
