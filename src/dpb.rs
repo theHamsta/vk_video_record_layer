@@ -205,9 +205,16 @@ impl Dpb {
         video_session: &VideoSession,
         physical_memory_props: &vk::PhysicalDeviceMemoryProperties,
         gop_options: GopOptions,
-        rate_control_options: RateControlOptions,
+        mut rate_control_options: RateControlOptions,
     ) -> VkResult<Self> {
         unsafe {
+            if let Some(cbr) = rate_control_options.kind.as_cbr_mut() {
+                if cbr.max_bitrate < cbr.average_bitrate {
+                    error!("Invalid settings detected! max_bitrate={} < average_bitrate={}. Setting max_bitrate=average_bitrate", cbr.max_bitrate, cbr.average_bitrate);
+                    cbr.max_bitrate = cbr.average_bitrate;
+                }
+            }
+
             let mut images = Vec::new();
             let mut dpb_images = Vec::new();
             let mut dpb_views = Vec::new();
