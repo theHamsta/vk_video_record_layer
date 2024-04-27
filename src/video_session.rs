@@ -336,9 +336,7 @@ pub unsafe fn record_vk_create_swapchain(
                         initial_virtual_buffer_size_in_ms: get_state()
                             .settings
                             .initial_vbv_size_in_ms,
-                        quality_level: get_state()
-                            .settings
-                            .quality_level,
+                        quality_level: get_state().settings.quality_level,
                     },
                 )
             });

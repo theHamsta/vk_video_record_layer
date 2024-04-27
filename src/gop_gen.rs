@@ -81,6 +81,136 @@ where
         }
     }
 }
+#[repr(C)]
+pub struct __BindgenUnionField<T>(::std::marker::PhantomData<T>);
+impl<T> __BindgenUnionField<T> {
+    #[inline]
+    pub const fn new() -> Self {
+        __BindgenUnionField(::std::marker::PhantomData)
+    }
+    #[inline]
+    pub unsafe fn as_ref(&self) -> &T {
+        ::std::mem::transmute(self)
+    }
+    #[inline]
+    pub unsafe fn as_mut(&mut self) -> &mut T {
+        ::std::mem::transmute(self)
+    }
+}
+impl<T> ::std::default::Default for __BindgenUnionField<T> {
+    #[inline]
+    fn default() -> Self {
+        Self::new()
+    }
+}
+impl<T> ::std::clone::Clone for __BindgenUnionField<T> {
+    #[inline]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+impl<T> ::std::marker::Copy for __BindgenUnionField<T> {}
+impl<T> ::std::fmt::Debug for __BindgenUnionField<T> {
+    fn fmt(&self, fmt: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        fmt.write_str("__BindgenUnionField")
+    }
+}
+impl<T> ::std::hash::Hash for __BindgenUnionField<T> {
+    fn hash<H: ::std::hash::Hasher>(&self, _state: &mut H) {}
+}
+impl<T> ::std::cmp::PartialEq for __BindgenUnionField<T> {
+    fn eq(&self, _other: &__BindgenUnionField<T>) -> bool {
+        true
+    }
+}
+impl<T> ::std::cmp::Eq for __BindgenUnionField<T> {}
+#[repr(C)]
+pub struct std_basic_string<_CharT> {
+    pub _M_dataplus: std_basic_string__Alloc_hider,
+    pub _M_string_length: std_basic_string_size_type,
+    pub __bindgen_anon_1: std_basic_string__bindgen_ty_2<_CharT>,
+    pub _phantom_0: ::std::marker::PhantomData<::std::cell::UnsafeCell<_CharT>>,
+}
+pub type std_basic_string__Char_alloc_type = [u8; 0usize];
+pub type std_basic_string__Alloc_traits = __gnu_cxx___alloc_traits;
+pub type std_basic_string_traits_type<_Traits> = _Traits;
+pub type std_basic_string_value_type = [u8; 0usize];
+pub type std_basic_string_allocator_type = std_basic_string__Char_alloc_type;
+pub type std_basic_string_size_type = [u8; 0usize];
+pub type std_basic_string_difference_type = [u8; 0usize];
+pub type std_basic_string_reference = [u8; 0usize];
+pub type std_basic_string_const_reference = [u8; 0usize];
+pub type std_basic_string_pointer = [u8; 0usize];
+pub type std_basic_string_const_pointer = [u8; 0usize];
+pub type std_basic_string_iterator = __gnu_cxx___normal_iterator<std_basic_string_pointer>;
+pub type std_basic_string_const_iterator =
+    __gnu_cxx___normal_iterator<std_basic_string_const_pointer>;
+pub type std_basic_string_const_reverse_iterator =
+    std_reverse_iterator<std_basic_string_const_iterator>;
+pub type std_basic_string_reverse_iterator = std_reverse_iterator<std_basic_string_iterator>;
+pub type std_basic_string___const_iterator = std_basic_string_const_iterator;
+pub type std_basic_string___sv_type<_CharT> = std_basic_string_view<_CharT>;
+pub type std_basic_string__If_sv = std_enable_if_t;
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct std_basic_string___sv_wrapper<_CharT> {
+    pub _M_sv: std_basic_string___sv_type<_CharT>,
+    pub _phantom_0: ::std::marker::PhantomData<::std::cell::UnsafeCell<_CharT>>,
+}
+impl<_CharT> Default for std_basic_string___sv_wrapper<_CharT> {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+pub struct std_basic_string__Alloc_hider {
+    pub _M_p: std_basic_string_pointer,
+}
+impl Default for std_basic_string__Alloc_hider {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+pub const std_basic_string__S_local_capacity: std_basic_string__bindgen_ty_1 =
+    std_basic_string__bindgen_ty_1::_S_local_capacity;
+#[repr(i32)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub enum std_basic_string__bindgen_ty_1 {
+    _S_local_capacity = 0,
+}
+#[repr(C)]
+pub struct std_basic_string__bindgen_ty_2<_CharT> {
+    pub _M_local_buf: __BindgenUnionField<*mut _CharT>,
+    pub _M_allocated_capacity: __BindgenUnionField<std_basic_string_size_type>,
+    pub bindgen_union_field: u64,
+    pub _phantom_0: ::std::marker::PhantomData<::std::cell::UnsafeCell<_CharT>>,
+}
+impl<_CharT> Default for std_basic_string__bindgen_ty_2<_CharT> {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+impl<_CharT> Default for std_basic_string<_CharT> {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
 pub type std_integral_constant_value_type<_Tp> = _Tp;
 pub type std_integral_constant_type = u8;
 pub type std_true_type = u8;
@@ -103,6 +233,7 @@ pub struct std_make_unsigned {
     pub _address: u8,
 }
 pub type std_make_unsigned_type = u8;
+pub type std_enable_if_t = u8;
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct std___detector {
@@ -202,6 +333,38 @@ pub type std_reverse_iterator_pointer = std_reverse_iterator___traits_type;
 pub type std_reverse_iterator_difference_type = std_reverse_iterator___traits_type;
 pub type std_reverse_iterator_reference = std_reverse_iterator___traits_type;
 impl<_Iterator> Default for std_reverse_iterator<_Iterator> {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+pub type std_streamoff = ::std::os::raw::c_long;
+#[repr(C)]
+#[derive(Debug, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct std_fpos<_StateT> {
+    pub _M_off: std_streamoff,
+    pub _M_state: _StateT,
+    pub _phantom_0: ::std::marker::PhantomData<::std::cell::UnsafeCell<_StateT>>,
+}
+impl<_StateT> Default for std_fpos<_StateT> {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+pub type std_streampos = std_fpos<__mbstate_t>;
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct std_char_traits {
+    pub _address: u8,
+}
+impl Default for std_char_traits {
     fn default() -> Self {
         let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
         unsafe {
@@ -351,7 +514,137 @@ pub struct std_allocator_traits___construct_helper {
 }
 pub type std_allocator_traits___construct_helper_type<_Alloc> = _Alloc;
 pub type std_allocator_traits___has_construct = std_allocator_traits___construct_helper;
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct std_basic_string_view<_CharT> {
+    pub _M_len: usize,
+    pub _M_str: *const _CharT,
+    pub _phantom_0: ::std::marker::PhantomData<::std::cell::UnsafeCell<_CharT>>,
+}
+pub type std_basic_string_view_traits_type<_Traits> = _Traits;
+pub type std_basic_string_view_value_type<_CharT> = _CharT;
+pub type std_basic_string_view_pointer<_CharT> = *mut std_basic_string_view_value_type<_CharT>;
+pub type std_basic_string_view_const_pointer<_CharT> =
+    *const std_basic_string_view_value_type<_CharT>;
+pub type std_basic_string_view_reference<_CharT> = *mut std_basic_string_view_value_type<_CharT>;
+pub type std_basic_string_view_const_reference<_CharT> =
+    *const std_basic_string_view_value_type<_CharT>;
+pub type std_basic_string_view_const_iterator<_CharT> =
+    *const std_basic_string_view_value_type<_CharT>;
+pub type std_basic_string_view_iterator<_CharT> = std_basic_string_view_const_iterator<_CharT>;
+pub type std_basic_string_view_const_reverse_iterator<_CharT> =
+    std_reverse_iterator<std_basic_string_view_const_iterator<_CharT>>;
+pub type std_basic_string_view_reverse_iterator<_CharT> =
+    std_basic_string_view_const_reverse_iterator<_CharT>;
+pub type std_basic_string_view_size_type = usize;
+pub type std_basic_string_view_difference_type = isize;
+impl<_CharT> Default for std_basic_string_view<_CharT> {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
 pub type std__Base_bitset__WordT = ::std::os::raw::c_ulong;
+extern "C" {
+    #[link_name = "\u{1}_S_whichword"]
+    pub fn std__Base_bitset__S_whichword(__pos: usize) -> usize;
+}
+extern "C" {
+    #[link_name = "\u{1}_S_whichbyte"]
+    pub fn std__Base_bitset__S_whichbyte(__pos: usize) -> usize;
+}
+extern "C" {
+    #[link_name = "\u{1}_S_whichbit"]
+    pub fn std__Base_bitset__S_whichbit(__pos: usize) -> usize;
+}
+extern "C" {
+    #[link_name = "\u{1}_S_maskbit"]
+    pub fn std__Base_bitset__S_maskbit(__pos: usize) -> std__Base_bitset__WordT;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_getword"]
+    pub fn std__Base_bitset__M_getword(this: *mut u8, __pos: usize)
+        -> *mut std__Base_bitset__WordT;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_getword"]
+    pub fn std__Base_bitset__M_getword1(this: *const u8, __pos: usize) -> std__Base_bitset__WordT;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_getdata"]
+    pub fn std__Base_bitset__M_getdata(this: *const u8) -> *const std__Base_bitset__WordT;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_hiword"]
+    pub fn std__Base_bitset__M_hiword(this: *mut u8) -> *mut std__Base_bitset__WordT;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_hiword"]
+    pub fn std__Base_bitset__M_hiword1(this: *const u8) -> std__Base_bitset__WordT;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_and"]
+    pub fn std__Base_bitset__M_do_and(this: *mut u8, __x: *mut u8);
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_or"]
+    pub fn std__Base_bitset__M_do_or(this: *mut u8, __x: *mut u8);
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_xor"]
+    pub fn std__Base_bitset__M_do_xor(this: *mut u8, __x: *mut u8);
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_left_shift"]
+    pub fn std__Base_bitset__M_do_left_shift(this: *mut u8, __shift: usize);
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_right_shift"]
+    pub fn std__Base_bitset__M_do_right_shift(this: *mut u8, __shift: usize);
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_flip"]
+    pub fn std__Base_bitset__M_do_flip(this: *mut u8);
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_set"]
+    pub fn std__Base_bitset__M_do_set(this: *mut u8);
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_reset"]
+    pub fn std__Base_bitset__M_do_reset(this: *mut u8);
+}
+extern "C" {
+    #[link_name = "\u{1}_M_is_equal"]
+    pub fn std__Base_bitset__M_is_equal(this: *const u8, __x: *mut u8) -> bool;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_is_any"]
+    pub fn std__Base_bitset__M_is_any(this: *const u8) -> bool;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_count"]
+    pub fn std__Base_bitset__M_do_count(this: *const u8) -> usize;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_to_ulong"]
+    pub fn std__Base_bitset__M_do_to_ulong(this: *const u8) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_to_ullong"]
+    pub fn std__Base_bitset__M_do_to_ullong(this: *const u8) -> ::std::os::raw::c_ulonglong;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_find_first"]
+    pub fn std__Base_bitset__M_do_find_first(this: *const u8, arg1: usize) -> usize;
+}
+extern "C" {
+    #[link_name = "\u{1}_M_do_find_next"]
+    pub fn std__Base_bitset__M_do_find_next(this: *const u8, arg1: usize, arg2: usize) -> usize;
+}
 pub type std_bitset__Base = u8;
 pub type std_bitset__WordT = ::std::os::raw::c_ulong;
 #[repr(C)]
@@ -359,6 +652,29 @@ pub type std_bitset__WordT = ::std::os::raw::c_ulong;
 pub struct std_bitset_reference {
     pub _M_wp: *mut std_bitset__WordT,
     pub _M_bpos: usize,
+}
+extern "C" {
+    #[link_name = "\u{1}flip"]
+    pub fn std_bitset_reference_flip(this: *mut std_bitset_reference) -> *mut std_bitset_reference;
+}
+extern "C" {
+    #[link_name = "\u{1}reference"]
+    pub fn std_bitset_reference_reference(
+        this: *mut std_bitset_reference,
+        __b: *mut u8,
+        __pos: usize,
+    );
+}
+extern "C" {
+    #[link_name = "\u{1}reference"]
+    pub fn std_bitset_reference_reference1(
+        this: *mut std_bitset_reference,
+        arg1: *const std_bitset_reference,
+    );
+}
+extern "C" {
+    #[link_name = "\u{1}reference_destructor"]
+    pub fn std_bitset_reference_reference_destructor(this: *mut std_bitset_reference);
 }
 impl Default for std_bitset_reference {
     fn default() -> Self {
@@ -368,6 +684,128 @@ impl Default for std_bitset_reference {
             s.assume_init()
         }
     }
+}
+impl std_bitset_reference {
+    #[inline]
+    pub unsafe fn flip(&mut self) -> *mut std_bitset_reference {
+        std_bitset_reference_flip(self)
+    }
+    #[inline]
+    pub unsafe fn new(__b: *mut u8, __pos: usize) -> Self {
+        let mut __bindgen_tmp = ::std::mem::MaybeUninit::uninit();
+        std_bitset_reference_reference(__bindgen_tmp.as_mut_ptr(), __b, __pos);
+        __bindgen_tmp.assume_init()
+    }
+    #[inline]
+    pub unsafe fn new1(arg1: *const std_bitset_reference) -> Self {
+        let mut __bindgen_tmp = ::std::mem::MaybeUninit::uninit();
+        std_bitset_reference_reference1(__bindgen_tmp.as_mut_ptr(), arg1);
+        __bindgen_tmp.assume_init()
+    }
+    #[inline]
+    pub unsafe fn destruct(&mut self) {
+        std_bitset_reference_reference_destructor(self)
+    }
+}
+extern "C" {
+    #[link_name = "\u{1}_Unchecked_set"]
+    pub fn std_bitset__Unchecked_set(this: *mut u8, __pos: usize) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}_Unchecked_set"]
+    pub fn std_bitset__Unchecked_set1(
+        this: *mut u8,
+        __pos: usize,
+        __val: ::std::os::raw::c_int,
+    ) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}_Unchecked_reset"]
+    pub fn std_bitset__Unchecked_reset(this: *mut u8, __pos: usize) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}_Unchecked_flip"]
+    pub fn std_bitset__Unchecked_flip(this: *mut u8, __pos: usize) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}_Unchecked_test"]
+    pub fn std_bitset__Unchecked_test(this: *const u8, __pos: usize) -> bool;
+}
+extern "C" {
+    #[link_name = "\u{1}set"]
+    pub fn std_bitset_set(this: *mut u8) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}set"]
+    pub fn std_bitset_set1(this: *mut u8, __position: usize, __val: bool) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}reset"]
+    pub fn std_bitset_reset(this: *mut u8) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}reset"]
+    pub fn std_bitset_reset1(this: *mut u8, __position: usize) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}flip"]
+    pub fn std_bitset_flip(this: *mut u8) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}flip"]
+    pub fn std_bitset_flip1(this: *mut u8, __position: usize) -> *mut u8;
+}
+extern "C" {
+    #[link_name = "\u{1}to_ulong"]
+    pub fn std_bitset_to_ulong(this: *const u8) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    #[link_name = "\u{1}to_ullong"]
+    pub fn std_bitset_to_ullong(this: *const u8) -> ::std::os::raw::c_ulonglong;
+}
+extern "C" {
+    #[link_name = "\u{1}to_string"]
+    pub fn std_bitset_to_string(this: *const u8) -> std_basic_string<::std::os::raw::c_char>;
+}
+extern "C" {
+    #[link_name = "\u{1}to_string"]
+    pub fn std_bitset_to_string1(
+        this: *const u8,
+        __zero: ::std::os::raw::c_char,
+        __one: ::std::os::raw::c_char,
+    ) -> std_basic_string<::std::os::raw::c_char>;
+}
+extern "C" {
+    #[link_name = "\u{1}count"]
+    pub fn std_bitset_count(this: *const u8) -> usize;
+}
+extern "C" {
+    #[link_name = "\u{1}size"]
+    pub fn std_bitset_size(this: *const u8) -> usize;
+}
+extern "C" {
+    #[link_name = "\u{1}test"]
+    pub fn std_bitset_test(this: *const u8, __position: usize) -> bool;
+}
+extern "C" {
+    #[link_name = "\u{1}all"]
+    pub fn std_bitset_all(this: *const u8) -> bool;
+}
+extern "C" {
+    #[link_name = "\u{1}any"]
+    pub fn std_bitset_any(this: *const u8) -> bool;
+}
+extern "C" {
+    #[link_name = "\u{1}none"]
+    pub fn std_bitset_none(this: *const u8) -> bool;
+}
+extern "C" {
+    #[link_name = "\u{1}_Find_first"]
+    pub fn std_bitset__Find_first(this: *const u8) -> usize;
+}
+extern "C" {
+    #[link_name = "\u{1}_Find_next"]
+    pub fn std_bitset__Find_next(this: *const u8, __prev: usize) -> usize;
 }
 #[repr(C)]
 pub struct std__Vector_base {
@@ -500,6 +938,25 @@ impl<_Iterator> Default for __gnu_cxx___normal_iterator<_Iterator> {
     }
 }
 #[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct __gnu_cxx__Char_types {
+    pub _address: u8,
+}
+pub type __gnu_cxx__Char_types_int_type = ::std::os::raw::c_ulong;
+pub type __gnu_cxx__Char_types_pos_type = std_streampos;
+pub type __gnu_cxx__Char_types_off_type = std_streamoff;
+pub type __gnu_cxx__Char_types_state_type = __mbstate_t;
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct __gnu_cxx_char_traits {
+    pub _address: u8,
+}
+pub type __gnu_cxx_char_traits_char_type<_CharT> = _CharT;
+pub type __gnu_cxx_char_traits_int_type = __gnu_cxx__Char_types;
+pub type __gnu_cxx_char_traits_pos_type = __gnu_cxx__Char_types;
+pub type __gnu_cxx_char_traits_off_type = __gnu_cxx__Char_types;
+pub type __gnu_cxx_char_traits_state_type = __gnu_cxx__Char_types;
+#[repr(C)]
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct __gnu_cxx___alloc_traits {
     pub _address: u8,
@@ -521,6 +978,107 @@ pub struct __gnu_cxx___alloc_traits_rebind {
 }
 pub type __gnu_cxx___alloc_traits_rebind_other = __gnu_cxx___alloc_traits__Base_type;
 impl Default for __gnu_cxx___alloc_traits {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct __mbstate_t {
+    pub __count: ::std::os::raw::c_int,
+    pub __value: __mbstate_t__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union __mbstate_t__bindgen_ty_1 {
+    pub __wch: ::std::os::raw::c_uint,
+    pub __wchb: [::std::os::raw::c_char; 4usize],
+}
+#[test]
+fn bindgen_test_layout___mbstate_t__bindgen_ty_1() {
+    const UNINIT: ::std::mem::MaybeUninit<__mbstate_t__bindgen_ty_1> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<__mbstate_t__bindgen_ty_1>(),
+        4usize,
+        concat!("Size of: ", stringify!(__mbstate_t__bindgen_ty_1))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__mbstate_t__bindgen_ty_1>(),
+        4usize,
+        concat!("Alignment of ", stringify!(__mbstate_t__bindgen_ty_1))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).__wch) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__mbstate_t__bindgen_ty_1),
+            "::",
+            stringify!(__wch)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).__wchb) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__mbstate_t__bindgen_ty_1),
+            "::",
+            stringify!(__wchb)
+        )
+    );
+}
+impl Default for __mbstate_t__bindgen_ty_1 {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[test]
+fn bindgen_test_layout___mbstate_t() {
+    const UNINIT: ::std::mem::MaybeUninit<__mbstate_t> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<__mbstate_t>(),
+        8usize,
+        concat!("Size of: ", stringify!(__mbstate_t))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__mbstate_t>(),
+        4usize,
+        concat!("Alignment of ", stringify!(__mbstate_t))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).__count) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__mbstate_t),
+            "::",
+            stringify!(__count)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).__value) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__mbstate_t),
+            "::",
+            stringify!(__value)
+        )
+    );
+}
+impl Default for __mbstate_t {
     fn default() -> Self {
         let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
         unsafe {
@@ -728,6 +1286,89 @@ extern "C" {
     pub fn VkVideoGopStructure_Init(this: *mut VkVideoGopStructure) -> bool;
 }
 extern "C" {
+    #[link_name = "\u{1}_ZN19VkVideoGopStructure16GetFrameTypeNameENS_9FrameTypeE"]
+    pub fn VkVideoGopStructure_GetFrameTypeName(
+        frameType: VkVideoGopStructure_FrameType,
+    ) -> *const ::std::os::raw::c_char;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZN19VkVideoGopStructure16SetGopFrameCountEa"]
+    pub fn VkVideoGopStructure_SetGopFrameCount(this: *mut VkVideoGopStructure, gopFrameCount: i8);
+}
+extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure16GetGopFrameCountEv"]
+    pub fn VkVideoGopStructure_GetGopFrameCount(this: *const VkVideoGopStructure) -> i8;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZN19VkVideoGopStructure12SetIdrPeriodEa"]
+    pub fn VkVideoGopStructure_SetIdrPeriod(this: *mut VkVideoGopStructure, idrPeriod: i8);
+}
+extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure12GetIdrPeriodEv"]
+    pub fn VkVideoGopStructure_GetIdrPeriod(this: *const VkVideoGopStructure) -> i8;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZN19VkVideoGopStructure25SetConsecutiveBFrameCountEa"]
+    pub fn VkVideoGopStructure_SetConsecutiveBFrameCount(
+        this: *mut VkVideoGopStructure,
+        consecutiveBFrameCount: i8,
+    );
+}
+extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure25GetConsecutiveBFrameCountEv"]
+    pub fn VkVideoGopStructure_GetConsecutiveBFrameCount(this: *const VkVideoGopStructure) -> i8;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZN19VkVideoGopStructure21SetTemporalLayerCountEa"]
+    pub fn VkVideoGopStructure_SetTemporalLayerCount(
+        this: *mut VkVideoGopStructure,
+        temporalLayerCount: i8,
+    );
+}
+extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure21GetTemporalLayerCountEv"]
+    pub fn VkVideoGopStructure_GetTemporalLayerCount(this: *const VkVideoGopStructure) -> i8;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZN19VkVideoGopStructure16SetLastFrameTypeENS_9FrameTypeE"]
+    pub fn VkVideoGopStructure_SetLastFrameType(
+        this: *mut VkVideoGopStructure,
+        lastFrameType: VkVideoGopStructure_FrameType,
+    ) -> bool;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure16GetPositionInGOPERhRNS_9FrameTypeEbb"]
+    pub fn VkVideoGopStructure_GetPositionInGOP(
+        this: *const VkVideoGopStructure,
+        positionInGopInDisplayOrder: *mut u8,
+        frameType: *mut VkVideoGopStructure_FrameType,
+        firstFrame: bool,
+        lastFrame: bool,
+    ) -> u8;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure27GetFrameDecodeOrderPositionEmb"]
+    pub fn VkVideoGopStructure_GetFrameDecodeOrderPosition(
+        this: *const VkVideoGopStructure,
+        frameNumInDisplayOrder: u64,
+        useGopFrameCountPeriod: bool,
+    ) -> u8;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure21GetFrameInDecodeOrderEm"]
+    pub fn VkVideoGopStructure_GetFrameInDecodeOrder(
+        this: *const VkVideoGopStructure,
+        frameNumInDisplayOrder: u64,
+    ) -> u64;
+}
+extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure16IsFrameReferenceEm"]
+    pub fn VkVideoGopStructure_IsFrameReference(
+        this: *const VkVideoGopStructure,
+        frameNumInDisplayOrder: u64,
+    ) -> bool;
+}
+extern "C" {
     #[link_name = "\u{1}_ZN19VkVideoGopStructureC1EaaaaNS_9FrameTypeE"]
     pub fn VkVideoGopStructure_VkVideoGopStructure(
         this: *mut VkVideoGopStructure,
@@ -751,6 +1392,87 @@ impl VkVideoGopStructure {
     #[inline]
     pub unsafe fn Init(&mut self) -> bool {
         VkVideoGopStructure_Init(self)
+    }
+    #[inline]
+    pub unsafe fn GetFrameTypeName(
+        frameType: VkVideoGopStructure_FrameType,
+    ) -> *const ::std::os::raw::c_char {
+        VkVideoGopStructure_GetFrameTypeName(frameType)
+    }
+    #[inline]
+    pub unsafe fn SetGopFrameCount(&mut self, gopFrameCount: i8) {
+        VkVideoGopStructure_SetGopFrameCount(self, gopFrameCount)
+    }
+    #[inline]
+    pub unsafe fn GetGopFrameCount(&self) -> i8 {
+        VkVideoGopStructure_GetGopFrameCount(self)
+    }
+    #[inline]
+    pub unsafe fn SetIdrPeriod(&mut self, idrPeriod: i8) {
+        VkVideoGopStructure_SetIdrPeriod(self, idrPeriod)
+    }
+    #[inline]
+    pub unsafe fn GetIdrPeriod(&self) -> i8 {
+        VkVideoGopStructure_GetIdrPeriod(self)
+    }
+    #[inline]
+    pub unsafe fn SetConsecutiveBFrameCount(&mut self, consecutiveBFrameCount: i8) {
+        VkVideoGopStructure_SetConsecutiveBFrameCount(self, consecutiveBFrameCount)
+    }
+    #[inline]
+    pub unsafe fn GetConsecutiveBFrameCount(&self) -> i8 {
+        VkVideoGopStructure_GetConsecutiveBFrameCount(self)
+    }
+    #[inline]
+    pub unsafe fn SetTemporalLayerCount(&mut self, temporalLayerCount: i8) {
+        VkVideoGopStructure_SetTemporalLayerCount(self, temporalLayerCount)
+    }
+    #[inline]
+    pub unsafe fn GetTemporalLayerCount(&self) -> i8 {
+        VkVideoGopStructure_GetTemporalLayerCount(self)
+    }
+    #[inline]
+    pub unsafe fn SetLastFrameType(
+        &mut self,
+        lastFrameType: VkVideoGopStructure_FrameType,
+    ) -> bool {
+        VkVideoGopStructure_SetLastFrameType(self, lastFrameType)
+    }
+    #[inline]
+    pub unsafe fn GetPositionInGOP(
+        &self,
+        positionInGopInDisplayOrder: *mut u8,
+        frameType: *mut VkVideoGopStructure_FrameType,
+        firstFrame: bool,
+        lastFrame: bool,
+    ) -> u8 {
+        VkVideoGopStructure_GetPositionInGOP(
+            self,
+            positionInGopInDisplayOrder,
+            frameType,
+            firstFrame,
+            lastFrame,
+        )
+    }
+    #[inline]
+    pub unsafe fn GetFrameDecodeOrderPosition(
+        &self,
+        frameNumInDisplayOrder: u64,
+        useGopFrameCountPeriod: bool,
+    ) -> u8 {
+        VkVideoGopStructure_GetFrameDecodeOrderPosition(
+            self,
+            frameNumInDisplayOrder,
+            useGopFrameCountPeriod,
+        )
+    }
+    #[inline]
+    pub unsafe fn GetFrameInDecodeOrder(&self, frameNumInDisplayOrder: u64) -> u64 {
+        VkVideoGopStructure_GetFrameInDecodeOrder(self, frameNumInDisplayOrder)
+    }
+    #[inline]
+    pub unsafe fn IsFrameReference(&self, frameNumInDisplayOrder: u64) -> bool {
+        VkVideoGopStructure_IsFrameReference(self, frameNumInDisplayOrder)
     }
     #[inline]
     pub unsafe fn new(
@@ -823,6 +1545,10 @@ extern "C" {
     );
 }
 extern "C" {
+    #[link_name = "\u{1}_ZN19VkVideoGopStructureD1Ev"]
+    pub fn VkVideoGopStructure_VkVideoGopStructure_destructor(this: *mut VkVideoGopStructure);
+}
+extern "C" {
     #[link_name = "\u{1}_ZN19VkVideoGopStructure21ComputeDecodeOrderMapEv"]
     pub fn VkVideoGopStructure_ComputeDecodeOrderMap(this: *mut ::std::os::raw::c_void);
 }
@@ -830,6 +1556,122 @@ extern "C" {
 #[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct _bindgen_ty_2 {
     pub _address: u8,
+}
+#[test]
+fn __bindgen_test_layout_std_basic_string_open0_char_std_char_traits_open1_char_close1_std_allocator_open1_char_close1_close0_instantiation(
+) {
+    assert_eq!(
+        ::std::mem::size_of::<std_basic_string<::std::os::raw::c_char>>(),
+        32usize,
+        concat!(
+            "Size of template specialization: ",
+            stringify!(std_basic_string<::std::os::raw::c_char>)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<std_basic_string<::std::os::raw::c_char>>(),
+        8usize,
+        concat!(
+            "Alignment of template specialization: ",
+            stringify!(std_basic_string<::std::os::raw::c_char>)
+        )
+    );
+}
+#[test]
+fn __bindgen_test_layout_std_char_traits_open0_char_close0_instantiation() {
+    assert_eq!(
+        ::std::mem::size_of::<std_char_traits>(),
+        1usize,
+        concat!(
+            "Size of template specialization: ",
+            stringify!(std_char_traits)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<std_char_traits>(),
+        1usize,
+        concat!(
+            "Alignment of template specialization: ",
+            stringify!(std_char_traits)
+        )
+    );
+}
+#[test]
+fn __bindgen_test_layout_std_allocator_open0_char_close0_instantiation() {
+    assert_eq!(
+        ::std::mem::size_of::<std_allocator>(),
+        1usize,
+        concat!(
+            "Size of template specialization: ",
+            stringify!(std_allocator)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<std_allocator>(),
+        1usize,
+        concat!(
+            "Alignment of template specialization: ",
+            stringify!(std_allocator)
+        )
+    );
+}
+#[test]
+fn __bindgen_test_layout_std_basic_string_open0_char_std_char_traits_open1_char_close1_std_allocator_open1_char_close1_close0_instantiation_1(
+) {
+    assert_eq!(
+        ::std::mem::size_of::<std_basic_string<::std::os::raw::c_char>>(),
+        32usize,
+        concat!(
+            "Size of template specialization: ",
+            stringify!(std_basic_string<::std::os::raw::c_char>)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<std_basic_string<::std::os::raw::c_char>>(),
+        8usize,
+        concat!(
+            "Alignment of template specialization: ",
+            stringify!(std_basic_string<::std::os::raw::c_char>)
+        )
+    );
+}
+#[test]
+fn __bindgen_test_layout_std_char_traits_open0_char_close0_instantiation_1() {
+    assert_eq!(
+        ::std::mem::size_of::<std_char_traits>(),
+        1usize,
+        concat!(
+            "Size of template specialization: ",
+            stringify!(std_char_traits)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<std_char_traits>(),
+        1usize,
+        concat!(
+            "Alignment of template specialization: ",
+            stringify!(std_char_traits)
+        )
+    );
+}
+#[test]
+fn __bindgen_test_layout_std_allocator_open0_char_close0_instantiation_1() {
+    assert_eq!(
+        ::std::mem::size_of::<std_allocator>(),
+        1usize,
+        concat!(
+            "Size of template specialization: ",
+            stringify!(std_allocator)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<std_allocator>(),
+        1usize,
+        concat!(
+            "Alignment of template specialization: ",
+            stringify!(std_allocator)
+        )
+    );
 }
 #[test]
 fn __bindgen_test_layout_std_vector_open0_VkVideoGopStructure_GopEntry_std_allocator_open1_VkVideoGopStructure_GopEntry_close1_close0_instantiation(

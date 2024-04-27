@@ -79,6 +79,7 @@ pub fn main() -> anyhow::Result<()> {
     cc::Build::new()
         .file("src/VkVideoGopStructure.cpp")
         .cpp(true)
+        .flag_if_supported("-fkeep-inline-functions")
         .include("src")
         .compile("vkvideogop");
 

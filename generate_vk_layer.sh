@@ -26,9 +26,10 @@ bindgen \
   --with-derive-eq \
   --with-derive-hash \
   --with-derive-ord \
+  --generate-inline-functions \
   --allowlist-type VkVideoGopStructure \
   src/VkVideoGopStructure.h \
-  -- -x c++ \
+  -- -x c++ -fkeep-inline-functions \
   >> src/gop_gen.rs
 
 cargo fmt

@@ -1,7 +1,8 @@
 #[cfg(debug_assertions)]
 use crate::vulkan_utils::name_object;
 use crate::{
-    gop_gen::VkVideoGopStructure, shader::ComputePipelineDescriptor,
+    gop_gen::{VkVideoGopStructure, VkVideoGopStructure_GetFrameType},
+    shader::ComputePipelineDescriptor,
     vulkan_utils::find_memorytype_index,
 };
 use anyhow::anyhow;
@@ -10,6 +11,7 @@ use itertools::Itertools;
 use log::{debug, error, trace};
 use std::{
     collections::HashMap,
+    ffi::c_void,
     io::Write,
     mem::{transmute, zeroed, MaybeUninit},
     ptr::null,
@@ -488,7 +490,7 @@ impl Dpb {
             let coded_extent = vk::Extent2D { width, height };
 
             let nvpro_gop = gop_options.use_nvpro.then(|| {
-                VkVideoGopStructure::new(
+                let mut rtn = VkVideoGopStructure::new(
                     gop_options.gop_size.try_into().unwrap_or(16),
                     gop_options.idr_period.try_into().unwrap_or(16),
                     gop_options
@@ -510,7 +512,10 @@ impl Dpb {
                             crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_B
                         }
                     },
-                )
+                );
+
+                rtn.Init();
+                rtn
             });
             let mut rtn = Self {
                 next_image: 0,
@@ -722,7 +727,7 @@ impl Dpb {
         extensions: &Extensions,
         buffer: &BufferPair,
         video_session: &mut VideoSession,
-    ) -> anyhow::Result<CommandBuffer> {
+    ) -> anyhow::Result<(CommandBuffer, u64)> {
         let video_queue_fn = extensions.video_queue_fn();
         let video_encode_queue_fn = extensions.video_encode_queue_fn();
         let cmd = self
@@ -782,11 +787,35 @@ impl Dpb {
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
             device.cmd_pipeline_barrier2(cmd, &info);
 
-            let image_type = if video_session.needs_reset() || self.frame_index % self.gop_size == 0
-            {
-                PictureType::Idr
+            let image_type = if let Some(gop) = &mut self.nvpro_gop {
+                let first_frame = self.frame_index == 0;
+                let last_frame = false;
+                let pic_type = VkVideoGopStructure_GetFrameType(
+                    gop as *mut VkVideoGopStructure as *mut c_void,
+                    self.frame_index,
+                    first_frame,
+                    last_frame,
+                );
+                match pic_type {
+                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_P => PictureType::P,
+                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_B => PictureType::B,
+                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_I => PictureType::I,
+                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_IDR => {
+                        PictureType::Idr
+                    }
+                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_INTRA_REFRESH => {
+                        panic!("Intra refresh not yet supported");
+                    }
+                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_INVALID => {
+                        panic!("Obtained FRAME_TYPE_INVALID from NVPRO GOP structure");
+                    }
+                }
             } else {
-                PictureType::P
+                if video_session.needs_reset() || self.frame_index % self.gop_size == 0 {
+                    PictureType::Idr
+                } else {
+                    PictureType::P
+                }
             };
 
             let info = vk::VideoBeginCodingInfoKHR::default()
@@ -923,11 +952,15 @@ impl Dpb {
                 pRefList1ModOperations: null(),
                 pRefPicMarkingOperations: null(),
             };
-            if image_type.is_p() {
-                ref_lists.RefPicList0[0] =
-                    (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
-                ref_lists.RefPicList0[1] =
-                    (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
+            if let Some(gop) = &self.nvpro_gop {
+                // this does not need to be a 1:1 correspondence, but we do here so for simplicity
+            } else {
+                if image_type.is_p() {
+                    ref_lists.RefPicList0[0] =
+                        (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
+                    ref_lists.RefPicList0[1] =
+                        (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
+                }
             }
             let h264_pic = vk::native::StdVideoEncodeH264PictureInfo {
                 flags,
@@ -1131,8 +1164,13 @@ impl Dpb {
             debug!("ende cmd buffer");
         }
 
+        let decode_order_idx = if let Some(gop) = &mut self.nvpro_gop {
+            unsafe { gop.GetFrameInDecodeOrder(self.frame_index) }
+        } else {
+            self.frame_index
+        };
         trace!("Recorded encode command buffer");
-        Ok(cmd)
+        Ok((cmd, decode_order_idx))
     }
 
     pub fn encode_frame(
@@ -1161,7 +1199,7 @@ impl Dpb {
                 .next(device, 100, output)
                 .map_err(|err| anyhow!("Failed to next: {err}"))?;
 
-            let encode_cmd =
+            let (encode_cmd, decode_order_idx) =
                 self.record_encode_cmd_buffer(device, extensions, &buffer, video_session)?;
             // TODO: mutex around compute queue
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(cmd)];
@@ -1188,12 +1226,12 @@ impl Dpb {
                     .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS),
                 vk::SemaphoreSubmitInfo::default()
                     .semaphore(self.encode_semaphore)
-                    .value(self.frame_index)
+                    .value(decode_order_idx)
                     .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS),
             ];
             let signal_infos = [vk::SemaphoreSubmitInfo::default()
                 .semaphore(self.encode_semaphore)
-                .value(self.frame_index + 1)
+                .value(decode_order_idx + 1)
                 .stage_mask(vk::PipelineStageFlags2::ALL_COMMANDS)];
             let cmd_infos = [vk::CommandBufferSubmitInfo::default().command_buffer(encode_cmd.cmd)];
             let info = vk::SubmitInfo2::default()
