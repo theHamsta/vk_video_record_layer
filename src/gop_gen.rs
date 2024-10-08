@@ -1337,6 +1337,17 @@ extern "C" {
     ) -> bool;
 }
 extern "C" {
+    #[link_name = "\u{1}_ZNK19VkVideoGopStructure31GetReferenceNumbers_c_signatureEaPambb"]
+    pub fn VkVideoGopStructure_GetReferenceNumbers_c_signature(
+        this: *const VkVideoGopStructure,
+        gopNum: i8,
+        refNumbers: *mut i8,
+        maxRefNumbers: usize,
+        searchBackward: bool,
+        searchForward: bool,
+    ) -> u8;
+}
+extern "C" {
     #[link_name = "\u{1}_ZNK19VkVideoGopStructure16GetPositionInGOPERhRNS_9FrameTypeEbb"]
     pub fn VkVideoGopStructure_GetPositionInGOP(
         this: *const VkVideoGopStructure,
@@ -1437,6 +1448,24 @@ impl VkVideoGopStructure {
         lastFrameType: VkVideoGopStructure_FrameType,
     ) -> bool {
         VkVideoGopStructure_SetLastFrameType(self, lastFrameType)
+    }
+    #[inline]
+    pub unsafe fn GetReferenceNumbers_c_signature(
+        &self,
+        gopNum: i8,
+        refNumbers: *mut i8,
+        maxRefNumbers: usize,
+        searchBackward: bool,
+        searchForward: bool,
+    ) -> u8 {
+        VkVideoGopStructure_GetReferenceNumbers_c_signature(
+            self,
+            gopNum,
+            refNumbers,
+            maxRefNumbers,
+            searchBackward,
+            searchForward,
+        )
     }
     #[inline]
     pub unsafe fn GetPositionInGOP(

@@ -10,6 +10,7 @@ use crate::{
 };
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
+use core::slice;
 use itertools::Itertools;
 use log::{debug, error, trace};
 use std::{
@@ -201,6 +202,11 @@ pub struct GopOptions {
 }
 
 impl Dpb<'_> {
+    fn display_order_to_dpb_idx(&self, idx: u64) -> u64 {
+        // we have a very "sophisticated" DPB management
+        idx % self.dpb_images.len() as u64
+    }
+
     pub fn new(
         // src_queue_family_index
         device: &ash::Device,
@@ -727,7 +733,7 @@ impl Dpb<'_> {
                         compute_pipeline.layout(),
                         vk::ShaderStageFlags::COMPUTE,
                         0,
-                        &transmute::<_, [u8; 8]>(self.extent),
+                        &transmute::<ash::vk::Extent2D, [u8; 8]>(self.extent),
                     );
                     let extent = self.coded_extent();
                     device.cmd_dispatch(cmd, (extent.width + 7) / 8, (extent.height + 7) / 8, 1);
@@ -952,6 +958,71 @@ impl Dpb<'_> {
                 buffer.slot,
                 vk::QueryControlFlags::default(),
             );
+            const MAX_REFERENCES: usize = 8; // that's fine even for AV1
+            let mut nvpro_references = MaybeUninit::<[i8; MAX_REFERENCES]>::zeroed();
+            let mut num_nvpro_references = 0;
+            let gop_idx = self.frame_index % self.gop_size;
+            let gop_counter = self.frame_index / self.gop_size;
+            if let Some(gop) = &self.nvpro_gop {
+                num_nvpro_references = gop.GetReferenceNumbers_c_signature(
+                    (self.frame_index % self.gop_size).try_into().unwrap_or(0),
+                    nvpro_references.as_mut_ptr() as *mut i8,
+                    MAX_REFERENCES,
+                    true,
+                    true,
+                );
+            }
+            let nvpro_references = nvpro_references.assume_init();
+            let nvpro_references =
+                slice::from_raw_parts(nvpro_references.as_ptr(), num_nvpro_references as usize);
+            let num_back_refs = nvpro_references
+                .iter()
+                .filter(|&&i| (i as i64) < (gop_idx as i64))
+                .count();
+            let num_forward_refs = nvpro_references
+                .iter()
+                .filter(|&&i| (i as i64) > (gop_idx as i64))
+                .count();
+            let lowest_idx = nvpro_references.iter().copied().min().unwrap_or(0);
+            let highest_idx = nvpro_references
+                .iter()
+                .copied()
+                .min()
+                .unwrap_or(gop_idx as i8);
+            if self.nvpro_gop.is_some() {
+                debug!(
+                    "NVPRO suggested the following references: {:?} for frame {}",
+                    &nvpro_references, self.frame_index
+                );
+            }
+            let dpb_indices: Vec<_> = nvpro_references
+                .iter()
+                .map(|gop_idx| self.display_order_to_dpb_idx(gop_counter + *gop_idx as u64))
+                .collect();
+            let dpb_back_indices: Vec<_> = nvpro_references
+                .iter()
+                .copied()
+                .map(|ref_idx| ref_idx as u64)
+                .filter(|ref_idx| *ref_idx < gop_idx)
+                .map(|ref_idx| {
+                    (
+                        ref_idx,
+                        self.display_order_to_dpb_idx(gop_counter + ref_idx),
+                    )
+                })
+                .collect();
+            let dpb_forward_indices: Vec<_> = nvpro_references
+                .iter()
+                .copied()
+                .map(|ref_idx| ref_idx as u64)
+                .filter(|ref_idx| *ref_idx > gop_idx)
+                .map(|ref_idx| {
+                    (
+                        ref_idx,
+                        self.display_order_to_dpb_idx(gop_counter + ref_idx),
+                    )
+                })
+                .collect();
 
             let pic = vk::VideoPictureResourceInfoKHR::default()
                 .coded_extent(self.coded_extent())
@@ -962,8 +1033,8 @@ impl Dpb<'_> {
             flags.set_is_reference(1);
             let mut ref_lists = vk::native::StdVideoEncodeH264ReferenceListsInfo {
                 flags: zeroed(), // set reorder flags
-                num_ref_idx_l0_active_minus1: 0,
-                num_ref_idx_l1_active_minus1: 0,
+                num_ref_idx_l0_active_minus1: (gop_idx as i8 - lowest_idx as i8 - 1).max(0) as u8,
+                num_ref_idx_l1_active_minus1: (highest_idx as i8 - gop_idx as i8 - 1).max(0) as u8,
                 RefPicList0: [0; 32],
                 RefPicList1: [0; 32],
                 refList0ModOpCount: 0,
@@ -974,15 +1045,18 @@ impl Dpb<'_> {
                 pRefList1ModOperations: null(),
                 pRefPicMarkingOperations: null(),
             };
-            if let Some(gop) = &self.nvpro_gop {
-                // this does not need to be a 1:1 correspondence, but we do here so for simplicity
-            } else {
-                if image_type.is_p() {
-                    ref_lists.RefPicList0[0] =
-                        (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
-                    ref_lists.RefPicList0[1] =
-                        (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
+            if self.nvpro_gop.is_some() {
+                for &(ref_idx, dpb_idx) in dpb_back_indices.iter() {
+                    ref_lists.RefPicList0[(gop_idx - ref_idx - 1) as usize] = dpb_idx as u8;
                 }
+                for &(ref_idx, dpb_idx) in dpb_forward_indices.iter() {
+                    ref_lists.RefPicList0[(ref_idx - gop_idx - 1) as usize] = dpb_idx as u8;
+                }
+            } else if image_type.is_p() {
+                ref_lists.RefPicList0[0] =
+                    (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
+                ref_lists.RefPicList0[1] =
+                    (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
             }
             let h264_pic = vk::native::StdVideoEncodeH264PictureInfo {
                 flags,
@@ -1018,17 +1092,27 @@ impl Dpb<'_> {
 
             let mut ref_lists = vk::native::StdVideoEncodeH265ReferenceListsInfo {
                 flags: zeroed(), // set reorder flags
-                num_ref_idx_l0_active_minus1: 0,
-                num_ref_idx_l1_active_minus1: 0,
+                num_ref_idx_l0_active_minus1: (dpb_back_indices.len() as i64 - 1).max(0),
+                num_ref_idx_l1_active_minus1: (dpb_forward_indices.len() as i64 - 1).max(0),
                 RefPicList0: [0; 15],
                 RefPicList1: [0; 15],
                 list_entry_l0: [0; 15],
                 list_entry_l1: [0; 15],
             };
-            if image_type.is_p() {
+            if self.nvpro_gop.is_some() {
+                for (i, &(ref_idx, dpb_idx)) in dpb_back_indices.iter().enumerate() {
+                    // or vice-versa
+                    ref_lists.RefPicList0[i] = dpb_idx as u8;
+                    ref_lists.list_entry_l0[i] = (gop_idx - ref_idx - 1) as u8;
+                }
+                for (i, &(ref_idx, dpb_idx)) in dpb_forward_indices.iter().enumerate() {
+                    ref_lists.RefPicList1[i] = dpb_idx as u8;
+                    ref_lists.list_entry_l1[i] = (ref_idx - gop_idx - 1) as u8;
+                }
+            } else if image_type.is_p() {
                 ref_lists.RefPicList0[0] =
                     (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
-                ref_lists.RefPicList0[1] =
+                ref_lists.RefPicList1[1] =
                     (self.frame_index as i32 - 1).rem_euclid(self.dpb_views.len() as i32) as u8;
             }
             let mut flags: vk::native::StdVideoH265ShortTermRefPicSetFlags = zeroed();

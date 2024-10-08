@@ -111,6 +111,8 @@ public:
     virtual uint8_t GetReferences(int gopNum, std::bitset<64>& refMask) const;
     virtual uint8_t GetReferenceNumbers(int8_t gopNum, std::vector<int8_t>& refNumbers,
                                         bool searchBackward = true, bool searchForward = true) const;
+    uint8_t GetReferenceNumbers_c_signature(int8_t gopNum, int8_t* refNumbers, size_t maxRefNumbers,
+                                            bool searchBackward = true, bool searchForward = true) const;
 
 
     uint8_t GetPositionInGOP(uint8_t& positionInGopInDisplayOrder, FrameType& frameType,

@@ -226,6 +226,26 @@ uint8_t VkVideoGopStructure::GetReferences(int gopNum,
   return refCount;
 }
 
+uint8_t VkVideoGopStructure::GetReferenceNumbers_c_signature(
+    int8_t gopNum, int8_t *refNumbers, size_t maxRefNumbers,
+    bool searchBackward, bool searchForward) const {
+  uint8_t refCount = 0;
+  VisitGopFrames(
+      gopNum,
+      [&refNumbers, gopNum, &refCount, &maxRefNumbers](int visitedFrame,
+                                                       FrameType frameType) {
+        if (((frameType >= FRAME_TYPE_I) || (frameType == FRAME_TYPE_P)) &&
+            (visitedFrame != gopNum)) { // Exclude self-references
+          if (refCount < maxRefNumbers) {
+            refNumbers[refCount] = visitedFrame;
+            refCount++;
+          }
+        }
+      },
+      searchBackward, searchForward);
+  return refCount;
+}
+
 uint8_t VkVideoGopStructure::GetReferenceNumbers(
     int8_t gopNum, std::vector<int8_t> &refNumbers, bool searchBackward,
     bool searchForward) const {
@@ -327,7 +347,7 @@ int TestGopStructure() {
   return 0;
 }
 
-auto new_gop_structure(int8_t gopFrameCount, int8_t idrPeriod,
+auto VkVideoGopStructure_new(int8_t gopFrameCount, int8_t idrPeriod,
                        int8_t consecutiveBFrameCount, int8_t temporalLayerCount,
                        VkVideoGopStructure::FrameType lastFrameType)
     -> VkVideoGopStructure * {
@@ -335,6 +355,6 @@ auto new_gop_structure(int8_t gopFrameCount, int8_t idrPeriod,
                                  consecutiveBFrameCount, temporalLayerCount,
                                  lastFrameType);
 }
-auto destroy_structure(VkVideoGopStructure *gop_struct) -> void {
+auto VkVideoGopStructure_destroy(VkVideoGopStructure *gop_struct) -> void {
   delete gop_struct;
 }
