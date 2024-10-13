@@ -3,6 +3,7 @@ mod buffer_queue;
 mod cmd_buffer_queue;
 mod creation;
 mod dpb;
+#[cfg(feature = "nvpro_sample_gop")]
 mod gop_gen;
 mod profile;
 mod session_parameters;

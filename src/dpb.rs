@@ -1,22 +1,23 @@
 #[cfg(debug_assertions)]
 use crate::vulkan_utils::name_object;
-use crate::{
-    gop_gen::{
-        VkVideoGopStructure, VkVideoGopStructure_GetFrameType, VkVideoGopStructure_destroy,
-        VkVideoGopStructure_new,
-    },
-    shader::ComputePipelineDescriptor,
-    vulkan_utils::find_memorytype_index,
+use crate::{shader::ComputePipelineDescriptor, vulkan_utils::find_memorytype_index};
+
+#[cfg(feature = "nvpro_sample_gop")]
+use crate::gop_gen::{
+    VkVideoGopStructure, VkVideoGopStructure_GetFrameType, VkVideoGopStructure_destroy,
+    VkVideoGopStructure_new,
 };
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
 use core::slice;
 use itertools::Itertools;
 use log::{debug, error, trace};
+#[cfg(feature = "nvpro_sample_gop")]
+use std::ffi::c_void;
 use std::{
     collections::HashMap,
-    ffi::c_void,
     io::Write,
+    marker::PhantomData,
     mem::{transmute, zeroed, MaybeUninit},
     ptr::null,
 };
@@ -105,7 +106,10 @@ pub struct Dpb<'dpb> {
     bitstream_buffers: VkResult<BitstreamBufferRing>,
     frame_index: u64,
     gop_size: u64,
+    #[cfg(feature = "nvpro_sample_gop")]
     nvpro_gop: Option<&'dpb mut VkVideoGopStructure>,
+    #[cfg(not(feature = "nvpro_sample_gop"))]
+    nvpro_gop: Option<&'dpb PhantomData<i32>>,
     rate_control_options: RateControlOptions,
 }
 
@@ -515,6 +519,7 @@ impl Dpb<'_> {
             );
             let coded_extent = vk::Extent2D { width, height };
 
+            #[cfg(feature = "nvpro_sample_gop")]
             let nvpro_gop = gop_options.use_nvpro.then(|| {
                 let rtn = VkVideoGopStructure_new(
                     gop_options.gop_size.try_into().unwrap_or(16),
@@ -546,6 +551,7 @@ impl Dpb<'_> {
                 rtn.Init();
                 rtn
             });
+            let nvpro_gop = None;
             let mut rtn = Self {
                 next_image: 0,
                 frame_index: 0,
@@ -817,28 +823,39 @@ impl Dpb<'_> {
             device.cmd_pipeline_barrier2(cmd, &info);
 
             let image_type = if let Some(gop) = self.nvpro_gop.as_mut() {
-                let first_frame = self.frame_index == 0;
-                let last_frame = false;
-                let pic_type = VkVideoGopStructure_GetFrameType(
-                    *gop as *mut VkVideoGopStructure as *mut c_void,
-                    self.frame_index,
-                    first_frame,
-                    last_frame,
-                );
-                match pic_type {
-                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_P => PictureType::P,
-                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_B => PictureType::B,
-                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_I => PictureType::I,
-                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_IDR => {
-                        PictureType::Idr
-                    }
-                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_INTRA_REFRESH => {
-                        panic!("Intra refresh not yet supported");
-                    }
-                    crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_INVALID => {
-                        panic!("Obtained FRAME_TYPE_INVALID from NVPRO GOP structure");
+                #[cfg(feature = "nvpro_sample_gop")]
+                {
+                    let first_frame = self.frame_index == 0;
+                    let last_frame = false;
+                    let pic_type = VkVideoGopStructure_GetFrameType(
+                        *gop as *mut VkVideoGopStructure as *mut c_void,
+                        self.frame_index,
+                        first_frame,
+                        last_frame,
+                    );
+                    match pic_type {
+                        crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_P => {
+                            PictureType::P
+                        }
+                        crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_B => {
+                            PictureType::B
+                        }
+                        crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_I => {
+                            PictureType::I
+                        }
+                        crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_IDR => {
+                            PictureType::Idr
+                        }
+                        crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_INTRA_REFRESH => {
+                            panic!("Intra refresh not yet supported");
+                        }
+                        crate::gop_gen::VkVideoGopStructure_FrameType::FRAME_TYPE_INVALID => {
+                            panic!("Obtained FRAME_TYPE_INVALID from NVPRO GOP structure");
+                        }
                     }
                 }
+                #[cfg(not(feature = "nvpro_sample_gop"))]
+                unreachable!()
             } else {
                 if video_session.needs_reset() || self.frame_index % self.gop_size == 0 {
                     PictureType::Idr
@@ -862,11 +879,13 @@ impl Dpb<'_> {
                         | vk::VideoCodingControlFlagsKHR::ENCODE_QUALITY_LEVEL
                         | vk::VideoCodingControlFlagsKHR::RESET,
                 );
+                #[cfg(feature = "nvpro_sample_gop")]
                 let consecutive_b_frame_count = self
                     .nvpro_gop
                     .as_ref()
                     .map(|gop| gop.m_consecutiveBFrameCount as u32)
                     .unwrap_or(0u32);
+                #[cfg(feature = "nvpro_sample_gop")]
                 debug_assert_eq!(
                     self.nvpro_gop
                         .as_ref()
@@ -874,6 +893,8 @@ impl Dpb<'_> {
                         .unwrap_or(1),
                     1
                 );
+                #[cfg(not(feature = "nvpro_sample_gop"))]
+                let consecutive_b_frame_count = 0;
 
                 let mut encode_control_h264 = vk::VideoEncodeH264RateControlInfoKHR::default()
                     .flags(vk::VideoEncodeH264RateControlFlagsKHR::REGULAR_GOP)
@@ -962,17 +983,21 @@ impl Dpb<'_> {
             const MAX_REFERENCES: usize = 8; // that's fine even for AV1
             let mut nvpro_references = MaybeUninit::<[i8; MAX_REFERENCES]>::zeroed();
             let mut num_nvpro_references = 0;
+            #[cfg(feature = "nvpro_sample_gop")]
             let gop_idx = self.frame_index % self.gop_size;
             #[cfg(feature = "nvpro_sample_gop")]
             let gop_counter = self.frame_index / self.gop_size;
             if let Some(gop) = &self.nvpro_gop {
-                num_nvpro_references = gop.GetReferenceNumbers_c_signature(
-                    (self.frame_index % self.gop_size).try_into().unwrap_or(0),
-                    nvpro_references.as_mut_ptr() as *mut i8,
-                    MAX_REFERENCES,
-                    true,
-                    true,
-                );
+                #[cfg(feature = "nvpro_sample_gop")]
+                {
+                    num_nvpro_references = gop.GetReferenceNumbers_c_signature(
+                        (self.frame_index % self.gop_size).try_into().unwrap_or(0),
+                        nvpro_references.as_mut_ptr() as *mut i8,
+                        MAX_REFERENCES,
+                        true,
+                        true,
+                    );
+                }
             }
             let nvpro_references = nvpro_references.assume_init();
             let nvpro_references =
@@ -987,7 +1012,9 @@ impl Dpb<'_> {
                 .iter()
                 .filter(|&&i| (i as i64) > (gop_idx as i64))
                 .count();
+            #[cfg(feature = "nvpro_sample_gop")]
             let lowest_idx = nvpro_references.iter().copied().min().unwrap_or(0);
+            #[cfg(feature = "nvpro_sample_gop")]
             let highest_idx = nvpro_references
                 .iter()
                 .copied()
@@ -1040,8 +1067,14 @@ impl Dpb<'_> {
             flags.set_is_reference(1);
             let mut ref_lists = vk::native::StdVideoEncodeH264ReferenceListsInfo {
                 flags: zeroed(), // set reorder flags
+                #[cfg(feature = "nvpro_sample_gop")]
                 num_ref_idx_l0_active_minus1: (gop_idx as i8 - lowest_idx as i8 - 1).max(0) as u8,
+                #[cfg(feature = "nvpro_sample_gop")]
                 num_ref_idx_l1_active_minus1: (highest_idx as i8 - gop_idx as i8 - 1).max(0) as u8,
+                #[cfg(not(feature = "nvpro_sample_gop"))]
+                num_ref_idx_l0_active_minus1: 0,
+                #[cfg(not(feature = "nvpro_sample_gop"))]
+                num_ref_idx_l1_active_minus1: 0,
                 RefPicList0: [0; 32],
                 RefPicList1: [0; 32],
                 refList0ModOpCount: 0,
@@ -1291,7 +1324,12 @@ impl Dpb<'_> {
         }
 
         let decode_order_idx = if let Some(gop) = &mut self.nvpro_gop {
-            unsafe { gop.GetFrameInDecodeOrder(self.frame_index) }
+            #[cfg(feature = "nvpro_sample_gop")]
+            unsafe {
+                gop.GetFrameInDecodeOrder(self.frame_index)
+            }
+            #[cfg(not(feature = "nvpro_sample_gop"))]
+            unreachable!()
         } else {
             self.frame_index
         };
@@ -1416,6 +1454,7 @@ impl Dpb<'_> {
             }
             device.destroy_semaphore(self.compute_semaphore, allocator);
             device.destroy_semaphore(self.encode_semaphore, allocator);
+            #[cfg(feature = "nvpro_sample_gop")]
             if let Some(gop) = self.nvpro_gop.as_mut() {
                 VkVideoGopStructure_destroy(*gop as *mut VkVideoGopStructure);
             }
