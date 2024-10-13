@@ -9,6 +9,7 @@ use crate::gop_gen::{
 };
 use anyhow::anyhow;
 use ash::{prelude::VkResult, vk};
+#[cfg(feature = "nvpro_sample_gop")]
 use core::slice;
 use itertools::Itertools;
 use log::{debug, error, trace};
@@ -197,6 +198,7 @@ impl PictureType {
     }
 }
 
+#[allow(dead_code)]
 pub struct GopOptions {
     pub use_nvpro: bool,
     pub gop_size: u64,
@@ -822,9 +824,10 @@ impl Dpb<'_> {
             let info = vk::DependencyInfo::default().image_memory_barriers(&barriers);
             device.cmd_pipeline_barrier2(cmd, &info);
 
-            let image_type = if let Some(gop) = self.nvpro_gop.as_mut() {
+            let image_type = if let Some(_gop) = self.nvpro_gop.as_mut() {
                 #[cfg(feature = "nvpro_sample_gop")]
                 {
+                    let gop = _gop;
                     let first_frame = self.frame_index == 0;
                     let last_frame = false;
                     let pic_type = VkVideoGopStructure_GetFrameType(
@@ -980,26 +983,29 @@ impl Dpb<'_> {
                 buffer.slot,
                 vk::QueryControlFlags::default(),
             );
+            #[cfg(feature = "nvpro_sample_gop")]
             const MAX_REFERENCES: usize = 8; // that's fine even for AV1
+            #[cfg(feature = "nvpro_sample_gop")]
             let mut nvpro_references = MaybeUninit::<[i8; MAX_REFERENCES]>::zeroed();
+            #[cfg(feature = "nvpro_sample_gop")]
             let mut num_nvpro_references = 0;
             #[cfg(feature = "nvpro_sample_gop")]
             let gop_idx = self.frame_index % self.gop_size;
             #[cfg(feature = "nvpro_sample_gop")]
             let gop_counter = self.frame_index / self.gop_size;
+            #[cfg(feature = "nvpro_sample_gop")]
             if let Some(gop) = &self.nvpro_gop {
-                #[cfg(feature = "nvpro_sample_gop")]
-                {
-                    num_nvpro_references = gop.GetReferenceNumbers_c_signature(
-                        (self.frame_index % self.gop_size).try_into().unwrap_or(0),
-                        nvpro_references.as_mut_ptr() as *mut i8,
-                        MAX_REFERENCES,
-                        true,
-                        true,
-                    );
-                }
+                num_nvpro_references = gop.GetReferenceNumbers_c_signature(
+                    (self.frame_index % self.gop_size).try_into().unwrap_or(0),
+                    nvpro_references.as_mut_ptr() as *mut i8,
+                    MAX_REFERENCES,
+                    true,
+                    true,
+                );
             }
+            #[cfg(feature = "nvpro_sample_gop")]
             let nvpro_references = nvpro_references.assume_init();
+            #[cfg(feature = "nvpro_sample_gop")]
             let nvpro_references =
                 slice::from_raw_parts(nvpro_references.as_ptr(), num_nvpro_references as usize);
             #[cfg(feature = "nvpro_sample_gop")]
@@ -1020,6 +1026,7 @@ impl Dpb<'_> {
                 .copied()
                 .min()
                 .unwrap_or(gop_idx as i8);
+            #[cfg(feature = "nvpro_sample_gop")]
             if self.nvpro_gop.is_some() {
                 debug!(
                     "NVPRO suggested the following references: {:?} for frame {}",
@@ -1323,13 +1330,11 @@ impl Dpb<'_> {
             debug!("ende cmd buffer");
         }
 
+        #[cfg(not(feature = "nvpro_sample_gop"))]
+        let decode_order_idx = self.frame_index;
+        #[cfg(feature = "nvpro_sample_gop")]
         let decode_order_idx = if let Some(gop) = &mut self.nvpro_gop {
-            #[cfg(feature = "nvpro_sample_gop")]
-            unsafe {
-                gop.GetFrameInDecodeOrder(self.frame_index)
-            }
-            #[cfg(not(feature = "nvpro_sample_gop"))]
-            unreachable!()
+            unsafe { gop.GetFrameInDecodeOrder(self.frame_index) }
         } else {
             self.frame_index
         };

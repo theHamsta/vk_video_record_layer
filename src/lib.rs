@@ -97,7 +97,7 @@ pub unsafe extern "system" fn record_vk_destroy_device(
     debug!("record_vk_destroy_device");
     if device != vk::Device::null() {
         let state = get_state();
-        let lock = state.device.write().unwrap();
+        let lock = state.device.read().unwrap();
         let device = lock.as_ref().unwrap();
         let slot = *state.private_slot.write().unwrap();
         unsafe {

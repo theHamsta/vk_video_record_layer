@@ -54,18 +54,16 @@ impl Buffer {
             let mut flag_info = vk::MemoryAllocateFlagsInfo::default()
                 .flags(vk::MemoryAllocateFlags::DEVICE_ADDRESS);
             let info = info.push_next(&mut flag_info);
-            rtn.memory = device.allocate_memory(&info, allocator).map_err(|e| {
+            rtn.memory = device.allocate_memory(&info, allocator).inspect_err(|e| {
                 rtn.destroy(device, allocator);
                 error!("Failed to allocate memory: {e}");
-                e
             })?;
 
             device
                 .bind_buffer_memory(buffer, rtn.memory, 0)
-                .map_err(|e| {
+                .inspect_err(|e| {
                     rtn.destroy(device, allocator);
                     error!("Failed to bind memory: {e}");
-                    e
                 })?;
 
             Ok(rtn)
@@ -142,10 +140,9 @@ impl BitstreamBufferRing {
                 memory_property_flags,
                 allocator,
             )
-            .map_err(|e| {
+            .inspect_err(|e| {
                 rtn.destroy(device, allocator);
                 error!("Failed to create buffer: {e}");
-                e
             })?;
             rtn.buffers.push(buffer);
 
@@ -175,11 +172,11 @@ impl BitstreamBufferRing {
             .push_next(&mut encode_info)
             .push_next(profile_info);
 
-        rtn.query_pool = unsafe { device.create_query_pool(&info, allocator) }.map_err(|e| {
-            rtn.destroy(device, allocator);
-            error!("Failed to create query buffer: {e}");
-            e
-        })?;
+        rtn.query_pool =
+            unsafe { device.create_query_pool(&info, allocator) }.inspect_err(|e| {
+                rtn.destroy(device, allocator);
+                error!("Failed to create query buffer: {e}");
+            })?;
         Ok(rtn)
     }
 
@@ -210,13 +207,12 @@ impl BitstreamBufferRing {
             .values(&values)
             .semaphores(&semaphores);
         unsafe {
-            device.wait_semaphores(&info, timeout).map_err(|e| {
+            device.wait_semaphores(&info, timeout).inspect_err(|e| {
             let actual_value = device.get_semaphore_counter_value(self.semaphore);
                 warn!(
-                    "Failed to wait for encode timeline semaphore in bitstream buffer for value {}. Current value {actual_value:?}",
+                    "Failed to wait (error: {e}) for encode timeline semaphore in bitstream buffer for value {}. Current value {actual_value:?}",
                     values[0]
                 );
-            e
             })?;
         }
 
@@ -239,12 +235,11 @@ impl BitstreamBufferRing {
                         &mut result,
                         vk::QueryResultFlags::WAIT | vk::QueryResultFlags::WITH_STATUS_KHR,
                     )
-                    .map_err(|e| {
+                    .inspect_err(|e| {
                         warn!(
-                            "Failed to get query results for query slot {slot} for encoding {}",
+                            "Failed to get query results for query slot {slot} for encoding {} (error {e})",
                             values[0]
                         );
-                        e
                     })
                     .map(|_| result[0]);
                 device.reset_query_pool(self.query_pool, slot, 1);
