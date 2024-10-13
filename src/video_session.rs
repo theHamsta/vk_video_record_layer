@@ -319,7 +319,10 @@ pub unsafe fn record_vk_create_swapchain(
                     s,
                     &physical_memory_props,
                     GopOptions {
+                        #[cfg(feature = "nvpro_sample_gop")]
                         use_nvpro: get_state().settings.use_nvpro,
+                        #[cfg(not(feature = "nvpro_sample_gop"))]
+                        use_nvpro: false,
                         gop_size: get_state().settings.gop_size,
                         idr_period: get_state().settings.idr_period,
                         max_consecutive_b_frames: get_state().settings.max_consecutive_b_frames,
@@ -359,9 +362,8 @@ pub unsafe fn record_vk_create_swapchain(
             let info = vk::SemaphoreCreateInfo::default();
             let semaphores = (0..create_info.min_image_count) // TODO: image count might be higher
                 .map(|_| {
-                    device.create_semaphore(&info, allocator).map_err(|err| {
+                    device.create_semaphore(&info, allocator).inspect_err(|err| {
                         error!("Failed to create present semaphore: {err}");
-                        err
                     })
                 })
                 .collect();

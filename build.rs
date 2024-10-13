@@ -74,14 +74,17 @@ pub fn main() -> anyhow::Result<()> {
         }
     }
 
-    println!("cargo:rerun-if-changed=src/VkVideoGopStructure.cpp");
-    println!("cargo:rerun-if-changed=src/VkVideoGopStructure.h");
-    cc::Build::new()
-        .file("src/VkVideoGopStructure.cpp")
-        .cpp(true)
-        .flag_if_supported("-fkeep-inline-functions")
-        .include("src")
-        .compile("vkvideogop");
+    #[cfg(feature = "nvpro_sample_gop")]
+    {
+        println!("cargo:rerun-if-changed=src/VkVideoGopStructure.cpp");
+        println!("cargo:rerun-if-changed=src/VkVideoGopStructure.h");
+        cc::Build::new()
+            .file("src/VkVideoGopStructure.cpp")
+            .cpp(true)
+            .flag_if_supported("-fkeep-inline-functions")
+            .include("src")
+            .compile("vkvideogop");
+    }
 
     Ok(())
 }

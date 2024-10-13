@@ -202,6 +202,7 @@ pub struct GopOptions {
 }
 
 impl Dpb<'_> {
+    #[cfg(feature = "nvpro_sample_gop")]
     fn display_order_to_dpb_idx(&self, idx: u64) -> u64 {
         // we have a very "sophisticated" DPB management
         idx % self.dpb_images.len() as u64
@@ -962,6 +963,7 @@ impl Dpb<'_> {
             let mut nvpro_references = MaybeUninit::<[i8; MAX_REFERENCES]>::zeroed();
             let mut num_nvpro_references = 0;
             let gop_idx = self.frame_index % self.gop_size;
+            #[cfg(feature = "nvpro_sample_gop")]
             let gop_counter = self.frame_index / self.gop_size;
             if let Some(gop) = &self.nvpro_gop {
                 num_nvpro_references = gop.GetReferenceNumbers_c_signature(
@@ -975,10 +977,12 @@ impl Dpb<'_> {
             let nvpro_references = nvpro_references.assume_init();
             let nvpro_references =
                 slice::from_raw_parts(nvpro_references.as_ptr(), num_nvpro_references as usize);
+            #[cfg(feature = "nvpro_sample_gop")]
             let num_back_refs = nvpro_references
                 .iter()
                 .filter(|&&i| (i as i64) < (gop_idx as i64))
                 .count();
+            #[cfg(feature = "nvpro_sample_gop")]
             let num_forward_refs = nvpro_references
                 .iter()
                 .filter(|&&i| (i as i64) > (gop_idx as i64))
@@ -995,10 +999,12 @@ impl Dpb<'_> {
                     &nvpro_references, self.frame_index
                 );
             }
+            #[cfg(feature = "nvpro_sample_gop")]
             let dpb_indices: Vec<_> = nvpro_references
                 .iter()
                 .map(|gop_idx| self.display_order_to_dpb_idx(gop_counter + *gop_idx as u64))
                 .collect();
+            #[cfg(feature = "nvpro_sample_gop")]
             let dpb_back_indices: Vec<_> = nvpro_references
                 .iter()
                 .copied()
@@ -1011,6 +1017,7 @@ impl Dpb<'_> {
                     )
                 })
                 .collect();
+            #[cfg(feature = "nvpro_sample_gop")]
             let dpb_forward_indices: Vec<_> = nvpro_references
                 .iter()
                 .copied()
@@ -1046,11 +1053,14 @@ impl Dpb<'_> {
                 pRefPicMarkingOperations: null(),
             };
             if self.nvpro_gop.is_some() {
-                for &(ref_idx, dpb_idx) in dpb_back_indices.iter() {
-                    ref_lists.RefPicList0[(gop_idx - ref_idx - 1) as usize] = dpb_idx as u8;
-                }
-                for &(ref_idx, dpb_idx) in dpb_forward_indices.iter() {
-                    ref_lists.RefPicList0[(ref_idx - gop_idx - 1) as usize] = dpb_idx as u8;
+                #[cfg(feature = "nvpro_sample_gop")]
+                {
+                    for &(ref_idx, dpb_idx) in dpb_back_indices.iter() {
+                        ref_lists.RefPicList0[(gop_idx - ref_idx - 1) as usize] = dpb_idx as u8;
+                    }
+                    for &(ref_idx, dpb_idx) in dpb_forward_indices.iter() {
+                        ref_lists.RefPicList0[(ref_idx - gop_idx - 1) as usize] = dpb_idx as u8;
+                    }
                 }
             } else if image_type.is_p() {
                 ref_lists.RefPicList0[0] =
@@ -1092,22 +1102,32 @@ impl Dpb<'_> {
 
             let mut ref_lists = vk::native::StdVideoEncodeH265ReferenceListsInfo {
                 flags: zeroed(), // set reorder flags
+
+                #[cfg(feature = "nvpro_sample_gop")]
                 num_ref_idx_l0_active_minus1: (dpb_back_indices.len() as i64 - 1).max(0) as u8,
+                #[cfg(feature = "nvpro_sample_gop")]
                 num_ref_idx_l1_active_minus1: (dpb_forward_indices.len() as i64 - 1).max(0) as u8,
+                #[cfg(not(feature = "nvpro_sample_gop"))]
+                num_ref_idx_l0_active_minus1: 0,
+                #[cfg(not(feature = "nvpro_sample_gop"))]
+                num_ref_idx_l1_active_minus1: 0,
                 RefPicList0: [0; 15],
                 RefPicList1: [0; 15],
                 list_entry_l0: [0; 15],
                 list_entry_l1: [0; 15],
             };
             if self.nvpro_gop.is_some() {
-                for (i, &(ref_idx, dpb_idx)) in dpb_back_indices.iter().enumerate() {
-                    // or vice-versa
-                    ref_lists.RefPicList0[i] = dpb_idx as u8;
-                    ref_lists.list_entry_l0[i] = (gop_idx - ref_idx - 1) as u8;
-                }
-                for (i, &(ref_idx, dpb_idx)) in dpb_forward_indices.iter().enumerate() {
-                    ref_lists.RefPicList1[i] = dpb_idx as u8;
-                    ref_lists.list_entry_l1[i] = (ref_idx - gop_idx - 1) as u8;
+                #[cfg(feature = "nvpro_sample_gop")]
+                {
+                    for (i, &(ref_idx, dpb_idx)) in dpb_back_indices.iter().enumerate() {
+                        // or vice-versa
+                        ref_lists.RefPicList0[i] = dpb_idx as u8;
+                        ref_lists.list_entry_l0[i] = (gop_idx - ref_idx - 1) as u8;
+                    }
+                    for (i, &(ref_idx, dpb_idx)) in dpb_forward_indices.iter().enumerate() {
+                        ref_lists.RefPicList1[i] = dpb_idx as u8;
+                        ref_lists.list_entry_l1[i] = (ref_idx - gop_idx - 1) as u8;
+                    }
                 }
             } else if image_type.is_p() {
                 ref_lists.RefPicList0[0] =
