@@ -1092,8 +1092,8 @@ impl Dpb<'_> {
 
             let mut ref_lists = vk::native::StdVideoEncodeH265ReferenceListsInfo {
                 flags: zeroed(), // set reorder flags
-                num_ref_idx_l0_active_minus1: (dpb_back_indices.len() as i64 - 1).max(0),
-                num_ref_idx_l1_active_minus1: (dpb_forward_indices.len() as i64 - 1).max(0),
+                num_ref_idx_l0_active_minus1: (dpb_back_indices.len() as i64 - 1).max(0) as u8,
+                num_ref_idx_l1_active_minus1: (dpb_forward_indices.len() as i64 - 1).max(0) as u8,
                 RefPicList0: [0; 15],
                 RefPicList1: [0; 15],
                 list_entry_l0: [0; 15],
