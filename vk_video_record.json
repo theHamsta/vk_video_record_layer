@@ -205,7 +205,7 @@
 					"label": "Use NVPRO GOP structure",
 					"description": "",
 					"type": "BOOL",
-					"default": true,
+					"default": false,
 					"settings": [
 						{
 							"key": "gop_size",
