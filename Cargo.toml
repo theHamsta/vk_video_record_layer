@@ -14,7 +14,7 @@ bench = false
 nvpro_sample_gop = []
 
 [dependencies]
-anyhow = "1.0.71"
+anyhow = "1.0.89"
 #ash = { git = "https://github.com/ash-rs/ash/", branch = "update" }
 ash = "0.38.0"
 bitstream-io = "2.2.0"
